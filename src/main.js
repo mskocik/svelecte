@@ -1,3 +1,10 @@
-import Svelecte from './Svelecte/Svelecte.svelte';
+import DocsApp from './App.svelte';
+import registerSvelecte from './Svelecte/registerComponent.js';
 
-export default Svelecte;
+const app = new DocsApp({
+	target: document.getElementById('app')
+});
+
+registerSvelecte('el-svelecte');
+
+export default app;

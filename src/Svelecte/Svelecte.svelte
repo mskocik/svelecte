@@ -13,7 +13,7 @@
 <script>
   import { setContext, onDestroy, createEventDispatcher, tick } from 'svelte';
   import { key, initStore } from './contextStore.js';
-  import { fetchRemote } from './utils';
+  import { fetchRemote } from './lib/utils.js';
   import defaults from './settings.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';

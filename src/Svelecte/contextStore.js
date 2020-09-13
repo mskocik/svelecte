@@ -1,7 +1,7 @@
 import { onDestroy } from 'svelte';
 import { writable, derived } from 'svelte/store';
-import Sifter from './utils/sifter';
-import { debounce } from './utils';
+import Sifter from './lib/sifter';
+import { debounce } from './lib/utils';
 
 const key = {};
 

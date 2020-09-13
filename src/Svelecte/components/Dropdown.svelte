@@ -1,7 +1,7 @@
 <script>
   import { getContext, createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
   import { key } from './../contextStore.js';
-  import { isOutOfViewport} from './../utils';
+  import { isOutOfViewport} from './../lib/utils.js';
 
   export let creatable;
   export let maxReached = false;

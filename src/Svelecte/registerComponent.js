@@ -41,7 +41,7 @@ function formatValue(name, value) {
  * Connect Web Component attributes to Svelte Component properties
  * @param {string} name Name of the Web Component
  */
-export function registerSvelecte(name) {
+export default function(name) {
   return customElements.define(name, class extends HTMLElement {
     constructor() {
       super();

@@ -15,7 +15,6 @@
 <style>
 	main {
 		text-align: center;
-		padding: 1em;
 		max-width: 400px;
 		margin: 2rem auto;
 	}
