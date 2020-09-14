@@ -1,4 +1,4 @@
-import Svelecte from './Svelecte.svelte';
+import Svelecte, { registerRenderer, itemActions } from './Svelecte.svelte';
 
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required',
@@ -38,10 +38,11 @@ function formatValue(name, value) {
 }
 
 /**
- * Connect Web Component attributes to Svelte Component properties
- * @param {string} name Name of the Web Component
+ * Connect Custom Component attributes to Svelte Component properties
+ * @param {string} name Name of the Custom Component
  */
 export default function(name) {
+
   return customElements.define(name, class extends HTMLElement {
     constructor() {
       super();
@@ -69,7 +70,7 @@ export default function(name) {
             return JSON.parse(this.getAttribute('options'));
           },
           set(value) {
-            this.setAttribute('options', JSON.stringify(value));
+            this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
           }
         },
         'disabled': {
@@ -196,3 +197,5 @@ export default function(name) {
     }
   });
 }
+
+export { registerRenderer, itemActions };

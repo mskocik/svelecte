@@ -9,7 +9,7 @@ const settings = {
   searchable: true,     // TODO: implement
   disabled: false,
   creatable: false,
-  clearable: true,
+  clearable: false,
   selectOnTab: false,
   placeholder: 'Select',
   valueField: 'value',  // TODO: implement

@@ -44,7 +44,7 @@
     );
   }
 
-  const positionDropdown = val => {
+  function positionDropdown(val) {
     const outVp = isOutOfViewport(scrollContainer);
     if (outVp.bottom && !outVp.top) {
       scrollContainer.style.bottom = (scrollContainer.parentElement.clientHeight + 1) + 'px';
@@ -53,6 +53,7 @@
       scrollContainer.style.bottom = '';
     }
   }
+
   let dropdownStateSubscription; 
   /** ************************************ lifecycle */
   onMount(() => {
@@ -74,6 +75,7 @@
   <div class="dropdown-content" bind:this={container} class:max-reached={maxReached}>
   {#if $listLength}
     {#each $matchingOptions as opt, i}
+      <!-- opt group -->
       {#if opt.options && Array.isArray(opt.options)}
         <div class="optgroup-header" on:mousedown|preventDefault>
           <slot name="dropdown-group-header"><b>{opt.label}</b></slot>
@@ -91,7 +93,7 @@
           </svelte:component>
         </div>
         {/each}
-      {:else}
+      {:else} <!-- END opt group -->
       <div data-pos={$listIndexMap[i]}
         class:active={$listIndexMap[i] === dropdownIndex}
       >

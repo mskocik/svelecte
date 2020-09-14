@@ -228,7 +228,10 @@ const initStore = (options, _settings, fetchRemote) => {
     set(Array.from(internalSelection));
   }, Array.from(internalSelection))
 
-  /** ************************************ options exposed api */
+  /***************************************************************/
+  /**                    options exposed API                     */
+  /***************************************************************/
+
   const selectOption = option => {
     if (settings.max && internalSelection.size === settings.max) return;
     opts.update(list => {
@@ -285,8 +288,6 @@ const initStore = (options, _settings, fetchRemote) => {
   const currentListLength = derived([inputValue, flatMatching], ([$inputValue, $flatMatching], set) => {
     set(settings.creatable && $inputValue ? $flatMatching.length : $flatMatching.length - 1);
   });
-
-  // TODO: options cannot be set/updated dynamically - mandatory for remote fetch
 
   return {
     /** context stores */

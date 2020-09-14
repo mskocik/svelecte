@@ -25,7 +25,6 @@
   export let creatable = defaults.creatable;
   export let selectOnTab = defaults.selectOnTab;
   export let valueField = defaults.valueField;
-  export let css = 'svelecte-control';
   // export let labelField = defaults.labelField;  // TODO: implement custom sifter search options
   export let searchMode = defaults.searchMode;
   export let max = defaults.max;
@@ -35,6 +34,10 @@
   export let placeholder = 'Select';
   export let fetch = null;
   export let options = [];
+
+  let className = 'svelecte-control';
+  export { className as class};
+  export let style = null;
   /** ************************************ API */
   export let selection = undefined;
   export let value = undefined;
@@ -59,6 +62,7 @@
   };
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
 
+  // TODO: re-evaluate need of this
   /** ************************************ auto configuration */
   $: {
     placeholder = options.reduce((res, opt, i) => {
@@ -69,6 +73,7 @@
       return res;
     }, placeholder);
   }
+  // TODO: re-evaluate - can't it be done in some more clean fashion?
   $: {
     storeSettings.multiple = multiple;
     storeSettings.creatable = creatable;
@@ -97,7 +102,7 @@
   let dropdownActiveIndex = !multiple && options.some(o => o.isSelected)
     ? options.indexOf(options.filter(o => o.isSelected).shift())
     : 0;
-  $: itemRenderer = typeof renderer === 'string' ? renderers[renderer] : renderer;
+  $: itemRenderer = typeof renderer === 'string' ? renderers[renderer] || Item : renderer;
   $: {
     selection = multiple
       ? $selectedOptions
@@ -107,12 +112,19 @@
       : $selectedOptions.length ? $selectedOptions[0][valueField] : null;
   }
 
+  /**
+   * Dispatch change event on add options/remove selected items
+   */  
   function emitChangeEvent() {
     tick().then(() => {
       dispatch('change', selection)
     });
   }
 
+  /**
+   * TODO: check this funcionality
+   * Internal helper for passed value array. Should be used for CC
+   */ 
   function _selectByValues(values) {
     if (!Array.isArray(values)) values = [values];
     if (values[0] && values[0] instanceof Object) values = values.map(opt => opt[valueField]);
@@ -126,6 +138,9 @@
     newAddition.forEach(selectOption);
   }
 
+  /**
+   * Add given option to selection pool
+   */
   function onSelect(event, opt) {
     opt = opt || event.detail;
     if (disabled || opt.isDisabled) return;
@@ -137,6 +152,9 @@
     emitChangeEvent();
   }
 
+  /**
+   * Remove option/all options from selection pool
+   */
   function onDeselect(event, opt) {
     if (disabled) return;
     opt = opt || event.detail;
@@ -149,6 +167,9 @@
     emitChangeEvent();
   }
 
+  /**
+   * Dropdown hover handler - update active item
+   */
   function onHover(event) {
     if (ignoreHover) {
       ignoreHover = false;
@@ -157,6 +178,9 @@
     dropdownActiveIndex = event.detail;
   }
 
+  /**
+   * Keyboard navigation
+   */
   function onKeyDown(event) {
     let nextVal;
     let scrollParams = {};
@@ -230,6 +254,9 @@
     }
   }
 
+  /**
+   * Lazy calling of scrollIntoView function, which is required
+   */ 
   onDestroy(currentListLength.subscribe(val => {
     if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
     if (dropdownActiveIndex < 0) dropdownActiveIndex = 0;
@@ -237,7 +264,7 @@
   }));
 </script>
 
-<div class={`svelecte ${css}`} class:is-disabled={disabled}>
+<div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   {#if name}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
     {#each $selectedOptions as opt}
