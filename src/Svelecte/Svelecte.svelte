@@ -1,12 +1,11 @@
 <script context="module">
   import rendererActions from './actions.js';
-  import Item from './components/Item.svelte';
 
-  const renderers = {
-    default: Item
+  const formatterList = {
+    default: item => item.text
   };
   // provide ability to add additional renderers
-  export function registerRenderer(name, component) { renderers[name] = component }
+  export function addFormatter(name, formatFn) { formatterList[name] = formatFn }
   export const itemActions = rendererActions;
 </script>
 
@@ -19,6 +18,7 @@
   import Dropdown from './components/Dropdown.svelte';
 
   export let name = null;
+  export let anchor = null;
   export let required = false;
   export let multiple = defaults.multiple;
   export let disabled = defaults.disabled;
@@ -102,7 +102,7 @@
   let dropdownActiveIndex = !multiple && options.some(o => o.isSelected)
     ? options.indexOf(options.filter(o => o.isSelected).shift())
     : 0;
-  $: itemRenderer = typeof renderer === 'string' ? renderers[renderer] || Item : renderer;
+  $: itemRenderer = typeof renderer === 'string' ? formatterList[renderer] || Item : renderer;
   $: {
     selection = multiple
       ? $selectedOptions
@@ -182,9 +182,12 @@
    * Keyboard navigation
    */
   function onKeyDown(event) {
+  // }
+  // function onKeyDownX(event) {
     let nextVal;
     let scrollParams = {};
     const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey ? 'Tab' : 'No-tab';
+    console.log(event.key, event.keyCode, Tab);
     switch (event.key) {
       case 'PageDown':
         dropdownActiveIndex = 0;
@@ -247,7 +250,7 @@
           event.ctrlKey ? onDeselect({}) : onDeselect(null, $selectedOptions.pop());
         }
       default:
-        if (!event.ctrlKey && event.key !== 'Shift' && !$hasDropdownOpened) {
+        if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened) {
           $hasDropdownOpened = true;
         }
         if (!multiple && $selectedOptions.length && event.key !== 'Tab') event.preventDefault();
@@ -265,13 +268,6 @@
 </script>
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
-  {#if name}
-  <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
-    {#each $selectedOptions as opt}
-    <option value={opt.value} selected>{opt.text}</option>
-    {/each}
-  </select>
-  {/if}
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple}
     on:deselect={onDeselect}
@@ -286,6 +282,13 @@
     on:hover={onHover}
   ></Dropdown>
 </div>
+{#if name && !anchor}
+<select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
+  {#each $selectedOptions as opt}
+  <option value={opt.value} selected>{opt.text}</option>
+  {/each}
+</select>
+{/if}
 
 <style>
 .svelecte { position: relative; }

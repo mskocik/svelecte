@@ -51,6 +51,7 @@ const initStore = (options, _settings, fetchRemote) => {
   // init selection
   options.forEach(opt => opt.isSelected && internalSelection.add(opt));
 
+  // TODO: think and rethink this
   if (hasRemoteData) {
     const debouncedFetch = debounce(query => {
       isFetchingData.set(true);
@@ -143,7 +144,8 @@ const initStore = (options, _settings, fetchRemote) => {
       }
       const result = sifter.search($inputValue, {
         fields: sifterFilterFields,
-        sort: sifterFilterSort
+        sort: sifterFilterSort,
+        conjunction: 'and'
       });
       let mapped = result.items.map(item => $flatOptions[item.id])
       if (optionsWithGroups) {

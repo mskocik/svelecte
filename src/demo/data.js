@@ -1,0 +1,251 @@
+export const dataset = {
+  countryGroups: () => [
+    {
+      label: 'A',
+      options: [{
+        value: 'al',
+        text: 'Albania'
+      },
+      {
+        value: 'ad',
+        text: 'Andorra'
+      },
+      {
+        value: 'am',
+        text: 'Armenia'
+      },
+      {
+        value: 'a',
+        text: 'Austria'
+      },
+      {
+        value: 'az',
+        text: 'Azerbaijan'
+      }]
+    },
+    {
+      label: 'B',
+      options: [{
+          value: 'by',
+          text: 'Belarus'
+        },
+        {
+          value: 'be',
+          text: 'Belgium'
+        },
+        {
+          value: 'ba',
+          text: 'Bosnia and Herzegovina'
+        },
+        {
+          value: 'bg',
+          text: 'Bulgaria'
+      }]
+    },
+    {
+      label: 'C',
+      options: [{
+        value: 'hr',
+        text: 'Croatia'
+      },
+      {
+        value: 'cy',
+        text: 'Cyprus'
+      },
+      {
+        value: 'cz',
+        text: 'Czechia'
+      }]
+    }
+  ],
+  countries: () => [
+    {
+      value: 'al',
+      text: 'Albania'
+    },
+    {
+      value: 'ad',
+      text: 'Andorra'
+    },
+    {
+      value: 'am',
+      text: 'Armenia'
+    },
+    {
+      value: 'a',
+      text: 'Austria'
+    },
+    {
+      value: 'az',
+      text: 'Azerbaijan'
+    },
+    {
+      value: 'by',
+      text: 'Belarus'
+    },
+    {
+      value: 'be',
+      text: 'Belgium'
+    },
+    {
+      value: 'ba',
+      text: 'Bosnia and Herzegovina'
+    },
+    {
+      value: 'bg',
+      text: 'Bulgaria'
+    },
+    {
+      value: 'hr',
+      text: 'Croatia'
+    },
+    {
+      value: 'cy',
+      text: 'Cyprus'
+    },
+    {
+      value: 'cz',
+      text: 'Czechia'
+    },
+    {
+      value: 'dk',
+      text: 'Denmark'
+    },
+    {
+      value: 'ee',
+      text: 'Estonia'
+    },
+    {
+      value: 'fi',
+      text: 'Finland'
+    },
+    {
+      value: 'fr',
+      text: 'France'
+    },
+    {
+      value: 'ge',
+      text: 'Georgia'
+    },
+    {
+      value: 'de',
+      text: 'Germany'
+    },
+    {
+      value: 'gr',
+      text: 'Greece'
+    },
+    {
+      value: 'hu',
+      text: 'Hungary'
+    },
+    {
+      value: 'is',
+      text: 'Iceland'
+    },
+    {
+      value: 'ie',
+      text: 'Ireland'
+    },
+    {
+      value: 'it',
+      text: 'Italy'
+    },
+    {
+      value: 'xk',
+      text: 'Kosovo'
+    },
+    {
+      value: 'lv',
+      text: 'Latvia'
+    },
+    {
+      value: 'li',
+      text: 'Liechtenstein'
+    },
+    {
+      value: 'lt',
+      text: 'Lithuania'
+    },
+    {
+      value: 'lu',
+      text: 'Luxembourg'
+    },
+    {
+      value: 'mt',
+      text: 'Malta'
+    },
+    {
+      value: 'md',
+      text: 'Moldova'
+    },
+    {
+      value: 'me',
+      text: 'Montenegro'
+    },
+    {
+      value: 'nl',
+      text: 'Netherlands'
+    },
+    {
+      value: 'mk',
+      text: 'North Macedonia (formerly Macedonia)'
+    },
+    {
+      value: 'no',
+      text: 'Norway'
+    },
+    {
+      value: 'pl',
+      text: 'Poland'
+    },
+    {
+      value: 'pt',
+      text: 'Portugal'
+    },
+    {
+      value: 'ro',
+      text: 'Romania'
+    },
+    {
+      value: 'ru',
+      text: 'Russia'
+    },
+    {
+      value: 'rs',
+      text: 'Serbia'
+    },
+    {
+      value: 'sk',
+      text: 'Slovakia'
+    },
+    {
+      value: 'sl',
+      text: 'Slovenia'
+    },
+    {
+      value: 'es',
+      text: 'Spain'
+    },
+    {
+      value: 'se',
+      text: 'Sweden'
+    },
+    {
+      value: 'ch',
+      text: 'Switzerland'
+    },
+    {
+      value: 'tr',
+      text: 'Turkey'
+    },
+    {
+      value: 'ua',
+      text: 'Ukraine'
+    },
+    {
+      value: 'uk',
+      text: 'United Kingdom'
+    },
+  ]
+};

@@ -2,6 +2,7 @@
   import { getContext, createEventDispatcher, tick } from 'svelte';
   import { key } from './../contextStore.js';
   import Input from './Input.svelte';
+  import Item from './Item.svelte';
 
   export let clearable;
   export let searchable;
@@ -51,7 +52,7 @@
   <div class="content" class:has-multiSelection={multiple}>
     {#if $selectedOptions.length }
       {#each $selectedOptions as opt}
-      <svelte:component this={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple}></svelte:component>
+      <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple}></Item>
       {/each}
     {/if}
     <!-- input -->

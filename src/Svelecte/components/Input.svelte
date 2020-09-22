@@ -13,9 +13,9 @@
   const dispatch = createEventDispatcher();
   const { inputValue, selectedOptions } = getContext(key);
 
-  $: placeholderText = $selectedOptions.length ? '' : placeholder;
-  $: shadowText = $inputValue || placeholder;
-  $: inputStyle = `width: ${shadowWidth + 19}px`;
+  $: placeholderText = $selectedOptions.length > 0 ? '' : placeholder;
+  $: shadowText = $inputValue || placeholderText;
+  $: inputStyle = `width: ${$selectedOptions.length === 0 ? shadowWidth + 19 : shadowWidth + 12}px`;
 
   function dispatchEvent(event) {
     dispatch(event.type);
@@ -29,8 +29,8 @@
   style={inputStyle} placeholder={placeholderText}
   bind:this={inputRef} 
   bind:value={$inputValue} 
-  on:focus|stopPropagation={dispatchEvent} 
-  on:blur|stopPropagation={dispatchEvent}
+  on:focus
+  on:blur
   on:keydown
 >
 <div class="shadow-text" bind:clientWidth={shadowWidth}>{shadowText}</div>
@@ -53,7 +53,7 @@
 }
 .inputBox:read-only { width: 100%; }
 .shadow-text {
-  visibility: hidden;
+  opacity: 0;
   position: absolute; left: 100%;
   z-index: -100;
   min-width: 24px;

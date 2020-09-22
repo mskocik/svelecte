@@ -1,3 +1,3 @@
-import registerSvelecte from './Svelecte/registerComponent.js';
+import registerSvelecte from './registerComponent.js';
 
 registerSvelecte('el-svelecte');

@@ -1,5 +1,6 @@
 <script>
   import { getContext, createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
+  import Item from './Item.svelte';
   import { key } from './../contextStore.js';
   import { isOutOfViewport} from './../lib/utils.js';
 
@@ -45,6 +46,7 @@
   }
 
   function positionDropdown(val) {
+    if (!scrollContainer) return;
     const outVp = isOutOfViewport(scrollContainer);
     if (outVp.bottom && !outVp.top) {
       scrollContainer.style.bottom = (scrollContainer.parentElement.clientHeight + 1) + 'px';
@@ -68,7 +70,7 @@
   onDestroy(() => dropdownStateSubscription());
 </script>
 
-<div class="dropdown" class:is-loading={$isFetchingData} aria-expanded={$hasDropdownOpened} 
+<div class="dropdown" class:is-loading={$isFetchingData} aria-expanded={$hasDropdownOpened} tabindex="-1" 
   bind:this={scrollContainer}
   on:mousedown|preventDefault
 >
@@ -84,26 +86,26 @@
         <div data-pos={$listIndexMap[i][j]} class="optgroup-item" 
           class:active={$listIndexMap[i][j] === dropdownIndex}
         >
-          <svelte:component this={renderer}
+          <Item formatter={renderer}
             isDisabled={opt.isDisabled || groupOpt.isDisabled}
             index={$listIndexMap[i][j]}
             item={groupOpt}
             on:hover
             on:select>
-          </svelte:component>
+          </Item>
         </div>
         {/each}
       {:else} <!-- END opt group -->
       <div data-pos={$listIndexMap[i]}
         class:active={$listIndexMap[i] === dropdownIndex}
       >
-        <svelte:component this={renderer}
+        <Item formatter={renderer}
           index={$listIndexMap[i]}
           isDisabled={opt.isDisabled}
           item={opt}
           on:hover
           on:select>
-        </svelte:component>
+        </Item>
       </div>
       {/if}
     {/each}

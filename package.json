@@ -1,12 +1,13 @@
 {
   "name": "svelecte",
   "svelte": "src/Svelecte/Svelecte.svelte",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv docs"
+    "start": "sirv docs",
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",

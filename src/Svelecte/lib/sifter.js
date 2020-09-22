@@ -459,7 +459,7 @@ var DIACRITICS = {
     'z': '[zŹźẐẑŽžŻżẒẓẔẕƵƶ]'
 };
 
-var asciifold = (function() {
+export const asciifold = (function() {
     var i, n, k, chunk;
     var foreignletters = '';
     var lookup = {};
@@ -484,3 +484,4 @@ var asciifold = (function() {
 // export
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 export default Sifter;
+
