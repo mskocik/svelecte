@@ -14,9 +14,6 @@
 
 <main>
 	<div class="form-row">
-		<input type="text">
-	</div>
-	<div class="form-row">
 		<div style="display: flex; justify-content: space-between">
 			<div>
 				<button on:click={() => --maxItems}>-</button>
@@ -30,15 +27,9 @@
 		<Svelecte {options} class="svelecte-control test" max={maxItems} {multiple} {searchable} {creatable} delimiter=",;"></Svelecte>
 	</div>
 	<div class="form-row">
-		<input type="text">
-	</div>
-	<div class="form-row">
 		<Svelecte fetch="api.php?query=[query]" multiple>
 			<b slot="icon">🎨</b>
 		</Svelecte>
-	</div>
-	<div class="form-row">
-		<input type="text">
 	</div>
 </main>
 
@@ -50,7 +41,7 @@
 	input {
 		width: 100%;
 		margin-bottom: 0;
-	}
+	} 
 	.form-row {
 		margin-bottom: 2rem;
 		min-height: 20px;

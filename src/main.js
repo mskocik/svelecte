@@ -1,21 +1,31 @@
 import DocsApp from './App.svelte';
 // import DottedRenderer from './demo/DottedRenderer.svelte';
-// import registerSvelecte, { addFormatter } from './Svelecte/registerComponent.js';
+import registerSvelecte, { addFormatter } from './component.js';
+import { dataset } from './demo/data.js';
 
 const app = new DocsApp({
 	target: document.getElementById('app')
 });
 
-// registerSvelecte('el-svelecte');
-// addFormatter('dotted', DottedRenderer);
+registerSvelecte('el-svelecte');
+addFormatter('dotted', item => `<span style="background-color:${item.hex}" class="color"></span> ${item.text}`);
+addFormatter('caps', item => item.text.toUpperCase());
 
-/**
-window.q = document.querySelector('el-svelecte');
-q.options = [
-	{ value: 2, text: 'blue', hex: '#00F' },
-	{ value: 3, text: 'green', hex: '#0F0' },
-	{ value: 1, text: 'red', hex: '#F00'},
-	{ value: 4, text: 'yellow', hex: '#FF0'}
-];
-*/
+setTimeout(() => {
+	window.el = document.querySelector('el-svelecte');
+	el.renderer = 'dotted';
+	el.options = dataset.colors();
+}, 200);
+
+
+console.log('hello 1');
+// console.log('hello');
+
+// setTimeout(() => {
+// 	global.dataset = dataset;
+// 	// console.log(window.q);
+// 	// q.options = dataset.colors();
+	
+// }, 2000);
+
 export default app;

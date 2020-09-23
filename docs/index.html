@@ -9,18 +9,48 @@
 	<link rel='stylesheet' href='global.css'>
 	<link rel='stylesheet' href='assets/demo.css'>
 
-	<script src='assets/demo.js' defer ></script>
+	<style>
+		el-svelecte {
+			display: block;
+			position: relative;
+			margin-bottom: 1rem;
+		}
+		el-svelecte select {
+			opacity: 0;
+		}
+		.color {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+			margin-right: 0.5rem;
+			margin-left: 3px;
+			box-shadow: 0 0 4px #ccc;
+			display: inline-block;
+		}
+	</style>
 </head>
 
 <body>
 	<div id="app" style="width: 400px; margin: auto">
 		<h2>App</h2>
 	</div>
-	<!--
-		<div style="width: 400px; margin: auto">
-			<h2>Component</h2>
-			<el-svelecte></el-svelecte>
-		</div>
-	-->
+	<div style="width: 400px; margin: auto">
+		<h2>Component</h2>
+		<el-svelecte renderer="dotted"></el-svelecte>
+		<hr>
+		<form action="">
+			<h3>Dependend selects with remote init</h3>
+
+			<el-svelecte options='[{"value":"bl","text":"start with >bl<"},{"value":"y","text":"y"},{"value":"gr","text":"gr"}]'
+			id="qq" required
+			>
+				<select name="someProp[]" id="existingSelect" required></select>
+			</el-svelecte>
+			<el-svelecte name="color" parent="qq" required remote-init="api.php?query=[parent]"></el-svelecte>
+			<button type="submit">Send form</button>
+		</form>
+	</div>
+	
+	<script src='assets/demo.js'></script>
 </body>
 </html>

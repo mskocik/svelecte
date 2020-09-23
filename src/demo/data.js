@@ -26,20 +26,20 @@ export const dataset = {
     {
       label: 'B',
       options: [{
-          value: 'by',
-          text: 'Belarus'
-        },
-        {
-          value: 'be',
-          text: 'Belgium'
-        },
-        {
-          value: 'ba',
-          text: 'Bosnia and Herzegovina'
-        },
-        {
-          value: 'bg',
-          text: 'Bulgaria'
+        value: 'by',
+        text: 'Belarus'
+      },
+      {
+        value: 'be',
+        text: 'Belgium'
+      },
+      {
+        value: 'ba',
+        text: 'Bosnia and Herzegovina'
+      },
+      {
+        value: 'bg',
+        text: 'Bulgaria'
       }]
     },
     {
@@ -247,5 +247,87 @@ export const dataset = {
       value: 'uk',
       text: 'United Kingdom'
     },
+  ],
+  colors: () => [
+    {
+      text: 'Aqua',
+      value: 'aqua',
+      hex: '#00FFFF'
+    },
+    {
+      text: 'Black',
+      value: 'black',
+      hex: '#000000'
+    },
+    {
+      text: 'Blue',
+      value: 'blue',
+      hex: '#0000FF'
+    },
+    {
+      text: 'Gray',
+      value: 'gray',
+      hex: '#808080'
+    },
+    {
+      text: 'Green',
+      value: 'green',
+      hex: '#008000'
+    },
+    {
+      text: 'Fuchsia',
+      value: 'fuchsia',
+      hex: '#FF00FF'
+    },
+    {
+      text: 'Lime',
+      value: 'lime',
+      hex: '#00FF00'
+    },
+    {
+      text: 'Maroon',
+      value: 'maroon',
+      hex: '#800000'
+    },
+    {
+      text: 'Navy',
+      value: 'navy',
+      hex: '#000080'
+    },
+    {
+      text: 'Olive',
+      value: 'olive',
+      hex: '#808000'
+    },
+    {
+      text: 'Purple',
+      value: 'purple',
+      hex: '#800080'
+    },
+    {
+      text: 'Red',
+      value: 'red',
+      hex: '#FF0000'
+    },
+    {
+      text: 'Silver',
+      value: 'silver',
+      hex: '#C0C0C0'
+    },
+    {
+      text: 'Teal',
+      value: 'teal',
+      hex: '#008080'
+    },
+    {
+      text: 'Yellow',
+      value: 'yellow',
+      hex: '#FFFF00'
+    },
+    {
+      text: 'White',
+      value: 'white',
+      hex: '#FFFFFF'
+    }
   ]
 };

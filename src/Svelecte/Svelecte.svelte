@@ -1,19 +1,24 @@
 <script context="module">
-  import rendererActions from './actions.js';
+  import defaults from './settings.js';
 
   const formatterList = {
     default: item => item.text
   };
   // provide ability to add additional renderers
-  export function addFormatter(name, formatFn) { formatterList[name] = formatFn }
-  export const itemActions = rendererActions;
+  export function addFormatter(name, formatFn) {
+    if (name instanceof Object) {
+      formatterList = Object.assign(formatterList, name);
+    } else {
+      formatterList[name] = formatFn
+    }
+  };
+  export const config = defaults;
 </script>
 
 <script>
   import { setContext, onDestroy, createEventDispatcher, tick, onMount } from 'svelte';
   import { key, initStore, initSettings } from './contextStore.js';
   import { fetchRemote } from './lib/utils.js';
-  import defaults from './settings.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
 
@@ -74,7 +79,7 @@
 
   /** ************************************ component logic */
   
-  $: itemRenderer = typeof renderer === 'string' ? formatterList[renderer] || Item : renderer;
+  $: itemRenderer = formatterList[renderer] || formatterList['default'];
   $: {
     selection = multiple
       ? $selectedOptions
@@ -82,6 +87,14 @@
     value = multiple 
       ? $selectedOptions.map(opt => opt[valueField])
       : $selectedOptions.length ? $selectedOptions[0][valueField] : null;
+    // Custom-component related
+    if (anchor && value) {
+      anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce((res, item) => {
+        res+= `<option value="${item}" selected>${item}</option>`;
+        return res;
+      }, '');
+      anchor.dispatchEvent(new Event('change'));
+    }
   }
   $: {
     if (prevOptions !== options) {
@@ -261,6 +274,7 @@
       if (dropdownActiveIndex < 0) dropdownActiveIndex = 0;
       tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
     });
+    if (anchor) anchor.classList.add('anchored-select');
   });
 
   onDestroy(() => {
@@ -284,18 +298,19 @@
     on:select={onSelect} 
     on:hover={onHover}
   ></Dropdown>
+  {#if name && !anchor}
+  <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
+    {#each $selectedOptions as opt}
+    <option value={opt.value} selected>{opt.text}</option>
+    {/each}
+  </select>
+  {/if}
 </div>
-{#if name && !anchor}
-<select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
-  {#each $selectedOptions as opt}
-  <option value={opt.value} selected>{opt.text}</option>
-  {/each}
-</select>
-{/if}
 
 <style>
 .svelecte { position: relative; }
 .svelecte.is-disabled { pointer-events: none; }
 .icon-slot { display: flex; }
-.is-hidden { display: none; visibility: hidden; }
+.is-hidden,
+:global(.anchored-select) { opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px}
 </style>
