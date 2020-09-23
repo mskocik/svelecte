@@ -17,6 +17,7 @@ const settings = {
   searchMode: 'auto',   // TODO: implement - means, when there are optgroups, don't use Sifter
   max: 0,
   renderer: 'default',
+  delimiter: ','
 }
 
 export default settings;

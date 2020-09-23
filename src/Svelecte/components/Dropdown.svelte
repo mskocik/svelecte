@@ -110,7 +110,7 @@
       {/if}
     {/each}
   {/if}
-    {#if $inputValue && creatable}
+    {#if $inputValue && creatable && !maxReached}
     <div class="creatable-row" on:click={dispatch('select', $inputValue)} class:active={$currentListLength === dropdownIndex}>
       <span>Create '{$inputValue}'</span>
       {#if $currentListLength !== dropdownIndex}
@@ -118,7 +118,7 @@
       {/if}
     </div>
     {/if}
-    {#if hasEmptyList}
+    {#if hasEmptyList || maxReached}
     <div class="empty-list-row">{$listMessage}</div>
     {/if}
   </div>

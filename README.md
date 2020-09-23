@@ -4,6 +4,10 @@
 
 Proud child of Selectize.js written with Svelte (to get rid of jQuery and learn Svelte :))
 
+## Features
+
+🏗 Under construction
+
 ## Documentation
 
 🏗 Under construction

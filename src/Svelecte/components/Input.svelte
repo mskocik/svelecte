@@ -32,6 +32,7 @@
   on:focus
   on:blur
   on:keydown
+  on:paste
 >
 <div class="shadow-text" bind:clientWidth={shadowWidth}>{shadowText}</div>
 <!--</div>-->

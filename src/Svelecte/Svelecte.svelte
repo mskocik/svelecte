@@ -31,6 +31,7 @@
   export let renderer = defaults.renderer;
   export let clearable = defaults.clearable;
   export let searchable = defaults.searchable;
+  export let delimiter = defaults.delimiter;
   export let placeholder = 'Select';
   export let fetch = null;
   export let options = [];
@@ -43,7 +44,7 @@
   export let value = undefined;
   export const getSelection = () => JSON.parse(JSON.stringify(selection));
   export const setSelection = selection => _selectByValues(selection);
-
+ 
   const dispatch = createEventDispatcher();
 
   let prevOptions = options;
@@ -161,6 +162,11 @@
   function onKeyDown(event) {
     let nextVal;
     let scrollParams = {};
+    if (creatable && delimiter.indexOf(event.key) > -1) {
+      onSelect(null, $inputValue);
+      event.preventDefault();
+      return;
+    }
     const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey ? 'Tab' : 'No-tab';
     switch (event.key) {
       case 'PageDown':
@@ -231,6 +237,19 @@
     }
   }
 
+  /**
+   * Enable create items by pasting
+   */
+  function onPaste(event) {
+    if (creatable) {
+      event.preventDefault();
+      const rx = new RegExp('([^' + delimiter + '\\n]+)', 'g');
+      const pasted = event.clipboardData.getData('text/plain');
+      pasted.match(rx).forEach(opt => onSelect(null, opt));
+    }
+    // do nothing otherwise
+  }
+
   /** ************************************ component lifecycle related */
 
   let currentListSubscriber;
@@ -238,7 +257,6 @@
   onMount(() => {
     // Lazy calling of scrollIntoView function, which is required
     currentListSubscriber = currentListLength.subscribe(val => {
-      console.log(val, dropdownActiveIndex);
       if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
       if (dropdownActiveIndex < 0) dropdownActiveIndex = 0;
       tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
@@ -256,6 +274,7 @@
     {disabled} {clearable} {searchable} {placeholder} {multiple}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
+    on:paste={onPaste}
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>

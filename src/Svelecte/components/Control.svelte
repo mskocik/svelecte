@@ -61,6 +61,7 @@
       on:focus={onFocus}
       on:blur={onBlur}
       on:keydown
+      on:paste
     ></Input>
   </div>
   <!-- buttons, indicators -->

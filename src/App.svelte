@@ -7,6 +7,8 @@
 
 	let maxItems = 2;
 	let multiple = false;
+	let searchable = true;
+	let creatable = true;
 
 </script>
 
@@ -21,9 +23,11 @@
 				{maxItems}
 				<button on:click={() => ++maxItems}>+</button>
 			</div>
+			<label><input type="checkbox" bind:checked={searchable}>Searchable</label>
+			<label><input type="checkbox" bind:checked={creatable}>Createable</label>
 			<label><input type="checkbox" bind:checked={multiple}>Multiple</label>
 		</div>
-		<Svelecte {options} class="svelecte-control test" max={maxItems} {multiple} creatable></Svelecte>
+		<Svelecte {options} class="svelecte-control test" max={maxItems} {multiple} {searchable} {creatable} delimiter=",;"></Svelecte>
 	</div>
 	<div class="form-row">
 		<input type="text">
