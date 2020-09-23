@@ -5,6 +5,9 @@
 	const options = dataset.countries();
 	const groups = dataset.countryGroups();
 
+	let maxItems = 2;
+	let multiple = false;
+
 </script>
 
 <main>
@@ -12,13 +15,23 @@
 		<input type="text">
 	</div>
 	<div class="form-row">
-		<Svelecte {options} class="svelecte-control test"></Svelecte>
+		<div style="display: flex; justify-content: space-between">
+			<div>
+				<button on:click={() => --maxItems}>-</button>
+				{maxItems}
+				<button on:click={() => ++maxItems}>+</button>
+			</div>
+			<label><input type="checkbox" bind:checked={multiple}>Multiple</label>
+		</div>
+		<Svelecte {options} class="svelecte-control test" max={maxItems} {multiple} creatable></Svelecte>
 	</div>
 	<div class="form-row">
 		<input type="text">
 	</div>
 	<div class="form-row">
-		<Svelecte options={groups}></Svelecte>
+		<Svelecte fetch="api.php?query=[query]" multiple>
+			<b slot="icon">🎨</b>
+		</Svelecte>
 	</div>
 	<div class="form-row">
 		<input type="text">
@@ -26,6 +39,10 @@
 </main>
 
 <style>
+	:global(.icon-slot b) {
+		font-family: 'Fira Code';
+		margin-left: 0.5rem;
+	}
 	input {
 		width: 100%;
 		margin-bottom: 0;

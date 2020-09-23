@@ -4,7 +4,6 @@ export default function(node, {item, index}) {
 
   function selectAction(e) {
     const eventType = e.target.closest('[data-action="deselect"]') ? 'deselect' : 'select';
-    console.log('click', eventType)
     node.dispatchEvent(new CustomEvent(eventType, {
       bubble: true,
       detail: item

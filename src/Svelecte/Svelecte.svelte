@@ -10,8 +10,8 @@
 </script>
 
 <script>
-  import { setContext, onDestroy, createEventDispatcher, tick } from 'svelte';
-  import { key, initStore } from './contextStore.js';
+  import { setContext, onDestroy, createEventDispatcher, tick, onMount } from 'svelte';
+  import { key, initStore, initSettings } from './contextStore.js';
   import { fetchRemote } from './lib/utils.js';
   import defaults from './settings.js';
   import Control from './components/Control.svelte';
@@ -44,50 +44,26 @@
   export const getSelection = () => JSON.parse(JSON.stringify(selection));
   export const setSelection = selection => _selectByValues(selection);
 
-  // options are being updated
-  let prevOptions = undefined;
-  $: {
-    if (prevOptions !== options && _set) {
-      _set(options);
-      prevOptions = options;
-    }
-  }
-
   const dispatch = createEventDispatcher();
-  const storeSettings = {
-    multiple,
-    creatable,
-    searchMode,
-    max
-  };
-  multiple = name && !multiple ? name.endsWith('[]') : multiple;
 
-  // TODO: re-evaluate need of this
-  /** ************************************ auto configuration */
-  $: {
-    placeholder = options.reduce((res, opt, i) => {
-      if (opt.value === '') {
-        res = opt.text;
-        options.splice(i, 1); // remove this option 
-      }
-      return res;
-    }, placeholder);
-  }
-  // TODO: re-evaluate - can't it be done in some more clean fashion?
-  $: {
-    storeSettings.multiple = multiple;
-    storeSettings.creatable = creatable;
-    storeSettings.searchMode = searchMode;
-    storeSettings.max = max;
-  }
+  let prevOptions = options;
+  let refDropdown;
+  let refControl;
+  let ignoreHover = false;
+  let dropdownActiveIndex = !multiple && options.some(o => o.isSelected)
+    ? options.indexOf(options.filter(o => o.isSelected).shift())
+    : 0;
+  multiple = name && !multiple ? name.endsWith('[]') : multiple;
 
   /** ************************************ Context definition */
   const { 
-      hasFocus, hasDropdownOpened, inputValue, listMessage,
-      selectOption, deselectOption, clearSelection, 
-      listLength, matchingOptions, flatMatching, currentListLength, selectedOptions, listIndexMap,
+      hasFocus, hasDropdownOpened, inputValue, listMessage, settings,                               // stores
+      selectOption, deselectOption, clearSelection, settingsUnsubscribe,                            // actions
+      listLength, matchingOptions, flatMatching, currentListLength, selectedOptions, listIndexMap,  // getters
       _set, _remote, isFetchingData
-  } = initStore(options, storeSettings, typeof fetch === 'string' ?  fetchRemote(fetch) : fetch);
+  } = initStore(options, { max, multiple, creatable, searchMode }, typeof fetch === 'string' ?  fetchRemote(fetch) : fetch);
+
+  $: settings.set({ max, multiple, creatable, searchMode });
 
   setContext(key, {
     hasFocus, hasDropdownOpened, inputValue, listMessage,
@@ -96,12 +72,7 @@
   });
 
   /** ************************************ component logic */
-  let refDropdown;
-  let refControl;
-  let ignoreHover = false;
-  let dropdownActiveIndex = !multiple && options.some(o => o.isSelected)
-    ? options.indexOf(options.filter(o => o.isSelected).shift())
-    : 0;
+  
   $: itemRenderer = typeof renderer === 'string' ? formatterList[renderer] || Item : renderer;
   $: {
     selection = multiple
@@ -110,6 +81,12 @@
     value = multiple 
       ? $selectedOptions.map(opt => opt[valueField])
       : $selectedOptions.length ? $selectedOptions[0][valueField] : null;
+  }
+  $: {
+    if (prevOptions !== options) {
+      _set(options);
+      prevOptions = options;
+    }
   }
 
   /**
@@ -182,12 +159,9 @@
    * Keyboard navigation
    */
   function onKeyDown(event) {
-  // }
-  // function onKeyDownX(event) {
     let nextVal;
     let scrollParams = {};
     const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey ? 'Tab' : 'No-tab';
-    console.log(event.key, event.keyCode, Tab);
     switch (event.key) {
       case 'PageDown':
         dropdownActiveIndex = 0;
@@ -250,21 +224,31 @@
           event.ctrlKey ? onDeselect({}) : onDeselect(null, $selectedOptions.pop());
         }
       default:
-        if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened) {
+        if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !$isFetchingData) {
           $hasDropdownOpened = true;
         }
         if (!multiple && $selectedOptions.length && event.key !== 'Tab') event.preventDefault();
     }
   }
 
-  /**
-   * Lazy calling of scrollIntoView function, which is required
-   */ 
-  onDestroy(currentListLength.subscribe(val => {
-    if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
-    if (dropdownActiveIndex < 0) dropdownActiveIndex = 0;
-    tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
-  }));
+  /** ************************************ component lifecycle related */
+
+  let currentListSubscriber;
+
+  onMount(() => {
+    // Lazy calling of scrollIntoView function, which is required
+    currentListSubscriber = currentListLength.subscribe(val => {
+      console.log(val, dropdownActiveIndex);
+      if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
+      if (dropdownActiveIndex < 0) dropdownActiveIndex = 0;
+      tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
+    });
+  });
+
+  onDestroy(() => {
+    currentListSubscriber();
+    settingsUnsubscribe();
+  });
 </script>
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>

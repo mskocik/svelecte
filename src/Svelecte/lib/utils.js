@@ -14,25 +14,26 @@ export function isOutOfViewport(elem) {
   return out;
 };
 
+export let xhr = null;
+
 export function fetchRemote(url) {
   return function(query) {
     return new Promise((resolve, reject) => {
-        if (!query) return [];
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', `${url.replace('[query]', encodeURIComponent(query))}`);
-        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-        xhr.send();
-        
-        xhr.onreadystatechange = () => {
-          if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-              const resp = JSON.parse(xhr.response);
-              resolve(resp.data || resp.items || resp.options || resp);
-            } else {
-              reject();
-            }
-          } 
-        };
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', `${url.replace('[query]', encodeURIComponent(query))}`);
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.send();
+      
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            const resp = JSON.parse(xhr.response);
+            resolve(resp.data || resp.items || resp.options || resp);
+          } else {
+            reject();
+          }
+        } 
+      };
     });
   }
 }

@@ -70,7 +70,7 @@
   onDestroy(() => dropdownStateSubscription());
 </script>
 
-<div class="dropdown" class:is-loading={$isFetchingData} aria-expanded={$hasDropdownOpened} tabindex="-1" 
+<div class="dropdown" aria-expanded={$hasDropdownOpened} tabindex="-1" 
   bind:this={scrollContainer}
   on:mousedown|preventDefault
 >
@@ -118,7 +118,7 @@
       {/if}
     </div>
     {/if}
-    {#if hasEmptyList && !$isFetchingData}
+    {#if hasEmptyList}
     <div class="empty-list-row">{$listMessage}</div>
     {/if}
   </div>
@@ -191,33 +191,6 @@
 .optgroup-item {
   margin-left: 0.5rem;
 }
-.is-loading:after {
-  animation: spinAround .5s infinite linear;
-  border: 3px solid #dbdbdb;
-  border-radius: 290486px;
-  border-right-color: transparent;
-  border-top-color: transparent;
-  content: "";
-  display: block;
-  height: 16px;
-  width: 16px;
-  left: calc(50% - (1em / 2));
-  top: calc(50% - (1em / 2));
-  position: absolute !important;
-  box-sizing: border-box;
-}
-.is-loading .dropdown-content {
-  filter: blur(4px);
-}
-@keyframes spinAround {
-  from {
-    transform: rotate(0deg)
-  }
-  to {
-    transform: rotate(359deg)
-  }
-}
-
 .fetch-remote + .dropdown-content {
   filter: blur(2px);
 }

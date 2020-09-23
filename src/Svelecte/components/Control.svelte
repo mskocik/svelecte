@@ -26,7 +26,7 @@
 
   /** ************************************ context */
   const dispatch = createEventDispatcher();
-  const { inputValue, hasFocus, hasDropdownOpened, selectedOptions } = getContext(key);
+  const { inputValue, hasFocus, hasDropdownOpened, selectedOptions, isFetchingData } = getContext(key);
 
   let refInput = undefined;
   $: showSelection = multiple ? true : !$inputValue && $selectedOptions.length;
@@ -64,7 +64,7 @@
     ></Input>
   </div>
   <!-- buttons, indicators -->
-  <div class="indicator">
+  <div class="indicator" class:is-loading={$isFetchingData} >
     {#if clearable && $selectedOptions.length && !disabled}
     <div aria-hidden="true" class="indicator-container close-icon"
       on:mousedown|preventDefault
@@ -84,7 +84,7 @@
   </div>
 </div>
 
-<style lang="scss">
+<style>
 /** global default styles for wrapper div (*/
 :global(.svelecte-control) .control             { border: 1px solid #ccc; border-radius: 4px; min-height: 38px; }
 :global(.svelecte-control) .control.is-active   { border: 1px solid #555; }
@@ -114,6 +114,7 @@
   box-sizing: border-box;
 }
 .indicator {
+  position: relative;
   align-items: center;
   align-self: stretch;
   display: flex;
@@ -142,5 +143,29 @@
   line-height: 1;
   stroke: currentcolor;
   stroke-width: 0px;
+}
+.is-loading:after {
+  animation: spinAround .5s infinite linear;
+  border: 3px solid #dbdbdb;
+  border-radius: 290486px;
+  border-right-color: transparent;
+  border-top-color: transparent;
+  content: "";
+  display: block;
+  height: 16px;
+  width: 16px;
+  left: calc(50% - (1em / 2));
+  top: calc(50% - (1em / 2));
+  position: absolute !important;
+  box-sizing: border-box;
+}
+
+@keyframes spinAround {
+  from {
+    transform: rotate(0deg)
+  }
+  to {
+    transform: rotate(359deg)
+  }
 }
 </style>

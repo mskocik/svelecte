@@ -1,4 +1,4 @@
-import Svelecte, { registerRenderer, itemActions } from './Svelecte.svelte';
+import Svelecte, { addFormatter, itemActions } from './Svelecte/Svelecte.svelte';
 
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required',
@@ -43,7 +43,7 @@ function formatValue(name, value) {
  */
 export default function(name) {
 
-  return customElements.define(name, class extends HTMLElement {
+  customElements.define(name, class extends HTMLElement {
     constructor() {
       super();
       this.svelecte = undefined;
@@ -197,5 +197,3 @@ export default function(name) {
     }
   });
 }
-
-export { registerRenderer, itemActions };
