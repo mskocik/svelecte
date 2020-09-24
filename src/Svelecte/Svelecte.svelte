@@ -2,7 +2,7 @@
   import defaults from './settings.js';
 
   const formatterList = {
-    default: item => item.text
+    default: function(item) { return item[this.label]; }
   };
   // provide ability to add additional renderers
   export function addFormatter(name, formatFn) {
@@ -30,16 +30,20 @@
   export let creatable = defaults.creatable;
   export let selectOnTab = defaults.selectOnTab;
   export let valueField = defaults.valueField;
-  // export let labelField = defaults.labelField;  // TODO: implement custom sifter search options
-  export let searchMode = defaults.searchMode;
+  export let labelField = defaults.labelField;  // TODO: implement custom sifter search options
   export let max = defaults.max;
-  export let renderer = defaults.renderer;
+  export let renderer = null;
   export let clearable = defaults.clearable;
   export let searchable = defaults.searchable;
   export let delimiter = defaults.delimiter;
   export let placeholder = 'Select';
   export let fetch = null;
   export let options = [];
+  // sifter related
+  export let searchField = null;
+  export let sortField = null;
+  // 'auto' means, when there are optgroups, don't use Sifter for sortings
+  export let searchMode = 'auto';
 
   let className = 'svelecte-control';
   export { className as class};
@@ -52,6 +56,7 @@
  
   const dispatch = createEventDispatcher();
 
+  let isInitialized = false;
   let prevOptions = options;
   let refDropdown;
   let refControl;
@@ -63,13 +68,15 @@
 
   /** ************************************ Context definition */
   const { 
-      hasFocus, hasDropdownOpened, inputValue, listMessage, settings,                               // stores
+      hasFocus, hasDropdownOpened, inputValue, isFetchingData, listMessage, settings,                               // stores
       selectOption, deselectOption, clearSelection, settingsUnsubscribe,                            // actions
-      listLength, matchingOptions, flatMatching, currentListLength, selectedOptions, listIndexMap,  // getters
-      _set, _remote, isFetchingData
-  } = initStore(options, { max, multiple, creatable, searchMode }, typeof fetch === 'string' ?  fetchRemote(fetch) : fetch);
-
-  $: settings.set({ max, multiple, creatable, searchMode });
+      listLength, listIndexMap, matchingOptions, flatMatching, currentListLength, selectedOptions,   // getters
+      updateOpts, 
+  } = initStore(
+    options, 
+    { valueField, labelField, max, multiple, creatable, searchMode, searchField, sortField },
+    typeof fetch === 'string' ?  fetchRemote(fetch) : fetch
+  );
 
   setContext(key, {
     hasFocus, hasDropdownOpened, inputValue, listMessage,
@@ -79,7 +86,13 @@
 
   /** ************************************ component logic */
   
-  $: itemRenderer = formatterList[renderer] || formatterList['default'];
+  $: {
+    if (options) {
+      console.log('trigger options');
+    }
+  }
+  $: settings.set({ max, multiple, creatable, searchField, sortField, labelField, valueField });
+  $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: labelField});
   $: {
     selection = multiple
       ? $selectedOptions
@@ -87,7 +100,7 @@
     value = multiple 
       ? $selectedOptions.map(opt => opt[valueField])
       : $selectedOptions.length ? $selectedOptions[0][valueField] : null;
-    // Custom-component related
+    // Custom-element related
     if (anchor && value) {
       anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce((res, item) => {
         res+= `<option value="${item}" selected>${item}</option>`;
@@ -97,8 +110,9 @@
     }
   }
   $: {
-    if (prevOptions !== options) {
-      _set(options);
+    console.log('trigger options update', prevOptions !== options, isInitialized);
+    if (isInitialized && prevOptions !== options) {
+      updateOpts(options);
       prevOptions = options;
     }
   }
@@ -268,6 +282,7 @@
   let currentListSubscriber;
 
   onMount(() => {
+    isInitialized = true;
     // Lazy calling of scrollIntoView function, which is required
     currentListSubscriber = currentListLength.subscribe(val => {
       if (val <= dropdownActiveIndex) dropdownActiveIndex = val;

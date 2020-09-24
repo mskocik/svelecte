@@ -1,4 +1,5 @@
 import { onDestroy } from 'svelte';
+import { debug, init } from 'svelte/internal';
 import { writable, derived } from 'svelte/store';
 import Sifter from './lib/sifter';
 import { debounce, xhr } from './lib/utils';
@@ -21,16 +22,23 @@ function setToggleHelper(o) {
 }
 
 const initStore = (options, initialSettings, fetchRemote) => {
-  console.log('init store');
+  console.log('init store', fetchRemote);
   const internalSelection = new Set();
   const selectionToggle = setToggleHelper.bind(internalSelection);
 
-  const settings = initSettings(initialSettings);
-
+  let valueField = initialSettings.valueField;
+  let labelField = initialSettings.labelField;
   let maxItems = initialSettings.max;
   let isMultiple = initialSettings.multiple;
   let searchMode = 'auto';  // FUTURE: implement
   let isCreatable = initialSettings.creatable;
+  let searchField = initialSettings.searchField;
+  let sortField = initialSettings.sortField;
+  let sifterSearchField = initialSettings.searchField;
+  let sifterSortField = initialSettings.sortField;
+  let optionsWithGroups = false;
+
+  const settings = initSettings(initialSettings);
 
   const settingsUnsubscribe = settings.subscribe(val => {
     maxItems = val.max;
@@ -50,6 +58,12 @@ const initStore = (options, initialSettings, fetchRemote) => {
       };
       opts.update(opts => opts.map(reset));
     }
+    if (val.searchField && searchField !== val.searchField) {
+      searchField = val.searchField;
+    }
+    if (val.sortField && sortField !== val.sortField) {
+      sortField = val.sortField;
+    }
   });
   
   const dropdownMessages = {
@@ -68,15 +82,21 @@ const initStore = (options, initialSettings, fetchRemote) => {
   const hasRemoteData = fetchRemote ? true : false;
   const listMessage = writable(fetchRemote ? dropdownMessages.fetchBefore : dropdownMessages.empty); // default
 
-  // automatically select all object fields for sifter filter
-  // FUTURE: make this configurable  
-  const sifterFilterFields = getFilterProps(options.length > 1 ? options[1] : ['text']);
-  const _sifterDefaultSort = [{ field: 'text', direction: 'asc'}];
-
-  const opts = writable(options);
-
-  // init selection
-  options.forEach(opt => opt.isSelected && internalSelection.add(opt));
+  const opts = writable([]);
+  const updateOpts = options => {
+    optionsWithGroups = options.some(opt => opt.options);
+    opts.set(options);
+    // init selection
+    options.forEach(opt => opt.isSelected && internalSelection.add(opt));
+    if (searchMode === 'auto') {
+      sifterSearchField = getFilterProps(options.length > 1 ? options[0] : { [labelField]: ''});
+      sifterSortField = optionsWithGroups
+      ? false
+      : (sortField || [{ field: labelField, direction: 'asc'}]);
+    }
+  }
+  
+  updateOpts(options);
 
   // TODO: think and rethink this
   if (hasRemoteData) {
@@ -91,7 +111,7 @@ const initStore = (options, initialSettings, fetchRemote) => {
             data.push(s);
           });
           opts.set(data);
-          opts.update(data => data);
+          // opts.update(data => data);
         })
         .catch(() => opts.update(() => []))
         .finally(() => {
@@ -129,12 +149,6 @@ const initStore = (options, initialSettings, fetchRemote) => {
       return res;
     }, []));
   });
-
-  /** ************************************ sifter sort function (disabled when groups are present) */
-  const optionsWithGroups = options.some(opt => opt.options);
-  let sifterFilterSort = searchMode === 'auto' && optionsWithGroups
-    ? false
-    : _sifterDefaultSort;
 
   /** ************************************ filtered results */
   // NOTE: this is dependant on data source (remote or not)
@@ -179,8 +193,8 @@ const initStore = (options, initialSettings, fetchRemote) => {
         sifter.getSortFunction = () => null;
       }
       const result = sifter.search($inputValue, {
-        fields: sifterFilterFields,
-        sort: sifterFilterSort,
+        fields: sifterSearchField,
+        sort: sifterSortField,
         conjunction: 'and'
       });
       let mapped = result.items.map(item => $flatOptions[item.id])
@@ -281,8 +295,8 @@ const initStore = (options, initialSettings, fetchRemote) => {
       }
       if (typeof option === 'string') {
         option = {
-          text: option,
-          value: encodeURIComponent(option),
+          [labelField]: option,
+          [valueField]: encodeURIComponent(option),
           isSelected: false,
           _created: true,
         }
@@ -347,13 +361,21 @@ const initStore = (options, initialSettings, fetchRemote) => {
     flatMatching,
     currentListLength,
     selectedOptions,
-    _set: opts.set
+    /** options: update */
+    updateOpts
   }
 }
 
 
 const initSettings = (initialSettings) => {
-  return writable(initialSettings || {});
+  const settings = writable(initialSettings || {});
+  settings.updateOne = (name, value) => {
+    settings.update(_val => {
+      _val[name] = value;
+      return _val;
+    });
+  }
+  return settings;
 }
 
 export { key, initStore, initSettings };
