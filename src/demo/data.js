@@ -250,83 +250,83 @@ export const dataset = {
   ],
   colors: () => [
     {
-      text: 'Aqua',
       value: 'aqua',
+      text: 'Aqua',
       hex: '#00FFFF'
     },
     {
-      text: 'Black',
       value: 'black',
+      text: 'Black',
       hex: '#000000'
     },
     {
-      text: 'Blue',
       value: 'blue',
+      text: 'Blue',
       hex: '#0000FF'
     },
     {
-      text: 'Gray',
       value: 'gray',
+      text: 'Gray',
       hex: '#808080'
     },
     {
-      text: 'Green',
       value: 'green',
+      text: 'Green',
       hex: '#008000'
     },
     {
-      text: 'Fuchsia',
       value: 'fuchsia',
+      text: 'Fuchsia',
       hex: '#FF00FF'
     },
     {
-      text: 'Lime',
       value: 'lime',
+      text: 'Lime',
       hex: '#00FF00'
     },
     {
-      text: 'Maroon',
       value: 'maroon',
+      text: 'Maroon',
       hex: '#800000'
     },
     {
-      text: 'Navy',
       value: 'navy',
+      text: 'Navy',
       hex: '#000080'
     },
     {
-      text: 'Olive',
       value: 'olive',
+      text: 'Olive',
       hex: '#808000'
     },
     {
-      text: 'Purple',
       value: 'purple',
+      text: 'Purple',
       hex: '#800080'
     },
     {
-      text: 'Red',
       value: 'red',
+      text: 'Red',
       hex: '#FF0000'
     },
     {
-      text: 'Silver',
       value: 'silver',
+      text: 'Silver',
       hex: '#C0C0C0'
     },
     {
-      text: 'Teal',
       value: 'teal',
+      text: 'Teal',
       hex: '#008080'
     },
     {
-      text: 'Yellow',
       value: 'yellow',
+      text: 'Yellow',
       hex: '#FFFF00'
     },
     {
-      text: 'White',
       value: 'white',
+      text: 'White',
       hex: '#FFFFFF'
     }
   ]

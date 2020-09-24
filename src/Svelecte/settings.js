@@ -6,18 +6,25 @@ const settings = {
   
   required: false,
   multiple: false,
-  searchable: true,     // TODO: implement
+  searchable: true,
   disabled: false,
   creatable: false,
   clearable: false,
   selectOnTab: false,
   placeholder: 'Select',
-  valueField: 'value',  // TODO: implement
-  labelField: 'text',   // TODO: implement
-  searchMode: 'auto',   // TODO: implement - means, when there are optgroups, don't use Sifter
+  valueField: null,
+  labelField: null,
   max: 0,
-  renderer: 'default',
-  delimiter: ','
+  delimiter: ',',
+  sortRemoteResults: true,
+  i18n: {
+    empty: 'No options',
+    nomatch: 'No matching options',    
+    max: 'Maximum items :maxItems selected',
+    fetchBefore: 'Type to search',
+    fetchWait: 'Stop typing to search',
+    fetchEmpty: 'No data related to your search'
+  }
 }
 
 export default settings;

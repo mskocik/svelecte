@@ -9,10 +9,8 @@ const OPTION_LIST = [
 ];
 
 function formatValue(name, value) {
-  console.log(name, value);
   switch (name) {
     case 'options':
-      window.opts = value;
       if (Array.isArray(value)) return value;
       try {
         value = JSON.parse(value);
@@ -84,7 +82,6 @@ export default function(name) {
             return JSON.parse(this.getAttribute('options'));
           },
           set(value) {
-            console.log(value);
             this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
           }
         },
@@ -197,7 +194,6 @@ export default function(name) {
 
     connectedCallback() {
       let props = {};
-      console.log('hello');
       setTimeout(() => {
         for (const attr of OPTION_LIST) {
           if (this.hasAttribute(attr)) {
@@ -206,7 +202,6 @@ export default function(name) {
         }
         if (this.hasAttribute('parent')) {
           this.parent = document.getElementById(this.getAttribute('parent'));
-          console.log('disabled', this.parent.value);
           if (!this.parent.value) {
             this.setAttribute('disabled', true);
             props['disabled'] = true;
@@ -247,7 +242,6 @@ export default function(name) {
         //   });
         //   this.innerHTML = '';
         // }
-        console.log(props);
         this.svelecte = new Svelecte({
           target: this,
           anchor: anchorSelect,

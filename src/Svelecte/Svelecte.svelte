@@ -1,5 +1,6 @@
 <script context="module">
   import defaults from './settings.js';
+  import { debounce, xhr, fieldInit } from './lib/utils.js'; // shared across instances
 
   const formatterList = {
     default: function(item) { return item[this.label]; }
@@ -38,10 +39,13 @@
   export let delimiter = defaults.delimiter;
   export let placeholder = 'Select';
   export let fetch = null;
+  export let fetchMode = 'auto';
+  export let fetchCallback = null;
   export let options = [];
   // sifter related
   export let searchField = null;
   export let sortField = null;
+  export let sortRemote = defaults.sortRemoteResults;
   // 'auto' means, when there are optgroups, don't use Sifter for sortings
   export let searchMode = 'auto';
 
@@ -57,14 +61,22 @@
   const dispatch = createEventDispatcher();
 
   let isInitialized = false;
-  let prevOptions = options;
   let refDropdown;
   let refControl;
   let ignoreHover = false;
   let dropdownActiveIndex = !multiple && options.some(o => o.isSelected)
     ? options.indexOf(options.filter(o => o.isSelected).shift())
     : 0;
+  let fetchUnsubscribe = null;
+  let currentValueField = valueField;
+  let currentLabelField = labelField;
+  
+  /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
+  if (searchMode === 'auto') {
+    currentValueField = valueField || fieldInit('value');
+    currentLabelField = labelField || fieldInit('label');
+  }
 
   /** ************************************ Context definition */
   const { 
@@ -74,8 +86,8 @@
       updateOpts, 
   } = initStore(
     options, 
-    { valueField, labelField, max, multiple, creatable, searchMode, searchField, sortField },
-    typeof fetch === 'string' ?  fetchRemote(fetch) : fetch
+    { currentValueField, currentLabelField, max, multiple, creatable, searchField, sortField, sortRemote },
+    config.i18n
   );
 
   setContext(key, {
@@ -84,15 +96,60 @@
     listLength, matchingOptions, flatMatching, currentListLength, selectedOptions, listIndexMap, isFetchingData
   });
 
+  
+  /** ************************************ remote source */
+  $: initFetchOnly = fetchMode === 'init' || (typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
+  $: createFetch(fetch);
+
+  function createFetch(fetch) {
+    if (fetchUnsubscribe) {
+      fetchUnsubscribe();
+      fetchUnsubscribe = null;
+    } 
+    if (!fetch) return null;
+
+    const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
+    const initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
+    const debouncedFetch = debounce(query => {
+      fetchSource(query, fetchCallback)
+        .then(data => {
+          options = data;
+        })
+        .catch(() => opts.set([]))
+        .finally(() => {
+          isFetchingData.set(false);
+          $hasFocus && hasDropdownOpened.set(true);
+          listMessage.set(config.i18n.fetchEmpty);
+        })
+    }, 500);
+
+    if (initFetchOnly) {
+      isFetchingData.set(true);
+      debouncedFetch(null);
+      return null;
+    }
+
+    fetchUnsubscribe = inputValue.subscribe(value => {
+      if (xhr && xhr.readyState !== 4) {  // cancel previously run 
+        xhr.abort();
+      };
+      if (!value) {
+        listMessage.set(config.i18n.fetchBefore);
+        return;
+      }
+      isFetchingData.set(true);
+      listMessage.set(config.i18n.fetchWait);
+      hasDropdownOpened.set(false);
+      debouncedFetch(value);
+    });
+
+    return debouncedFetch;
+  }
+
   /** ************************************ component logic */
   
-  $: {
-    if (options) {
-      console.log('trigger options');
-    }
-  }
-  $: settings.set({ max, multiple, creatable, searchField, sortField, labelField, valueField });
-  $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: labelField});
+  $: settings.set({ max, multiple, creatable, searchField, sortField, currentLabelField, currentValueField, sortRemote });
+  $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField})
   $: {
     selection = multiple
       ? $selectedOptions
@@ -109,11 +166,16 @@
       anchor.dispatchEvent(new Event('change'));
     }
   }
+  let prevOptions = options;
   $: {
-    console.log('trigger options update', prevOptions !== options, isInitialized);
     if (isInitialized && prevOptions !== options) {
+      if (searchMode === 'auto') {
+        const ivalue = fieldInit('value', options || null);
+        const ilabel = fieldInit('label', options || null);
+        if (!valueField && currentValueField !== ivalue) currentValueField = ivalue;
+        if (!labelField && currentLabelField !== ilabel) currentLabelField = ilabel;
+      }
       updateOpts(options);
-      prevOptions = options;
     }
   }
 

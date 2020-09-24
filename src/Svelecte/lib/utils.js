@@ -17,7 +17,7 @@ export function isOutOfViewport(elem) {
 export let xhr = null;
 
 export function fetchRemote(url) {
-  return function(query) {
+  return function(query, cb) {
     return new Promise((resolve, reject) => {
       xhr = new XMLHttpRequest();
       xhr.open('GET', `${url.replace('[query]', encodeURIComponent(query))}`);
@@ -28,7 +28,7 @@ export function fetchRemote(url) {
         if (xhr.readyState === 4) {
           if (xhr.status === 200) {
             const resp = JSON.parse(xhr.response);
-            resolve(resp.data || resp.items || resp.options || resp);
+            resolve(cb ? cb(resp) : resp.data || resp.items || resp.options || resp);
           } else {
             reject();
           }
@@ -45,7 +45,7 @@ export function debounce(fn, delay) {
 		const args = arguments;
 		clearTimeout(timeout);
 		timeout = setTimeout(function() {
-			fn.apply(self, args);
+      fn.apply(self, args)
 		}, delay);
 	};
 };
@@ -98,3 +98,22 @@ const highlight = function(node, regex) {
   }
   return skip;
 };
+
+/**
+ * Automatic setter for 'valueField' or 'labelField' when they are not set
+ */
+export function fieldInit(type, options) {
+  const isValue = type === 'value';
+  let val = isValue  ? 'value' : 'text';              // selectize style defaults
+  if (options && options.length) {
+    const firstItem = options[0].options ? options[0].options[0] : options[0];
+    const autoAddItem = isValue ? 0 : 1;
+    const guessList = isValue
+      ? ['id', 'value', 'ID']
+      : ['name', 'title', 'label'];
+    val = Object.keys(firstItem).filter(prop => guessList.includes(prop))
+      .concat([Object.keys(firstItem)[autoAddItem]])  // auto add field (used as fallback)
+      .shift();  
+  }
+  return val;
+}

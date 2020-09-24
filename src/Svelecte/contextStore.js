@@ -1,8 +1,7 @@
-import { onDestroy } from 'svelte';
-import { debug, init } from 'svelte/internal';
+// import { onDestroy } from 'svelte';
 import { writable, derived } from 'svelte/store';
 import Sifter from './lib/sifter';
-import { debounce, xhr } from './lib/utils';
+// import { debounce, xhr } from './lib/utils';
 
 const key = {};
 
@@ -21,22 +20,22 @@ function setToggleHelper(o) {
   return true;
 }
 
-const initStore = (options, initialSettings, fetchRemote) => {
-  console.log('init store', fetchRemote);
+const initStore = (options, initialSettings, dropdownMessages) => {
   const internalSelection = new Set();
   const selectionToggle = setToggleHelper.bind(internalSelection);
 
-  let valueField = initialSettings.valueField;
-  let labelField = initialSettings.labelField;
+  let valueField = initialSettings.currentValueField;
+  let labelField = initialSettings.currentLabelField;
   let maxItems = initialSettings.max;
   let isMultiple = initialSettings.multiple;
   let searchMode = 'auto';  // FUTURE: implement
   let isCreatable = initialSettings.creatable;
   let searchField = initialSettings.searchField;
   let sortField = initialSettings.sortField;
+  let optionsWithGroups = false;
   let sifterSearchField = initialSettings.searchField;
   let sifterSortField = initialSettings.sortField;
-  let optionsWithGroups = false;
+  let sifterSortRemote = initialSettings.sortRemote ? true : false;
 
   const settings = initSettings(initialSettings);
 
@@ -44,6 +43,9 @@ const initStore = (options, initialSettings, fetchRemote) => {
     maxItems = val.max;
     isMultiple = val.multiple;
     isCreatable = val.creatable;
+    sifterSortRemote = val.sortRemote;
+    valueField = val.valueField;
+    labelField = val.labelField;
     if (!isMultiple && internalSelection.size > 1) {
       opts.update(opts => opts.map(o => { o.isSelected = false; return o }));
     }
@@ -66,105 +68,49 @@ const initStore = (options, initialSettings, fetchRemote) => {
     }
   });
   
-  const dropdownMessages = {
-    empty: 'No options',
-    nomatch: 'No matching options',
-    get max() { return `Maximum items (${maxItems}) selected` },
-    fetchBefore: 'Type to search',
-    fetchWait: 'Stop typing to search',
-    fetchEmpty: 'No data related to your search'
-  }
-
   const inputValue = writable('');
   const isFetchingData = writable(false);
   const hasFocus = writable(false);
   const hasDropdownOpened = writable(false);
-  const hasRemoteData = fetchRemote ? true : false;
-  const listMessage = writable(fetchRemote ? dropdownMessages.fetchBefore : dropdownMessages.empty); // default
+  const listMessage = writable(dropdownMessages.empty);``
 
   const opts = writable([]);
-  const updateOpts = options => {
+  let _flatOptions = []; // for performance gain, set manually in 'updateOpts'
+  const updateOpts = (options) => {
     optionsWithGroups = options.some(opt => opt.options);
-    opts.set(options);
-    // init selection
-    options.forEach(opt => opt.isSelected && internalSelection.add(opt));
+    
     if (searchMode === 'auto') {
       sifterSearchField = getFilterProps(options.length > 1 ? options[0] : { [labelField]: ''});
       sifterSortField = optionsWithGroups
-      ? false
-      : (sortField || [{ field: labelField, direction: 'asc'}]);
+        ? false
+        : (sortField || [{ field: labelField, direction: 'asc'}]);
     }
-  }
-  
-  updateOpts(options);
 
-  // TODO: think and rethink this
-  if (hasRemoteData) {
-    const debouncedFetch = debounce(query => {
-      fetchRemote(query)
-        .then(data => {
-          // TODO: resolve, if we will show previously selected option in list, doesn't make sense to me
-          internalSelection.size && internalSelection.forEach(s => {
-            data.forEach((o, i) => {
-              if (o.value === s.value) data.splice(i, 1);
-            });
-            data.push(s);
-          });
-          opts.set(data);
-          // opts.update(data => data);
-        })
-        .catch(() => opts.update(() => []))
-        .finally(() => {
-          isFetchingData.set(false);
-          hasDropdownOpened.set(true);
-          listMessage.set(dropdownMessages.fetchEmpty);
-        });
-    }, 300);
-    /** ************************************ define search-triggered fetch */
-    onDestroy(
-      inputValue.subscribe(value => {
-        if (xhr && xhr.readyState !== 4) {  // cancel previously run 
-          xhr.abort();
-        };
-        if (!value) {
-          listMessage.set(dropdownMessages.fetchBefore);
-          return;
-        }
-        isFetchingData.set(true);
-        listMessage.set(dropdownMessages.fetchWait);
-        hasDropdownOpened.set(false);
-        debouncedFetch(value);
-      })
-    );
-  }
-
-  /** ************************************ flat option array */
-  const flatOptions = derived(opts, ($opts, set) => {
-    set($opts.reduce((res, opt) => {
+    _flatOptions = options.reduce((res, opt) => {
       if (opt.options) {
         res.push(...opt.options);
         return res;
       }
       res.push(opt);
       return res;
-    }, []));
-  });
+    }, []);
+    opts.set(options);
+    // init selection
+    options.forEach(opt => opt.isSelected && internalSelection.add(opt));
+  }
+  
+  updateOpts(options);  // init options
 
   /** ************************************ filtered results */
-  // NOTE: this is dependant on data source (remote or not)
-  const matchingOptions = hasRemoteData 
-    ? derived(opts, ($opts, set) => {
-      set($opts.filter(item => !item.isSelected));
-    })
-    : derived([flatOptions, opts, inputValue, settings], 
-    ([$flatOptions, $opts, $inputValue, $settings], set) => {
-      // set empty when max is reached
+  const matchingOptions = derived([opts, inputValue, settings], 
+    ([$opts, $inputValue, $settings], set) => {
+      // set dropdown list empty when max is reached
       if ($settings.max && internalSelection.size === $settings.max) {
-        listMessage.set(dropdownMessages.max);
+        listMessage.set(dropdownMessages.max.replace(':maxItems', $settings.max));
         set([]);
         return;
       }
-      if ($inputValue === '') {
+      if ($inputValue === '' || !sifterSortRemote) {
         return $settings.multiple
           ? set($opts.reduce((res, opt) => {
             if (opt.options) {
@@ -188,7 +134,7 @@ const initStore = (options, initialSettings, fetchRemote) => {
        * Sifter is used for searching to provide rich filter functionality.
        * But it degradate nicely, when optgroups are present
        */
-      const sifter = new Sifter($flatOptions);
+      const sifter = new Sifter(_flatOptions);
       if (optionsWithGroups) {  // disable sorting 
         sifter.getSortFunction = () => null;
       }
@@ -197,7 +143,7 @@ const initStore = (options, initialSettings, fetchRemote) => {
         sort: sifterSortField,
         conjunction: 'and'
       });
-      let mapped = result.items.map(item => $flatOptions[item.id])
+      let mapped = result.items.map(item => _flatOptions[item.id])
       if (optionsWithGroups) {
         let _s = mapped.shift();
         mapped = $opts.reduce((res, opt) => {
@@ -253,7 +199,7 @@ const initStore = (options, initialSettings, fetchRemote) => {
   /** ************************************ for keyboard navigation even through opt-groups */
   const flatMatching = !optionsWithGroups
     ? matchingOptions
-    : derived([matchingOptions, flatOptions, inputValue, settings], ([$matchingOptions, $flatOptions, $inputValue, $settings], set) => {
+    : derived([matchingOptions, inputValue, settings], ([$matchingOptions, $inputValue, $settings], set) => {
     const flatList = $inputValue !== ''
       ? $matchingOptions.reduce((res, opt) => {
           if (opt.options) {
@@ -263,7 +209,7 @@ const initStore = (options, initialSettings, fetchRemote) => {
           res.push(opt);
           return res;
         }, [])
-      : ($settings.multiple ? $flatOptions.filter(o => !o.isSelected) : $flatOptions);
+      : ($settings.multiple ? _flatOptions.filter(o => !o.isSelected) : _flatOptions);
     set(flatList.filter(o => !o.isDisabled));
   });
 
@@ -365,7 +311,6 @@ const initStore = (options, initialSettings, fetchRemote) => {
     updateOpts
   }
 }
-
 
 const initSettings = (initialSettings) => {
   const settings = writable(initialSettings || {});
