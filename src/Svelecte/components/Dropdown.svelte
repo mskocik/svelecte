@@ -70,11 +70,11 @@
   onDestroy(() => dropdownStateSubscription());
 </script>
 
-<div class="dropdown" aria-expanded={$hasDropdownOpened} tabindex="-1" 
+<div class="sv-dropdown" aria-expanded={$hasDropdownOpened} tabindex="-1" 
   bind:this={scrollContainer}
   on:mousedown|preventDefault
 >
-  <div class="dropdown-content" bind:this={container} class:max-reached={maxReached}>
+  <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
   {#if $listLength}
     {#each $matchingOptions as opt, i}
       <!-- opt group -->
@@ -125,7 +125,7 @@
 </div>
 
 <style>
-.dropdown {
+.sv-dropdown {
   box-sizing: border-box;
   position: absolute;
   background-color: white;
@@ -139,10 +139,10 @@
   border: 1px solid rgba(0,0,0,0.15);
   border-radius: .25rem;
   box-shadow: 0 6px 12px rgba(0,0,0,0.175);
-  z-index: 1;
+  z-index: 2;
 }
-.dropdown[aria-expanded="true"] { display: block; }
-.dropdown-content.max-reached { opacity: 0.75; cursor: not-allowed; }
+.sv-dropdown[aria-expanded="true"] { display: block; }
+.sv-dropdown-content.max-reached { opacity: 0.75; cursor: not-allowed; }
 
 .creatable-row {
   box-sizing: border-box;
@@ -190,8 +190,5 @@
 }
 .optgroup-item {
   margin-left: 0.5rem;
-}
-.fetch-remote + .dropdown-content {
-  filter: blur(2px);
 }
 </style>

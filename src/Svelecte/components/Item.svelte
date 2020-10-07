@@ -24,7 +24,7 @@
   display: flex;
 }
 :global(.has-multiSelection .sv-item-content),
-:global(.dropdown-content .sv-item) {
+:global(.sv-dropdown-content .sv-item) {
   padding: 3px 3px 3px 6px;
 }
 :global(.active .sv-item) {

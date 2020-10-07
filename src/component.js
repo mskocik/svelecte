@@ -48,12 +48,7 @@ export { addFormatter, config };
  * Connect Custom Component attributes to Svelte Component properties
  * @param {string} name Name of the Custom Component
  */
-export default function(name) {
-
-  window.Svelecte = {
-    addFormatter,
-    config
-  };
+export function registerComponent(name) {
   window.customElements.define(name, class extends HTMLElement {
     constructor() {
       super();

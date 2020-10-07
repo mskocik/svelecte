@@ -31,7 +31,7 @@
   export let creatable = defaults.creatable;
   export let selectOnTab = defaults.selectOnTab;
   export let valueField = defaults.valueField;
-  export let labelField = defaults.labelField;  // TODO: implement custom sifter search options
+  export let labelField = defaults.labelField;
   export let max = defaults.max;
   export let renderer = null;
   export let clearable = defaults.clearable;
@@ -47,7 +47,7 @@
   export let sortField = null;
   export let sortRemote = defaults.sortRemoteResults;
   // 'auto' means, when there are optgroups, don't use Sifter for sortings
-  export let searchMode = 'auto';
+  export let searchMode = 'auto'; // FUTURE: this about implementing this
 
   let className = 'svelecte-control';
   export { className as class};
@@ -385,7 +385,7 @@
 </div>
 
 <style>
-.svelecte { position: relative; }
+.svelecte { position: relative; flex: 1 1 auto; }
 .svelecte.is-disabled { pointer-events: none; }
 .icon-slot { display: flex; }
 .is-hidden,

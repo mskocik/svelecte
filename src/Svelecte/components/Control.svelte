@@ -43,13 +43,13 @@
   }
 </script>
 
-<div class="control" class:is-active={$hasFocus} class:is-disabled={disabled}
+<div class="sv-control" class:is-active={$hasFocus} class:is-disabled={disabled}
   on:mousedown|preventDefault
   on:click|preventDefault={focusControl}
 >
   <slot name="icon"></slot>
   <!-- selection & input -->
-  <div class="content" class:has-multiSelection={multiple}>
+  <div class="sv-content" class:has-multiSelection={multiple}>
     {#if $selectedOptions.length }
       {#each $selectedOptions as opt}
       <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple}></Item>
@@ -87,9 +87,9 @@
 
 <style>
 /** global default styles for wrapper div (*/
-:global(.svelecte-control) .control             { border: 1px solid #ccc; border-radius: 4px; min-height: 38px; }
-:global(.svelecte-control) .control.is-active   { border: 1px solid #555; }
-.control.is-disabled {
+:global(.svelecte-control) .sv-control             { border: 1px solid #ccc; border-radius: 4px; min-height: 38px; }
+:global(.svelecte-control) .sv-control.is-active   { border: 1px solid #555; }
+.sv-control.is-disabled {
   background-color: rgb(242, 242, 242);
   border-color: rgb(230, 230, 230);
   cursor: default;
@@ -99,12 +99,12 @@
   position: relative;
   transition: all 100ms ease 0s;
 }
-.control {
+.sv-control {
   display: flex;
   align-items: center;
   box-sizing: border-box;
 }
-.content {
+.sv-content {
   align-items: center;
   display: flex;
   flex: 1 1 0%;
