@@ -1,12 +1,14 @@
-import DocsApp from './App.svelte';
-import registerSvelecte, { addFormatter } from './component.js';
-import { dataset } from './demo/data.js';
 
-const app = new DocsApp({
+import Svelecte from '../src/svelecte.js';
+import { registerComponent, addFormatter } from './../src/component.js';
+import Playground from './Playground.svelte';
+import { dataset } from './data.js';
+
+const app = new Playground({
 	target: document.getElementById('app')
 });
 
-registerSvelecte('el-svelecte');
+registerComponent('el-svelecte');
 addFormatter('dotted', item => `<span style="background-color:${item.hex}" class="color"></span> ${item.text}`);
 addFormatter('caps', item => item.text.toUpperCase());
 

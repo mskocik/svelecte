@@ -28,12 +28,12 @@ function serve() {
 }
 
 const app = {
-  input: "src/main.js",
+  input: "docs-src/docs.js",
   output: {
     sourcemap: true,
     format: "iife",
     name: "app",
-    file: "docs/assets/demo.js"
+    file: "docs/assets/docs.js"
   },
   plugins: [
     svelte({
@@ -42,7 +42,7 @@ const app = {
       // we'll extract any component CSS out into
       // a separate file — better for performance
       css: css => {
-        css.write("demo.css", false);
+        css.write("docs.css", false);
       }
     }),
 
@@ -64,4 +64,30 @@ const app = {
   ]
 };
 
-export default app;
+const component = {
+  input: 'src/component.js',
+  output: [{
+      sourcemaps: false,
+      format: 'iife',
+      name: 'Svelecte',
+      file: 'dist/svelecte.js'
+    }, {
+      sourcemaps: false,
+      format: 'es',
+      file: 'dist/svelecte.mjs'
+  }],
+  plugins: [
+    svelte({
+      dev: !production,
+      css: css => {
+        css.write('svelecte.css', false)
+      }
+    }),
+    resolve(),
+    commonjs(),
+
+    production && terser()
+  ]
+};
+
+export default [app, component];

@@ -1,8 +1,8 @@
 <script>
-	import Svelecte from './Svelecte/Svelecte.svelte';
-	import { dataset } from './demo/data.js';
+	import Svelecte from './../src/svelecte.js';
+	import { dataset } from './data.js';
 
-	let options = dataset.countryGroups();
+	let options = dataset.countries();
 	const groups = dataset.countryGroups();
 
 	let maxItems = 2;
@@ -62,6 +62,8 @@
 
 </script>
 
+<details>
+	<summary>Previous app</summary>
 <main>
 	<!--
 	<div class="form-row">
@@ -91,6 +93,39 @@
 		</Svelecte>
 	</div>
 </main>
+</details>
+
+<hr>
+
+<h1 id="sub-getting-started">Getting started</h1>
+
+<p>
+	Svelecte provide basically every common functionality, you would expect from autocomplete/select component. It's main inspiration was selectize.js
+</p>
+
+<h2>Installation</h2>
+
+<pre>
+npm install svelecte --save
+</pre>
+
+<h3>Basic Usage</h3>
+
+<Svelecte {options}></Svelecte>
+
+<details>
+	<summary>Show code</summary>
+</details>
+
+<h3>Option groups</h3>
+
+<Svelecte options={groups}></Svelecte>
+
+Optgroups are distinguished by <code>label</code> property. And options are expected to be found under <code>options</code> property.
+
+<details>
+	<summary>Show code</summary>
+</details>
 
 <style>
 	:global(.icon-slot b) {
@@ -116,4 +151,8 @@
 	:global(.optgroup-header) {
 		text-align: left;
 	}
+	details {
+		margin-top: 1rem;
+	}
+	summary {}
 </style>

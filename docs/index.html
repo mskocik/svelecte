@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="auto-scaling-disabled">
 <head>
-	<meta charset='utf-8'>
-	<meta name='viewport' content='width=device-width,initial-scale=1'>
+  <!-- Meta tags -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <meta name="viewport" content="width=device-width" />
 
-	<title>Svelecte - select with autocomplete written in Svelte</title>
+  <!-- Favicon and title -->
 	<link rel='icon' type='image/png' href='favicon.png'>
 	<link rel='stylesheet' href='global.css'>
-	<link rel='stylesheet' href='assets/demo.css'>
+	<link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.0/css/halfmoon-variables.min.css" rel="stylesheet" />
+	<link rel='stylesheet' href='assets/docs.css'>
 
 	<style>
 		el-svelecte {
@@ -28,30 +32,204 @@
 			display: inline-block;
 		}
 	</style>
-</head>
+  <title>Svelecte - select with autocomplete written in Svelte</title>
 
-<body>
-	<div id="app" style="width: 400px; margin: auto">
-		<h2>App</h2>
+  <!-- Halfmoon CSS -->
+  <!--
+    Or,
+    Use the following (no variables, supports IE11):
+    <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.0/css/halfmoon.min.css" rel="stylesheet" />
+    Learn more: https://www.gethalfmoon.com/docs/customize/#notes-on-browser-compatibility
+  -->
+</head>
+<body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-set-preferred-mode-onload="true">
+  <!-- Modals go here -->
+  <!-- Reference: https://www.gethalfmoon.com/docs/modal -->
+
+  <!-- Page wrapper start -->
+  <div class="page-wrapper with-navbar with-sidebar">
+
+    <!-- Navbar start -->
+    <nav class="navbar">
+      <!-- Reference: https://www.gethalfmoon.com/docs/navbar -->
+    </nav>
+    <!-- Navbar end -->
+
+    <!-- Sidebar start -->
+    <div class="sidebar">
+		<div class="sidebar-menu">
+
+			<!-- Reference: https://www.gethalfmoon.com/docs/sidebar -->
+			<h5 class="sidebar-title">Svelecte</h5>
+			<div class="sidebar-divider"></div>
+			<a class="sidebar-link" href="#sub-getting-started">Getting Started</a>
+			<br>
+			<h5 class="sidebar-title">Feature list</h5>
+			<div class="sidebar-divider"></div>
+			<a class="sidebar-link" href="#sub-basic-example">Basic example</a>
+			<a class="sidebar-link" href="#sub-opt-groups">Optgroups</a>
+			<a class="sidebar-link" href="#sub-placeholder-icon">Slot</a>
+			<a class="sidebar-link" href="#sub-item-rendering">Custom item rendering</a>
+			<a class="sidebar-link" href="#sub-remote-data">Remote datasource</a>
+			<br>
+			<h5 class="sidebar-title">API</h5>
+			<div class="sidebar-divider"></div>
+			<a class="sidebar-link" href="#sub-props">Props</a>
+			<a class="sidebar-link" href="#sub-events">Events</a>
+			<a class="sidebar-link" href="#sub-slots">Slots</a>
+			<a class="sidebar-link" href="#sub-rendering">Item rendering</a>
+			<br>
+			<h5 class="sidebar-title">Custom Component</h5>
+			<div class="sidebar-divider"></div>
+			<a class="sidebar-link" href="#sub-custom-element">As custom element</a>
+		</div>
 	</div>
-	<!--
-	<div style="width: 400px; margin: auto">
-		<h2>Component</h2>
-		<el-svelecte renderer="dotted"></el-svelecte>
-		<hr>
-		<form action="">
-			<h3>Select item group (dependend selects)</h3>
-			<el-svelecte 
-				options='[{"value":"posts","text":"Posts"},{"value":"users","text":"Users"},{"value":"comments","text":"Comments"}]'
-				id="qq" required
-			>
-				<select name="someProp" id="existingSelect" required></select>
-			</el-svelecte>
-			<el-svelecte name="color" parent="qq" required remote-init="https://jsonplaceholder.typicode.com/[parent]"></el-svelecte>
-			<button type="submit">Send form</button>
-		</form>
-	</div>
-	-->
-	<script src='assets/demo.js'></script>
+    <!-- Sidebar end -->
+
+    <!-- Content wrapper start -->
+    <div class="content-wrapper">
+      <!--
+        Add your page's main content here
+        Examples:
+        1. https://www.gethalfmoon.com/docs/content-and-cards/#building-a-page
+        2. https://www.gethalfmoon.com/docs/grid-system/#building-a-dashboard
+	  -->
+	  
+	  	
+		<div id="app" style="width: 400px; margin: auto">
+			<h2>App</h2>
+		</div>
+		<div style="width: 400px; margin: auto">
+			<h2>Component</h2>
+			<el-svelecte renderer="dotted"></el-svelecte>
+			<hr>
+			<form action="">
+				<h3>Select item group (dependend selects)</h3>
+				<el-svelecte 
+					options='[{"value":"posts","text":"Posts"},{"value":"users","text":"Users"},{"value":"comments","text":"Comments"}]'
+					id="qq" required
+				>
+					<select name="someProp" id="existingSelect" required></select>
+				</el-svelecte>
+				<el-svelecte name="color" parent="qq" required remote-init="https://jsonplaceholder.typicode.com/[parent]"></el-svelecte>
+				<button type="submit">Send form</button>
+			</form>
+		</div>
+
+		<!-- #4: API -->
+		<h3 id="sub-props">Props</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Property</th>
+					<th>Type</th>
+					<th>Default</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<td><code></code></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3 id="sub-events">Events</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Event</th>
+					<th>Description</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><code>change</code></td>
+					<td>Event passed into the event handler, contains <code>detail</code> property. Which contains currently selected object (or array of objects if <code>multiple</code> prop is set to <i>true</i>)</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h3 id="sub-slots">Slots</h3>
+		<div>
+			<p>
+				There is only one slot available named `icon`. It can be used for select placeholder icon like this:
+			</p>
+			
+			<pre>
+				<svg slot="icon" class="icon"><use xlink:href={icon}></use></svg>
+			</pre>
+			
+			<p>
+				Also it's shown in <a href="#sub-placeholder-icon">placeholder icon example</a>.
+			</p>
+		</div>
+
+    </div>
+    <!-- Content wrapper end -->
+
+  </div>
+  <!-- Page wrapper end -->
+
+  <!-- Halfmoon JS -->
+  <script src='assets/docs.js' defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.0/js/halfmoon.min.js"></script>
 </body>
 </html>
