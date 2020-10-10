@@ -6,6 +6,7 @@
   export let placeholder;
   export let searchable;
   export let disabled;
+  export let multiple;
 
   let inputRef = null;
   let shadowWidth = 0;
@@ -13,9 +14,11 @@
   const dispatch = createEventDispatcher();
   const { inputValue, selectedOptions } = getContext(key);
 
+  $: isSingleFilled = $selectedOptions.length > 0 && multiple === false;
   $: placeholderText = $selectedOptions.length > 0 ? '' : placeholder;
   $: shadowText = $inputValue || placeholderText;
-  $: inputStyle = `width: ${$selectedOptions.length === 0 ? shadowWidth + 19 : shadowWidth + 12}px`;
+  $: widthAddition = $selectedOptions.length === 0 ? 19 : 12;
+  $: inputStyle = `width: ${isSingleFilled ? 2 : shadowWidth + widthAddition}px`;
 
   function dispatchEvent(event) {
     dispatch(event.type);

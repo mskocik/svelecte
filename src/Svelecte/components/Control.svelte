@@ -49,14 +49,14 @@
 >
   <slot name="icon"></slot>
   <!-- selection & input -->
-  <div class="sv-content" class:has-multiSelection={multiple}>
+  <div class="sv-content sv-input-row" class:has-multiSelection={multiple}>
     {#if $selectedOptions.length }
       {#each $selectedOptions as opt}
       <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple}></Item>
       {/each}
     {/if}
     <!-- input -->
-    <Input {disabled} {searchable} {placeholder}
+    <Input {disabled} {searchable} {placeholder} {multiple}
       bind:this={refInput}
       on:focus={onFocus}
       on:blur={onBlur}
@@ -108,11 +108,14 @@
   align-items: center;
   display: flex;
   flex: 1 1 0%;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   padding: 0 0 0 6px;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+}
+.sv-content.sv-input-row.has-multiSelection {
+  flex-flow: wrap;
 }
 .indicator {
   position: relative;
