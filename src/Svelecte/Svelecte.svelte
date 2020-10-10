@@ -249,8 +249,6 @@
    * Keyboard navigation
    */
   function onKeyDown(event) {
-    let nextVal;
-    let scrollParams = {};
     if (creatable && delimiter.indexOf(event.key) > -1) {
       onSelect(null, $inputValue);
       event.preventDefault();

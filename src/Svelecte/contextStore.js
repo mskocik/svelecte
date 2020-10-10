@@ -80,7 +80,7 @@ const initStore = (options, initialSettings, dropdownMessages) => {
     optionsWithGroups = options.some(opt => opt.options);
     
     if (searchMode === 'auto') {
-      sifterSearchField = getFilterProps(options.length > 1 ? options[0] : { [labelField]: ''});
+      sifterSearchField = getFilterProps(options.length > 0 ? options[0] : { [labelField]: ''});
       sifterSortField = optionsWithGroups
         ? false
         : (sortField || [{ field: labelField, direction: 'asc'}]);
