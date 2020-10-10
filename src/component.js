@@ -1,10 +1,9 @@
 import Svelecte, { addFormatter, config } from './Svelecte/Svelecte.svelte';
-import { fetchRemote } from './Svelecte/lib/utils.js';
 
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required',
   'multiple','disabled', 'max', 'creatable',
-  'placeholder', 'renderer', 'searchable', 'clearable',
+  'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch',
   'anchor'
 ];
 
@@ -48,207 +47,220 @@ export { addFormatter, config };
  * Connect Custom Component attributes to Svelte Component properties
  * @param {string} name Name of the Custom Component
  */
-export function registerComponent(name) {
-  window.customElements.define(name, class extends HTMLElement {
-    constructor() {
-      super();
-      this.svelecte = undefined;
-      
-      /** ************************************ public API */
-      this.setOptions = options => this.svelecte.setOptions(options);
-      Object.defineProperties(this, {
-        'selection': {
-          get() {
-            return this.svelecte.getSelection();
-          }
+export const SvelecteElement = class extends HTMLElement {
+  constructor() {
+    super();
+    this.svelecte = undefined;
+    this._init = null;
+    this._locked = false;
+    
+    /** ************************************ public API */
+    this.setOptions = options => this.svelecte.setOptions(options);
+    Object.defineProperties(this, {
+      'selection': {
+        get() {
+          return this.svelecte.getSelection();
+        }
+      },
+      'value': {
+        get() {
+          const val = this.svelecte.getSelection();
+          if (!val) return null;
+          return this.multiple ? val.map(v => v.value) : val.value;
         },
-        'value': {
-          get() {
-            const val = this.svelecte.getSelection();
-            if (!val) return null;
-            return this.multiple ? val.map(v => v.value) : val.value;
-          },
-          set(value) {
-            this.svelecte.setSelection(value);
-          }
+        set(value) {
+          this.svelecte.setSelection(value);
+        }
+      },
+      'options': {
+        get() {
+          return JSON.parse(this.getAttribute('options'));
         },
-        'options': {
-          get() {
-            return JSON.parse(this.getAttribute('options'));
-          },
-          set(value) {
-            this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
-          }
+        set(value) {
+          this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
+        }
+      },
+      'disabled': {
+        get() {
+          return this.getAttribute('disabled') !== null;
         },
-        'disabled': {
-          get() {
-            return this.getAttribute('disabled') !== null;
-          },
-          set(value) {
-            if (!value) { 
-              this.removeAttribute('disabled');
-            } else {
-              this.setAttribute('disabled', value === true ? '' : value);
-            }
-          }
-        },
-        'multiple': {
-          get() {
-            return this.getAttribute('multiple') !== null;
-          },
-          set(value) {
-            if (!value) { 
-              this.removeAttribute('multiple');
-            } else {
-              this.setAttribute('multiple', value === true ? '' : value);
-            }
-          }
-        },
-        'creatable': {
-          get() {
-            return this.getAttribute('creatable') !== null;
-          },
-          set(value) {
-            if (!value) { 
-              this.removeAttribute('creatable');
-            } else {
-              this.setAttribute('creatable', value === true ? '' : value);
-            }
-          }
-        },
-        'clearable': {
-          get() {
-            return this.getAttribute('clearable') !== 'false';
-          },
-          set(value) {
-            this.setAttribute('clearable', value ? 'true' : 'false');
-          }
-        },
-        'placeholder': {
-          get() {
-            return this.getAttribute('placeholder') || '';
-          },
-          set(value) {
-            this.setAttribute('placeholder', value || 'Select');
-          }
-        },
-        'renderer': {
-          get() {
-            return this.getAttribute('renderer') || 'default';
-          },
-          set(value) {
-            value && this.setAttribute('renderer', value);
-          }
-        },
-        'required': {
-          get() {
-            return this.hasAttribute('required');
-          },
-          set(value) {
-            if (!value) {
-              this.removeAttribute('required');
-            } else {
-              this.setAttribute('required', '');
-            }
-          }
-        },
-        'anchor': {
-          get() {
-            return this.getAttribute('anchor');
-          },
-          set(value) {
-            this.setAttribute('anchor', value);
-          }
-        },
-        'max': {
-          get() {
-            return this.getAttribute('max') || 0;
-          },
-          set(value) {
-            try {
-              value = parseInt(value);
-              if (value < 0) value = 0;
-            } catch (e) {
-              value = 0;
-            }
-            this.setAttribute('max', value);
+        set(value) {
+          if (!value) { 
+            this.removeAttribute('disabled');
+          } else {
+            this.setAttribute('disabled', value === true ? '' : value);
           }
         }
-      });
-    }
+      },
+      'multiple': {
+        get() {
+          return this.getAttribute('multiple') !== null;
+        },
+        set(value) {
+          if (!value) { 
+            this.removeAttribute('multiple');
+          } else {
+            this.setAttribute('multiple', value === true ? '' : value);
+          }
+        }
+      },
+      'creatable': {
+        get() {
+          return this.getAttribute('creatable') !== null;
+        },
+        set(value) {
+          if (!value) { 
+            this.removeAttribute('creatable');
+          } else {
+            this.setAttribute('creatable', value === true ? '' : value);
+          }
+        }
+      },
+      'clearable': {
+        get() {
+          return this.getAttribute('clearable') !== 'false';
+        },
+        set(value) {
+          this.setAttribute('clearable', value ? 'true' : 'false');
+        }
+      },
+      'placeholder': {
+        get() {
+          return this.getAttribute('placeholder') || '';
+        },
+        set(value) {
+          this.setAttribute('placeholder', value || 'Select');
+        }
+      },
+      'renderer': {
+        get() {
+          return this.getAttribute('renderer') || 'default';
+        },
+        set(value) {
+          value && this.setAttribute('renderer', value);
+        }
+      },
+      'required': {
+        get() {
+          return this.hasAttribute('required');
+        },
+        set(value) {
+          if (!value) {
+            this.removeAttribute('required');
+          } else {
+            this.setAttribute('required', '');
+          }
+        }
+      },
+      'anchor': {
+        get() {
+          return this.getAttribute('anchor');
+        },
+        set(value) {
+          this.setAttribute('anchor', value);
+        }
+      },
+      'max': {
+        get() {
+          return this.getAttribute('max') || 0;
+        },
+        set(value) {
+          try {
+            value = parseInt(value);
+            if (value < 0) value = 0;
+          } catch (e) {
+            value = 0;
+          }
+          this.setAttribute('max', value);
+        }
+      }
+    });
+  }
 
-    static get observedAttributes() {
-      return OPTION_LIST;
-    }
+  static get observedAttributes() {
+    return OPTION_LIST;
+  }
 
-    attributeChangedCallback(name, oldValue, newValue) {
-      if (this.svelecte && oldValue !== newValue) {
-        this.svelecte.$set({ [name]: formatValue(name, newValue) });
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (this.svelecte && oldValue !== newValue) {
+      this.svelecte.$set({ [name]: formatValue(name, newValue) });
+    }
+  }
+
+  adoptedCallback() {
+    console.log('adopted');
+  }
+  
+  connectedCallback() {
+    console.log('original');
+    setTimeout(() => { this.render() });
+  }
+
+  render() {
+    let props = {};
+    if (this._locked) {
+      clearTimeout(this._init);
+      console.log('tt->EE');
+      return;
+    }
+    this._locked = true;
+    for (const attr of OPTION_LIST) {
+      if (this.hasAttribute(attr)) {
+        props[attr] = formatValue(attr, this.getAttribute(attr));
       }
     }
-
-    connectedCallback() {
-      let props = {};
-      setTimeout(() => {
-        for (const attr of OPTION_LIST) {
-          if (this.hasAttribute(attr)) {
-            props[attr] = formatValue(attr, this.getAttribute(attr));
-          }
+    if (this.hasAttribute('parent')) {
+      delete props['fetch'];
+      this.parent = document.getElementById(this.getAttribute('parent'));
+      if (!this.parent.value) {
+        this.setAttribute('disabled', true);
+        props['disabled'] = true;
+      };
+      this.parentCallback = e => {
+        if (this.hasAttribute('fetch')) {
+          const fetchUrl = this.getAttribute('fetch').replace('[parent]', e.target.value);
+          this.svelecte.$set({ fetch: fetchUrl });
         }
-        if (this.hasAttribute('parent')) {
-          this.parent = document.getElementById(this.getAttribute('parent'));
-          if (!this.parent.value) {
-            this.setAttribute('disabled', true);
-            props['disabled'] = true;
-          };
-          this.parentCallback = e => {
-            if (this.hasAttribute('remote-init')) {
-              const url = this.getAttribute('remote-init').replace('[parent]', e.target.value);
-              fetchRemote(url)()
-                .then(data => {
-                  this.disabled = false;
-                  this.options = data;
-                  return data.length > 0;
-                })
-                .then(shouldFocus => {
-                  shouldFocus && this.querySelector('input').focus();
-                })
-                .catch(() => this.options = []);
-            }
-          };
-          this.parent.addEventListener('change', this.parentCallback);
+        if (e.target.value) {
+          this.removeAttribute('disabled');
+        } else {
+          this.setAttribute('disabled', '');
         }
-        const anchorSelect = this.querySelector('select');
-        if (anchorSelect) {
-          props['anchor'] = anchorSelect;
-          anchorSelect.tabIndex = -1; // just to be sure
-        }
-        // if (this.childElementCount > 0) {
-        //   props.options = Array.prototype.slice.call(this.children).map(opt => {
-        //     return Object.assign({
-        //       isSelected: opt.selected,
-        //       isDisabled: opt.disabled
-        //     }, opt.dataset.data ? JSON.parse(opt.dataset.data)
-        //       : {
-        //         value: opt.value,
-        //         text: opt.text,
-        //       }
-        //     );
-        //   });
-        //   this.innerHTML = '';
-        // }
-        this.svelecte = new Svelecte({
-          target: this,
-          anchor: anchorSelect,
-          props,
-        });
-        this.svelecte.$on('change', e => this.dispatchEvent(e));
-      });
+      };
+      this.parent.addEventListener('change', this.parentCallback);
     }
-
-    disconnectedCallback() {
-      this.svelecte = this.svelecte.$destroy();
-      this.parent && this.parent.removeEventListener('change', this.parentCallback);
+    const anchorSelect = this.querySelector('select');
+    if (anchorSelect) {
+      props['anchor'] = anchorSelect;
+      anchorSelect.tabIndex = -1; // just to be sure
     }
-  });
+    // if (this.childElementCount > 0) {
+    //   props.options = Array.prototype.slice.call(this.children).map(opt => {
+    //     return Object.assign({
+    //       isSelected: opt.selected,
+    //       isDisabled: opt.disabled
+    //     }, opt.dataset.data ? JSON.parse(opt.dataset.data)
+    //       : {
+    //         value: opt.value,
+    //         text: opt.text,
+    //       }
+    //     );
+    //   });
+    //   this.innerHTML = '';
+    // }
+    console.log('options', (new Date()).getTime(), props);
+    this.svelecte = new Svelecte({
+      target: this,
+      anchor: anchorSelect,
+      props,
+    });
+    this.svelecte.$on('change', e => this.dispatchEvent(e));
+    return true;
+  }
+
+  disconnectedCallback() {
+    console.log('bye', this.value);
+    this.svelecte = this.svelecte.$destroy();
+    this.parent && this.parent.removeEventListener('change', this.parentCallback);
+  }
 }

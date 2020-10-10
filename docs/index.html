@@ -107,11 +107,11 @@
 				<h3>Select item group (dependend selects)</h3>
 				<el-svelecte 
 					options='[{"value":"posts","text":"Posts"},{"value":"users","text":"Users"},{"value":"comments","text":"Comments"}]'
-					id="qq" required
+					id="is-parent" required
 				>
 					<select name="someProp" id="existingSelect" required></select>
 				</el-svelecte>
-				<el-svelecte name="color" parent="qq" required remote-init="https://jsonplaceholder.typicode.com/[parent]"></el-svelecte>
+				<el-svelecte name="color" parent="is-parent" required fetch="https://jsonplaceholder.typicode.com/[parent]"></el-svelecte>
 				<button type="submit">Send form</button>
 			</form>
 		</div>

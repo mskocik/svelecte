@@ -1404,7 +1404,7 @@ var Svelecte = (function (exports) {
         optionsWithGroups = options.some(opt => opt.options);
         
         {
-          sifterSearchField = getFilterProps(options.length > 1 ? options[0] : { [labelField]: ''});
+          sifterSearchField = getFilterProps(options.length > 0 ? options[0] : { [labelField]: ''});
           sifterSortField = optionsWithGroups
             ? false
             : (sortField || [{ field: labelField, direction: 'asc'}]);
@@ -1672,30 +1672,30 @@ var Svelecte = (function (exports) {
     			input.readOnly = input_readonly_value = !/*searchable*/ ctx[0];
     			attr_dev(input, "style", /*inputStyle*/ ctx[7]);
     			attr_dev(input, "placeholder", /*placeholderText*/ ctx[4]);
-    			add_location(input, file, 25, 0, 756);
+    			add_location(input, file, 28, 0, 898);
     			attr_dev(div, "class", "shadow-text svelte-mtw92l");
-    			add_render_callback(() => /*div_elementresize_handler*/ ctx[18].call(div));
-    			add_location(div, file, 36, 0, 1000);
+    			add_render_callback(() => /*div_elementresize_handler*/ ctx[19].call(div));
+    			add_location(div, file, 39, 0, 1142);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
-    			/*input_binding*/ ctx[16](input);
+    			/*input_binding*/ ctx[17](input);
     			set_input_value(input, /*$inputValue*/ ctx[6]);
     			insert_dev(target, t0, anchor);
     			insert_dev(target, div, anchor);
     			append_dev(div, t1);
-    			div_resize_listener = add_resize_listener(div, /*div_elementresize_handler*/ ctx[18].bind(div));
+    			div_resize_listener = add_resize_listener(div, /*div_elementresize_handler*/ ctx[19].bind(div));
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[17]),
-    					listen_dev(input, "focus", /*focus_handler*/ ctx[12], false, false, false),
-    					listen_dev(input, "blur", /*blur_handler*/ ctx[13], false, false, false),
-    					listen_dev(input, "keydown", /*keydown_handler*/ ctx[14], false, false, false),
-    					listen_dev(input, "paste", /*paste_handler*/ ctx[15], false, false, false)
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[18]),
+    					listen_dev(input, "focus", /*focus_handler*/ ctx[13], false, false, false),
+    					listen_dev(input, "blur", /*blur_handler*/ ctx[14], false, false, false),
+    					listen_dev(input, "keydown", /*keydown_handler*/ ctx[15], false, false, false),
+    					listen_dev(input, "paste", /*paste_handler*/ ctx[16], false, false, false)
     				];
 
     				mounted = true;
@@ -1728,7 +1728,7 @@ var Svelecte = (function (exports) {
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(input);
-    			/*input_binding*/ ctx[16](null);
+    			/*input_binding*/ ctx[17](null);
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div);
     			div_resize_listener();
@@ -1757,6 +1757,7 @@ var Svelecte = (function (exports) {
     	let { placeholder } = $$props;
     	let { searchable } = $$props;
     	let { disabled } = $$props;
+    	let { multiple } = $$props;
     	let inputRef = null;
     	let shadowWidth = 0;
     	const dispatch = createEventDispatcher();
@@ -1764,13 +1765,13 @@ var Svelecte = (function (exports) {
     	validate_store(inputValue, "inputValue");
     	component_subscribe($$self, inputValue, value => $$invalidate(6, $inputValue = value));
     	validate_store(selectedOptions, "selectedOptions");
-    	component_subscribe($$self, selectedOptions, value => $$invalidate(19, $selectedOptions = value));
+    	component_subscribe($$self, selectedOptions, value => $$invalidate(21, $selectedOptions = value));
 
     	function dispatchEvent(event) {
     		dispatch(event.type);
     	}
 
-    	const writable_props = ["placeholder", "searchable", "disabled"];
+    	const writable_props = ["placeholder", "searchable", "disabled", "multiple"];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Input> was created with unknown prop '${key}'`);
@@ -1813,6 +1814,7 @@ var Svelecte = (function (exports) {
     		if ("placeholder" in $$props) $$invalidate(11, placeholder = $$props.placeholder);
     		if ("searchable" in $$props) $$invalidate(0, searchable = $$props.searchable);
     		if ("disabled" in $$props) $$invalidate(1, disabled = $$props.disabled);
+    		if ("multiple" in $$props) $$invalidate(12, multiple = $$props.multiple);
     	};
 
     	$$self.$capture_state = () => ({
@@ -1824,16 +1826,19 @@ var Svelecte = (function (exports) {
     		placeholder,
     		searchable,
     		disabled,
+    		multiple,
     		inputRef,
     		shadowWidth,
     		dispatch,
     		inputValue,
     		selectedOptions,
     		dispatchEvent,
-    		placeholderText,
+    		isSingleFilled,
     		$selectedOptions,
+    		placeholderText,
     		shadowText,
     		$inputValue,
+    		widthAddition,
     		inputStyle
     	});
 
@@ -1841,15 +1846,20 @@ var Svelecte = (function (exports) {
     		if ("placeholder" in $$props) $$invalidate(11, placeholder = $$props.placeholder);
     		if ("searchable" in $$props) $$invalidate(0, searchable = $$props.searchable);
     		if ("disabled" in $$props) $$invalidate(1, disabled = $$props.disabled);
+    		if ("multiple" in $$props) $$invalidate(12, multiple = $$props.multiple);
     		if ("inputRef" in $$props) $$invalidate(2, inputRef = $$props.inputRef);
     		if ("shadowWidth" in $$props) $$invalidate(3, shadowWidth = $$props.shadowWidth);
+    		if ("isSingleFilled" in $$props) $$invalidate(20, isSingleFilled = $$props.isSingleFilled);
     		if ("placeholderText" in $$props) $$invalidate(4, placeholderText = $$props.placeholderText);
     		if ("shadowText" in $$props) $$invalidate(5, shadowText = $$props.shadowText);
+    		if ("widthAddition" in $$props) $$invalidate(22, widthAddition = $$props.widthAddition);
     		if ("inputStyle" in $$props) $$invalidate(7, inputStyle = $$props.inputStyle);
     	};
 
+    	let isSingleFilled;
     	let placeholderText;
     	let shadowText;
+    	let widthAddition;
     	let inputStyle;
 
     	if ($$props && "$$inject" in $$props) {
@@ -1857,7 +1867,11 @@ var Svelecte = (function (exports) {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*$selectedOptions, placeholder*/ 526336) {
+    		if ($$self.$$.dirty & /*$selectedOptions, multiple*/ 2101248) {
+    			 $$invalidate(20, isSingleFilled = $selectedOptions.length > 0 && multiple === false);
+    		}
+
+    		if ($$self.$$.dirty & /*$selectedOptions, placeholder*/ 2099200) {
     			 $$invalidate(4, placeholderText = $selectedOptions.length > 0 ? "" : placeholder);
     		}
 
@@ -1865,10 +1879,12 @@ var Svelecte = (function (exports) {
     			 $$invalidate(5, shadowText = $inputValue || placeholderText);
     		}
 
-    		if ($$self.$$.dirty & /*$selectedOptions, shadowWidth*/ 524296) {
-    			 $$invalidate(7, inputStyle = `width: ${$selectedOptions.length === 0
-			? shadowWidth + 19
-			: shadowWidth + 12}px`);
+    		if ($$self.$$.dirty & /*$selectedOptions*/ 2097152) {
+    			 $$invalidate(22, widthAddition = $selectedOptions.length === 0 ? 19 : 12);
+    		}
+
+    		if ($$self.$$.dirty & /*isSingleFilled, shadowWidth, widthAddition*/ 5242888) {
+    			 $$invalidate(7, inputStyle = `width: ${isSingleFilled ? 2 : shadowWidth + widthAddition}px`);
     		}
     	};
 
@@ -1885,6 +1901,7 @@ var Svelecte = (function (exports) {
     		selectedOptions,
     		focus,
     		placeholder,
+    		multiple,
     		focus_handler,
     		blur_handler,
     		keydown_handler,
@@ -1903,7 +1920,8 @@ var Svelecte = (function (exports) {
     			focus: 10,
     			placeholder: 11,
     			searchable: 0,
-    			disabled: 1
+    			disabled: 1,
+    			multiple: 12
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -1926,6 +1944,10 @@ var Svelecte = (function (exports) {
 
     		if (/*disabled*/ ctx[1] === undefined && !("disabled" in props)) {
     			console.warn("<Input> was created without expected prop 'disabled'");
+    		}
+
+    		if (/*multiple*/ ctx[12] === undefined && !("multiple" in props)) {
+    			console.warn("<Input> was created without expected prop 'multiple'");
     		}
     	}
 
@@ -1958,6 +1980,14 @@ var Svelecte = (function (exports) {
     	}
 
     	set disabled(value) {
+    		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	get multiple() {
+    		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
+
+    	set multiple(value) {
     		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
     }
@@ -2464,17 +2494,17 @@ var Svelecte = (function (exports) {
     			svg = svg_element("svg");
     			path = svg_element("path");
     			attr_dev(path, "d", "M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z");
-    			add_location(path, file$2, 73, 114, 2316);
-    			attr_dev(svg, "class", "indicator-icon svelte-108toue");
+    			add_location(path, file$2, 73, 114, 2340);
+    			attr_dev(svg, "class", "indicator-icon svelte-6rgaw");
     			attr_dev(svg, "height", "20");
     			attr_dev(svg, "width", "20");
     			attr_dev(svg, "viewBox", "0 0 20 20");
     			attr_dev(svg, "aria-hidden", "true");
     			attr_dev(svg, "focusable", "false");
-    			add_location(svg, file$2, 73, 6, 2208);
+    			add_location(svg, file$2, 73, 6, 2232);
     			attr_dev(div, "aria-hidden", "true");
-    			attr_dev(div, "class", "indicator-container close-icon svelte-108toue");
-    			add_location(div, file$2, 69, 4, 2051);
+    			attr_dev(div, "class", "indicator-container close-icon svelte-6rgaw");
+    			add_location(div, file$2, 69, 4, 2075);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -2516,8 +2546,8 @@ var Svelecte = (function (exports) {
     	const block = {
     		c: function create() {
     			span = element("span");
-    			attr_dev(span, "class", "indicator-separator svelte-108toue");
-    			add_location(span, file$2, 77, 4, 2736);
+    			attr_dev(span, "class", "indicator-separator svelte-6rgaw");
+    			add_location(span, file$2, 77, 4, 2760);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2561,7 +2591,8 @@ var Svelecte = (function (exports) {
     	let input_props = {
     		disabled: /*disabled*/ ctx[3],
     		searchable: /*searchable*/ ctx[1],
-    		placeholder: /*placeholder*/ ctx[4]
+    		placeholder: /*placeholder*/ ctx[4],
+    		multiple: /*multiple*/ ctx[5]
     	};
 
     	input = new Input({ props: input_props, $$inline: true });
@@ -2591,24 +2622,24 @@ var Svelecte = (function (exports) {
     			div1 = element("div");
     			svg = svg_element("svg");
     			path = svg_element("path");
-    			attr_dev(div0, "class", "sv-content svelte-108toue");
+    			attr_dev(div0, "class", "sv-content sv-input-row svelte-6rgaw");
     			toggle_class(div0, "has-multiSelection", /*multiple*/ ctx[5]);
     			add_location(div0, file$2, 51, 2, 1416);
     			attr_dev(path, "d", "M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z");
-    			add_location(path, file$2, 81, 8, 2988);
+    			add_location(path, file$2, 81, 8, 3012);
     			attr_dev(svg, "width", "20");
-    			attr_dev(svg, "class", "indicator-icon svelte-108toue");
+    			attr_dev(svg, "class", "indicator-icon svelte-6rgaw");
     			attr_dev(svg, "viewBox", "0 0 20 20");
     			attr_dev(svg, "aria-hidden", "true");
     			attr_dev(svg, "focusable", "false");
-    			add_location(svg, file$2, 80, 6, 2882);
+    			add_location(svg, file$2, 80, 6, 2906);
     			attr_dev(div1, "aria-hidden", "true");
-    			attr_dev(div1, "class", "indicator-container svelte-108toue");
-    			add_location(div1, file$2, 79, 4, 2794);
-    			attr_dev(div2, "class", "indicator svelte-108toue");
+    			attr_dev(div1, "class", "indicator-container svelte-6rgaw");
+    			add_location(div1, file$2, 79, 4, 2818);
+    			attr_dev(div2, "class", "indicator svelte-6rgaw");
     			toggle_class(div2, "is-loading", /*$isFetchingData*/ ctx[10]);
-    			add_location(div2, file$2, 67, 2, 1925);
-    			attr_dev(div3, "class", "sv-control svelte-108toue");
+    			add_location(div2, file$2, 67, 2, 1949);
+    			attr_dev(div3, "class", "sv-control svelte-6rgaw");
     			toggle_class(div3, "is-active", /*$hasFocus*/ ctx[8]);
     			toggle_class(div3, "is-disabled", /*disabled*/ ctx[3]);
     			add_location(div3, file$2, 45, 0, 1197);
@@ -2683,6 +2714,7 @@ var Svelecte = (function (exports) {
     			if (dirty[0] & /*disabled*/ 8) input_changes.disabled = /*disabled*/ ctx[3];
     			if (dirty[0] & /*searchable*/ 2) input_changes.searchable = /*searchable*/ ctx[1];
     			if (dirty[0] & /*placeholder*/ 16) input_changes.placeholder = /*placeholder*/ ctx[4];
+    			if (dirty[0] & /*multiple*/ 32) input_changes.multiple = /*multiple*/ ctx[5];
     			input.$set(input_changes);
 
     			if (dirty[0] & /*multiple*/ 32) {
@@ -4251,7 +4283,7 @@ var Svelecte = (function (exports) {
     const get_icon_slot_changes$1 = dirty => ({});
     const get_icon_slot_context$1 = ctx => ({});
 
-    // (370:4) <div slot="icon" class="icon-slot">
+    // (368:4) <div slot="icon" class="icon-slot">
     function create_icon_slot(ctx) {
     	let div;
     	let current;
@@ -4264,7 +4296,7 @@ var Svelecte = (function (exports) {
     			if (icon_slot) icon_slot.c();
     			attr_dev(div, "slot", "icon");
     			attr_dev(div, "class", "icon-slot svelte-1h9htsj");
-    			add_location(div, file$4, 369, 4, 12463);
+    			add_location(div, file$4, 367, 4, 12431);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -4301,14 +4333,14 @@ var Svelecte = (function (exports) {
     		block,
     		id: create_icon_slot.name,
     		type: "slot",
-    		source: "(370:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
+    		source: "(368:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (378:2) {#if name && !anchor}
+    // (376:2) {#if name && !anchor}
     function create_if_block$3(ctx) {
     	let select;
     	let each_value = /*$selectedOptions*/ ctx[16];
@@ -4333,7 +4365,7 @@ var Svelecte = (function (exports) {
     			attr_dev(select, "tabindex", "-1");
     			select.required = /*required*/ ctx[3];
     			select.disabled = /*disabled*/ ctx[4];
-    			add_location(select, file$4, 378, 2, 12811);
+    			add_location(select, file$4, 376, 2, 12779);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, select, anchor);
@@ -4393,14 +4425,14 @@ var Svelecte = (function (exports) {
     		block,
     		id: create_if_block$3.name,
     		type: "if",
-    		source: "(378:2) {#if name && !anchor}",
+    		source: "(376:2) {#if name && !anchor}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (380:4) {#each $selectedOptions as opt}
+    // (378:4) {#each $selectedOptions as opt}
     function create_each_block$2(ctx) {
     	let option;
     	let t_value = /*opt*/ ctx[78].text + "";
@@ -4414,7 +4446,7 @@ var Svelecte = (function (exports) {
     			option.__value = option_value_value = /*opt*/ ctx[78].value;
     			option.value = option.__value;
     			option.selected = true;
-    			add_location(option, file$4, 380, 4, 12939);
+    			add_location(option, file$4, 378, 4, 12907);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -4437,7 +4469,7 @@ var Svelecte = (function (exports) {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(380:4) {#each $selectedOptions as opt}",
+    		source: "(378:4) {#each $selectedOptions as opt}",
     		ctx
     	});
 
@@ -4494,7 +4526,7 @@ var Svelecte = (function (exports) {
     			attr_dev(div, "class", div_class_value = "" + (null_to_empty(`svelecte ${/*className*/ ctx[10]}`) + " svelte-1h9htsj"));
     			attr_dev(div, "style", /*style*/ ctx[11]);
     			toggle_class(div, "is-disabled", /*disabled*/ ctx[4]);
-    			add_location(div, file$4, 362, 0, 12171);
+    			add_location(div, file$4, 360, 0, 12139);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4843,7 +4875,6 @@ var Svelecte = (function (exports) {
      * Keyboard navigation
      */
     	function onKeyDown(event) {
-
     		if (creatable && delimiter.indexOf(event.key) > -1) {
     			onSelect(null, $inputValue);
     			event.preventDefault();
@@ -5226,16 +5257,16 @@ var Svelecte = (function (exports) {
     			 $$invalidate(15, itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField }));
     		}
 
-    		if ($$self.$$.dirty[0] & /*multiple, $selectedOptions, anchor*/ 65539 | $$self.$$.dirty[1] & /*valueField, value*/ 5) {
+    		if ($$self.$$.dirty[0] & /*multiple, $selectedOptions, anchor*/ 65539 | $$self.$$.dirty[1] & /*currentValueField, value*/ 4194305) {
     			 {
     				$$invalidate(30, selection = multiple
     				? $selectedOptions
     				: $selectedOptions.length ? $selectedOptions[0] : null);
 
     				$$invalidate(31, value = multiple
-    				? $selectedOptions.map(opt => opt[valueField])
+    				? $selectedOptions.map(opt => opt[currentValueField])
     				: $selectedOptions.length
-    					? $selectedOptions[0][valueField]
+    					? $selectedOptions[0][currentValueField]
     					: null);
 
     				// Custom-element related
@@ -5600,7 +5631,7 @@ var Svelecte = (function (exports) {
     const OPTION_LIST = [
       'options', 'fetch', 'name', 'required',
       'multiple','disabled', 'max', 'creatable',
-      'placeholder', 'renderer', 'searchable', 'clearable',
+      'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch',
       'anchor'
     ];
 
@@ -5642,213 +5673,226 @@ var Svelecte = (function (exports) {
      * Connect Custom Component attributes to Svelte Component properties
      * @param {string} name Name of the Custom Component
      */
-    function registerComponent(name) {
-      window.customElements.define(name, class extends HTMLElement {
-        constructor() {
-          super();
-          this.svelecte = undefined;
-          
-          /** ************************************ public API */
-          this.setOptions = options => this.svelecte.setOptions(options);
-          Object.defineProperties(this, {
-            'selection': {
-              get() {
-                return this.svelecte.getSelection();
-              }
+    const SvelecteElement = class extends HTMLElement {
+      constructor() {
+        super();
+        this.svelecte = undefined;
+        this._init = null;
+        this._locked = false;
+        
+        /** ************************************ public API */
+        this.setOptions = options => this.svelecte.setOptions(options);
+        Object.defineProperties(this, {
+          'selection': {
+            get() {
+              return this.svelecte.getSelection();
+            }
+          },
+          'value': {
+            get() {
+              const val = this.svelecte.getSelection();
+              if (!val) return null;
+              return this.multiple ? val.map(v => v.value) : val.value;
             },
-            'value': {
-              get() {
-                const val = this.svelecte.getSelection();
-                if (!val) return null;
-                return this.multiple ? val.map(v => v.value) : val.value;
-              },
-              set(value) {
-                this.svelecte.setSelection(value);
-              }
+            set(value) {
+              this.svelecte.setSelection(value);
+            }
+          },
+          'options': {
+            get() {
+              return JSON.parse(this.getAttribute('options'));
             },
-            'options': {
-              get() {
-                return JSON.parse(this.getAttribute('options'));
-              },
-              set(value) {
-                this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
-              }
+            set(value) {
+              this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
+            }
+          },
+          'disabled': {
+            get() {
+              return this.getAttribute('disabled') !== null;
             },
-            'disabled': {
-              get() {
-                return this.getAttribute('disabled') !== null;
-              },
-              set(value) {
-                if (!value) { 
-                  this.removeAttribute('disabled');
-                } else {
-                  this.setAttribute('disabled', value === true ? '' : value);
-                }
-              }
-            },
-            'multiple': {
-              get() {
-                return this.getAttribute('multiple') !== null;
-              },
-              set(value) {
-                if (!value) { 
-                  this.removeAttribute('multiple');
-                } else {
-                  this.setAttribute('multiple', value === true ? '' : value);
-                }
-              }
-            },
-            'creatable': {
-              get() {
-                return this.getAttribute('creatable') !== null;
-              },
-              set(value) {
-                if (!value) { 
-                  this.removeAttribute('creatable');
-                } else {
-                  this.setAttribute('creatable', value === true ? '' : value);
-                }
-              }
-            },
-            'clearable': {
-              get() {
-                return this.getAttribute('clearable') !== 'false';
-              },
-              set(value) {
-                this.setAttribute('clearable', value ? 'true' : 'false');
-              }
-            },
-            'placeholder': {
-              get() {
-                return this.getAttribute('placeholder') || '';
-              },
-              set(value) {
-                this.setAttribute('placeholder', value || 'Select');
-              }
-            },
-            'renderer': {
-              get() {
-                return this.getAttribute('renderer') || 'default';
-              },
-              set(value) {
-                value && this.setAttribute('renderer', value);
-              }
-            },
-            'required': {
-              get() {
-                return this.hasAttribute('required');
-              },
-              set(value) {
-                if (!value) {
-                  this.removeAttribute('required');
-                } else {
-                  this.setAttribute('required', '');
-                }
-              }
-            },
-            'anchor': {
-              get() {
-                return this.getAttribute('anchor');
-              },
-              set(value) {
-                this.setAttribute('anchor', value);
-              }
-            },
-            'max': {
-              get() {
-                return this.getAttribute('max') || 0;
-              },
-              set(value) {
-                try {
-                  value = parseInt(value);
-                  if (value < 0) value = 0;
-                } catch (e) {
-                  value = 0;
-                }
-                this.setAttribute('max', value);
+            set(value) {
+              if (!value) { 
+                this.removeAttribute('disabled');
+              } else {
+                this.setAttribute('disabled', value === true ? '' : value);
               }
             }
-          });
-        }
+          },
+          'multiple': {
+            get() {
+              return this.getAttribute('multiple') !== null;
+            },
+            set(value) {
+              if (!value) { 
+                this.removeAttribute('multiple');
+              } else {
+                this.setAttribute('multiple', value === true ? '' : value);
+              }
+            }
+          },
+          'creatable': {
+            get() {
+              return this.getAttribute('creatable') !== null;
+            },
+            set(value) {
+              if (!value) { 
+                this.removeAttribute('creatable');
+              } else {
+                this.setAttribute('creatable', value === true ? '' : value);
+              }
+            }
+          },
+          'clearable': {
+            get() {
+              return this.getAttribute('clearable') !== 'false';
+            },
+            set(value) {
+              this.setAttribute('clearable', value ? 'true' : 'false');
+            }
+          },
+          'placeholder': {
+            get() {
+              return this.getAttribute('placeholder') || '';
+            },
+            set(value) {
+              this.setAttribute('placeholder', value || 'Select');
+            }
+          },
+          'renderer': {
+            get() {
+              return this.getAttribute('renderer') || 'default';
+            },
+            set(value) {
+              value && this.setAttribute('renderer', value);
+            }
+          },
+          'required': {
+            get() {
+              return this.hasAttribute('required');
+            },
+            set(value) {
+              if (!value) {
+                this.removeAttribute('required');
+              } else {
+                this.setAttribute('required', '');
+              }
+            }
+          },
+          'anchor': {
+            get() {
+              return this.getAttribute('anchor');
+            },
+            set(value) {
+              this.setAttribute('anchor', value);
+            }
+          },
+          'max': {
+            get() {
+              return this.getAttribute('max') || 0;
+            },
+            set(value) {
+              try {
+                value = parseInt(value);
+                if (value < 0) value = 0;
+              } catch (e) {
+                value = 0;
+              }
+              this.setAttribute('max', value);
+            }
+          }
+        });
+      }
 
-        static get observedAttributes() {
-          return OPTION_LIST;
-        }
+      static get observedAttributes() {
+        return OPTION_LIST;
+      }
 
-        attributeChangedCallback(name, oldValue, newValue) {
-          if (this.svelecte && oldValue !== newValue) {
-            this.svelecte.$set({ [name]: formatValue(name, newValue) });
+      attributeChangedCallback(name, oldValue, newValue) {
+        if (this.svelecte && oldValue !== newValue) {
+          this.svelecte.$set({ [name]: formatValue(name, newValue) });
+        }
+      }
+
+      adoptedCallback() {
+        console.log('adopted');
+      }
+      
+      connectedCallback() {
+        console.log('original');
+        setTimeout(() => { this.render(); });
+      }
+
+      render() {
+        let props = {};
+        if (this._locked) {
+          clearTimeout(this._init);
+          console.log('tt->EE');
+          return;
+        }
+        this._locked = true;
+        for (const attr of OPTION_LIST) {
+          if (this.hasAttribute(attr)) {
+            props[attr] = formatValue(attr, this.getAttribute(attr));
           }
         }
-
-        connectedCallback() {
-          let props = {};
-          setTimeout(() => {
-            for (const attr of OPTION_LIST) {
-              if (this.hasAttribute(attr)) {
-                props[attr] = formatValue(attr, this.getAttribute(attr));
-              }
+        if (this.hasAttribute('parent')) {
+          delete props['fetch'];
+          this.parent = document.getElementById(this.getAttribute('parent'));
+          if (!this.parent.value) {
+            this.setAttribute('disabled', true);
+            props['disabled'] = true;
+          }      this.parentCallback = e => {
+            if (this.hasAttribute('fetch')) {
+              const fetchUrl = this.getAttribute('fetch').replace('[parent]', e.target.value);
+              this.svelecte.$set({ fetch: fetchUrl });
             }
-            if (this.hasAttribute('parent')) {
-              this.parent = document.getElementById(this.getAttribute('parent'));
-              if (!this.parent.value) {
-                this.setAttribute('disabled', true);
-                props['disabled'] = true;
-              }          this.parentCallback = e => {
-                if (this.hasAttribute('remote-init')) {
-                  const url = this.getAttribute('remote-init').replace('[parent]', e.target.value);
-                  fetchRemote(url)()
-                    .then(data => {
-                      this.disabled = false;
-                      this.options = data;
-                      return data.length > 0;
-                    })
-                    .then(shouldFocus => {
-                      shouldFocus && this.querySelector('input').focus();
-                    })
-                    .catch(() => this.options = []);
-                }
-              };
-              this.parent.addEventListener('change', this.parentCallback);
+            if (e.target.value) {
+              this.removeAttribute('disabled');
+            } else {
+              this.setAttribute('disabled', '');
             }
-            const anchorSelect = this.querySelector('select');
-            if (anchorSelect) {
-              props['anchor'] = anchorSelect;
-              anchorSelect.tabIndex = -1; // just to be sure
-            }
-            // if (this.childElementCount > 0) {
-            //   props.options = Array.prototype.slice.call(this.children).map(opt => {
-            //     return Object.assign({
-            //       isSelected: opt.selected,
-            //       isDisabled: opt.disabled
-            //     }, opt.dataset.data ? JSON.parse(opt.dataset.data)
-            //       : {
-            //         value: opt.value,
-            //         text: opt.text,
-            //       }
-            //     );
-            //   });
-            //   this.innerHTML = '';
-            // }
-            this.svelecte = new Svelecte({
-              target: this,
-              anchor: anchorSelect,
-              props,
-            });
-            this.svelecte.$on('change', e => this.dispatchEvent(e));
-          });
+          };
+          this.parent.addEventListener('change', this.parentCallback);
         }
-
-        disconnectedCallback() {
-          this.svelecte = this.svelecte.$destroy();
-          this.parent && this.parent.removeEventListener('change', this.parentCallback);
+        const anchorSelect = this.querySelector('select');
+        if (anchorSelect) {
+          props['anchor'] = anchorSelect;
+          anchorSelect.tabIndex = -1; // just to be sure
         }
-      });
-    }
+        // if (this.childElementCount > 0) {
+        //   props.options = Array.prototype.slice.call(this.children).map(opt => {
+        //     return Object.assign({
+        //       isSelected: opt.selected,
+        //       isDisabled: opt.disabled
+        //     }, opt.dataset.data ? JSON.parse(opt.dataset.data)
+        //       : {
+        //         value: opt.value,
+        //         text: opt.text,
+        //       }
+        //     );
+        //   });
+        //   this.innerHTML = '';
+        // }
+        console.log('options', (new Date()).getTime(), props);
+        this.svelecte = new Svelecte({
+          target: this,
+          anchor: anchorSelect,
+          props,
+        });
+        this.svelecte.$on('change', e => this.dispatchEvent(e));
+        return true;
+      }
 
+      disconnectedCallback() {
+        console.log('bye', this.value);
+        this.svelecte = this.svelecte.$destroy();
+        this.parent && this.parent.removeEventListener('change', this.parentCallback);
+      }
+    };
+
+    exports.SvelecteElement = SvelecteElement;
     exports.addFormatter = addFormatter;
     exports.config = config;
-    exports.registerComponent = registerComponent;
 
     return exports;
 
