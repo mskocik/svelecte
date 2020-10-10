@@ -155,8 +155,8 @@
       ? $selectedOptions
       : $selectedOptions.length ? $selectedOptions[0] : null;
     value = multiple 
-      ? $selectedOptions.map(opt => opt[valueField])
-      : $selectedOptions.length ? $selectedOptions[0][valueField] : null;
+      ? $selectedOptions.map(opt => opt[currentValueField])
+      : $selectedOptions.length ? $selectedOptions[0][currentValueField] : null;
     // Custom-element related
     if (anchor && value) {
       anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce((res, item) => {
