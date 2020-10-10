@@ -1369,8 +1369,8 @@ var Svelecte = (function (exports) {
         isMultiple = val.multiple;
         isCreatable = val.creatable;
         sifterSortRemote = val.sortRemote;
-        valueField = val.valueField;
-        labelField = val.labelField;
+        valueField = val.currentValueField;
+        labelField = val.currentLabelField;
         if (!isMultiple && internalSelection.size > 1) {
           opts.update(opts => opts.map(o => { o.isSelected = false; return o }));
         }
@@ -4296,7 +4296,7 @@ var Svelecte = (function (exports) {
     			if (icon_slot) icon_slot.c();
     			attr_dev(div, "slot", "icon");
     			attr_dev(div, "class", "icon-slot svelte-1h9htsj");
-    			add_location(div, file$4, 367, 4, 12431);
+    			add_location(div, file$4, 367, 4, 12451);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -4365,7 +4365,7 @@ var Svelecte = (function (exports) {
     			attr_dev(select, "tabindex", "-1");
     			select.required = /*required*/ ctx[3];
     			select.disabled = /*disabled*/ ctx[4];
-    			add_location(select, file$4, 376, 2, 12779);
+    			add_location(select, file$4, 376, 2, 12799);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, select, anchor);
@@ -4446,7 +4446,7 @@ var Svelecte = (function (exports) {
     			option.__value = option_value_value = /*opt*/ ctx[78].value;
     			option.value = option.__value;
     			option.selected = true;
-    			add_location(option, file$4, 378, 4, 12907);
+    			add_location(option, file$4, 378, 4, 12927);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
@@ -4526,7 +4526,7 @@ var Svelecte = (function (exports) {
     			attr_dev(div, "class", div_class_value = "" + (null_to_empty(`svelecte ${/*className*/ ctx[10]}`) + " svelte-1h9htsj"));
     			attr_dev(div, "style", /*style*/ ctx[11]);
     			toggle_class(div, "is-disabled", /*disabled*/ ctx[4]);
-    			add_location(div, file$4, 360, 0, 12139);
+    			add_location(div, file$4, 360, 0, 12159);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4812,12 +4812,12 @@ var Svelecte = (function (exports) {
      */
     	function _selectByValues(values) {
     		if (!Array.isArray(values)) values = [values];
-    		if (values[0] && values[0] instanceof Object) values = values.map(opt => opt[valueField]);
+    		if (values[0] && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
     		clearSelection();
     		const newAddition = [];
 
     		$flatMatching.forEach(opt => {
-    			if (values.includes(opt.value)) {
+    			if (values.includes(opt[currentValueField])) {
     				newAddition.push(opt);
     			}
     		});
@@ -5629,7 +5629,7 @@ var Svelecte = (function (exports) {
     }
 
     const OPTION_LIST = [
-      'options', 'fetch', 'name', 'required',
+      'options', 'fetch', 'name', 'required', 'value',
       'multiple','disabled', 'max', 'creatable',
       'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch',
       'anchor'
@@ -5695,6 +5695,7 @@ var Svelecte = (function (exports) {
               return this.multiple ? val.map(v => v.value) : val.value;
             },
             set(value) {
+              
               this.svelecte.setSelection(value);
             }
           },
@@ -5879,7 +5880,10 @@ var Svelecte = (function (exports) {
           anchor: anchorSelect,
           props,
         });
-        this.svelecte.$on('change', e => this.dispatchEvent(e));
+        this.svelecte.$on('change', e => {
+          this.setAttribute('value', this.value);
+          this.dispatchEvent(e);
+        });
         return true;
       }
 

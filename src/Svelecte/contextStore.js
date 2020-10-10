@@ -44,8 +44,8 @@ const initStore = (options, initialSettings, dropdownMessages) => {
     isMultiple = val.multiple;
     isCreatable = val.creatable;
     sifterSortRemote = val.sortRemote;
-    valueField = val.valueField;
-    labelField = val.labelField;
+    valueField = val.currentValueField;
+    labelField = val.currentLabelField;
     if (!isMultiple && internalSelection.size > 1) {
       opts.update(opts => opts.map(o => { o.isSelected = false; return o }));
     }

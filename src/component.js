@@ -1,7 +1,7 @@
 import Svelecte, { addFormatter, config } from './Svelecte/Svelecte.svelte';
 
 const OPTION_LIST = [
-  'options', 'fetch', 'name', 'required',
+  'options', 'fetch', 'name', 'required', 'value',
   'multiple','disabled', 'max', 'creatable',
   'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch',
   'anchor'
@@ -69,6 +69,7 @@ export const SvelecteElement = class extends HTMLElement {
           return this.multiple ? val.map(v => v.value) : val.value;
         },
         set(value) {
+          
           this.svelecte.setSelection(value);
         }
       },
@@ -254,7 +255,10 @@ export const SvelecteElement = class extends HTMLElement {
       anchor: anchorSelect,
       props,
     });
-    this.svelecte.$on('change', e => this.dispatchEvent(e));
+    this.svelecte.$on('change', e => {
+      this.setAttribute('value', this.value);
+      this.dispatchEvent(e);
+    });
     return true;
   }
 

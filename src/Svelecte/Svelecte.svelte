@@ -194,11 +194,11 @@
    */ 
   function _selectByValues(values) {
     if (!Array.isArray(values)) values = [values];
-    if (values[0] && values[0] instanceof Object) values = values.map(opt => opt[valueField]);
+    if (values[0] && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
     clearSelection();
     const newAddition = [];
     $flatMatching.forEach(opt => {
-      if (values.includes(opt.value)) {
+      if (values.includes(opt[currentValueField])) {
         newAddition.push(opt);
       }
     });
