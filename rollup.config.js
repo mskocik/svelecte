@@ -67,12 +67,12 @@ const app = {
 const component = {
   input: 'src/component.js',
   output: [{
-      sourcemaps: false,
+      sourcemap: false,
       format: 'iife',
       name: 'Svelecte',
       file: 'dist/svelecte.js'
     }, {
-      sourcemaps: false,
+      sourcemap: false,
       format: 'es',
       file: 'dist/svelecte.mjs'
   }],
