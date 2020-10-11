@@ -1585,6 +1585,7 @@ var Svelecte = (function (exports) {
         return list;
       });
       const clearSelection = () => opts.update(list => {
+        const toClear = [];
         list.forEach(opt => {
           if (opt.options) {
             opt.options.forEach(o => o.isSelected = false);
@@ -1592,10 +1593,11 @@ var Svelecte = (function (exports) {
             opt.isSelected = false;
             if (opt._created) {
               internalSelection.delete(opt);
-              list.splice(list.indexOf(opt), 1);
+              toClear.push(list.indexOf(opt));
             }
           }
         });
+        toClear.length && toClear.reverse().forEach(idx => list.splice(idx, 1));
         return list;
       });
 
@@ -1672,30 +1674,31 @@ var Svelecte = (function (exports) {
     			input.readOnly = input_readonly_value = !/*searchable*/ ctx[0];
     			attr_dev(input, "style", /*inputStyle*/ ctx[7]);
     			attr_dev(input, "placeholder", /*placeholderText*/ ctx[4]);
-    			add_location(input, file, 28, 0, 898);
+    			add_location(input, file, 31, 0, 1022);
     			attr_dev(div, "class", "shadow-text svelte-mtw92l");
-    			add_render_callback(() => /*div_elementresize_handler*/ ctx[19].call(div));
-    			add_location(div, file, 39, 0, 1142);
+    			add_render_callback(() => /*div_elementresize_handler*/ ctx[21].call(div));
+    			add_location(div, file, 43, 0, 1288);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, input, anchor);
-    			/*input_binding*/ ctx[17](input);
+    			/*input_binding*/ ctx[19](input);
     			set_input_value(input, /*$inputValue*/ ctx[6]);
     			insert_dev(target, t0, anchor);
     			insert_dev(target, div, anchor);
     			append_dev(div, t1);
-    			div_resize_listener = add_resize_listener(div, /*div_elementresize_handler*/ ctx[19].bind(div));
+    			div_resize_listener = add_resize_listener(div, /*div_elementresize_handler*/ ctx[21].bind(div));
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[18]),
-    					listen_dev(input, "focus", /*focus_handler*/ ctx[13], false, false, false),
-    					listen_dev(input, "blur", /*blur_handler*/ ctx[14], false, false, false),
-    					listen_dev(input, "keydown", /*keydown_handler*/ ctx[15], false, false, false),
-    					listen_dev(input, "paste", /*paste_handler*/ ctx[16], false, false, false)
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[20]),
+    					listen_dev(input, "focus", /*focus_handler*/ ctx[15], false, false, false),
+    					listen_dev(input, "blur", /*blur_handler*/ ctx[16], false, false, false),
+    					listen_dev(input, "keydown", /*keydown_handler*/ ctx[17], false, false, false),
+    					listen_dev(input, "keyup", /*onKeyUp*/ ctx[11], false, false, false),
+    					listen_dev(input, "paste", /*paste_handler*/ ctx[18], false, false, false)
     				];
 
     				mounted = true;
@@ -1728,7 +1731,7 @@ var Svelecte = (function (exports) {
     		o: noop,
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(input);
-    			/*input_binding*/ ctx[17](null);
+    			/*input_binding*/ ctx[19](null);
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div);
     			div_resize_listener();
@@ -1751,6 +1754,7 @@ var Svelecte = (function (exports) {
     function instance($$self, $$props, $$invalidate) {
     	let $selectedOptions;
     	let $inputValue;
+    	let $hasDropdownOpened;
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots("Input", slots, []);
     	const focus = () => inputRef.focus();
@@ -1760,15 +1764,20 @@ var Svelecte = (function (exports) {
     	let { multiple } = $$props;
     	let inputRef = null;
     	let shadowWidth = 0;
-    	const dispatch = createEventDispatcher();
-    	const { inputValue, selectedOptions } = getContext(key);
+    	const { inputValue, selectedOptions, hasDropdownOpened } = getContext(key);
     	validate_store(inputValue, "inputValue");
     	component_subscribe($$self, inputValue, value => $$invalidate(6, $inputValue = value));
     	validate_store(selectedOptions, "selectedOptions");
-    	component_subscribe($$self, selectedOptions, value => $$invalidate(21, $selectedOptions = value));
+    	component_subscribe($$self, selectedOptions, value => $$invalidate(23, $selectedOptions = value));
+    	validate_store(hasDropdownOpened, "hasDropdownOpened");
+    	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(25, $hasDropdownOpened = value));
 
-    	function dispatchEvent(event) {
-    		dispatch(event.type);
+    	/** Stop event propagation on keyup, when dropdown is opened. Typically this will prevent form submit */
+    	function onKeyUp(e) {
+    		if ($hasDropdownOpened) {
+    			e.stopImmediatePropagation();
+    			e.preventDefault();
+    		}
     	}
 
     	const writable_props = ["placeholder", "searchable", "disabled", "multiple"];
@@ -1811,16 +1820,15 @@ var Svelecte = (function (exports) {
     	}
 
     	$$self.$$set = $$props => {
-    		if ("placeholder" in $$props) $$invalidate(11, placeholder = $$props.placeholder);
+    		if ("placeholder" in $$props) $$invalidate(13, placeholder = $$props.placeholder);
     		if ("searchable" in $$props) $$invalidate(0, searchable = $$props.searchable);
     		if ("disabled" in $$props) $$invalidate(1, disabled = $$props.disabled);
-    		if ("multiple" in $$props) $$invalidate(12, multiple = $$props.multiple);
+    		if ("multiple" in $$props) $$invalidate(14, multiple = $$props.multiple);
     	};
 
     	$$self.$capture_state = () => ({
     		getContext,
     		onDestroy,
-    		createEventDispatcher,
     		key,
     		focus,
     		placeholder,
@@ -1829,30 +1837,31 @@ var Svelecte = (function (exports) {
     		multiple,
     		inputRef,
     		shadowWidth,
-    		dispatch,
     		inputValue,
     		selectedOptions,
-    		dispatchEvent,
+    		hasDropdownOpened,
+    		onKeyUp,
     		isSingleFilled,
     		$selectedOptions,
     		placeholderText,
     		shadowText,
     		$inputValue,
     		widthAddition,
-    		inputStyle
+    		inputStyle,
+    		$hasDropdownOpened
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("placeholder" in $$props) $$invalidate(11, placeholder = $$props.placeholder);
+    		if ("placeholder" in $$props) $$invalidate(13, placeholder = $$props.placeholder);
     		if ("searchable" in $$props) $$invalidate(0, searchable = $$props.searchable);
     		if ("disabled" in $$props) $$invalidate(1, disabled = $$props.disabled);
-    		if ("multiple" in $$props) $$invalidate(12, multiple = $$props.multiple);
+    		if ("multiple" in $$props) $$invalidate(14, multiple = $$props.multiple);
     		if ("inputRef" in $$props) $$invalidate(2, inputRef = $$props.inputRef);
     		if ("shadowWidth" in $$props) $$invalidate(3, shadowWidth = $$props.shadowWidth);
-    		if ("isSingleFilled" in $$props) $$invalidate(20, isSingleFilled = $$props.isSingleFilled);
+    		if ("isSingleFilled" in $$props) $$invalidate(22, isSingleFilled = $$props.isSingleFilled);
     		if ("placeholderText" in $$props) $$invalidate(4, placeholderText = $$props.placeholderText);
     		if ("shadowText" in $$props) $$invalidate(5, shadowText = $$props.shadowText);
-    		if ("widthAddition" in $$props) $$invalidate(22, widthAddition = $$props.widthAddition);
+    		if ("widthAddition" in $$props) $$invalidate(24, widthAddition = $$props.widthAddition);
     		if ("inputStyle" in $$props) $$invalidate(7, inputStyle = $$props.inputStyle);
     	};
 
@@ -1867,11 +1876,11 @@ var Svelecte = (function (exports) {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty & /*$selectedOptions, multiple*/ 2101248) {
-    			 $$invalidate(20, isSingleFilled = $selectedOptions.length > 0 && multiple === false);
+    		if ($$self.$$.dirty & /*$selectedOptions, multiple*/ 8404992) {
+    			 $$invalidate(22, isSingleFilled = $selectedOptions.length > 0 && multiple === false);
     		}
 
-    		if ($$self.$$.dirty & /*$selectedOptions, placeholder*/ 2099200) {
+    		if ($$self.$$.dirty & /*$selectedOptions, placeholder*/ 8396800) {
     			 $$invalidate(4, placeholderText = $selectedOptions.length > 0 ? "" : placeholder);
     		}
 
@@ -1879,11 +1888,11 @@ var Svelecte = (function (exports) {
     			 $$invalidate(5, shadowText = $inputValue || placeholderText);
     		}
 
-    		if ($$self.$$.dirty & /*$selectedOptions*/ 2097152) {
-    			 $$invalidate(22, widthAddition = $selectedOptions.length === 0 ? 19 : 12);
+    		if ($$self.$$.dirty & /*$selectedOptions*/ 8388608) {
+    			 $$invalidate(24, widthAddition = $selectedOptions.length === 0 ? 19 : 12);
     		}
 
-    		if ($$self.$$.dirty & /*isSingleFilled, shadowWidth, widthAddition*/ 5242888) {
+    		if ($$self.$$.dirty & /*isSingleFilled, shadowWidth, widthAddition*/ 20971528) {
     			 $$invalidate(7, inputStyle = `width: ${isSingleFilled ? 2 : shadowWidth + widthAddition}px`);
     		}
     	};
@@ -1899,6 +1908,8 @@ var Svelecte = (function (exports) {
     		inputStyle,
     		inputValue,
     		selectedOptions,
+    		hasDropdownOpened,
+    		onKeyUp,
     		focus,
     		placeholder,
     		multiple,
@@ -1917,11 +1928,11 @@ var Svelecte = (function (exports) {
     		super(options);
 
     		init(this, options, instance, create_fragment, safe_not_equal, {
-    			focus: 10,
-    			placeholder: 11,
+    			focus: 12,
+    			placeholder: 13,
     			searchable: 0,
     			disabled: 1,
-    			multiple: 12
+    			multiple: 14
     		});
 
     		dispatch_dev("SvelteRegisterComponent", {
@@ -1934,7 +1945,7 @@ var Svelecte = (function (exports) {
     		const { ctx } = this.$$;
     		const props = options.props || {};
 
-    		if (/*placeholder*/ ctx[11] === undefined && !("placeholder" in props)) {
+    		if (/*placeholder*/ ctx[13] === undefined && !("placeholder" in props)) {
     			console.warn("<Input> was created without expected prop 'placeholder'");
     		}
 
@@ -1946,13 +1957,13 @@ var Svelecte = (function (exports) {
     			console.warn("<Input> was created without expected prop 'disabled'");
     		}
 
-    		if (/*multiple*/ ctx[12] === undefined && !("multiple" in props)) {
+    		if (/*multiple*/ ctx[14] === undefined && !("multiple" in props)) {
     			console.warn("<Input> was created without expected prop 'multiple'");
     		}
     	}
 
     	get focus() {
-    		return this.$$.ctx[10];
+    		return this.$$.ctx[12];
     	}
 
     	set focus(value) {
@@ -4276,19 +4287,19 @@ var Svelecte = (function (exports) {
 
     function get_each_context$2(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[78] = list[i];
+    	child_ctx[79] = list[i];
     	return child_ctx;
     }
 
     const get_icon_slot_changes$1 = dirty => ({});
     const get_icon_slot_context$1 = ctx => ({});
 
-    // (368:4) <div slot="icon" class="icon-slot">
+    // (382:4) <div slot="icon" class="icon-slot">
     function create_icon_slot(ctx) {
     	let div;
     	let current;
-    	const icon_slot_template = /*#slots*/ ctx[46].icon;
-    	const icon_slot = create_slot(icon_slot_template, ctx, /*$$scope*/ ctx[49], get_icon_slot_context$1);
+    	const icon_slot_template = /*#slots*/ ctx[47].icon;
+    	const icon_slot = create_slot(icon_slot_template, ctx, /*$$scope*/ ctx[50], get_icon_slot_context$1);
 
     	const block = {
     		c: function create() {
@@ -4296,7 +4307,7 @@ var Svelecte = (function (exports) {
     			if (icon_slot) icon_slot.c();
     			attr_dev(div, "slot", "icon");
     			attr_dev(div, "class", "icon-slot svelte-1h9htsj");
-    			add_location(div, file$4, 367, 4, 12451);
+    			add_location(div, file$4, 381, 4, 13063);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -4309,8 +4320,8 @@ var Svelecte = (function (exports) {
     		},
     		p: function update(ctx, dirty) {
     			if (icon_slot) {
-    				if (icon_slot.p && dirty[1] & /*$$scope*/ 262144) {
-    					update_slot(icon_slot, icon_slot_template, ctx, /*$$scope*/ ctx[49], dirty, get_icon_slot_changes$1, get_icon_slot_context$1);
+    				if (icon_slot.p && dirty[1] & /*$$scope*/ 524288) {
+    					update_slot(icon_slot, icon_slot_template, ctx, /*$$scope*/ ctx[50], dirty, get_icon_slot_changes$1, get_icon_slot_context$1);
     				}
     			}
     		},
@@ -4333,14 +4344,14 @@ var Svelecte = (function (exports) {
     		block,
     		id: create_icon_slot.name,
     		type: "slot",
-    		source: "(368:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
+    		source: "(382:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (376:2) {#if name && !anchor}
+    // (390:2) {#if name && !anchor}
     function create_if_block$3(ctx) {
     	let select;
     	let each_value = /*$selectedOptions*/ ctx[16];
@@ -4359,13 +4370,13 @@ var Svelecte = (function (exports) {
     				each_blocks[i].c();
     			}
 
-    			attr_dev(select, "name", /*name*/ ctx[2]);
+    			attr_dev(select, "name", /*name*/ ctx[3]);
     			select.multiple = /*multiple*/ ctx[1];
     			attr_dev(select, "class", "is-hidden svelte-1h9htsj");
     			attr_dev(select, "tabindex", "-1");
-    			select.required = /*required*/ ctx[3];
-    			select.disabled = /*disabled*/ ctx[4];
-    			add_location(select, file$4, 376, 2, 12799);
+    			select.required = /*required*/ ctx[4];
+    			select.disabled = /*disabled*/ ctx[2];
+    			add_location(select, file$4, 390, 2, 13411);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, select, anchor);
@@ -4399,20 +4410,20 @@ var Svelecte = (function (exports) {
     				each_blocks.length = each_value.length;
     			}
 
-    			if (dirty[0] & /*name*/ 4) {
-    				attr_dev(select, "name", /*name*/ ctx[2]);
+    			if (dirty[0] & /*name*/ 8) {
+    				attr_dev(select, "name", /*name*/ ctx[3]);
     			}
 
     			if (dirty[0] & /*multiple*/ 2) {
     				prop_dev(select, "multiple", /*multiple*/ ctx[1]);
     			}
 
-    			if (dirty[0] & /*required*/ 8) {
-    				prop_dev(select, "required", /*required*/ ctx[3]);
+    			if (dirty[0] & /*required*/ 16) {
+    				prop_dev(select, "required", /*required*/ ctx[4]);
     			}
 
-    			if (dirty[0] & /*disabled*/ 16) {
-    				prop_dev(select, "disabled", /*disabled*/ ctx[4]);
+    			if (dirty[0] & /*disabled*/ 4) {
+    				prop_dev(select, "disabled", /*disabled*/ ctx[2]);
     			}
     		},
     		d: function destroy(detaching) {
@@ -4425,17 +4436,17 @@ var Svelecte = (function (exports) {
     		block,
     		id: create_if_block$3.name,
     		type: "if",
-    		source: "(376:2) {#if name && !anchor}",
+    		source: "(390:2) {#if name && !anchor}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (378:4) {#each $selectedOptions as opt}
+    // (392:4) {#each $selectedOptions as opt}
     function create_each_block$2(ctx) {
     	let option;
-    	let t_value = /*opt*/ ctx[78].text + "";
+    	let t_value = /*opt*/ ctx[79].text + "";
     	let t;
     	let option_value_value;
 
@@ -4443,19 +4454,19 @@ var Svelecte = (function (exports) {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*opt*/ ctx[78].value;
+    			option.__value = option_value_value = /*opt*/ ctx[79].value;
     			option.value = option.__value;
     			option.selected = true;
-    			add_location(option, file$4, 378, 4, 12927);
+    			add_location(option, file$4, 392, 4, 13539);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*$selectedOptions*/ 65536 && t_value !== (t_value = /*opt*/ ctx[78].text + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*$selectedOptions*/ 65536 && t_value !== (t_value = /*opt*/ ctx[79].text + "")) set_data_dev(t, t_value);
 
-    			if (dirty[0] & /*$selectedOptions*/ 65536 && option_value_value !== (option_value_value = /*opt*/ ctx[78].value)) {
+    			if (dirty[0] & /*$selectedOptions*/ 65536 && option_value_value !== (option_value_value = /*opt*/ ctx[79].value)) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -4469,7 +4480,7 @@ var Svelecte = (function (exports) {
     		block,
     		id: create_each_block$2.name,
     		type: "each",
-    		source: "(378:4) {#each $selectedOptions as opt}",
+    		source: "(392:4) {#each $selectedOptions as opt}",
     		ctx
     	});
 
@@ -4487,7 +4498,7 @@ var Svelecte = (function (exports) {
 
     	let control_props = {
     		renderer: /*itemRenderer*/ ctx[15],
-    		disabled: /*disabled*/ ctx[4],
+    		disabled: /*disabled*/ ctx[2],
     		clearable: /*clearable*/ ctx[7],
     		searchable: /*searchable*/ ctx[8],
     		placeholder: /*placeholder*/ ctx[9],
@@ -4497,7 +4508,7 @@ var Svelecte = (function (exports) {
     	};
 
     	control = new Control({ props: control_props, $$inline: true });
-    	/*control_binding*/ ctx[47](control);
+    	/*control_binding*/ ctx[48](control);
     	control.$on("deselect", /*onDeselect*/ ctx[25]);
     	control.$on("keydown", /*onKeyDown*/ ctx[27]);
     	control.$on("paste", /*onPaste*/ ctx[28]);
@@ -4510,10 +4521,10 @@ var Svelecte = (function (exports) {
     	};
 
     	dropdown = new Dropdown({ props: dropdown_props, $$inline: true });
-    	/*dropdown_binding*/ ctx[48](dropdown);
+    	/*dropdown_binding*/ ctx[49](dropdown);
     	dropdown.$on("select", /*onSelect*/ ctx[24]);
     	dropdown.$on("hover", /*onHover*/ ctx[26]);
-    	let if_block = /*name*/ ctx[2] && !/*anchor*/ ctx[0] && create_if_block$3(ctx);
+    	let if_block = /*name*/ ctx[3] && !/*anchor*/ ctx[0] && create_if_block$3(ctx);
 
     	const block = {
     		c: function create() {
@@ -4525,8 +4536,8 @@ var Svelecte = (function (exports) {
     			if (if_block) if_block.c();
     			attr_dev(div, "class", div_class_value = "" + (null_to_empty(`svelecte ${/*className*/ ctx[10]}`) + " svelte-1h9htsj"));
     			attr_dev(div, "style", /*style*/ ctx[11]);
-    			toggle_class(div, "is-disabled", /*disabled*/ ctx[4]);
-    			add_location(div, file$4, 360, 0, 12159);
+    			toggle_class(div, "is-disabled", /*disabled*/ ctx[2]);
+    			add_location(div, file$4, 374, 0, 12771);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4543,13 +4554,13 @@ var Svelecte = (function (exports) {
     		p: function update(ctx, dirty) {
     			const control_changes = {};
     			if (dirty[0] & /*itemRenderer*/ 32768) control_changes.renderer = /*itemRenderer*/ ctx[15];
-    			if (dirty[0] & /*disabled*/ 16) control_changes.disabled = /*disabled*/ ctx[4];
+    			if (dirty[0] & /*disabled*/ 4) control_changes.disabled = /*disabled*/ ctx[2];
     			if (dirty[0] & /*clearable*/ 128) control_changes.clearable = /*clearable*/ ctx[7];
     			if (dirty[0] & /*searchable*/ 256) control_changes.searchable = /*searchable*/ ctx[8];
     			if (dirty[0] & /*placeholder*/ 512) control_changes.placeholder = /*placeholder*/ ctx[9];
     			if (dirty[0] & /*multiple*/ 2) control_changes.multiple = /*multiple*/ ctx[1];
 
-    			if (dirty[1] & /*$$scope*/ 262144) {
+    			if (dirty[1] & /*$$scope*/ 524288) {
     				control_changes.$$scope = { dirty, ctx };
     			}
 
@@ -4561,7 +4572,7 @@ var Svelecte = (function (exports) {
     			if (dirty[0] & /*dropdownActiveIndex*/ 16384) dropdown_changes.dropdownIndex = /*dropdownActiveIndex*/ ctx[14];
     			dropdown.$set(dropdown_changes);
 
-    			if (/*name*/ ctx[2] && !/*anchor*/ ctx[0]) {
+    			if (/*name*/ ctx[3] && !/*anchor*/ ctx[0]) {
     				if (if_block) {
     					if_block.p(ctx, dirty);
     				} else {
@@ -4582,8 +4593,8 @@ var Svelecte = (function (exports) {
     				attr_dev(div, "style", /*style*/ ctx[11]);
     			}
 
-    			if (dirty[0] & /*className, disabled*/ 1040) {
-    				toggle_class(div, "is-disabled", /*disabled*/ ctx[4]);
+    			if (dirty[0] & /*className, disabled*/ 1028) {
+    				toggle_class(div, "is-disabled", /*disabled*/ ctx[2]);
     			}
     		},
     		i: function intro(local) {
@@ -4599,9 +4610,9 @@ var Svelecte = (function (exports) {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(div);
-    			/*control_binding*/ ctx[47](null);
+    			/*control_binding*/ ctx[48](null);
     			destroy_component(control);
-    			/*dropdown_binding*/ ctx[48](null);
+    			/*dropdown_binding*/ ctx[49](null);
     			destroy_component(dropdown);
     			if (if_block) if_block.d();
     		}
@@ -4672,8 +4683,28 @@ var Svelecte = (function (exports) {
     	let { style = null } = $$props;
     	let { selection = undefined } = $$props;
     	let { value = undefined } = $$props;
-    	const getSelection = () => JSON.parse(JSON.stringify(selection));
+
+    	const getSelection = onlyValues => {
+    		if (!selection) return multiple ? [] : null;
+
+    		return multiple
+    		? selection.map(opt => onlyValues
+    			? opt[currentValueField]
+    			: Object.assign({}, opt))
+    		: onlyValues
+    			? selection[currentValueField]
+    			: Object.assign({}, selection);
+    	};
+
     	const setSelection = selection => _selectByValues(selection);
+
+    	const clearByParent = doDisable => {
+    		if (doDisable) $$invalidate(2, disabled = true);
+    		clearSelection();
+    		emitChangeEvent();
+    		$$invalidate(29, fetch = null);
+    	};
+
     	const dispatch = createEventDispatcher();
     	let isInitialized = false;
     	let refDropdown;
@@ -4692,8 +4723,8 @@ var Svelecte = (function (exports) {
     	multiple = name && !multiple ? name.endsWith("[]") : multiple;
 
     	if (searchMode === "auto") {
-    		currentValueField = valueField || fieldInit("value");
-    		currentLabelField = labelField || fieldInit("label");
+    		currentValueField = valueField || fieldInit("value", options);
+    		currentLabelField = labelField || fieldInit("label", options);
     	}
 
     	/** ************************************ Context definition */
@@ -4713,17 +4744,17 @@ var Svelecte = (function (exports) {
     	);
 
     	validate_store(hasFocus, "hasFocus");
-    	component_subscribe($$self, hasFocus, value => $$invalidate(57, $hasFocus = value));
+    	component_subscribe($$self, hasFocus, value => $$invalidate(58, $hasFocus = value));
     	validate_store(hasDropdownOpened, "hasDropdownOpened");
-    	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(60, $hasDropdownOpened = value));
+    	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(61, $hasDropdownOpened = value));
     	validate_store(inputValue, "inputValue");
-    	component_subscribe($$self, inputValue, value => $$invalidate(59, $inputValue = value));
+    	component_subscribe($$self, inputValue, value => $$invalidate(60, $inputValue = value));
     	validate_store(isFetchingData, "isFetchingData");
-    	component_subscribe($$self, isFetchingData, value => $$invalidate(62, $isFetchingData = value));
+    	component_subscribe($$self, isFetchingData, value => $$invalidate(63, $isFetchingData = value));
     	validate_store(flatMatching, "flatMatching");
-    	component_subscribe($$self, flatMatching, value => $$invalidate(58, $flatMatching = value));
+    	component_subscribe($$self, flatMatching, value => $$invalidate(59, $flatMatching = value));
     	validate_store(currentListLength, "currentListLength");
-    	component_subscribe($$self, currentListLength, value => $$invalidate(61, $currentListLength = value));
+    	component_subscribe($$self, currentListLength, value => $$invalidate(62, $currentListLength = value));
     	validate_store(selectedOptions, "selectedOptions");
     	component_subscribe($$self, selectedOptions, value => $$invalidate(16, $selectedOptions = value));
 
@@ -4757,17 +4788,19 @@ var Svelecte = (function (exports) {
     		const debouncedFetch = debounce(
     			query => {
     				fetchSource(query, fetchCallback).then(data => {
-    					$$invalidate(29, options = data);
-    				}).catch(() => opts.set([])).finally(() => {
+    					$$invalidate(30, options = data);
+    				}).catch(() => $$invalidate(30, options = [])).finally(() => {
     					isFetchingData.set(false);
     					$hasFocus && hasDropdownOpened.set(true);
     					listMessage.set(config.i18n.fetchEmpty);
+    					tick().then(() => dispatch("fetch", options));
     				});
     			},
     			500
     		);
 
     		if (initFetchOnly) {
+    			if (typeof fetch === "string" && fetch.indexOf("[parent]") !== -1) return null;
     			isFetchingData.set(true);
     			debouncedFetch(null);
     			return null;
@@ -4974,7 +5007,7 @@ var Svelecte = (function (exports) {
     	let currentListSubscriber;
 
     	onMount(() => {
-    		$$invalidate(50, isInitialized = true);
+    		$$invalidate(51, isInitialized = true);
 
     		// Lazy calling of scrollIntoView function, which is required
     		currentListSubscriber = currentListLength.subscribe(val => {
@@ -5040,34 +5073,34 @@ var Svelecte = (function (exports) {
     	}
 
     	$$self.$$set = $$props => {
-    		if ("name" in $$props) $$invalidate(2, name = $$props.name);
+    		if ("name" in $$props) $$invalidate(3, name = $$props.name);
     		if ("anchor" in $$props) $$invalidate(0, anchor = $$props.anchor);
-    		if ("required" in $$props) $$invalidate(3, required = $$props.required);
+    		if ("required" in $$props) $$invalidate(4, required = $$props.required);
     		if ("multiple" in $$props) $$invalidate(1, multiple = $$props.multiple);
-    		if ("disabled" in $$props) $$invalidate(4, disabled = $$props.disabled);
+    		if ("disabled" in $$props) $$invalidate(2, disabled = $$props.disabled);
     		if ("creatable" in $$props) $$invalidate(5, creatable = $$props.creatable);
-    		if ("selectOnTab" in $$props) $$invalidate(32, selectOnTab = $$props.selectOnTab);
-    		if ("valueField" in $$props) $$invalidate(33, valueField = $$props.valueField);
-    		if ("labelField" in $$props) $$invalidate(34, labelField = $$props.labelField);
+    		if ("selectOnTab" in $$props) $$invalidate(33, selectOnTab = $$props.selectOnTab);
+    		if ("valueField" in $$props) $$invalidate(34, valueField = $$props.valueField);
+    		if ("labelField" in $$props) $$invalidate(35, labelField = $$props.labelField);
     		if ("max" in $$props) $$invalidate(6, max = $$props.max);
-    		if ("renderer" in $$props) $$invalidate(35, renderer = $$props.renderer);
+    		if ("renderer" in $$props) $$invalidate(36, renderer = $$props.renderer);
     		if ("clearable" in $$props) $$invalidate(7, clearable = $$props.clearable);
     		if ("searchable" in $$props) $$invalidate(8, searchable = $$props.searchable);
-    		if ("delimiter" in $$props) $$invalidate(36, delimiter = $$props.delimiter);
+    		if ("delimiter" in $$props) $$invalidate(37, delimiter = $$props.delimiter);
     		if ("placeholder" in $$props) $$invalidate(9, placeholder = $$props.placeholder);
-    		if ("fetch" in $$props) $$invalidate(37, fetch = $$props.fetch);
+    		if ("fetch" in $$props) $$invalidate(29, fetch = $$props.fetch);
     		if ("fetchMode" in $$props) $$invalidate(38, fetchMode = $$props.fetchMode);
     		if ("fetchCallback" in $$props) $$invalidate(39, fetchCallback = $$props.fetchCallback);
-    		if ("options" in $$props) $$invalidate(29, options = $$props.options);
+    		if ("options" in $$props) $$invalidate(30, options = $$props.options);
     		if ("searchField" in $$props) $$invalidate(40, searchField = $$props.searchField);
     		if ("sortField" in $$props) $$invalidate(41, sortField = $$props.sortField);
     		if ("sortRemote" in $$props) $$invalidate(42, sortRemote = $$props.sortRemote);
     		if ("searchMode" in $$props) $$invalidate(43, searchMode = $$props.searchMode);
     		if ("class" in $$props) $$invalidate(10, className = $$props.class);
     		if ("style" in $$props) $$invalidate(11, style = $$props.style);
-    		if ("selection" in $$props) $$invalidate(30, selection = $$props.selection);
-    		if ("value" in $$props) $$invalidate(31, value = $$props.value);
-    		if ("$$scope" in $$props) $$invalidate(49, $$scope = $$props.$$scope);
+    		if ("selection" in $$props) $$invalidate(31, selection = $$props.selection);
+    		if ("value" in $$props) $$invalidate(32, value = $$props.value);
+    		if ("$$scope" in $$props) $$invalidate(50, $$scope = $$props.$$scope);
     	};
 
     	$$self.$capture_state = () => ({
@@ -5118,6 +5151,7 @@ var Svelecte = (function (exports) {
     		value,
     		getSelection,
     		setSelection,
+    		clearByParent,
     		dispatch,
     		isInitialized,
     		refDropdown,
@@ -5166,42 +5200,42 @@ var Svelecte = (function (exports) {
     	});
 
     	$$self.$inject_state = $$props => {
-    		if ("name" in $$props) $$invalidate(2, name = $$props.name);
+    		if ("name" in $$props) $$invalidate(3, name = $$props.name);
     		if ("anchor" in $$props) $$invalidate(0, anchor = $$props.anchor);
-    		if ("required" in $$props) $$invalidate(3, required = $$props.required);
+    		if ("required" in $$props) $$invalidate(4, required = $$props.required);
     		if ("multiple" in $$props) $$invalidate(1, multiple = $$props.multiple);
-    		if ("disabled" in $$props) $$invalidate(4, disabled = $$props.disabled);
+    		if ("disabled" in $$props) $$invalidate(2, disabled = $$props.disabled);
     		if ("creatable" in $$props) $$invalidate(5, creatable = $$props.creatable);
-    		if ("selectOnTab" in $$props) $$invalidate(32, selectOnTab = $$props.selectOnTab);
-    		if ("valueField" in $$props) $$invalidate(33, valueField = $$props.valueField);
-    		if ("labelField" in $$props) $$invalidate(34, labelField = $$props.labelField);
+    		if ("selectOnTab" in $$props) $$invalidate(33, selectOnTab = $$props.selectOnTab);
+    		if ("valueField" in $$props) $$invalidate(34, valueField = $$props.valueField);
+    		if ("labelField" in $$props) $$invalidate(35, labelField = $$props.labelField);
     		if ("max" in $$props) $$invalidate(6, max = $$props.max);
-    		if ("renderer" in $$props) $$invalidate(35, renderer = $$props.renderer);
+    		if ("renderer" in $$props) $$invalidate(36, renderer = $$props.renderer);
     		if ("clearable" in $$props) $$invalidate(7, clearable = $$props.clearable);
     		if ("searchable" in $$props) $$invalidate(8, searchable = $$props.searchable);
-    		if ("delimiter" in $$props) $$invalidate(36, delimiter = $$props.delimiter);
+    		if ("delimiter" in $$props) $$invalidate(37, delimiter = $$props.delimiter);
     		if ("placeholder" in $$props) $$invalidate(9, placeholder = $$props.placeholder);
-    		if ("fetch" in $$props) $$invalidate(37, fetch = $$props.fetch);
+    		if ("fetch" in $$props) $$invalidate(29, fetch = $$props.fetch);
     		if ("fetchMode" in $$props) $$invalidate(38, fetchMode = $$props.fetchMode);
     		if ("fetchCallback" in $$props) $$invalidate(39, fetchCallback = $$props.fetchCallback);
-    		if ("options" in $$props) $$invalidate(29, options = $$props.options);
+    		if ("options" in $$props) $$invalidate(30, options = $$props.options);
     		if ("searchField" in $$props) $$invalidate(40, searchField = $$props.searchField);
     		if ("sortField" in $$props) $$invalidate(41, sortField = $$props.sortField);
     		if ("sortRemote" in $$props) $$invalidate(42, sortRemote = $$props.sortRemote);
     		if ("searchMode" in $$props) $$invalidate(43, searchMode = $$props.searchMode);
     		if ("className" in $$props) $$invalidate(10, className = $$props.className);
     		if ("style" in $$props) $$invalidate(11, style = $$props.style);
-    		if ("selection" in $$props) $$invalidate(30, selection = $$props.selection);
-    		if ("value" in $$props) $$invalidate(31, value = $$props.value);
-    		if ("isInitialized" in $$props) $$invalidate(50, isInitialized = $$props.isInitialized);
+    		if ("selection" in $$props) $$invalidate(31, selection = $$props.selection);
+    		if ("value" in $$props) $$invalidate(32, value = $$props.value);
+    		if ("isInitialized" in $$props) $$invalidate(51, isInitialized = $$props.isInitialized);
     		if ("refDropdown" in $$props) $$invalidate(12, refDropdown = $$props.refDropdown);
     		if ("refControl" in $$props) $$invalidate(13, refControl = $$props.refControl);
     		if ("ignoreHover" in $$props) ignoreHover = $$props.ignoreHover;
     		if ("dropdownActiveIndex" in $$props) $$invalidate(14, dropdownActiveIndex = $$props.dropdownActiveIndex);
     		if ("fetchUnsubscribe" in $$props) fetchUnsubscribe = $$props.fetchUnsubscribe;
-    		if ("currentValueField" in $$props) $$invalidate(53, currentValueField = $$props.currentValueField);
-    		if ("currentLabelField" in $$props) $$invalidate(54, currentLabelField = $$props.currentLabelField);
-    		if ("prevOptions" in $$props) $$invalidate(75, prevOptions = $$props.prevOptions);
+    		if ("currentValueField" in $$props) $$invalidate(54, currentValueField = $$props.currentValueField);
+    		if ("currentLabelField" in $$props) $$invalidate(55, currentLabelField = $$props.currentLabelField);
+    		if ("prevOptions" in $$props) $$invalidate(76, prevOptions = $$props.prevOptions);
     		if ("currentListSubscriber" in $$props) currentListSubscriber = $$props.currentListSubscriber;
     		if ("initFetchOnly" in $$props) initFetchOnly = $$props.initFetchOnly;
     		if ("itemRenderer" in $$props) $$invalidate(15, itemRenderer = $$props.itemRenderer);
@@ -5215,31 +5249,32 @@ var Svelecte = (function (exports) {
     	}
 
     	$$self.$$.update = () => {
-    		if ($$self.$$.dirty[1] & /*fetchMode, fetch*/ 192) {
+    		if ($$self.$$.dirty[0] & /*fetch*/ 536870912 | $$self.$$.dirty[1] & /*fetchMode*/ 128) {
     			/** ************************************ remote source */
     			 initFetchOnly = fetchMode === "init" || typeof fetch === "string" && fetch.indexOf("[query]") === -1;
     		}
 
-    		if ($$self.$$.dirty[1] & /*fetch*/ 64) {
+    		if ($$self.$$.dirty[0] & /*fetch*/ 536870912) {
     			 createFetch(fetch);
     		}
 
-    		if ($$self.$$.dirty[0] & /*options*/ 536870912 | $$self.$$.dirty[1] & /*isInitialized, searchMode, valueField, currentValueField, labelField, currentLabelField*/ 13111308) {
+    		if ($$self.$$.dirty[0] & /*options*/ 1073741824 | $$self.$$.dirty[1] & /*isInitialized, searchMode, valueField, currentValueField, labelField, currentLabelField*/ 26218520) {
     			 {
     				if (isInitialized && prevOptions !== options) {
     					if (searchMode === "auto") {
     						const ivalue = fieldInit("value", options || null);
     						const ilabel = fieldInit("label", options || null);
-    						if (!valueField && currentValueField !== ivalue) $$invalidate(53, currentValueField = ivalue);
-    						if (!labelField && currentLabelField !== ilabel) $$invalidate(54, currentLabelField = ilabel);
+    						if (!valueField && currentValueField !== ivalue) $$invalidate(54, currentValueField = ivalue);
+    						if (!labelField && currentLabelField !== ilabel) $$invalidate(55, currentLabelField = ilabel);
     					}
 
+    					if (options.some(opt => opt.isSelected)) emitChangeEvent();
     					updateOpts(options);
     				}
     			}
     		}
 
-    		if ($$self.$$.dirty[0] & /*max, multiple, creatable*/ 98 | $$self.$$.dirty[1] & /*searchField, sortField, currentLabelField, currentValueField, sortRemote*/ 12586496) {
+    		if ($$self.$$.dirty[0] & /*max, multiple, creatable*/ 98 | $$self.$$.dirty[1] & /*searchField, sortField, currentLabelField, currentValueField, sortRemote*/ 25169408) {
     			/** ************************************ component logic */
     			 settings$1.set({
     				max,
@@ -5253,17 +5288,17 @@ var Svelecte = (function (exports) {
     			});
     		}
 
-    		if ($$self.$$.dirty[1] & /*renderer, currentLabelField*/ 8388624) {
+    		if ($$self.$$.dirty[1] & /*renderer, currentLabelField*/ 16777248) {
     			 $$invalidate(15, itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField }));
     		}
 
-    		if ($$self.$$.dirty[0] & /*multiple, $selectedOptions, anchor*/ 65539 | $$self.$$.dirty[1] & /*currentValueField, value*/ 4194305) {
+    		if ($$self.$$.dirty[0] & /*multiple, $selectedOptions, anchor*/ 65539 | $$self.$$.dirty[1] & /*currentValueField, value*/ 8388610) {
     			 {
-    				$$invalidate(30, selection = multiple
+    				$$invalidate(31, selection = multiple
     				? $selectedOptions
     				: $selectedOptions.length ? $selectedOptions[0] : null);
 
-    				$$invalidate(31, value = multiple
+    				$$invalidate(32, value = multiple
     				? $selectedOptions.map(opt => opt[currentValueField])
     				: $selectedOptions.length
     					? $selectedOptions[0][currentValueField]
@@ -5292,9 +5327,9 @@ var Svelecte = (function (exports) {
     	return [
     		anchor,
     		multiple,
+    		disabled,
     		name,
     		required,
-    		disabled,
     		creatable,
     		max,
     		clearable,
@@ -5319,6 +5354,7 @@ var Svelecte = (function (exports) {
     		onHover,
     		onKeyDown,
     		onPaste,
+    		fetch,
     		options,
     		selection,
     		value,
@@ -5327,7 +5363,6 @@ var Svelecte = (function (exports) {
     		labelField,
     		renderer,
     		delimiter,
-    		fetch,
     		fetchMode,
     		fetchCallback,
     		searchField,
@@ -5336,6 +5371,7 @@ var Svelecte = (function (exports) {
     		searchMode,
     		getSelection,
     		setSelection,
+    		clearByParent,
     		slots,
     		control_binding,
     		dropdown_binding,
@@ -5354,35 +5390,36 @@ var Svelecte = (function (exports) {
     			create_fragment$4,
     			safe_not_equal,
     			{
-    				name: 2,
+    				name: 3,
     				anchor: 0,
-    				required: 3,
+    				required: 4,
     				multiple: 1,
-    				disabled: 4,
+    				disabled: 2,
     				creatable: 5,
-    				selectOnTab: 32,
-    				valueField: 33,
-    				labelField: 34,
+    				selectOnTab: 33,
+    				valueField: 34,
+    				labelField: 35,
     				max: 6,
-    				renderer: 35,
+    				renderer: 36,
     				clearable: 7,
     				searchable: 8,
-    				delimiter: 36,
+    				delimiter: 37,
     				placeholder: 9,
-    				fetch: 37,
+    				fetch: 29,
     				fetchMode: 38,
     				fetchCallback: 39,
-    				options: 29,
+    				options: 30,
     				searchField: 40,
     				sortField: 41,
     				sortRemote: 42,
     				searchMode: 43,
     				class: 10,
     				style: 11,
-    				selection: 30,
-    				value: 31,
+    				selection: 31,
+    				value: 32,
     				getSelection: 44,
-    				setSelection: 45
+    				setSelection: 45,
+    				clearByParent: 46
     			},
     			[-1, -1, -1]
     		);
@@ -5626,11 +5663,19 @@ var Svelecte = (function (exports) {
     	set setSelection(value) {
     		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
     	}
+
+    	get clearByParent() {
+    		return this.$$.ctx[46];
+    	}
+
+    	set clearByParent(value) {
+    		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+    	}
     }
 
     const OPTION_LIST = [
       'options', 'fetch', 'name', 'required', 'value',
-      'multiple','disabled', 'max', 'creatable',
+      'multiple','disabled', 'max', 'creatable', 'delimiter',
       'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch',
       'anchor'
     ];
@@ -5677,8 +5722,7 @@ var Svelecte = (function (exports) {
       constructor() {
         super();
         this.svelecte = undefined;
-        this._init = null;
-        this._locked = false;
+        this._fetchOpts = null;
         
         /** ************************************ public API */
         this.setOptions = options => this.svelecte.setOptions(options);
@@ -5690,18 +5734,17 @@ var Svelecte = (function (exports) {
           },
           'value': {
             get() {
-              const val = this.svelecte.getSelection();
-              if (!val) return null;
-              return this.multiple ? val.map(v => v.value) : val.value;
+              return this.svelecte.getSelection(true);
             },
             set(value) {
-              
               this.svelecte.setSelection(value);
             }
           },
           'options': {
             get() {
-              return JSON.parse(this.getAttribute('options'));
+              return this.hasAttribute('options')
+                ? JSON.parse(this.getAttribute('options'))
+                : (this._fetchOpts || []);
             },
             set(value) {
               this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
@@ -5800,6 +5843,14 @@ var Svelecte = (function (exports) {
               }
               this.setAttribute('max', value);
             }
+          },
+          'delimiter': {
+            get() {
+              return this.getAttribute('delimiter') || ',';
+            },
+            set(value) {
+              this.setAttribute('delimiter', value);
+            }
           }
         });
       }
@@ -5814,23 +5865,16 @@ var Svelecte = (function (exports) {
         }
       }
 
-      adoptedCallback() {
-        console.log('adopted');
-      }
-      
       connectedCallback() {
-        console.log('original');
-        setTimeout(() => { this.render(); });
+        if (this.hasAttribute('parent') || this.hasAttribute('anchor') || this.hasAttribute('lazy')) {
+          setTimeout(() => { this.render(); });
+        } else {
+          this.render();
+        }
       }
 
       render() {
         let props = {};
-        if (this._locked) {
-          clearTimeout(this._init);
-          console.log('tt->EE');
-          return;
-        }
-        this._locked = true;
         for (const attr of OPTION_LIST) {
           if (this.hasAttribute(attr)) {
             props[attr] = formatValue(attr, this.getAttribute(attr));
@@ -5838,19 +5882,20 @@ var Svelecte = (function (exports) {
         }
         if (this.hasAttribute('parent')) {
           delete props['fetch'];
+          props.disabled = true;
           this.parent = document.getElementById(this.getAttribute('parent'));
-          if (!this.parent.value) {
-            this.setAttribute('disabled', true);
-            props['disabled'] = true;
+          if (!this.parent.value && this.svelecte) {
+            
+            return;
           }      this.parentCallback = e => {
+            if (!e.target.value) {
+              this.svelecte.clearByParent();
+              return;
+            }
+            !this.parent.disabled && this.removeAttribute('disabled');
             if (this.hasAttribute('fetch')) {
               const fetchUrl = this.getAttribute('fetch').replace('[parent]', e.target.value);
-              this.svelecte.$set({ fetch: fetchUrl });
-            }
-            if (e.target.value) {
-              this.removeAttribute('disabled');
-            } else {
-              this.setAttribute('disabled', '');
+              this.svelecte.$set({ fetch: fetchUrl, disabled: false });
             }
           };
           this.parent.addEventListener('change', this.parentCallback);
@@ -5874,21 +5919,22 @@ var Svelecte = (function (exports) {
         //   });
         //   this.innerHTML = '';
         // }
-        console.log('options', (new Date()).getTime(), props);
         this.svelecte = new Svelecte({
           target: this,
           anchor: anchorSelect,
           props,
         });
         this.svelecte.$on('change', e => {
-          this.setAttribute('value', this.value);
+          this.dispatchEvent(e);
+        });
+        this.svelecte.$on('fetch', e => {
+          this._fetchOpts = e.detail;
           this.dispatchEvent(e);
         });
         return true;
       }
 
       disconnectedCallback() {
-        console.log('bye', this.value);
         this.svelecte = this.svelecte.$destroy();
         this.parent && this.parent.removeEventListener('change', this.parentCallback);
       }

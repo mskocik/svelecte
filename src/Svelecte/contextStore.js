@@ -261,6 +261,7 @@ const initStore = (options, initialSettings, dropdownMessages) => {
     return list;
   });
   const clearSelection = () => opts.update(list => {
+    const toClear = [];
     list.forEach(opt => {
       if (opt.options) {
         opt.options.forEach(o => o.isSelected = false);
@@ -268,10 +269,11 @@ const initStore = (options, initialSettings, dropdownMessages) => {
         opt.isSelected = false;
         if (opt._created) {
           internalSelection.delete(opt);
-          list.splice(list.indexOf(opt), 1);
+          toClear.push(list.indexOf(opt));
         }
       }
     });
+    toClear.length && toClear.reverse().forEach(idx => list.splice(idx, 1));
     return list;
   });
 

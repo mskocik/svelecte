@@ -55,8 +55,19 @@
   /** ************************************ API */
   export let selection = undefined;
   export let value = undefined;
-  export const getSelection = () => JSON.parse(JSON.stringify(selection));
+  export const getSelection = onlyValues => {
+    if (!selection) return multiple ? [] : null;
+    return multiple 
+      ? selection.map(opt => onlyValues ? opt[currentValueField] : Object.assign({}, opt))
+      : (onlyValues ? selection[currentValueField] : Object.assign({}, selection));
+  };
   export const setSelection = selection => _selectByValues(selection);
+  export const clearByParent = doDisable => {
+    if (doDisable) disabled = true;
+    clearSelection();
+    emitChangeEvent();
+    fetch = null;
+  }
  
   const dispatch = createEventDispatcher();
 
@@ -74,8 +85,8 @@
   /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
   if (searchMode === 'auto') {
-    currentValueField = valueField || fieldInit('value');
-    currentLabelField = labelField || fieldInit('label');
+    currentValueField = valueField || fieldInit('value', options);
+    currentLabelField = labelField || fieldInit('label', options);
   }
 
   /** ************************************ Context definition */
@@ -115,15 +126,17 @@
         .then(data => {
           options = data;
         })
-        .catch(() => opts.set([]))
+        .catch(() => options = [])
         .finally(() => {
           isFetchingData.set(false);
           $hasFocus && hasDropdownOpened.set(true);
           listMessage.set(config.i18n.fetchEmpty);
+          tick().then(() => dispatch('fetch', options));
         })
     }, 500);
 
     if (initFetchOnly) {
+      if (typeof fetch === 'string' && fetch.indexOf('[parent]') !== -1) return null;
       isFetchingData.set(true);
       debouncedFetch(null);
       return null;
@@ -149,7 +162,7 @@
   /** ************************************ component logic */
   
   $: settings.set({ max, multiple, creatable, searchField, sortField, currentLabelField, currentValueField, sortRemote });
-  $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField})
+  $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField});
   $: {
     selection = multiple
       ? $selectedOptions
@@ -175,6 +188,7 @@
         if (!valueField && currentValueField !== ivalue) currentValueField = ivalue;
         if (!labelField && currentLabelField !== ilabel) currentLabelField = ilabel;
       }
+      if (options.some(opt => opt.isSelected)) emitChangeEvent();
       updateOpts(options);
     }
   }

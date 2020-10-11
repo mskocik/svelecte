@@ -2,7 +2,7 @@ import Svelecte, { addFormatter, config } from './Svelecte/Svelecte.svelte';
 
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required', 'value',
-  'multiple','disabled', 'max', 'creatable',
+  'multiple','disabled', 'max', 'creatable', 'delimiter',
   'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch',
   'anchor'
 ];
@@ -51,8 +51,7 @@ export const SvelecteElement = class extends HTMLElement {
   constructor() {
     super();
     this.svelecte = undefined;
-    this._init = null;
-    this._locked = false;
+    this._fetchOpts = null;
     
     /** ************************************ public API */
     this.setOptions = options => this.svelecte.setOptions(options);
@@ -64,18 +63,17 @@ export const SvelecteElement = class extends HTMLElement {
       },
       'value': {
         get() {
-          const val = this.svelecte.getSelection();
-          if (!val) return null;
-          return this.multiple ? val.map(v => v.value) : val.value;
+          return this.svelecte.getSelection(true);
         },
         set(value) {
-          
           this.svelecte.setSelection(value);
         }
       },
       'options': {
         get() {
-          return JSON.parse(this.getAttribute('options'));
+          return this.hasAttribute('options')
+            ? JSON.parse(this.getAttribute('options'))
+            : (this._fetchOpts || []);
         },
         set(value) {
           this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
@@ -174,6 +172,14 @@ export const SvelecteElement = class extends HTMLElement {
           }
           this.setAttribute('max', value);
         }
+      },
+      'delimiter': {
+        get() {
+          return this.getAttribute('delimiter') || ',';
+        },
+        set(value) {
+          this.setAttribute('delimiter', value);
+        }
       }
     });
   }
@@ -188,23 +194,16 @@ export const SvelecteElement = class extends HTMLElement {
     }
   }
 
-  adoptedCallback() {
-    console.log('adopted');
-  }
-  
   connectedCallback() {
-    console.log('original');
-    setTimeout(() => { this.render() });
+    if (this.hasAttribute('parent') || this.hasAttribute('anchor') || this.hasAttribute('lazy')) {
+      setTimeout(() => { this.render() });
+    } else {
+      this.render();
+    }
   }
 
   render() {
     let props = {};
-    if (this._locked) {
-      clearTimeout(this._init);
-      console.log('tt->EE');
-      return;
-    }
-    this._locked = true;
     for (const attr of OPTION_LIST) {
       if (this.hasAttribute(attr)) {
         props[attr] = formatValue(attr, this.getAttribute(attr));
@@ -212,20 +211,21 @@ export const SvelecteElement = class extends HTMLElement {
     }
     if (this.hasAttribute('parent')) {
       delete props['fetch'];
+      props.disabled = true;
       this.parent = document.getElementById(this.getAttribute('parent'));
-      if (!this.parent.value) {
-        this.setAttribute('disabled', true);
-        props['disabled'] = true;
+      if (!this.parent.value && this.svelecte) {
+        
+        return;
       };
       this.parentCallback = e => {
+        if (!e.target.value) {
+          this.svelecte.clearByParent();
+          return;
+        }
+        !this.parent.disabled && this.removeAttribute('disabled');
         if (this.hasAttribute('fetch')) {
           const fetchUrl = this.getAttribute('fetch').replace('[parent]', e.target.value);
-          this.svelecte.$set({ fetch: fetchUrl });
-        }
-        if (e.target.value) {
-          this.removeAttribute('disabled');
-        } else {
-          this.setAttribute('disabled', '');
+          this.svelecte.$set({ fetch: fetchUrl, disabled: false });
         }
       };
       this.parent.addEventListener('change', this.parentCallback);
@@ -249,21 +249,22 @@ export const SvelecteElement = class extends HTMLElement {
     //   });
     //   this.innerHTML = '';
     // }
-    console.log('options', (new Date()).getTime(), props);
     this.svelecte = new Svelecte({
       target: this,
       anchor: anchorSelect,
       props,
     });
     this.svelecte.$on('change', e => {
-      this.setAttribute('value', this.value);
+      this.dispatchEvent(e);
+    });
+    this.svelecte.$on('fetch', e => {
+      this._fetchOpts = e.detail;
       this.dispatchEvent(e);
     });
     return true;
   }
 
   disconnectedCallback() {
-    console.log('bye', this.value);
     this.svelecte = this.svelecte.$destroy();
     this.parent && this.parent.removeEventListener('change', this.parentCallback);
   }
