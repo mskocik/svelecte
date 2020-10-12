@@ -65,7 +65,6 @@
   export const clearByParent = doDisable => {
     if (doDisable) disabled = true;
     clearSelection();
-    emitChangeEvent();
     fetch = null;
   }
  
@@ -160,6 +159,8 @@
   }
 
   /** ************************************ component logic */
+
+  value && _selectByValues(value);   // init values if passed
   
   $: settings.set({ max, multiple, creatable, searchField, sortField, currentLabelField, currentValueField, sortRemote });
   $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField});
@@ -188,7 +189,8 @@
         if (!valueField && currentValueField !== ivalue) currentValueField = ivalue;
         if (!labelField && currentLabelField !== ilabel) currentLabelField = ilabel;
       }
-      if (options.some(opt => opt.isSelected)) emitChangeEvent();
+      // NOTE: this event should not be emitted
+      // if (options.some(opt => opt.isSelected)) emitChangeEvent();
       updateOpts(options);
     }
   }
@@ -208,7 +210,7 @@
    */ 
   function _selectByValues(values) {
     if (!Array.isArray(values)) values = [values];
-    if (values[0] && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
+    if (values && values.length && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
     clearSelection();
     const newAddition = [];
     $flatMatching.forEach(opt => {

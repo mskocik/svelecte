@@ -20,6 +20,11 @@ function formatValue(name, value) {
         value = [];
       }
       return value;
+    case 'value':
+      return value.split(',').map(item => {
+        const _v = parseInt(item);
+        return isNaN(_v) ? item : _v;
+      });
     case 'renderer':
       return value || 'default';
     case 'searchable':
@@ -66,7 +71,7 @@ export const SvelecteElement = class extends HTMLElement {
           return this.svelecte.getSelection(true);
         },
         set(value) {
-          this.svelecte.setSelection(value);
+          this.setAttribute('value', Array.isArray(value) ? value.join(',') : value);
         }
       },
       'options': {
@@ -190,7 +195,9 @@ export const SvelecteElement = class extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (this.svelecte && oldValue !== newValue) {
-      this.svelecte.$set({ [name]: formatValue(name, newValue) });
+      name === 'value'
+        ? this.svelecte.setSelection(formatValue(name, newValue))
+        : this.svelecte.$set({ [name]: formatValue(name, newValue) });
     }
   }
 
@@ -255,6 +262,8 @@ export const SvelecteElement = class extends HTMLElement {
       props,
     });
     this.svelecte.$on('change', e => {
+      const value = this.svelecte.getSelection(true);
+      this.setAttribute('value', Array.isArray(value) ? value.join(',') : value);
       this.dispatchEvent(e);
     });
     this.svelecte.$on('fetch', e => {
