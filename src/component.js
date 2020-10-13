@@ -21,10 +21,10 @@ function formatValue(name, value) {
       }
       return value;
     case 'value':
-      return value.split(',').map(item => {
+      return value ? value.split(',').map(item => {
         const _v = parseInt(item);
         return isNaN(_v) ? item : _v;
-      });
+      }) : '';
     case 'renderer':
       return value || 'default';
     case 'searchable':
@@ -187,6 +187,10 @@ export const SvelecteElement = class extends HTMLElement {
         }
       }
     });
+  }
+
+  focus() {
+    !this.disabled && this.querySelector('input').focus();
   }
 
   static get observedAttributes() {
