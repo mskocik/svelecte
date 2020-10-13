@@ -3,7 +3,7 @@ import Svelecte, { addFormatter, config } from './Svelecte/Svelecte.svelte';
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required', 'value',
   'multiple','disabled', 'max', 'creatable', 'delimiter',
-  'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch',
+  'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch', 'valueField', 'labelField',
   'anchor'
 ];
 
@@ -184,6 +184,22 @@ export const SvelecteElement = class extends HTMLElement {
         },
         set(value) {
           this.setAttribute('delimiter', value);
+        }
+      },
+      'valueField': {
+        get() {
+          return this.getAttribute('valueField') || '';
+        },
+        set(value) {
+          this.setAttribute('valueField', value);
+        }
+      },
+      'labelField': {
+        get() {
+          return this.getAttribute('labelField') || '';
+        },
+        set(value) {
+          this.setAttribute('labelField', value);
         }
       }
     });
