@@ -205,18 +205,21 @@
   }
 
   /**
-   * TODO: check this funcionality
-   * Internal helper for passed value array. Should be used for CC
+   * Internal helper for passed value array. Should be used for CE
    */ 
   function _selectByValues(values) {
     if (!Array.isArray(values)) values = [values];
     if (values && values.length && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
     clearSelection();
     const newAddition = [];
-    $flatMatching.forEach(opt => {
-      if (values.includes(opt[currentValueField])) {
-        newAddition.push(opt);
-      }
+    values.forEach(val => {
+      $flatMatching.some(opt => {
+        if (val == (opt[currentValueField])) {
+          newAddition.push(opt);
+          return true;
+        }
+        return false;
+      });
     });
     newAddition.forEach(selectOption);
   }

@@ -63,6 +63,7 @@
 
 
 <div class="sv-item"
+  title={item._created ? 'Created item' : ''}
   class:is-disabled={isDisabled}
   use:itemActions={{item, index}}
   on:select

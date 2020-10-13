@@ -236,12 +236,12 @@ const initStore = (options, initialSettings, dropdownMessages) => {
       if (!isMultiple) {
         internalSelection.forEach(opt => {
           opt.isSelected = false;
-          isCreatable && opt._created && list.splice(list.indexOf(opt), 1);
+          // isCreatable && opt._created && list.splice(list.indexOf(opt), 1);
         });
       }
       if (typeof option === 'string') {
         option = {
-          [labelField]: option,
+          [labelField]: `*${option}`,
           [valueField]: encodeURIComponent(option),
           isSelected: false,
           _created: true,
@@ -255,9 +255,9 @@ const initStore = (options, initialSettings, dropdownMessages) => {
   const deselectOption = option => opts.update(list => {
     internalSelection.delete(option);
     option.isSelected = false;
-    if (option._created) {
-      list.splice(list.indexOf(option), 1);
-    } 
+    // if (option._created) {
+    //   list.splice(list.indexOf(option), 1);
+    // } 
     return list;
   });
   const clearSelection = () => opts.update(list => {
@@ -269,7 +269,7 @@ const initStore = (options, initialSettings, dropdownMessages) => {
         opt.isSelected = false;
         if (opt._created) {
           internalSelection.delete(opt);
-          toClear.push(list.indexOf(opt));
+          // toClear.push(list.indexOf(opt));
         }
       }
     });
