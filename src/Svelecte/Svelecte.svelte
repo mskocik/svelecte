@@ -95,7 +95,7 @@
       listLength, listIndexMap, matchingOptions, flatMatching, currentListLength, selectedOptions,   // getters
       updateOpts, 
   } = initStore(
-    options, 
+    options, selection,
     { currentValueField, currentLabelField, max, multiple, creatable, searchField, sortField, sortRemote },
     config.i18n
   );
@@ -161,13 +161,28 @@
   /** ************************************ component logic */
 
   value && _selectByValues(value);   // init values if passed
+
+  let prevSelection = selection;
+
+  $: {
+    if (prevSelection !== selection) {
+      clearSelection();
+      if (selection) {
+        Array.isArray(selection) ? selection.forEach(selectOption) : selectOption(selection);
+      }
+      prevSelection = selection;
+    }
+  }
   
   $: settings.set({ max, multiple, creatable, searchField, sortField, currentLabelField, currentValueField, sortRemote });
   $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField});
   $: {
-    selection = multiple
-      ? $selectedOptions
-      : $selectedOptions.length ? $selectedOptions[0] : null;
+    // if (prevSelection !== selection) {
+    //   selection = multiple
+    //     ? $selectedOptions
+    //     : $selectedOptions.length ? $selectedOptions[0] : null;
+    //   prevSelection = selection;
+    // }
     value = multiple 
       ? $selectedOptions.map(opt => opt[currentValueField])
       : $selectedOptions.length ? $selectedOptions[0][currentValueField] : null;

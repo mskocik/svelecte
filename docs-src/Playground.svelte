@@ -10,7 +10,9 @@
 	let searchable = true;
 	let creatable = true;
 
-	let remoteValue = 'json';
+	let remoteValue = 'countries';
+
+	let myValue = options[2];
 
 	const remotes = {
 		colors: 'https://my-json-server.typicode.com/mskocik/svelecte-db/colors?value_like=[query]',
@@ -21,6 +23,11 @@
 		countries: '🌍',
 		colors: '⚡',
 		json: '🙋'
+	}
+
+	$: {
+		console.log('UP');
+		if (myValue && myValue.value === 'al') myValue = null;
 	}
 
 	let settings = {};
@@ -62,7 +69,7 @@
 
 </script>
 
-<details>
+<details open>
 	<summary>Previous app</summary>
 <main>
 	<!--
@@ -81,6 +88,8 @@
 		<button on:click={() => options = dataset.countryGroups()}>Switch Source</button>
 	</div>
 -->
+	<button on:click={() => { myValue = options[2] } }>Set Armenia</button>
+	<button on:click={() => { myValue = null } }>Clear</button>
 	<select bind:value={remoteValue}>
 		<option value="opts">🎨 colors</option>
 		<option value="countries">🌍 countries</option>
@@ -88,10 +97,11 @@
 		<option value="json">API: User list</option>
 	</select>
 	<div class="form-row">
-		<Svelecte {...settings}>
+		<Svelecte {...settings} bind:selection={myValue}>
 			<b slot="icon">{slot}</b>
 		</Svelecte>
 	</div>
+	{JSON.stringify(myValue)}
 </main>
 </details>
 

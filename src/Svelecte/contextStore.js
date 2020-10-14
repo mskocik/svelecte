@@ -20,7 +20,7 @@ function setToggleHelper(o) {
   return true;
 }
 
-const initStore = (options, initialSettings, dropdownMessages) => {
+const initStore = (options, selection, initialSettings, dropdownMessages) => {
   const internalSelection = new Set();
   const selectionToggle = setToggleHelper.bind(internalSelection);
 
@@ -80,10 +80,12 @@ const initStore = (options, initialSettings, dropdownMessages) => {
     optionsWithGroups = options.some(opt => opt.options);
     
     if (searchMode === 'auto') {
-      sifterSearchField = getFilterProps(options.length > 0 ? options[0] : { [labelField]: ''});
-      sifterSortField = optionsWithGroups
-        ? false
-        : (sortField || [{ field: labelField, direction: 'asc'}]);
+      sifterSearchField = searchField || getFilterProps(options.length > 0 ? options[0] : { [labelField]: ''});
+      sifterSortField = searchField || (
+        optionsWithGroups
+          ? false
+          : (sortField || [{ field: labelField, direction: 'asc'}])
+      );
     }
 
     _flatOptions = options.reduce((res, opt) => {
@@ -100,6 +102,68 @@ const initStore = (options, initialSettings, dropdownMessages) => {
   }
   
   updateOpts(options);  // init options
+
+  
+  /***************************************************************/
+  /**                    options exposed API                     */
+  /***************************************************************/
+
+  const selectOption = option => {
+    if (maxItems && internalSelection.size === maxItems) return;
+    opts.update(list => {
+      if (!isMultiple) {
+        internalSelection.forEach(opt => {
+          opt.isSelected = false;
+          // isCreatable && opt._created && list.splice(list.indexOf(opt), 1);
+        });
+      }
+      if (typeof option === 'string') {
+        option = {
+          [labelField]: `*${option}`,
+          [valueField]: encodeURIComponent(option),
+          isSelected: true,
+          _created: true,
+        }
+        list.push(option);
+      } else {
+        list.some(opt => {
+          if (opt[valueField] == option[valueField]) {
+            opt.isSelected = true;
+            return true;
+          }
+          return false;
+        });
+      }
+      return list;
+    });
+  };
+  const deselectOption = option => opts.update(list => {
+    internalSelection.delete(option);
+    option.isSelected = false;
+    // if (option._created) {
+    //   list.splice(list.indexOf(option), 1);
+    // } 
+    return list;
+  });
+  const clearSelection = () => opts.update(list => {
+    const toClear = [];
+    list.forEach(opt => {
+      if (opt.options) {
+        opt.options.forEach(o => o.isSelected = false);
+      } else {
+        opt.isSelected = false;
+        if (opt._created) {
+          internalSelection.delete(opt);
+          // toClear.push(list.indexOf(opt));
+        }
+      }
+    });
+    toClear.length && toClear.reverse().forEach(idx => list.splice(idx, 1));
+    return list;
+  });
+
+  // init selections
+  selection &&  (Array.isArray(selection) ? selection : [selection]).forEach(selectOption);
 
   /** ************************************ filtered results */
   const matchingOptions = derived([opts, inputValue, settings], 
@@ -225,57 +289,6 @@ const initStore = (options, initialSettings, dropdownMessages) => {
     });
     set(Array.from(internalSelection));
   }, Array.from(internalSelection))
-
-  /***************************************************************/
-  /**                    options exposed API                     */
-  /***************************************************************/
-
-  const selectOption = option => {
-    if (maxItems && internalSelection.size === maxItems) return;
-    opts.update(list => {
-      if (!isMultiple) {
-        internalSelection.forEach(opt => {
-          opt.isSelected = false;
-          // isCreatable && opt._created && list.splice(list.indexOf(opt), 1);
-        });
-      }
-      if (typeof option === 'string') {
-        option = {
-          [labelField]: `*${option}`,
-          [valueField]: encodeURIComponent(option),
-          isSelected: false,
-          _created: true,
-        }
-        list.push(option);
-      }
-      option.isSelected = true;
-      return list;
-    });
-  };
-  const deselectOption = option => opts.update(list => {
-    internalSelection.delete(option);
-    option.isSelected = false;
-    // if (option._created) {
-    //   list.splice(list.indexOf(option), 1);
-    // } 
-    return list;
-  });
-  const clearSelection = () => opts.update(list => {
-    const toClear = [];
-    list.forEach(opt => {
-      if (opt.options) {
-        opt.options.forEach(o => o.isSelected = false);
-      } else {
-        opt.isSelected = false;
-        if (opt._created) {
-          internalSelection.delete(opt);
-          // toClear.push(list.indexOf(opt));
-        }
-      }
-    });
-    toClear.length && toClear.reverse().forEach(idx => list.splice(idx, 1));
-    return list;
-  });
 
   const listLength = derived(opts, ($opts, set) => {
     set(
