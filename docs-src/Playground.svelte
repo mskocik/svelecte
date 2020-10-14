@@ -12,7 +12,7 @@
 
 	let remoteValue = 'countries';
 
-	let myValue = options[2];
+	let myValue = options[17];
 
 	const remotes = {
 		colors: 'https://my-json-server.typicode.com/mskocik/svelecte-db/colors?value_like=[query]',
@@ -26,8 +26,9 @@
 	}
 
 	$: {
-		console.log('UP');
-		if (myValue && myValue.value === 'al') myValue = null;
+		if (myValue && myValue.value === 'al') {
+			myValue = null;
+		}
 	}
 
 	let settings = {};

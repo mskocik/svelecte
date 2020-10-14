@@ -177,15 +177,14 @@
   $: settings.set({ max, multiple, creatable, searchField, sortField, currentLabelField, currentValueField, sortRemote });
   $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField});
   $: {
-    // if (prevSelection !== selection) {
-    //   selection = multiple
-    //     ? $selectedOptions
-    //     : $selectedOptions.length ? $selectedOptions[0] : null;
-    //   prevSelection = selection;
-    // }
+    const _unifiedSelection = multiple 
+      ? $selectedOptions
+      : $selectedOptions.length ? $selectedOptions[0] : null;
     value = multiple 
       ? $selectedOptions.map(opt => opt[currentValueField])
       : $selectedOptions.length ? $selectedOptions[0][currentValueField] : null;
+    prevSelection = _unifiedSelection;
+    selection = _unifiedSelection;
     // Custom-element related
     if (anchor && value) {
       anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce((res, item) => {
