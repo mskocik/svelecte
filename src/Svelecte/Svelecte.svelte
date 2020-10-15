@@ -175,7 +175,7 @@
   }
   
   $: settings.set({ max, multiple, creatable, searchField, sortField, currentLabelField, currentValueField, sortRemote });
-  $: itemRenderer = formatterList[renderer] || formatterList.default.bind({ label: currentLabelField});
+  $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
     const _unifiedSelection = multiple 
       ? $selectedOptions
