@@ -10,9 +10,9 @@
 	let searchable = true;
 	let creatable = true;
 
-	let remoteValue = 'countries';
+	let remoteValue = 'groups';
 
-	let myValue = options[17];
+	let myValue = options[4];
 
 	const remotes = {
 		colors: 'https://my-json-server.typicode.com/mskocik/svelecte-db/colors?value_like=[query]',
@@ -21,6 +21,7 @@
 	const slots = {
 		opts: '🎨',
 		countries: '🌍',
+		groups: '🔠',
 		colors: '⚡',
 		json: '🙋'
 	}
@@ -46,6 +47,12 @@
 				options: dataset.countries(),
 				fetch: null,
 				placeholder: 'Choose your favourite European country'
+			}
+		} else if (remoteValue === 'groups') {
+			settings = {
+				options: dataset.countryGroups(),
+				fetch: null,
+				placeholder: 'Select from country group'
 			}
 		} else {
 			settings = {
@@ -89,11 +96,12 @@
 		<button on:click={() => options = dataset.countryGroups()}>Switch Source</button>
 	</div>
 -->
-	<button on:click={() => { myValue = options[2] } }>Set Armenia</button>
+	<button on:click={() => { myValue = options[3] } }>Set Armenia</button>
 	<button on:click={() => { myValue = null } }>Clear</button>
 	<select bind:value={remoteValue}>
 		<option value="opts">🎨 colors</option>
 		<option value="countries">🌍 countries</option>
+		<option value="groups">🔠 country groups</option>
 		<option value="colors">API: Colors</option>
 		<option value="json">API: User list</option>
 	</select>

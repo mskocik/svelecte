@@ -317,6 +317,10 @@
         ignoreHover = true;
         break;
       case 'Escape':
+        if ($hasDropdownOpened) { // prevent ESC bubble in this case (interfering with modal closing etc. (bootstrap))
+          event.preventDefault();
+          event.stopPropagation();
+        }
         if (!$inputValue) {
           $hasDropdownOpened = false;
         }

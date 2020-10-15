@@ -20,20 +20,20 @@
   $: widthAddition = $selectedOptions.length === 0 ? 19 : 12;
   $: inputStyle = `width: ${isSingleFilled ? 2 : shadowWidth + widthAddition}px`;
 
-  let enterLock = false;
+  let disableEventBubble = false;
 
   function onKeyDown(e) {
-    enterLock = e.key === 'Enter' && $hasDropdownOpened;
+    disableEventBubble = ['Enter', 'Escape'].includes(e.key) && $hasDropdownOpened;
     dispatch('keydown', e);
   }
 
   /** Stop event propagation on keyup, when dropdown is opened. Typically this will prevent form submit */
   function onKeyUp(e) {
-    if (enterLock) {
+    if (disableEventBubble) {
       e.stopImmediatePropagation();
       e.preventDefault();
-      enterLock = false;
     }
+    disableEventBubble = false;
   }
 </script>
 
