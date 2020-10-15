@@ -1,5 +1,5 @@
 <script>
-  import { getContext, onDestroy } from 'svelte';
+  import { getContext, onDestroy, createEventDispatcher } from 'svelte';
   import { key } from './../contextStore.js';
 
   export const focus = () => inputRef.focus();
@@ -12,6 +12,7 @@
   let shadowWidth = 0;
 
   const { inputValue, selectedOptions, hasDropdownOpened } = getContext(key);
+  const dispatch = createEventDispatcher();
 
   $: isSingleFilled = $selectedOptions.length > 0 && multiple === false;
   $: placeholderText = $selectedOptions.length > 0 ? '' : placeholder;
@@ -19,11 +20,19 @@
   $: widthAddition = $selectedOptions.length === 0 ? 19 : 12;
   $: inputStyle = `width: ${isSingleFilled ? 2 : shadowWidth + widthAddition}px`;
 
+  let enterLock = false;
+
+  function onKeyDown(e) {
+    enterLock = e.key === 'Enter' && $hasDropdownOpened;
+    dispatch('keydown', e);
+  }
+
   /** Stop event propagation on keyup, when dropdown is opened. Typically this will prevent form submit */
   function onKeyUp(e) {
-    if ($hasDropdownOpened) {
+    if (enterLock) {
       e.stopImmediatePropagation();
       e.preventDefault();
+      enterLock = false;
     }
   }
 </script>
@@ -37,7 +46,7 @@
   bind:value={$inputValue} 
   on:focus
   on:blur
-  on:keydown
+  on:keydown={onKeyDown}
   on:keyup={onKeyUp}
   on:paste
 >

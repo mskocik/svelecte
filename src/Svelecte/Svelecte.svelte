@@ -17,8 +17,8 @@
 </script>
 
 <script>
-  import { setContext, onDestroy, createEventDispatcher, tick, onMount } from 'svelte';
-  import { key, initStore, initSettings } from './contextStore.js';
+  import { setContext, onDestroy, createEventDispatcher, tick, onMount, } from 'svelte';
+  import { key, initStore } from './contextStore.js';
   import { fetchRemote } from './lib/utils.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
@@ -282,8 +282,9 @@
    * Keyboard navigation
    */
   function onKeyDown(event) {
+    event = event.detail; // from dispatched event
     if (creatable && delimiter.indexOf(event.key) > -1) {
-      onSelect(null, $inputValue);
+      $inputValue.length > 0 && onSelect(null, $inputValue); // prevent creating item with delimiter itself
       event.preventDefault();
       return;
     }
