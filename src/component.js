@@ -236,6 +236,9 @@ export const SvelecteElement = class extends HTMLElement {
         props[attr] = formatValue(attr, this.getAttribute(attr));
       }
     }
+    if (this.hasAttribute('class')) {
+      props.class = this.getAttribute('class');
+    }
     if (this.hasAttribute('parent')) {
       delete props['fetch'];
       props.disabled = true;
