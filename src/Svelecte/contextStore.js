@@ -126,12 +126,23 @@ const initStore = (options, selection, initialSettings, dropdownMessages) => {
         }
         list.push(option);
       } else {
+        const searchedValue = option[valueField];
         list.some(opt => {
-          if (opt[valueField] == option[valueField]) {
-            opt.isSelected = true;
-            return true;
+          if (opt.options) {
+            return opt.options.some(groupOpt => {
+              if (groupOpt[valueField] == searchedValue) {
+                groupOpt.isSelected = true;
+                return true;
+              }
+              return false;
+            });
+          } else {
+            if (opt[valueField] == searchedValue) {
+              opt.isSelected = true;
+              return true;
+            }
+            return false;
           }
-          return false;
         });
       }
       return list;
