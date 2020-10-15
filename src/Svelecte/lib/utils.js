@@ -57,8 +57,8 @@ export function debounce(fn, delay) {
 const itemHtml = document.createElement('div');
 itemHtml.className = 'sv-item-content';
 
-export function highlightSearch(item, $inputValue, formatter) {
-  itemHtml.innerHTML = formatter ? formatter(item) : item;
+export function highlightSearch(item, isSelected, $inputValue, formatter) {
+  itemHtml.innerHTML = formatter ? formatter(item, isSelected) : item;
   if ($inputValue == '' || item.isSelected) return itemHtml.outerHTML;
 
   const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
