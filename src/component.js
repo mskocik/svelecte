@@ -3,7 +3,7 @@ import Svelecte, { addFormatter, config } from './Svelecte/Svelecte.svelte';
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required', 'value',
   'multiple','disabled', 'max', 'creatable', 'delimiter',
-  'placeholder', 'renderer', 'searchable', 'clearable', 'parent', 'fetch', 'valueField', 'labelField',
+  'placeholder', 'renderer', 'searchable', 'clearable', 'fetch', 'valueField', 'labelField',
   'anchor'
 ];
 
@@ -248,8 +248,9 @@ export const SvelecteElement = class extends HTMLElement {
         return;
       };
       this.parentCallback = e => {
-        if (!e.target.value) {
+        if (!e.target.value || (Array.isArray(e.target.value) && !e.target.value.length)) {
           this.svelecte.clearByParent();
+          this.disabled = true;
           return;
         }
         !this.parent.disabled && this.removeAttribute('disabled');
@@ -297,7 +298,7 @@ export const SvelecteElement = class extends HTMLElement {
   }
 
   disconnectedCallback() {
-    this.svelecte = this.svelecte.$destroy();
+    this.svelecte && this.svelecte.$destroy();
     this.parent && this.parent.removeEventListener('change', this.parentCallback);
   }
 }
