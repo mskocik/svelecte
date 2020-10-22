@@ -244,13 +244,11 @@ export const SvelecteElement = class extends HTMLElement {
       props.disabled = true;
       this.parent = document.getElementById(this.getAttribute('parent'));
       if (!this.parent.value && this.svelecte) {
-        
         return;
       };
       this.parentCallback = e => {
-        if (!e.target.value || (Array.isArray(e.target.value) && !e.target.value.length)) {
-          this.svelecte.clearByParent();
-          this.disabled = true;
+        if (!e.target.selection || (Array.isArray(e.target.selection) && !e.target.selection.length)) {
+          this.svelecte.clearByParent(true);
           return;
         }
         !this.parent.disabled && this.removeAttribute('disabled');

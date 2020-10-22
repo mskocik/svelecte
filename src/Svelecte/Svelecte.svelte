@@ -63,8 +63,9 @@
   };
   export const setSelection = selection => _selectByValues(selection);
   export const clearByParent = doDisable => {
-    if (doDisable) disabled = true;
     clearSelection();
+    emitChangeEvent();
+    if (doDisable) disabled = true;
     fetch = null;
   }
  
@@ -121,7 +122,7 @@
     const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
     const initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
     const debouncedFetch = debounce(query => {
-      fetchSource(query, fetchCallback)
+      fetchSource(query, fetchCallback || defaults.fetchCallback)
         .then(data => {
           options = data;
         })
@@ -186,7 +187,7 @@
     prevSelection = _unifiedSelection;
     selection = _unifiedSelection;
     // Custom-element related
-    if (anchor && value) {
+    if (anchor) {
       anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce((res, item) => {
         res+= `<option value="${item}" selected>${item}</option>`;
         return res;
