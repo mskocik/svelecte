@@ -189,7 +189,10 @@
     // Custom-element related
     if (anchor) {
       anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce((res, item) => {
-        if (!item) return res;
+        if (!item) {
+          res = '<option value="" selected=""></option>';
+          return res;
+        };
         res+= `<option value="${item}" selected>${item}</option>`;
         return res;
       }, '');
