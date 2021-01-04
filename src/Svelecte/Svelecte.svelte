@@ -375,7 +375,7 @@
       event.preventDefault();
       const rx = new RegExp('([^' + delimiter + '\\n]+)', 'g');
       const pasted = event.clipboardData.getData('text/plain');
-      pasted.match(rx).forEach(opt => onSelect(null, opt));
+      pasted.match(rx).forEach(opt => onSelect(null, opt.trim()));
     }
     // do nothing otherwise
   }
