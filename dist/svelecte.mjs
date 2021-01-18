@@ -1,1 +1,6233 @@
-function e(){}function t(e){return e()}function n(){return Object.create(null)}function i(e){e.forEach(t)}function r(e){return"function"==typeof e}function s(e,t){return e!=e?t==t:e!==t||e&&"object"==typeof e||"function"==typeof e}function l(t,...n){if(null==t)return e;const i=t.subscribe(...n);return i.unsubscribe?()=>i.unsubscribe():i}function o(e,t,n){e.$$.on_destroy.push(l(t,n))}function c(e,t,n,i){if(e){const r=a(e,t,n,i);return e[0](r)}}function a(e,t,n,i){return e[1]&&i?function(e,t){for(const n in t)e[n]=t[n];return e}(n.ctx.slice(),e[1](i(t))):n.ctx}function u(e,t,n,i,r,s,l){const o=function(e,t,n,i){if(e[2]&&i){const r=e[2](i(n));if(void 0===t.dirty)return r;if("object"==typeof r){const e=[],n=Math.max(t.dirty.length,r.length);for(let i=0;i<n;i+=1)e[i]=t.dirty[i]|r[i];return e}return t.dirty|r}return t.dirty}(t,i,r,s);if(o){const r=a(t,n,i,l);e.p(r,o)}}function d(e){return null==e?"":e}function h(e,t,n=t){return e.set(n),t}function p(e,t){e.appendChild(t)}function f(e,t,n){e.insertBefore(t,n||null)}function m(e){e.parentNode.removeChild(e)}function b(e,t){for(let n=0;n<e.length;n+=1)e[n]&&e[n].d(t)}function g(e){return document.createElement(e)}function v(e){return document.createTextNode(e)}function y(){return v(" ")}function x(){return v("")}function w(e,t,n,i){return e.addEventListener(t,n,i),()=>e.removeEventListener(t,n,i)}function A(e){return function(t){return t.preventDefault(),e.call(this,t)}}function S(e,t,n){null==n?e.removeAttribute(t):e.getAttribute(t)!==n&&e.setAttribute(t,n)}function O(e,t){t=""+t,e.wholeText!==t&&(e.data=t)}function E(e,t){e.value=null==t?"":t}let F,k;function D(){if(void 0===F){F=!1;try{"undefined"!=typeof window&&window.parent&&window.parent.document}catch(e){F=!0}}return F}function M(e,t,n){e.classList[n?"add":"remove"](t)}class L{constructor(e=null){this.a=e,this.e=this.n=null}m(e,t,n=null){this.e||(this.e=g(t.nodeName),this.t=t,this.h(e)),this.i(n)}h(e){this.e.innerHTML=e,this.n=Array.from(this.e.childNodes)}i(e){for(let t=0;t<this.n.length;t+=1)f(this.t,this.n[t],e)}p(e){this.d(),this.h(e),this.i(this.a)}d(){this.n.forEach(m)}}function _(e){k=e}function T(){if(!k)throw new Error("Function called outside component initialization");return k}function C(e){T().$$.on_mount.push(e)}function N(e){T().$$.on_destroy.push(e)}function q(){const e=T();return(t,n)=>{const i=e.$$.callbacks[t];if(i){const r=function(e,t){const n=document.createEvent("CustomEvent");return n.initCustomEvent(e,!1,!1,t),n}(t,n);i.slice().forEach(t=>{t.call(e,r)})}}}function I(e){return T().$$.context.get(e)}function R(e,t){const n=e.$$.callbacks[t.type];n&&n.slice().forEach(e=>e(t))}const j=[],B=[],H=[],z=[],V=Promise.resolve();let P=!1;function W(){P||(P=!0,V.then(G))}function U(){return W(),V}function J(e){H.push(e)}let K=!1;const X=new Set;function G(){if(!K){K=!0;do{for(let e=0;e<j.length;e+=1){const t=j[e];_(t),Q(t.$$)}for(_(null),j.length=0;B.length;)B.pop()();for(let e=0;e<H.length;e+=1){const t=H[e];X.has(t)||(X.add(t),t())}H.length=0}while(j.length);for(;z.length;)z.pop()();P=!1,K=!1,X.clear()}}function Q(e){if(null!==e.fragment){e.update(),i(e.before_update);const t=e.dirty;e.dirty=[-1],e.fragment&&e.fragment.p(e.ctx,t),e.after_update.forEach(J)}}const Y=new Set;let Z;function ee(){Z={r:0,c:[],p:Z}}function te(){Z.r||i(Z.c),Z=Z.p}function ne(e,t){e&&e.i&&(Y.delete(e),e.i(t))}function ie(e,t,n,i){if(e&&e.o){if(Y.has(e))return;Y.add(e),Z.c.push(()=>{Y.delete(e),i&&(n&&e.d(1),i())}),e.o(t)}}function re(e){e&&e.c()}function se(e,n,s){const{fragment:l,on_mount:o,on_destroy:c,after_update:a}=e.$$;l&&l.m(n,s),J(()=>{const n=o.map(t).filter(r);c?c.push(...n):i(n),e.$$.on_mount=[]}),a.forEach(J)}function le(e,t){const n=e.$$;null!==n.fragment&&(i(n.on_destroy),n.fragment&&n.fragment.d(t),n.on_destroy=n.fragment=null,n.ctx=[])}function oe(t,r,s,l,o,c,a=[-1]){const u=k;_(t);const d=r.props||{},h=t.$$={fragment:null,ctx:null,props:c,update:e,not_equal:o,bound:n(),on_mount:[],on_destroy:[],before_update:[],after_update:[],context:new Map(u?u.$$.context:[]),callbacks:n(),dirty:a,skip_bound:!1};let p=!1;if(h.ctx=s?s(t,d,(e,n,...i)=>{const r=i.length?i[0]:n;return h.ctx&&o(h.ctx[e],h.ctx[e]=r)&&(!h.skip_bound&&h.bound[e]&&h.bound[e](r),p&&function(e,t){-1===e.$$.dirty[0]&&(j.push(e),W(),e.$$.dirty.fill(0)),e.$$.dirty[t/31|0]|=1<<t%31}(t,e)),n}):[],h.update(),p=!0,i(h.before_update),h.fragment=!!l&&l(h.ctx),r.target){if(r.hydrate){const e=function(e){return Array.from(e.childNodes)}(r.target);h.fragment&&h.fragment.l(e),e.forEach(m)}else h.fragment&&h.fragment.c();r.intro&&ne(t.$$.fragment),se(t,r.target,r.anchor),G()}_(u)}class ce{$destroy(){le(this,1),this.$destroy=e}$on(e,t){const n=this.$$.callbacks[e]||(this.$$.callbacks[e]=[]);return n.push(t),()=>{const e=n.indexOf(t);-1!==e&&n.splice(e,1)}}$set(e){var t;this.$$set&&(t=e,0!==Object.keys(t).length)&&(this.$$.skip_bound=!0,this.$$set(e),this.$$.skip_bound=!1)}}var ae=function(e,t){this.items=e,this.settings=t||{diacritics:!0}};ae.prototype.tokenize=function(e,t){if(!(e=pe(String(e||"").toLowerCase()))||!e.length)return[];var n,i,r,s,l=[],o=e.split(/ +/);for(n=0,i=o.length;n<i;n++){if(r=fe(o[n]),this.settings.diacritics)for(s in be)be.hasOwnProperty(s)&&(r=r.replace(new RegExp(s,"g"),be[s]));t&&(r="\\b"+r),l.push({string:o[n],regex:new RegExp(r,"i")})}return l},ae.prototype.iterator=function(e,t){(me(e)?Array.prototype.forEach||function(e){for(var t=0,n=this.length;t<n;t++)e(this[t],t,this)}:function(e){for(var t in this)this.hasOwnProperty(t)&&e(this[t],t,this)}).apply(e,[t])},ae.prototype.getScoreFunction=function(e,t){var n,i,r,s;e=this.prepareSearch(e,t),i=e.tokens,n=e.options.fields,r=i.length,s=e.options.nesting;var l,o=function(e,t){var n,i;return e?-1===(i=(e=String(e||"")).search(t.regex))?0:(n=t.string.length/e.length,0===i&&(n+=.5),n):0},c=(l=n.length)?1===l?function(e,t){return o(he(t,n[0],s),e)}:function(e,t){for(var i=0,r=0;i<l;i++)r+=o(he(t,n[i],s),e);return r/l}:function(){return 0};return r?1===r?function(e){return c(i[0],e)}:"and"===e.options.conjunction?function(e){for(var t,n=0,s=0;n<r;n++){if((t=c(i[n],e))<=0)return 0;s+=t}return s/r}:function(e){for(var t=0,n=0;t<r;t++)n+=c(i[t],e);return n/r}:function(){return 0}},ae.prototype.getSortFunction=function(e,t){var n,i,r,s,l,o,c,a,u,d,h;if(h=!(e=(r=this).prepareSearch(e,t)).query&&t.sort_empty||t.sort,u=function(e,n){return"$score"===e?n.score:he(r.items[n.id],e,t.nesting)},l=[],h)for(n=0,i=h.length;n<i;n++)(e.query||"$score"!==h[n].field)&&l.push(h[n]);if(e.query){for(d=!0,n=0,i=l.length;n<i;n++)if("$score"===l[n].field){d=!1;break}d&&l.unshift({field:"$score",direction:"desc"})}else for(n=0,i=l.length;n<i;n++)if("$score"===l[n].field){l.splice(n,1);break}for(a=[],n=0,i=l.length;n<i;n++)a.push("desc"===l[n].direction?-1:1);return(o=l.length)?1===o?(s=l[0].field,c=a[0],function(e,t){return c*ue(u(s,e),u(s,t))}):function(e,t){var n,i,r;for(n=0;n<o;n++)if(r=l[n].field,i=a[n]*ue(u(r,e),u(r,t)))return i;return 0}:null},ae.prototype.prepareSearch=function(e,t){if("object"==typeof e)return e;var n=(t=de({},t)).fields,i=t.sort,r=t.sort_empty;return n&&!me(n)&&(t.fields=[n]),i&&!me(i)&&(t.sort=[i]),r&&!me(r)&&(t.sort_empty=[r]),{options:t,query:String(e||"").toLowerCase(),tokens:this.tokenize(e,t.respect_word_boundaries),total:0,items:[]}},ae.prototype.search=function(e,t){var n,i,r,s,l=this;return i=this.prepareSearch(e,t),t=i.options,e=i.query,s=t.score||l.getScoreFunction(i),e.length?l.iterator(l.items,(function(e,r){n=s(e),(!1===t.filter||n>0)&&i.items.push({score:n,id:r})})):l.iterator(l.items,(function(e,t){i.items.push({score:1,id:t})})),(r=l.getSortFunction(i,t))&&i.items.sort(r),i.total=i.items.length,"number"==typeof t.limit&&(i.items=i.items.slice(0,t.limit)),i};var ue=function(e,t){return"number"==typeof e&&"number"==typeof t?e>t?1:e<t?-1:0:(e=ge(String(e||"")))>(t=ge(String(t||"")))?1:t>e?-1:0},de=function(e,t){var n,i,r,s;for(n=1,i=arguments.length;n<i;n++)if(s=arguments[n])for(r in s)s.hasOwnProperty(r)&&(e[r]=s[r]);return e},he=function(e,t,n){if(e&&t){if(!n)return e[t];for(var i=t.split(".");i.length&&(e=e[i.shift()]););return e}},pe=function(e){return(e+"").replace(/^\s+|\s+$|/g,"")},fe=function(e){return(e+"").replace(/([.?*+^$[\]\\(){}|-])/g,"\\$1")},me=Array.isArray||"undefined"!=typeof $&&$.isArray||function(e){return"[object Array]"===Object.prototype.toString.call(e)},be={a:"[aḀḁĂăÂâǍǎȺⱥȦȧẠạÄäÀàÁáĀāÃãÅåąĄÃąĄ]",b:"[b␢βΒB฿𐌁ᛒ]",c:"[cĆćĈĉČčĊċC̄c̄ÇçḈḉȻȼƇƈɕᴄＣｃ]",d:"[dĎďḊḋḐḑḌḍḒḓḎḏĐđD̦d̦ƉɖƊɗƋƌᵭᶁᶑȡᴅＤｄð]",e:"[eÉéÈèÊêḘḙĚěĔĕẼẽḚḛẺẻĖėËëĒēȨȩĘęᶒɆɇȄȅẾếỀềỄễỂểḜḝḖḗḔḕȆȇẸẹỆệⱸᴇＥｅɘǝƏƐε]",f:"[fƑƒḞḟ]",g:"[gɢ₲ǤǥĜĝĞğĢģƓɠĠġ]",h:"[hĤĥĦħḨḩẖẖḤḥḢḣɦʰǶƕ]",i:"[iÍíÌìĬĭÎîǏǐÏïḮḯĨĩĮįĪīỈỉȈȉȊȋỊịḬḭƗɨɨ̆ᵻᶖİiIıɪＩｉ]",j:"[jȷĴĵɈɉʝɟʲ]",k:"[kƘƙꝀꝁḰḱǨǩḲḳḴḵκϰ₭]",l:"[lŁłĽľĻļĹĺḶḷḸḹḼḽḺḻĿŀȽƚⱠⱡⱢɫɬᶅɭȴʟＬｌ]",n:"[nŃńǸǹŇňÑñṄṅŅņṆṇṊṋṈṉN̈n̈ƝɲȠƞᵰᶇɳȵɴＮｎŊŋ]",o:"[oØøÖöÓóÒòÔôǑǒŐőŎŏȮȯỌọƟɵƠơỎỏŌōÕõǪǫȌȍՕօ]",p:"[pṔṕṖṗⱣᵽƤƥᵱ]",q:"[qꝖꝗʠɊɋꝘꝙq̃]",r:"[rŔŕɌɍŘřŖŗṘṙȐȑȒȓṚṛⱤɽ]",s:"[sŚśṠṡṢṣꞨꞩŜŝŠšŞşȘșS̈s̈]",t:"[tŤťṪṫŢţṬṭƮʈȚțṰṱṮṯƬƭ]",u:"[uŬŭɄʉỤụÜüÚúÙùÛûǓǔŰűŬŭƯưỦủŪūŨũŲųȔȕ∪]",v:"[vṼṽṾṿƲʋꝞꝟⱱʋ]",w:"[wẂẃẀẁŴŵẄẅẆẇẈẉ]",x:"[xẌẍẊẋχ]",y:"[yÝýỲỳŶŷŸÿỸỹẎẏỴỵɎɏƳƴ]",z:"[zŹźẐẑŽžŻżẒẓẔẕƵƶ]"};const ge=function(){var e,t,n,i,r="",s={};for(n in be)if(be.hasOwnProperty(n))for(r+=i=be[n].substring(2,be[n].length-1),e=0,t=i.length;e<t;e++)s[i.charAt(e)]=n;var l=new RegExp("["+r+"]","g");return function(e){return e.replace(l,(function(e){return s[e]})).toLowerCase()}}();let $e,ve=null;const ye=document.createElement("div");function xe(e,t,n,i){if(ye.innerHTML=i?i(e,t):e,""==n||e.isSelected)return ye.outerHTML;const r=new RegExp(`(${ge(n)})`,"ig");return we(ye,r),ye.outerHTML}ye.className="sv-item-content";const we=function(e,t){let n=0;if(3===e.nodeType){const i=ge(e.data),r=i.search(t);if(r>=0&&e.data.length>0){const s=i.match(t),l=document.createElement("span");l.className="highlight";const o=e.splitText(r),c=(o.splitText(s[0].length),o.cloneNode(!0));l.appendChild(c),o.parentNode.replaceChild(l,o),n=1}}else if(1===e.nodeType&&e.childNodes&&!/(script|style)/i.test(e.tagName)&&("highlight"!==e.className||"SPAN"!==e.tagName))for(var i=0;i<e.childNodes.length;++i)i+=we(e.childNodes[i],t);return n};function Ae(e,t){const n="value"===e;let i=n?"value":"text";if(t&&t.length){const e=t[0].options?t[0].options[0]:t[0],r=n?0:1,s=n?["id","value","ID"]:["name","title","label"];i=Object.keys(e).filter(e=>s.includes(e)).concat([Object.keys(e)[r]]).shift()}return i}const Se={name:null,required:!1,multiple:!1,searchable:!0,disabled:!1,creatable:!1,clearable:!1,selectOnTab:!1,placeholder:"Select",valueField:null,labelField:null,max:0,delimiter:",",sortRemoteResults:!0,i18n:{empty:"No options",nomatch:"No matching options",max:"Maximum items :maxItems selected",fetchBefore:"Type to search",fetchWait:"Stop typing to search",fetchEmpty:"No data related to your search"}},Oe=[];function Ee(t,n=e){let i;const r=[];function l(e){if(s(t,e)&&(t=e,i)){const e=!Oe.length;for(let e=0;e<r.length;e+=1){const n=r[e];n[1](),Oe.push(n,t)}if(e){for(let e=0;e<Oe.length;e+=2)Oe[e][0](Oe[e+1]);Oe.length=0}}}return{set:l,update:function(e){l(e(t))},subscribe:function(s,o=e){const c=[s,o];return r.push(c),1===r.length&&(i=n(l)||e),s(t),()=>{const e=r.indexOf(c);-1!==e&&r.splice(e,1),0===r.length&&(i(),i=null)}}}}function Fe(t,n,s){const o=!Array.isArray(t),c=o?[t]:t,a=n.length<2;return{subscribe:Ee(s,t=>{let s=!1;const u=[];let d=0,h=e;const p=()=>{if(d)return;h();const i=n(o?u[0]:u,t);a?t(i):h=r(i)?i:e},f=c.map((e,t)=>l(e,e=>{u[t]=e,d&=~(1<<t),s&&p()},()=>{d|=1<<t}));return s=!0,p(),function(){i(f),h()}}).subscribe}}const ke={};function De(e){return this.has(e)?(!e.isSelected&&this.delete(e),!1):(e.isSelected&&this.add(e),!0)}const Me=(e,t,n,i)=>{const r=new Set,s=De.bind(r);let l=n.currentValueField,o=n.currentLabelField,c=n.max,a=n.multiple,u=n.creatable,d=n.searchField,h=n.sortField,p=!1,f=n.searchField,m=n.sortField,b=!!n.sortRemote;const g=Le(n),$=g.subscribe(e=>{if(c=e.max,a=e.multiple,u=e.creatable,b=e.sortRemote,l=e.currentValueField,o=e.currentLabelField,!a&&r.size>1&&S.update(e=>e.map(e=>(e.isSelected=!1,e))),a&&c&&r.size>c){let e=0;const t=t=>(t.isSelected&&(e>=c&&(t.isSelected=!1),e++),t);S.update(e=>e.map(t))}e.searchField&&d!==e.searchField&&(d=e.searchField),e.sortField&&h!==e.sortField&&(h=e.sortField)}),v=Ee(""),y=Ee(!1),x=Ee(!1),w=Ee(!1),A=Ee(i.empty),S=Ee([]);let O=[];const E=e=>{p=e.some(e=>e.options),f=d||function(e){e.options&&(e=e.options[0]);const t=["value","isSelected","isDisabled","selected","disabled"];return Object.keys(e).filter(e=>!t.includes(e))}(e.length>0?e[0]:{[o]:""}),m=d||!p&&(h||[{field:o,direction:"asc"}]),O=e.reduce((e,t)=>t.options?(e.push(...t.options),e):(e.push(t),e),[]),S.set(e),e.forEach(e=>e.isSelected&&r.add(e))};E(e);const F=e=>{c&&r.size===c||S.update(t=>{if(a||r.forEach(e=>{e.isSelected=!1}),"string"==typeof e)e={[o]:"*"+e,[l]:encodeURIComponent(e),isSelected:!0,_created:!0},t.push(e);else{const n=e[l];t.some(e=>e.options?e.options.some(e=>e[l]==n&&(e.isSelected=!0,!0)):e[l]==n&&(e.isSelected=!0,!0))}return t})};t&&(Array.isArray(t)?t:[t]).forEach(F);const k=Fe([S,v,g],([e,t,n],s)=>{if(n.max&&r.size===n.max)return A.set(i.max.replace(":maxItems",n.max)),void s([]);if(""===t||!b)return n.multiple?s(e.reduce((e,t)=>{if(t.options){if(!t.isDisabled){const n=t.options.filter(e=>!e.isSelected);n.length&&e.push({label:t.label,options:n})}}else!t.isSelected&&e.push(t);return e},[])):s(e);const l=new ae(O);p&&(l.getSortFunction=()=>null);let o=l.search(t,{fields:f,sort:m,conjunction:"and"}).items.map(e=>O[e.id]);if(p){let t=o.shift();o=e.reduce((e,n)=>{if(n!==t||n.isSelected||(t=o.shift(),e.push(n)),n.options){const i=[];n.options.forEach(e=>{e!==t||e.isSelected||(i.push(e),t=o.shift())}),i.length&&e.push({label:n.label,options:i})}return e},[])}s(o.filter(e=>!e.isSelected))}),D=Fe(k,(e,t)=>{let n=0,i=0,r=0;t(e.reduce((e,t,s)=>t.options?t.isDisabled?(e.push(""),e):(e.push(t.options.map(e=>e.isDisabled?"":r+++i)),e):(i++,t.isDisabled?(e.push(""),e):(e.push(r+n++),e)),[]))}),M=p?Fe([k,v,g],([e,t,n],i)=>{i((""!==t?e.reduce((e,t)=>t.options?(e.push(...t.options),e):(e.push(t),e),[]):n.multiple?O.filter(e=>!e.isSelected):O).filter(e=>!e.isDisabled))}):k,L=Fe([S,g],([e,t],n)=>{t.multiple||r.clear(),e.forEach(e=>{e.options?!e.isDisabled&&e.options.forEach(s):s(e)}),n(Array.from(r))},Array.from(r)),_=Fe(S,(e,t)=>{t(e.reduce((e,t)=>e+=t.options?t.options.length:1,0))}),T=Fe([v,M],([e,t],n)=>{n(u&&e?t.length:t.length-1)});return{hasFocus:x,hasDropdownOpened:w,inputValue:v,isFetchingData:y,listMessage:A,settings:g,selectOption:F,deselectOption:e=>S.update(t=>(r.delete(e),e.isSelected=!1,t)),clearSelection:()=>S.update(e=>{const t=[];return e.forEach(e=>{e.options?e.options.forEach(e=>e.isSelected=!1):(e.isSelected=!1,e._created&&r.delete(e))}),t.length&&t.reverse().forEach(t=>e.splice(t,1)),e}),settingsUnsubscribe:$,listLength:_,listIndexMap:D,matchingOptions:k,flatMatching:M,currentListLength:T,selectedOptions:L,updateOpts:E}},Le=e=>{const t=Ee(e||{});return t.updateOne=(e,n)=>{t.update(t=>(t[e]=n,t))},t};function _e(t){let n,r,s,l,o,c,a,u;return{c(){n=g("input"),s=y(),l=g("div"),o=v(t[5]),S(n,"type","text"),S(n,"class","inputBox svelte-mtw92l"),n.disabled=t[1],n.readOnly=r=!t[0],S(n,"style",t[7]),S(n,"placeholder",t[4]),S(l,"class","shadow-text svelte-mtw92l"),J(()=>t[21].call(l))},m(e,i){f(e,n,i),t[19](n),E(n,t[6]),f(e,s,i),f(e,l,i),p(l,o),c=function(e,t){const n=getComputedStyle(e),i=(parseInt(n.zIndex)||0)-1;"static"===n.position&&(e.style.position="relative");const r=g("iframe");r.setAttribute("style",`display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: ${i};`),r.setAttribute("aria-hidden","true"),r.tabIndex=-1;const s=D();let l;return s?(r.src="data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}<\/script>",l=w(window,"message",e=>{e.source===r.contentWindow&&t()})):(r.src="about:blank",r.onload=()=>{l=w(r.contentWindow,"resize",t)}),p(e,r),()=>{(s||l&&r.contentWindow)&&l(),m(r)}}(l,t[21].bind(l)),a||(u=[w(n,"input",t[20]),w(n,"focus",t[16]),w(n,"blur",t[17]),w(n,"keydown",t[11]),w(n,"keyup",t[12]),w(n,"paste",t[18])],a=!0)},p(e,[t]){2&t&&(n.disabled=e[1]),1&t&&r!==(r=!e[0])&&(n.readOnly=r),128&t&&S(n,"style",e[7]),16&t&&S(n,"placeholder",e[4]),64&t&&n.value!==e[6]&&E(n,e[6]),32&t&&O(o,e[5])},i:e,o:e,d(e){e&&m(n),t[19](null),e&&m(s),e&&m(l),c(),a=!1,i(u)}}}function Te(e,t,n){let i,r,s;let{placeholder:l}=t,{searchable:c}=t,{disabled:a}=t,{multiple:u}=t,d=null,h=0;const{inputValue:p,selectedOptions:f,hasDropdownOpened:m}=I(ke);o(e,p,e=>n(6,r=e)),o(e,f,e=>n(24,i=e)),o(e,m,e=>n(26,s=e));const b=q();let g,$,v,y,x,w=!1;return e.$$set=e=>{"placeholder"in e&&n(14,l=e.placeholder),"searchable"in e&&n(0,c=e.searchable),"disabled"in e&&n(1,a=e.disabled),"multiple"in e&&n(15,u=e.multiple)},e.$$.update=()=>{16809984&e.$$.dirty&&n(23,g=i.length>0&&!1===u),16793600&e.$$.dirty&&n(4,$=i.length>0?"":l),80&e.$$.dirty&&n(5,v=r||$),16777216&e.$$.dirty&&n(25,y=0===i.length?19:12),41943048&e.$$.dirty&&n(7,x=`width: ${g?2:h+y}px`)},[c,a,d,h,$,v,r,x,p,f,m,function(e){w=["Enter","Escape"].includes(e.key)&&s,b("keydown",e)},function(e){w&&(e.stopImmediatePropagation(),e.preventDefault()),w=!1},()=>d.focus(),l,u,function(t){R(e,t)},function(t){R(e,t)},function(t){R(e,t)},function(e){B[e?"unshift":"push"](()=>{d=e,n(2,d)})},function(){r=this.value,p.set(r)},function(){h=this.clientWidth,n(3,h)}]}class Ce extends ce{constructor(e){super(),oe(this,e,Te,_e,s,{focus:13,placeholder:14,searchable:0,disabled:1,multiple:15})}get focus(){return this.$$.ctx[13]}}const Ne=e=>e.preventDefault();function qe(e,{item:t,index:n}){function i(n){const i=n.target.closest('[data-action="deselect"]')?"deselect":"select";e.dispatchEvent(new CustomEvent(i,{bubble:!0,detail:t}))}function r(){e.dispatchEvent(new CustomEvent("hover",{detail:n}))}return e.onmousedown=Ne,e.onclick=i,!t.isSelected&&e.addEventListener("mouseenter",r),{update(e){t=e.item,n=e.index},destroy(){e.removeEventListener("mousedown",Ne),e.removeEventListener("click",i),!t.isSelected&&e.removeEventListener("mouseenter",r)}}}function Ie(e){let t;return{c(){t=g("a"),t.innerHTML='<svg height="16" width="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path></svg>',S(t,"href","#deselect"),S(t,"class","sv-item-btn"),S(t,"tabindex","-1"),S(t,"data-action","deselect")},m(e,n){f(e,t,n)},d(e){e&&m(t)}}}function Re(t){let n,s,l,o,c,a,u,d=xe(t[1],t[2],t[6],t[5])+"",h=t[2]&&t[4]&&Ie();return{c(){n=g("div"),l=y(),h&&h.c(),s=new L(l),S(n,"class","sv-item"),S(n,"title",o=t[1]._created?"Created item":""),M(n,"is-disabled",t[3])},m(i,o){var m;f(i,n,o),s.m(d,n),p(n,l),h&&h.m(n,null),a||(u=[(m=c=qe.call(null,n,{item:t[1],index:t[0]}),m&&r(m.destroy)?m.destroy:e),w(n,"select",t[8]),w(n,"deselect",t[9]),w(n,"hover",t[10])],a=!0)},p(e,[t]){102&t&&d!==(d=xe(e[1],e[2],e[6],e[5])+"")&&s.p(d),e[2]&&e[4]?h||(h=Ie(),h.c(),h.m(n,null)):h&&(h.d(1),h=null),2&t&&o!==(o=e[1]._created?"Created item":"")&&S(n,"title",o),c&&r(c.update)&&3&t&&c.update.call(null,{item:e[1],index:e[0]}),8&t&&M(n,"is-disabled",e[3])},i:e,o:e,d(e){e&&m(n),h&&h.d(),a=!1,i(u)}}}function je(e,t,n){let i;const{inputValue:r}=I(ke);o(e,r,e=>n(6,i=e));let{index:s=-1}=t,{item:l={}}=t,{isSelected:c=!1}=t,{isDisabled:a=!1}=t,{isMultiple:u=!1}=t,{formatter:d=null}=t;return e.$$set=e=>{"index"in e&&n(0,s=e.index),"item"in e&&n(1,l=e.item),"isSelected"in e&&n(2,c=e.isSelected),"isDisabled"in e&&n(3,a=e.isDisabled),"isMultiple"in e&&n(4,u=e.isMultiple),"formatter"in e&&n(5,d=e.formatter)},[s,l,c,a,u,d,i,r,function(t){R(e,t)},function(t){R(e,t)},function(t){R(e,t)}]}class Be extends ce{constructor(e){super(),oe(this,e,je,Re,s,{index:0,item:1,isSelected:2,isDisabled:3,isMultiple:4,formatter:5})}}function He(e,t,n){const i=e.slice();return i[32]=t[n],i}const ze=e=>({}),Ve=e=>({});function Pe(e){let t,n,i=e[9],r=[];for(let t=0;t<i.length;t+=1)r[t]=We(He(e,i,t));const s=e=>ie(r[e],1,1,()=>{r[e]=null});return{c(){for(let e=0;e<r.length;e+=1)r[e].c();t=x()},m(e,i){for(let t=0;t<r.length;t+=1)r[t].m(e,i);f(e,t,i),n=!0},p(e,n){if(548&n[0]){let l;for(i=e[9],l=0;l<i.length;l+=1){const s=He(e,i,l);r[l]?(r[l].p(s,n),ne(r[l],1)):(r[l]=We(s),r[l].c(),ne(r[l],1),r[l].m(t.parentNode,t))}for(ee(),l=i.length;l<r.length;l+=1)s(l);te()}},i(e){if(!n){for(let e=0;e<i.length;e+=1)ne(r[e]);n=!0}},o(e){r=r.filter(Boolean);for(let e=0;e<r.length;e+=1)ie(r[e]);n=!1},d(e){b(r,e),e&&m(t)}}}function We(e){let t,n;return t=new Be({props:{formatter:e[2],item:e[32],isSelected:!0,isMultiple:e[5]}}),t.$on("deselect",e[24]),{c(){re(t.$$.fragment)},m(e,i){se(t,e,i),n=!0},p(e,n){const i={};4&n[0]&&(i.formatter=e[2]),512&n[0]&&(i.item=e[32]),32&n[0]&&(i.isMultiple=e[5]),t.$set(i)},i(e){n||(ne(t.$$.fragment,e),n=!0)},o(e){ie(t.$$.fragment,e),n=!1},d(e){le(t,e)}}}function Ue(t){let n,r,s;return{c(){n=g("div"),n.innerHTML='<svg class="indicator-icon svelte-6rgaw" height="20" width="20" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path></svg>',S(n,"aria-hidden","true"),S(n,"class","indicator-container close-icon svelte-6rgaw")},m(e,i){f(e,n,i),r||(s=[w(n,"mousedown",A(t[23])),w(n,"click",t[28])],r=!0)},p:e,d(e){e&&m(n),r=!1,i(s)}}}function Je(e){let t;return{c(){t=g("span"),S(t,"class","indicator-separator svelte-6rgaw")},m(e,n){f(e,t,n)},d(e){e&&m(t)}}}function Ke(e){let t,n,r,s,l,o,a,d,h,b,$,v,x;const O=e[20].icon,E=c(O,e,e[19],Ve);let F=e[9].length&&Pe(e),k={disabled:e[3],searchable:e[1],placeholder:e[4],multiple:e[5]};l=new Ce({props:k}),e[25](l),l.$on("focus",e[17]),l.$on("blur",e[18]),l.$on("keydown",e[26]),l.$on("paste",e[27]);let D=e[0]&&e[9].length&&!e[3]&&Ue(e),L=e[0]&&Je();return{c(){t=g("div"),E&&E.c(),n=y(),r=g("div"),F&&F.c(),s=y(),re(l.$$.fragment),o=y(),a=g("div"),D&&D.c(),d=y(),L&&L.c(),h=y(),b=g("div"),b.innerHTML='<svg width="20" class="indicator-icon svelte-6rgaw" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path></svg>',S(r,"class","sv-content sv-input-row svelte-6rgaw"),M(r,"has-multiSelection",e[5]),S(b,"aria-hidden","true"),S(b,"class","indicator-container svelte-6rgaw"),S(a,"class","indicator svelte-6rgaw"),M(a,"is-loading",e[10]),S(t,"class","sv-control svelte-6rgaw"),M(t,"is-active",e[8]),M(t,"is-disabled",e[3])},m(i,c){f(i,t,c),E&&E.m(t,null),p(t,n),p(t,r),F&&F.m(r,null),p(r,s),se(l,r,null),p(t,o),p(t,a),D&&D.m(a,null),p(a,d),L&&L.m(a,null),p(a,h),p(a,b),$=!0,v||(x=[w(b,"mousedown",A(e[22])),w(t,"mousedown",A(e[21])),w(t,"click",A(e[6]))],v=!0)},p(e,n){E&&E.p&&524288&n[0]&&u(E,O,e,e[19],n,ze,Ve),e[9].length?F?(F.p(e,n),512&n[0]&&ne(F,1)):(F=Pe(e),F.c(),ne(F,1),F.m(r,s)):F&&(ee(),ie(F,1,1,()=>{F=null}),te());const i={};8&n[0]&&(i.disabled=e[3]),2&n[0]&&(i.searchable=e[1]),16&n[0]&&(i.placeholder=e[4]),32&n[0]&&(i.multiple=e[5]),l.$set(i),32&n[0]&&M(r,"has-multiSelection",e[5]),e[0]&&e[9].length&&!e[3]?D?D.p(e,n):(D=Ue(e),D.c(),D.m(a,d)):D&&(D.d(1),D=null),e[0]?L||(L=Je(),L.c(),L.m(a,h)):L&&(L.d(1),L=null),1024&n[0]&&M(a,"is-loading",e[10]),256&n[0]&&M(t,"is-active",e[8]),8&n[0]&&M(t,"is-disabled",e[3])},i(e){$||(ne(E,e),ne(F),ne(l.$$.fragment,e),$=!0)},o(e){ie(E,e),ie(F),ie(l.$$.fragment,e),$=!1},d(n){n&&m(t),E&&E.d(n),F&&F.d(),e[25](null),le(l),D&&D.d(),L&&L.d(),v=!1,i(x)}}}function Xe(e,t,n){let i,r,s,l,c,{$$slots:a={},$$scope:u}=t,{clearable:d}=t,{searchable:p}=t,{renderer:f}=t,{disabled:m}=t,{placeholder:b}=t,{multiple:g}=t;const $=q(),{inputValue:v,hasFocus:y,hasDropdownOpened:x,selectedOptions:w,isFetchingData:A}=I(ke);o(e,v,e=>n(31,s=e)),o(e,y,e=>n(8,i=e)),o(e,x,e=>n(29,r=e)),o(e,w,e=>n(9,l=e)),o(e,A,e=>n(10,c=e));let S=void 0;let O;return e.$$set=e=>{"clearable"in e&&n(0,d=e.clearable),"searchable"in e&&n(1,p=e.searchable),"renderer"in e&&n(2,f=e.renderer),"disabled"in e&&n(3,m=e.disabled),"placeholder"in e&&n(4,b=e.placeholder),"multiple"in e&&n(5,g=e.multiple),"$$scope"in e&&n(19,u=e.$$scope)},e.$$.update=()=>{544&e.$$.dirty[0]|1&e.$$.dirty[1]&&(O=!!g||!s&&l.length)},[d,p,f,m,b,g,function(e){if(!m)return e?void(i?h(x,r=!r):S.focus()):(!i&&S.focus(),void h(x,r=!0))},S,i,l,c,$,v,y,x,w,A,function(){h(y,i=!0),h(x,r=!0)},function(){h(y,i=!1),h(x,r=!1),h(v,s="")},u,a,function(t){R(e,t)},function(t){R(e,t)},function(t){R(e,t)},function(t){R(e,t)},function(e){B[e?"unshift":"push"](()=>{S=e,n(7,S)})},function(t){R(e,t)},function(t){R(e,t)},()=>$("deselect")]}class Ge extends ce{constructor(e){super(),oe(this,e,Xe,Ke,s,{clearable:0,searchable:1,renderer:2,disabled:3,placeholder:4,multiple:5,focusControl:6},[-1,-1])}get focusControl(){return this.$$.ctx[6]}}function Qe(e,t,n){const i=e.slice();return i[42]=t[n],i[44]=n,i}const Ye=e=>({}),Ze=e=>({});function et(e,t,n){const i=e.slice();return i[39]=t[n],i[41]=n,i}function tt(e){let t,n,i=e[7],r=[];for(let t=0;t<i.length;t+=1)r[t]=st(et(e,i,t));const s=e=>ie(r[e],1,1,()=>{r[e]=null});return{c(){for(let e=0;e<r.length;e+=1)r[e].c();t=x()},m(e,i){for(let t=0;t<r.length;t+=1)r[t].m(e,i);f(e,t,i),n=!0},p(e,n){if(2188&n[0]|2&n[1]){let l;for(i=e[7],l=0;l<i.length;l+=1){const s=et(e,i,l);r[l]?(r[l].p(s,n),ne(r[l],1)):(r[l]=st(s),r[l].c(),ne(r[l],1),r[l].m(t.parentNode,t))}for(ee(),l=i.length;l<r.length;l+=1)s(l);te()}},i(e){if(!n){for(let e=0;e<i.length;e+=1)ne(r[e]);n=!0}},o(e){r=r.filter(Boolean);for(let e=0;e<r.length;e+=1)ie(r[e]);n=!1},d(e){b(r,e),e&&m(t)}}}function nt(e){let t,n,i,r,s;return n=new Be({props:{formatter:e[3],index:e[11][e[41]],isDisabled:e[39].isDisabled,item:e[39]}}),n.$on("hover",e[28]),n.$on("select",e[29]),{c(){t=g("div"),re(n.$$.fragment),i=y(),S(t,"data-pos",r=e[11][e[41]]),M(t,"active",e[11][e[41]]===e[2])},m(e,r){f(e,t,r),se(n,t,null),p(t,i),s=!0},p(e,i){const l={};8&i[0]&&(l.formatter=e[3]),2048&i[0]&&(l.index=e[11][e[41]]),128&i[0]&&(l.isDisabled=e[39].isDisabled),128&i[0]&&(l.item=e[39]),2&i[1]&&(l.$$scope={dirty:i,ctx:e}),n.$set(l),(!s||2048&i[0]&&r!==(r=e[11][e[41]]))&&S(t,"data-pos",r),2052&i[0]&&M(t,"active",e[11][e[41]]===e[2])},i(e){s||(ne(n.$$.fragment,e),s=!0)},o(e){ie(n.$$.fragment,e),s=!1},d(e){e&&m(t),le(n)}}}function it(e){let t,n,i,r,s,l;const o=e[23]["dropdown-group-header"],a=c(o,e,e[32],Ze),d=a||function(e){let t,n,i=e[39].label+"";return{c(){t=g("b"),n=v(i)},m(e,i){f(e,t,i),p(t,n)},p(e,t){128&t[0]&&i!==(i=e[39].label+"")&&O(n,i)},d(e){e&&m(t)}}}(e);let h=e[39].options,$=[];for(let t=0;t<h.length;t+=1)$[t]=rt(Qe(e,h,t));const E=e=>ie($[e],1,1,()=>{$[e]=null});return{c(){t=g("div"),d&&d.c(),n=y();for(let e=0;e<$.length;e+=1)$[e].c();i=x(),S(t,"class","optgroup-header svelte-195soi6")},m(o,c){f(o,t,c),d&&d.m(t,null),f(o,n,c);for(let e=0;e<$.length;e+=1)$[e].m(o,c);f(o,i,c),r=!0,s||(l=w(t,"mousedown",A(e[25])),s=!0)},p(e,t){if(a?a.p&&2&t[1]&&u(a,o,e,e[32],t,Ye,Ze):d&&d.p&&128&t[0]&&d.p(e,t),2188&t[0]){let n;for(h=e[39].options,n=0;n<h.length;n+=1){const r=Qe(e,h,n);$[n]?($[n].p(r,t),ne($[n],1)):($[n]=rt(r),$[n].c(),ne($[n],1),$[n].m(i.parentNode,i))}for(ee(),n=h.length;n<$.length;n+=1)E(n);te()}},i(e){if(!r){ne(d,e);for(let e=0;e<h.length;e+=1)ne($[e]);r=!0}},o(e){ie(d,e),$=$.filter(Boolean);for(let e=0;e<$.length;e+=1)ie($[e]);r=!1},d(e){e&&m(t),d&&d.d(e),e&&m(n),b($,e),e&&m(i),s=!1,l()}}}function rt(e){let t,n,i,r,s;return n=new Be({props:{formatter:e[3],isDisabled:e[39].isDisabled||e[42].isDisabled,index:e[11][e[41]][e[44]],item:e[42]}}),n.$on("hover",e[26]),n.$on("select",e[27]),{c(){t=g("div"),re(n.$$.fragment),i=y(),S(t,"data-pos",r=e[11][e[41]][e[44]]),S(t,"class","optgroup-item svelte-195soi6"),M(t,"active",e[11][e[41]][e[44]]===e[2])},m(e,r){f(e,t,r),se(n,t,null),p(t,i),s=!0},p(e,i){const l={};8&i[0]&&(l.formatter=e[3]),128&i[0]&&(l.isDisabled=e[39].isDisabled||e[42].isDisabled),2048&i[0]&&(l.index=e[11][e[41]][e[44]]),128&i[0]&&(l.item=e[42]),2&i[1]&&(l.$$scope={dirty:i,ctx:e}),n.$set(l),(!s||2048&i[0]&&r!==(r=e[11][e[41]][e[44]]))&&S(t,"data-pos",r),2052&i[0]&&M(t,"active",e[11][e[41]][e[44]]===e[2])},i(e){s||(ne(n.$$.fragment,e),s=!0)},o(e){ie(n.$$.fragment,e),s=!1},d(e){e&&m(t),le(n)}}}function st(e){let t,n,i,r,s;const l=[it,nt],o=[];function c(e,n){return 128&n[0]&&(t=!(!e[39].options||!Array.isArray(e[39].options))),t?0:1}return n=c(e,[-1]),i=o[n]=l[n](e),{c(){i.c(),r=x()},m(e,t){o[n].m(e,t),f(e,r,t),s=!0},p(e,t){let s=n;n=c(e,t),n===s?o[n].p(e,t):(ee(),ie(o[s],1,1,()=>{o[s]=null}),te(),i=o[n],i||(i=o[n]=l[n](e),i.c()),ne(i,1),i.m(r.parentNode,r))},i(e){s||(ne(i),s=!0)},o(e){ie(i),s=!1},d(e){o[n].d(e),e&&m(r)}}}function lt(e){let t,n,i,s,l,o,c,a,u=e[12]!==e[2]&&ot();return{c(){t=g("div"),n=g("span"),i=v("Create '"),s=v(e[8]),l=v("'"),o=y(),u&&u.c(),S(t,"class","creatable-row svelte-195soi6"),M(t,"active",e[12]===e[2])},m(d,h){f(d,t,h),p(t,n),p(n,i),p(n,s),p(n,l),p(t,o),u&&u.m(t,null),c||(a=w(t,"click",(function(){r(e[14]("select",e[8]))&&e[14]("select",e[8]).apply(this,arguments)})),c=!0)},p(n,i){e=n,256&i[0]&&O(s,e[8]),e[12]!==e[2]?u||(u=ot(),u.c(),u.m(t,null)):u&&(u.d(1),u=null),4100&i[0]&&M(t,"active",e[12]===e[2])},d(e){e&&m(t),u&&u.d(),c=!1,a()}}}function ot(e){let t;return{c(){t=g("span"),t.innerHTML='<kbd class="svelte-195soi6">Ctrl</kbd>+<kbd class="svelte-195soi6">Enter</kbd>',S(t,"class","shortcut svelte-195soi6")},m(e,n){f(e,t,n)},d(e){e&&m(t)}}}function ct(e){let t,n;return{c(){t=g("div"),n=v(e[13]),S(t,"class","empty-list-row svelte-195soi6")},m(e,i){f(e,t,i),p(t,n)},p(e,t){8192&t[0]&&O(n,e[13])},d(e){e&&m(t)}}}function at(e){let t,n,i,r,s,l,o,c=e[10]&&tt(e),a=e[8]&&e[0]&&!e[1]&&lt(e),u=(e[6]||e[1])&&ct(e);return{c(){t=g("div"),n=g("div"),c&&c.c(),i=y(),a&&a.c(),r=y(),u&&u.c(),S(n,"class","sv-dropdown-content svelte-195soi6"),M(n,"max-reached",e[1]),S(t,"class","sv-dropdown svelte-195soi6"),S(t,"aria-expanded",e[9]),S(t,"tabindex","-1")},m(d,h){f(d,t,h),p(t,n),c&&c.m(n,null),p(n,i),a&&a.m(n,null),p(n,r),u&&u.m(n,null),e[30](n),e[31](t),s=!0,l||(o=w(t,"mousedown",A(e[24])),l=!0)},p(e,l){e[10]?c?(c.p(e,l),1024&l[0]&&ne(c,1)):(c=tt(e),c.c(),ne(c,1),c.m(n,i)):c&&(ee(),ie(c,1,1,()=>{c=null}),te()),e[8]&&e[0]&&!e[1]?a?a.p(e,l):(a=lt(e),a.c(),a.m(n,r)):a&&(a.d(1),a=null),e[6]||e[1]?u?u.p(e,l):(u=ct(e),u.c(),u.m(n,null)):u&&(u.d(1),u=null),2&l[0]&&M(n,"max-reached",e[1]),(!s||512&l[0])&&S(t,"aria-expanded",e[9])},i(e){s||(ne(c),s=!0)},o(e){ie(c),s=!1},d(n){n&&m(t),c&&c.d(),a&&a.d(),u&&u.d(),e[30](null),e[31](null),l=!1,o()}}}function ut(e,t,n){let i,r,s,l,c,a,u,{$$slots:d={},$$scope:h}=t,{creatable:p}=t,{maxReached:f=!1}=t,{dropdownIndex:m=0}=t,{renderer:b}=t;const g=q(),{inputValue:$,hasDropdownOpened:v,listLength:y,currentListLength:x,listMessage:w,isFetchingData:A,matchingOptions:S,flatMatching:O,selectedOptions:E,listIndexMap:F}=I(ke);let k,D;o(e,$,e=>n(8,r=e)),o(e,v,e=>n(9,s=e)),o(e,y,e=>n(10,l=e)),o(e,x,e=>n(12,a=e)),o(e,w,e=>n(13,u=e)),o(e,S,e=>n(7,i=e)),o(e,F,e=>n(11,c=e));let M,L=!1;function _(e){if(!D)return;const t=function(e){const t=e.getBoundingClientRect(),n={};return n.top=t.top<0||t.top-t.height<0,n.left=t.left<0,n.bottom=t.bottom>(window.innerHeight||document.documentElement.clientHeight),n.right=t.right>(window.innerWidth||document.documentElement.clientWidth),n.any=n.top||n.left||n.bottom||n.right,n}(D);t.bottom&&!t.top?n(5,D.style.bottom=D.parentElement.clientHeight+1+"px",D):e&&!t.top||n(5,D.style.bottom="",D)}return C(()=>{M=v.subscribe(e=>{U().then(()=>_(e)),document[e?"addEventListener":"removeEventListener"]("scroll",()=>_(e))})}),N(()=>M()),e.$$set=e=>{"creatable"in e&&n(0,p=e.creatable),"maxReached"in e&&n(1,f=e.maxReached),"dropdownIndex"in e&&n(2,m=e.dropdownIndex),"renderer"in e&&n(3,b=e.renderer),"$$scope"in e&&n(32,h=e.$$scope)},e.$$.update=()=>{385&e.$$.dirty[0]&&n(6,L=i.length<1&&(!p||!r))},[p,f,m,b,k,D,L,i,r,s,l,c,a,u,g,$,v,y,x,w,S,F,function(e){const t=k.querySelector(`[data-pos="${m}"]`);if(!t)return;const i=t.getBoundingClientRect(),r=D.getBoundingClientRect(),s=t.offsetHeight/3;switch(!0){case t.offsetTop<D.scrollTop:n(5,D.scrollTop=t.offsetTop-s,D);break;case t.offsetTop+i.height>D.scrollTop+r.height:n(5,D.scrollTop=t.offsetTop+i.height-D.offsetHeight+s,D)}},d,function(t){R(e,t)},function(t){R(e,t)},function(t){R(e,t)},function(t){R(e,t)},function(t){R(e,t)},function(t){R(e,t)},function(e){B[e?"unshift":"push"](()=>{k=e,n(4,k)})},function(e){B[e?"unshift":"push"](()=>{D=e,n(5,D)})},h]}class dt extends ce{constructor(e){super(),oe(this,e,ut,at,s,{creatable:0,maxReached:1,dropdownIndex:2,renderer:3,scrollIntoView:22},[-1,-1])}get scrollIntoView(){return this.$$.ctx[22]}}function ht(e,t,n){const i=e.slice();return i[80]=t[n],i}const pt=e=>({}),ft=e=>({});function mt(e){let t,n;const i=e[47].icon,r=c(i,e,e[50],ft);return{c(){t=g("div"),r&&r.c(),S(t,"slot","icon"),S(t,"class","icon-slot svelte-1h9htsj")},m(e,i){f(e,t,i),r&&r.m(t,null),n=!0},p(e,t){r&&r.p&&524288&t[1]&&u(r,i,e,e[50],t,pt,ft)},i(e){n||(ne(r,e),n=!0)},o(e){ie(r,e),n=!1},d(e){e&&m(t),r&&r.d(e)}}}function bt(e){let t,n=e[16],i=[];for(let t=0;t<n.length;t+=1)i[t]=gt(ht(e,n,t));return{c(){t=g("select");for(let e=0;e<i.length;e+=1)i[e].c();S(t,"name",e[3]),t.multiple=e[1],S(t,"class","is-hidden svelte-1h9htsj"),S(t,"tabindex","-1"),t.required=e[4],t.disabled=e[2]},m(e,n){f(e,t,n);for(let e=0;e<i.length;e+=1)i[e].m(t,null)},p(e,r){if(65536&r[0]){let s;for(n=e[16],s=0;s<n.length;s+=1){const l=ht(e,n,s);i[s]?i[s].p(l,r):(i[s]=gt(l),i[s].c(),i[s].m(t,null))}for(;s<i.length;s+=1)i[s].d(1);i.length=n.length}8&r[0]&&S(t,"name",e[3]),2&r[0]&&(t.multiple=e[1]),16&r[0]&&(t.required=e[4]),4&r[0]&&(t.disabled=e[2])},d(e){e&&m(t),b(i,e)}}}function gt(e){let t,n,i,r=e[80].text+"";return{c(){t=g("option"),n=v(r),t.__value=i=e[80].value,t.value=t.__value,t.selected=!0},m(e,i){f(e,t,i),p(t,n)},p(e,s){65536&s[0]&&r!==(r=e[80].text+"")&&O(n,r),65536&s[0]&&i!==(i=e[80].value)&&(t.__value=i,t.value=t.__value)},d(e){e&&m(t)}}}function $t(e){let t,n,i,r,s,l,o,c={renderer:e[15],disabled:e[2],clearable:e[7],searchable:e[8],placeholder:e[9],multiple:e[1],$$slots:{icon:[mt]},$$scope:{ctx:e}};n=new Ge({props:c}),e[48](n),n.$on("deselect",e[25]),n.$on("keydown",e[27]),n.$on("paste",e[28]);let a={renderer:e[15],creatable:e[5],maxReached:e[6]&&e[6]===e[16].length,dropdownIndex:e[14]};r=new dt({props:a}),e[49](r),r.$on("select",e[24]),r.$on("hover",e[26]);let u=e[3]&&!e[0]&&bt(e);return{c(){t=g("div"),re(n.$$.fragment),i=y(),re(r.$$.fragment),s=y(),u&&u.c(),S(t,"class",l=d("svelecte "+e[10])+" svelte-1h9htsj"),S(t,"style",e[11]),M(t,"is-disabled",e[2])},m(e,l){f(e,t,l),se(n,t,null),p(t,i),se(r,t,null),p(t,s),u&&u.m(t,null),o=!0},p(e,i){const s={};32768&i[0]&&(s.renderer=e[15]),4&i[0]&&(s.disabled=e[2]),128&i[0]&&(s.clearable=e[7]),256&i[0]&&(s.searchable=e[8]),512&i[0]&&(s.placeholder=e[9]),2&i[0]&&(s.multiple=e[1]),524288&i[1]&&(s.$$scope={dirty:i,ctx:e}),n.$set(s);const c={};32768&i[0]&&(c.renderer=e[15]),32&i[0]&&(c.creatable=e[5]),65600&i[0]&&(c.maxReached=e[6]&&e[6]===e[16].length),16384&i[0]&&(c.dropdownIndex=e[14]),r.$set(c),e[3]&&!e[0]?u?u.p(e,i):(u=bt(e),u.c(),u.m(t,null)):u&&(u.d(1),u=null),(!o||1024&i[0]&&l!==(l=d("svelecte "+e[10])+" svelte-1h9htsj"))&&S(t,"class",l),(!o||2048&i[0])&&S(t,"style",e[11]),1028&i[0]&&M(t,"is-disabled",e[2])},i(e){o||(ne(n.$$.fragment,e),ne(r.$$.fragment,e),o=!0)},o(e){ie(n.$$.fragment,e),ie(r.$$.fragment,e),o=!1},d(i){i&&m(t),e[48](null),le(n),e[49](null),le(r),u&&u.d()}}}const vt={default(e){return e[this.label]}};function yt(e,t){e instanceof Object?vt=Object.assign(vt,e):vt[e]=t}const xt=Se;function wt(e,t,n){let i,r,s,l,c,a,u,{$$slots:d={},$$scope:p}=t,{name:f=null}=t,{anchor:m=null}=t,{required:b=!1}=t,{multiple:g=Se.multiple}=t,{disabled:$=Se.disabled}=t,{creatable:v=Se.creatable}=t,{selectOnTab:y=Se.selectOnTab}=t,{valueField:x=Se.valueField}=t,{labelField:w=Se.labelField}=t,{max:A=Se.max}=t,{renderer:S=null}=t,{clearable:O=Se.clearable}=t,{searchable:E=Se.searchable}=t,{delimiter:F=Se.delimiter}=t,{placeholder:k="Select"}=t,{fetch:D=null}=t,{fetchMode:M="auto"}=t,{fetchCallback:L=null}=t,{options:_=[]}=t,{searchField:I=null}=t,{sortField:R=null}=t,{sortRemote:j=Se.sortRemoteResults}=t,{searchMode:H="auto"}=t,{class:z="svelecte-control"}=t,{style:V=null}=t,{selection:P}=t,{value:W}=t;const J=q();let K,X,G=!1,Q=!1,Y=!g&&_.some(e=>e.isSelected)?_.indexOf(_.filter(e=>e.isSelected).shift()):0,Z=null,ee=x,te=w;g=f&&!g?f.endsWith("[]"):g,"auto"===H&&(ee=x||Ae("value",_),te=w||Ae("label",_));const{hasFocus:ne,hasDropdownOpened:ie,inputValue:re,isFetchingData:se,listMessage:le,settings:oe,selectOption:ce,deselectOption:ae,clearSelection:ue,settingsUnsubscribe:de,listLength:he,listIndexMap:pe,matchingOptions:fe,flatMatching:me,currentListLength:be,selectedOptions:ge,updateOpts:ye}=Me(_,P,{currentValueField:ee,currentLabelField:te,max:A,multiple:g,creatable:v,searchField:I,sortField:R,sortRemote:j},xt.i18n);function xe(e){if(Z&&(Z(),Z=null),!e)return null;const t="string"==typeof e?(r=e,function(e,t){return new Promise((n,i)=>{ve=new XMLHttpRequest,ve.open("GET",""+r.replace("[query]",encodeURIComponent(e))),ve.setRequestHeader("X-Requested-With","XMLHttpRequest"),ve.send(),ve.onreadystatechange=()=>{if(4===ve.readyState)if(200===ve.status){const e=JSON.parse(ve.response);n(t?t(e):e.data||e.items||e.options||e)}else i()}})}):e;var r;const s="init"===M||"auto"===M&&"string"==typeof e&&-1===e.indexOf("[query]"),l=(o=e=>{t(e,L||Se.fetchCallback).then(e=>{n(30,_=e)}).catch(()=>n(30,_=[])).finally(()=>{se.set(!1),i&&ie.set(!0),le.set(xt.i18n.fetchEmpty),U().then(()=>J("fetch",_))})},c=500,function(){const e=this,t=arguments;clearTimeout($e),$e=setTimeout((function(){o.apply(e,t)}),c)});var o,c;return s?("string"==typeof e&&-1!==e.indexOf("[parent]")||(se.set(!0),l(null)),null):(Z=re.subscribe(e=>{ve&&4!==ve.readyState&&ve.abort(),e?(se.set(!0),le.set(xt.i18n.fetchWait),ie.set(!1),l(e)):le.set(xt.i18n.fetchBefore)}),l)}o(e,ne,e=>n(59,i=e)),o(e,ie,e=>n(62,c=e)),o(e,re,e=>n(61,l=e)),o(e,se,e=>n(64,u=e)),o(e,me,e=>n(60,s=e)),o(e,be,e=>n(63,a=e)),o(e,ge,e=>n(16,r=e)),function(e,t){T().$$.context.set(e,t)}(ke,{hasFocus:ne,hasDropdownOpened:ie,inputValue:re,listMessage:le,selectOption:ce,deselectOption:ae,clearSelection:ue,listLength:he,matchingOptions:fe,flatMatching:me,currentListLength:be,selectedOptions:ge,listIndexMap:pe,isFetchingData:se}),W&&_e(W);let we,Oe,Ee,Fe=P,De=_;function Le(){U().then(()=>{J("change",P)})}function _e(e){Array.isArray(e)||(e=[e]),e&&e.length&&e[0]instanceof Object&&(e=e.map(e=>e[ee])),ue();const t=[];e.forEach(e=>{s.some(n=>e==n[ee]&&(t.push(n),!0))}),t.forEach(ce)}function Te(e,t){t=t||e.detail,$||t.isDisabled||(ce(t),h(re,l=""),g||h(ie,c=!1),Le())}function Ce(e,t){$||((t=t||e.detail)?ae(t):ue(),U().then(X.focusControl),Le())}return C(()=>{n(51,G=!0),we=be.subscribe(e=>{e<=Y&&n(14,Y=e),Y<0&&n(14,Y=0),U().then(()=>K&&K.scrollIntoView({}))}),m&&m.classList.add("anchored-select")}),N(()=>{we(),de()}),e.$$set=e=>{"name"in e&&n(3,f=e.name),"anchor"in e&&n(0,m=e.anchor),"required"in e&&n(4,b=e.required),"multiple"in e&&n(1,g=e.multiple),"disabled"in e&&n(2,$=e.disabled),"creatable"in e&&n(5,v=e.creatable),"selectOnTab"in e&&n(33,y=e.selectOnTab),"valueField"in e&&n(34,x=e.valueField),"labelField"in e&&n(35,w=e.labelField),"max"in e&&n(6,A=e.max),"renderer"in e&&n(36,S=e.renderer),"clearable"in e&&n(7,O=e.clearable),"searchable"in e&&n(8,E=e.searchable),"delimiter"in e&&n(37,F=e.delimiter),"placeholder"in e&&n(9,k=e.placeholder),"fetch"in e&&n(29,D=e.fetch),"fetchMode"in e&&n(38,M=e.fetchMode),"fetchCallback"in e&&n(39,L=e.fetchCallback),"options"in e&&n(30,_=e.options),"searchField"in e&&n(40,I=e.searchField),"sortField"in e&&n(41,R=e.sortField),"sortRemote"in e&&n(42,j=e.sortRemote),"searchMode"in e&&n(43,H=e.searchMode),"class"in e&&n(10,z=e.class),"style"in e&&n(11,V=e.style),"selection"in e&&n(31,P=e.selection),"value"in e&&n(32,W=e.value),"$$scope"in e&&n(50,p=e.$$scope)},e.$$.update=()=>{if(536870912&e.$$.dirty[0]|128&e.$$.dirty[1]&&(Oe="init"===M||"string"==typeof D&&-1===D.indexOf("[query]")),536870912&e.$$.dirty[0]&&xe(D),1073741824&e.$$.dirty[0]|26218520&e.$$.dirty[1]&&G&&De!==_){if("auto"===H){const e=Ae("value",_||null),t=Ae("label",_||null);x||ee===e||n(54,ee=e),w||te===t||n(55,te=t)}ye(_)}if(65539&e.$$.dirty[0]|8388610&e.$$.dirty[1]){const e=g?r:r.length?r[0]:null;n(32,W=g?r.map(e=>e[ee]):r.length?r[0][ee]:null),n(56,Fe=e),n(31,P=e),m&&(n(0,m.innerHTML=(Array.isArray(W)?W:[W]).reduce((e,t)=>t?e+=`<option value="${t}" selected>${t}</option>`:e='<option value="" selected=""></option>',""),m),m.dispatchEvent(new Event("change")))}33554433&e.$$.dirty[1]&&Fe!==P&&(ue(),P&&(Array.isArray(P)?P.forEach(ce):ce(P)),n(56,Fe=P)),98&e.$$.dirty[0]|25169408&e.$$.dirty[1]&&oe.set({max:A,multiple:g,creatable:v,searchField:I,sortField:R,currentLabelField:te,currentValueField:ee,sortRemote:j}),16777248&e.$$.dirty[1]&&n(15,Ee="function"==typeof S?S:vt[S]||vt.default.bind({label:te}))},[m,g,$,f,b,v,A,O,E,k,z,V,K,X,Y,Ee,r,ne,ie,re,se,me,be,ge,Te,Ce,function(e){Q?Q=!1:n(14,Y=e.detail)},function(e){if(e=e.detail,v&&F.indexOf(e.key)>-1)return l.length>0&&Te(null,l),void e.preventDefault();const t=y&&c&&!e.shiftKey?"Tab":"No-tab";switch(e.key){case"PageDown":n(14,Y=0);case"ArrowUp":if(!c)return void h(ie,c=!0);e.preventDefault(),n(14,Y=0==Y?a:Y-1),U().then(K.scrollIntoView),Q=!0;break;case"PageUp":n(14,Y=a+2);case"ArrowDown":if(!c)return void h(ie,c=!0);e.preventDefault(),n(14,Y=Y>=a?0:Y+1),U().then(K.scrollIntoView),Q=!0;break;case"Escape":c&&(e.preventDefault(),e.stopPropagation()),l||h(ie,c=!1),h(re,l="");break;case t:h(ie,c=!1),e.preventDefault();case"Enter":if(!c)return;let i=s[Y];v&&l&&(i=!i||e.ctrlKey?l:i),i&&Te(null,i),s.length<=Y&&n(14,Y=a>0?a:0),e.preventDefault();break;case" ":c||(h(ie,c=!0),e.preventDefault());break;case"Backspace":case"Delete":""===l&&r.length&&(e.ctrlKey?Ce({}):Ce(null,r.pop()));default:e.ctrlKey||["Tab","Shift"].includes(e.key)||c||u||h(ie,c=!0),!g&&r.length&&"Tab"!==e.key&&e.preventDefault()}},function(e){if(v){e.preventDefault();const t=new RegExp("([^"+F+"\\n]+)","g");e.clipboardData.getData("text/plain").match(t).forEach(e=>Te(null,e.trim()))}},D,_,P,W,y,x,w,S,F,M,L,I,R,j,H,e=>P?g?P.map(t=>e?t[ee]:Object.assign({},t)):e?P[ee]:Object.assign({},P):g?[]:null,e=>_e(e),e=>{ue(),Le(),e&&n(2,$=!0),n(29,D=null)},d,function(e){B[e?"unshift":"push"](()=>{X=e,n(13,X)})},function(e){B[e?"unshift":"push"](()=>{K=e,n(12,K)})},p]}class At extends ce{constructor(e){super(),oe(this,e,wt,$t,s,{name:3,anchor:0,required:4,multiple:1,disabled:2,creatable:5,selectOnTab:33,valueField:34,labelField:35,max:6,renderer:36,clearable:7,searchable:8,delimiter:37,placeholder:9,fetch:29,fetchMode:38,fetchCallback:39,options:30,searchField:40,sortField:41,sortRemote:42,searchMode:43,class:10,style:11,selection:31,value:32,getSelection:44,setSelection:45,clearByParent:46},[-1,-1,-1])}get getSelection(){return this.$$.ctx[44]}get setSelection(){return this.$$.ctx[45]}get clearByParent(){return this.$$.ctx[46]}}const St=["options","fetch","name","required","value","multiple","disabled","max","creatable","delimiter","placeholder","renderer","searchable","clearable","fetch","valueField","labelField","anchor"];function Ot(e,t){switch(e){case"options":if(Array.isArray(t))return t;try{t=JSON.parse(t),Array.isArray(t)||(t=[])}catch(e){t=[]}return t;case"value":return t?t.split(",").map(e=>{const t=parseInt(e);return isNaN(t)?e:t}):"";case"renderer":return t||"default";case"searchable":return"true"==t;case"clearable":return"false"!=t;case"required":case"multiple":case"creatable":case"selectOnTab":case"disabled":return null!==t;case"max":return isNaN(parseInt(t))?0:parseInt(t);case"anchor":return t?document.getElementById(t):null}return t}const Et=class extends HTMLElement{constructor(){super(),this.svelecte=void 0,this._fetchOpts=null,this.setOptions=e=>this.svelecte.setOptions(e),Object.defineProperties(this,{selection:{get(){return this.svelecte.getSelection()}},value:{get(){return this.svelecte.getSelection(!0)},set(e){this.setAttribute("value",Array.isArray(e)?e.join(","):e)}},options:{get(){return this.hasAttribute("options")?JSON.parse(this.getAttribute("options")):this._fetchOpts||[]},set(e){this.setAttribute("options",Array.isArray(e)?JSON.stringify(e):e)}},disabled:{get(){return null!==this.getAttribute("disabled")},set(e){e?this.setAttribute("disabled",!0===e?"":e):this.removeAttribute("disabled")}},multiple:{get(){return null!==this.getAttribute("multiple")},set(e){e?this.setAttribute("multiple",!0===e?"":e):this.removeAttribute("multiple")}},creatable:{get(){return null!==this.getAttribute("creatable")},set(e){e?this.setAttribute("creatable",!0===e?"":e):this.removeAttribute("creatable")}},clearable:{get(){return"false"!==this.getAttribute("clearable")},set(e){this.setAttribute("clearable",e?"true":"false")}},placeholder:{get(){return this.getAttribute("placeholder")||""},set(e){this.setAttribute("placeholder",e||"Select")}},renderer:{get(){return this.getAttribute("renderer")||"default"},set(e){e&&this.setAttribute("renderer",e)}},required:{get(){return this.hasAttribute("required")},set(e){e?this.setAttribute("required",""):this.removeAttribute("required")}},anchor:{get(){return this.getAttribute("anchor")},set(e){this.setAttribute("anchor",e)}},max:{get(){return this.getAttribute("max")||0},set(e){try{(e=parseInt(e))<0&&(e=0)}catch(t){e=0}this.setAttribute("max",e)}},delimiter:{get(){return this.getAttribute("delimiter")||","},set(e){this.setAttribute("delimiter",e)}},valueField:{get(){return this.getAttribute("valueField")||""},set(e){this.setAttribute("valueField",e)}},labelField:{get(){return this.getAttribute("labelField")||""},set(e){this.setAttribute("labelField",e)}}})}focus(){!this.disabled&&this.querySelector("input").focus()}static get observedAttributes(){return St}attributeChangedCallback(e,t,n){this.svelecte&&t!==n&&("value"===e?this.svelecte.setSelection(Ot(e,n)):this.svelecte.$set({[e]:Ot(e,n)}))}connectedCallback(){this.hasAttribute("parent")||this.hasAttribute("anchor")||this.hasAttribute("lazy")?setTimeout(()=>{this.render()}):this.render()}render(){let e={};for(const t of St)this.hasAttribute(t)&&(e[t]=Ot(t,this.getAttribute(t)));if(this.hasAttribute("class")&&(e.class=this.getAttribute("class")),this.hasAttribute("parent")){if(delete e.fetch,e.disabled=!0,this.parent=document.getElementById(this.getAttribute("parent")),!this.parent.value&&this.svelecte)return;this.parentCallback=e=>{if(!e.target.selection||Array.isArray(e.target.selection)&&!e.target.selection.length)this.svelecte.clearByParent(!0);else if(!this.parent.disabled&&this.removeAttribute("disabled"),this.hasAttribute("fetch")){const t=this.getAttribute("fetch").replace("[parent]",e.target.value);this.svelecte.$set({fetch:t,disabled:!1})}},this.parent.addEventListener("change",this.parentCallback)}const t=this.querySelector("select");return t&&(e.anchor=t,t.tabIndex=-1),this.svelecte=new At({target:this,anchor:t,props:e}),this.svelecte.$on("change",e=>{const t=this.svelecte.getSelection(!0);this.setAttribute("value",Array.isArray(t)?t.join(","):t),this.dispatchEvent(e)}),this.svelecte.$on("fetch",e=>{this._fetchOpts=e.detail,this.dispatchEvent(e)}),!0}disconnectedCallback(){this.svelecte&&this.svelecte.$destroy(),this.parent&&this.parent.removeEventListener("change",this.parentCallback)}};export{Et as SvelecteElement,yt as addFormatter,xt as config};
+function noop() { }
+function assign(tar, src) {
+    // @ts-ignore
+    for (const k in src)
+        tar[k] = src[k];
+    return tar;
+}
+function add_location(element, file, line, column, char) {
+    element.__svelte_meta = {
+        loc: { file, line, column, char }
+    };
+}
+function run(fn) {
+    return fn();
+}
+function blank_object() {
+    return Object.create(null);
+}
+function run_all(fns) {
+    fns.forEach(run);
+}
+function is_function(thing) {
+    return typeof thing === 'function';
+}
+function safe_not_equal(a, b) {
+    return a != a ? b == b : a !== b || ((a && typeof a === 'object') || typeof a === 'function');
+}
+function is_empty(obj) {
+    return Object.keys(obj).length === 0;
+}
+function validate_store(store, name) {
+    if (store != null && typeof store.subscribe !== 'function') {
+        throw new Error(`'${name}' is not a store with a 'subscribe' method`);
+    }
+}
+function subscribe(store, ...callbacks) {
+    if (store == null) {
+        return noop;
+    }
+    const unsub = store.subscribe(...callbacks);
+    return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
+}
+function component_subscribe(component, store, callback) {
+    component.$$.on_destroy.push(subscribe(store, callback));
+}
+function create_slot(definition, ctx, $$scope, fn) {
+    if (definition) {
+        const slot_ctx = get_slot_context(definition, ctx, $$scope, fn);
+        return definition[0](slot_ctx);
+    }
+}
+function get_slot_context(definition, ctx, $$scope, fn) {
+    return definition[1] && fn
+        ? assign($$scope.ctx.slice(), definition[1](fn(ctx)))
+        : $$scope.ctx;
+}
+function get_slot_changes(definition, $$scope, dirty, fn) {
+    if (definition[2] && fn) {
+        const lets = definition[2](fn(dirty));
+        if ($$scope.dirty === undefined) {
+            return lets;
+        }
+        if (typeof lets === 'object') {
+            const merged = [];
+            const len = Math.max($$scope.dirty.length, lets.length);
+            for (let i = 0; i < len; i += 1) {
+                merged[i] = $$scope.dirty[i] | lets[i];
+            }
+            return merged;
+        }
+        return $$scope.dirty | lets;
+    }
+    return $$scope.dirty;
+}
+function update_slot(slot, slot_definition, ctx, $$scope, dirty, get_slot_changes_fn, get_slot_context_fn) {
+    const slot_changes = get_slot_changes(slot_definition, $$scope, dirty, get_slot_changes_fn);
+    if (slot_changes) {
+        const slot_context = get_slot_context(slot_definition, ctx, $$scope, get_slot_context_fn);
+        slot.p(slot_context, slot_changes);
+    }
+}
+function null_to_empty(value) {
+    return value == null ? '' : value;
+}
+function set_store_value(store, ret, value = ret) {
+    store.set(value);
+    return ret;
+}
+function action_destroyer(action_result) {
+    return action_result && is_function(action_result.destroy) ? action_result.destroy : noop;
+}
+
+function append(target, node) {
+    target.appendChild(node);
+}
+function insert(target, node, anchor) {
+    target.insertBefore(node, anchor || null);
+}
+function detach(node) {
+    node.parentNode.removeChild(node);
+}
+function destroy_each(iterations, detaching) {
+    for (let i = 0; i < iterations.length; i += 1) {
+        if (iterations[i])
+            iterations[i].d(detaching);
+    }
+}
+function element(name) {
+    return document.createElement(name);
+}
+function svg_element(name) {
+    return document.createElementNS('http://www.w3.org/2000/svg', name);
+}
+function text(data) {
+    return document.createTextNode(data);
+}
+function space() {
+    return text(' ');
+}
+function empty() {
+    return text('');
+}
+function listen(node, event, handler, options) {
+    node.addEventListener(event, handler, options);
+    return () => node.removeEventListener(event, handler, options);
+}
+function prevent_default(fn) {
+    return function (event) {
+        event.preventDefault();
+        // @ts-ignore
+        return fn.call(this, event);
+    };
+}
+function attr(node, attribute, value) {
+    if (value == null)
+        node.removeAttribute(attribute);
+    else if (node.getAttribute(attribute) !== value)
+        node.setAttribute(attribute, value);
+}
+function children(element) {
+    return Array.from(element.childNodes);
+}
+function set_input_value(input, value) {
+    input.value = value == null ? '' : value;
+}
+// unfortunately this can't be a constant as that wouldn't be tree-shakeable
+// so we cache the result instead
+let crossorigin;
+function is_crossorigin() {
+    if (crossorigin === undefined) {
+        crossorigin = false;
+        try {
+            if (typeof window !== 'undefined' && window.parent) {
+                void window.parent.document;
+            }
+        }
+        catch (error) {
+            crossorigin = true;
+        }
+    }
+    return crossorigin;
+}
+function add_resize_listener(node, fn) {
+    const computed_style = getComputedStyle(node);
+    const z_index = (parseInt(computed_style.zIndex) || 0) - 1;
+    if (computed_style.position === 'static') {
+        node.style.position = 'relative';
+    }
+    const iframe = element('iframe');
+    iframe.setAttribute('style', `display: block; position: absolute; top: 0; left: 0; width: 100%; height: 100%; ` +
+        `overflow: hidden; border: 0; opacity: 0; pointer-events: none; z-index: ${z_index};`);
+    iframe.setAttribute('aria-hidden', 'true');
+    iframe.tabIndex = -1;
+    const crossorigin = is_crossorigin();
+    let unsubscribe;
+    if (crossorigin) {
+        iframe.src = `data:text/html,<script>onresize=function(){parent.postMessage(0,'*')}</script>`;
+        unsubscribe = listen(window, 'message', (event) => {
+            if (event.source === iframe.contentWindow)
+                fn();
+        });
+    }
+    else {
+        iframe.src = 'about:blank';
+        iframe.onload = () => {
+            unsubscribe = listen(iframe.contentWindow, 'resize', fn);
+        };
+    }
+    append(node, iframe);
+    return () => {
+        if (crossorigin) {
+            unsubscribe();
+        }
+        else if (unsubscribe && iframe.contentWindow) {
+            unsubscribe();
+        }
+        detach(iframe);
+    };
+}
+function toggle_class(element, name, toggle) {
+    element.classList[toggle ? 'add' : 'remove'](name);
+}
+function custom_event(type, detail) {
+    const e = document.createEvent('CustomEvent');
+    e.initCustomEvent(type, false, false, detail);
+    return e;
+}
+class HtmlTag {
+    constructor(anchor = null) {
+        this.a = anchor;
+        this.e = this.n = null;
+    }
+    m(html, target, anchor = null) {
+        if (!this.e) {
+            this.e = element(target.nodeName);
+            this.t = target;
+            this.h(html);
+        }
+        this.i(anchor);
+    }
+    h(html) {
+        this.e.innerHTML = html;
+        this.n = Array.from(this.e.childNodes);
+    }
+    i(anchor) {
+        for (let i = 0; i < this.n.length; i += 1) {
+            insert(this.t, this.n[i], anchor);
+        }
+    }
+    p(html) {
+        this.d();
+        this.h(html);
+        this.i(this.a);
+    }
+    d() {
+        this.n.forEach(detach);
+    }
+}
+
+let current_component;
+function set_current_component(component) {
+    current_component = component;
+}
+function get_current_component() {
+    if (!current_component)
+        throw new Error(`Function called outside component initialization`);
+    return current_component;
+}
+function onMount(fn) {
+    get_current_component().$$.on_mount.push(fn);
+}
+function onDestroy(fn) {
+    get_current_component().$$.on_destroy.push(fn);
+}
+function createEventDispatcher() {
+    const component = get_current_component();
+    return (type, detail) => {
+        const callbacks = component.$$.callbacks[type];
+        if (callbacks) {
+            // TODO are there situations where events could be dispatched
+            // in a server (non-DOM) environment?
+            const event = custom_event(type, detail);
+            callbacks.slice().forEach(fn => {
+                fn.call(component, event);
+            });
+        }
+    };
+}
+function setContext(key, context) {
+    get_current_component().$$.context.set(key, context);
+}
+function getContext(key) {
+    return get_current_component().$$.context.get(key);
+}
+// TODO figure out if we still want to support
+// shorthand events, or if we want to implement
+// a real bubbling mechanism
+function bubble(component, event) {
+    const callbacks = component.$$.callbacks[event.type];
+    if (callbacks) {
+        callbacks.slice().forEach(fn => fn(event));
+    }
+}
+
+const dirty_components = [];
+const binding_callbacks = [];
+const render_callbacks = [];
+const flush_callbacks = [];
+const resolved_promise = Promise.resolve();
+let update_scheduled = false;
+function schedule_update() {
+    if (!update_scheduled) {
+        update_scheduled = true;
+        resolved_promise.then(flush);
+    }
+}
+function tick() {
+    schedule_update();
+    return resolved_promise;
+}
+function add_render_callback(fn) {
+    render_callbacks.push(fn);
+}
+let flushing = false;
+const seen_callbacks = new Set();
+function flush() {
+    if (flushing)
+        return;
+    flushing = true;
+    do {
+        // first, call beforeUpdate functions
+        // and update components
+        for (let i = 0; i < dirty_components.length; i += 1) {
+            const component = dirty_components[i];
+            set_current_component(component);
+            update(component.$$);
+        }
+        set_current_component(null);
+        dirty_components.length = 0;
+        while (binding_callbacks.length)
+            binding_callbacks.pop()();
+        // then, once components are updated, call
+        // afterUpdate functions. This may cause
+        // subsequent updates...
+        for (let i = 0; i < render_callbacks.length; i += 1) {
+            const callback = render_callbacks[i];
+            if (!seen_callbacks.has(callback)) {
+                // ...so guard against infinite loops
+                seen_callbacks.add(callback);
+                callback();
+            }
+        }
+        render_callbacks.length = 0;
+    } while (dirty_components.length);
+    while (flush_callbacks.length) {
+        flush_callbacks.pop()();
+    }
+    update_scheduled = false;
+    flushing = false;
+    seen_callbacks.clear();
+}
+function update($$) {
+    if ($$.fragment !== null) {
+        $$.update();
+        run_all($$.before_update);
+        const dirty = $$.dirty;
+        $$.dirty = [-1];
+        $$.fragment && $$.fragment.p($$.ctx, dirty);
+        $$.after_update.forEach(add_render_callback);
+    }
+}
+const outroing = new Set();
+let outros;
+function group_outros() {
+    outros = {
+        r: 0,
+        c: [],
+        p: outros // parent group
+    };
+}
+function check_outros() {
+    if (!outros.r) {
+        run_all(outros.c);
+    }
+    outros = outros.p;
+}
+function transition_in(block, local) {
+    if (block && block.i) {
+        outroing.delete(block);
+        block.i(local);
+    }
+}
+function transition_out(block, local, detach, callback) {
+    if (block && block.o) {
+        if (outroing.has(block))
+            return;
+        outroing.add(block);
+        outros.c.push(() => {
+            outroing.delete(block);
+            if (callback) {
+                if (detach)
+                    block.d(1);
+                callback();
+            }
+        });
+        block.o(local);
+    }
+}
+
+const globals = (typeof window !== 'undefined'
+    ? window
+    : typeof globalThis !== 'undefined'
+        ? globalThis
+        : global);
+function create_component(block) {
+    block && block.c();
+}
+function mount_component(component, target, anchor) {
+    const { fragment, on_mount, on_destroy, after_update } = component.$$;
+    fragment && fragment.m(target, anchor);
+    // onMount happens before the initial afterUpdate
+    add_render_callback(() => {
+        const new_on_destroy = on_mount.map(run).filter(is_function);
+        if (on_destroy) {
+            on_destroy.push(...new_on_destroy);
+        }
+        else {
+            // Edge case - component was destroyed immediately,
+            // most likely as a result of a binding initialising
+            run_all(new_on_destroy);
+        }
+        component.$$.on_mount = [];
+    });
+    after_update.forEach(add_render_callback);
+}
+function destroy_component(component, detaching) {
+    const $$ = component.$$;
+    if ($$.fragment !== null) {
+        run_all($$.on_destroy);
+        $$.fragment && $$.fragment.d(detaching);
+        // TODO null out other refs, including component.$$ (but need to
+        // preserve final state?)
+        $$.on_destroy = $$.fragment = null;
+        $$.ctx = [];
+    }
+}
+function make_dirty(component, i) {
+    if (component.$$.dirty[0] === -1) {
+        dirty_components.push(component);
+        schedule_update();
+        component.$$.dirty.fill(0);
+    }
+    component.$$.dirty[(i / 31) | 0] |= (1 << (i % 31));
+}
+function init(component, options, instance, create_fragment, not_equal, props, dirty = [-1]) {
+    const parent_component = current_component;
+    set_current_component(component);
+    const prop_values = options.props || {};
+    const $$ = component.$$ = {
+        fragment: null,
+        ctx: null,
+        // state
+        props,
+        update: noop,
+        not_equal,
+        bound: blank_object(),
+        // lifecycle
+        on_mount: [],
+        on_destroy: [],
+        before_update: [],
+        after_update: [],
+        context: new Map(parent_component ? parent_component.$$.context : []),
+        // everything else
+        callbacks: blank_object(),
+        dirty,
+        skip_bound: false
+    };
+    let ready = false;
+    $$.ctx = instance
+        ? instance(component, prop_values, (i, ret, ...rest) => {
+            const value = rest.length ? rest[0] : ret;
+            if ($$.ctx && not_equal($$.ctx[i], $$.ctx[i] = value)) {
+                if (!$$.skip_bound && $$.bound[i])
+                    $$.bound[i](value);
+                if (ready)
+                    make_dirty(component, i);
+            }
+            return ret;
+        })
+        : [];
+    $$.update();
+    ready = true;
+    run_all($$.before_update);
+    // `false` as a special case of no DOM component
+    $$.fragment = create_fragment ? create_fragment($$.ctx) : false;
+    if (options.target) {
+        if (options.hydrate) {
+            const nodes = children(options.target);
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            $$.fragment && $$.fragment.l(nodes);
+            nodes.forEach(detach);
+        }
+        else {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            $$.fragment && $$.fragment.c();
+        }
+        if (options.intro)
+            transition_in(component.$$.fragment);
+        mount_component(component, options.target, options.anchor);
+        flush();
+    }
+    set_current_component(parent_component);
+}
+class SvelteComponent {
+    $destroy() {
+        destroy_component(this, 1);
+        this.$destroy = noop;
+    }
+    $on(type, callback) {
+        const callbacks = (this.$$.callbacks[type] || (this.$$.callbacks[type] = []));
+        callbacks.push(callback);
+        return () => {
+            const index = callbacks.indexOf(callback);
+            if (index !== -1)
+                callbacks.splice(index, 1);
+        };
+    }
+    $set($$props) {
+        if (this.$$set && !is_empty($$props)) {
+            this.$$.skip_bound = true;
+            this.$$set($$props);
+            this.$$.skip_bound = false;
+        }
+    }
+}
+
+function dispatch_dev(type, detail) {
+    document.dispatchEvent(custom_event(type, Object.assign({ version: '3.25.0' }, detail)));
+}
+function append_dev(target, node) {
+    dispatch_dev("SvelteDOMInsert", { target, node });
+    append(target, node);
+}
+function insert_dev(target, node, anchor) {
+    dispatch_dev("SvelteDOMInsert", { target, node, anchor });
+    insert(target, node, anchor);
+}
+function detach_dev(node) {
+    dispatch_dev("SvelteDOMRemove", { node });
+    detach(node);
+}
+function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation) {
+    const modifiers = options === true ? ["capture"] : options ? Array.from(Object.keys(options)) : [];
+    if (has_prevent_default)
+        modifiers.push('preventDefault');
+    if (has_stop_propagation)
+        modifiers.push('stopPropagation');
+    dispatch_dev("SvelteDOMAddEventListener", { node, event, handler, modifiers });
+    const dispose = listen(node, event, handler, options);
+    return () => {
+        dispatch_dev("SvelteDOMRemoveEventListener", { node, event, handler, modifiers });
+        dispose();
+    };
+}
+function attr_dev(node, attribute, value) {
+    attr(node, attribute, value);
+    if (value == null)
+        dispatch_dev("SvelteDOMRemoveAttribute", { node, attribute });
+    else
+        dispatch_dev("SvelteDOMSetAttribute", { node, attribute, value });
+}
+function prop_dev(node, property, value) {
+    node[property] = value;
+    dispatch_dev("SvelteDOMSetProperty", { node, property, value });
+}
+function set_data_dev(text, data) {
+    data = '' + data;
+    if (text.wholeText === data)
+        return;
+    dispatch_dev("SvelteDOMSetData", { node: text, data });
+    text.data = data;
+}
+function validate_each_argument(arg) {
+    if (typeof arg !== 'string' && !(arg && typeof arg === 'object' && 'length' in arg)) {
+        let msg = '{#each} only iterates over array-like objects.';
+        if (typeof Symbol === 'function' && arg && Symbol.iterator in arg) {
+            msg += ' You can use a spread to convert this iterable into an array.';
+        }
+        throw new Error(msg);
+    }
+}
+function validate_slots(name, slot, keys) {
+    for (const slot_key of Object.keys(slot)) {
+        if (!~keys.indexOf(slot_key)) {
+            console.warn(`<${name}> received an unexpected slot "${slot_key}".`);
+        }
+    }
+}
+class SvelteComponentDev extends SvelteComponent {
+    constructor(options) {
+        if (!options || (!options.target && !options.$$inline)) {
+            throw new Error(`'target' is a required option`);
+        }
+        super();
+    }
+    $destroy() {
+        super.$destroy();
+        this.$destroy = () => {
+            console.warn(`Component was already destroyed`); // eslint-disable-line no-console
+        };
+    }
+    $capture_state() { }
+    $inject_state() { }
+}
+
+/**
+ * sifter.js
+ * Copyright (c) 2013–2020 Brian Reavis & contributors
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+ * file except in compliance with the License. You may obtain a copy of the License at:
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+ * ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ *
+ * @author Brian Reavis <brian@thirdroute.com>
+ */
+
+/**
+ * Textually searches arrays and hashes of objects
+ * by property (or multiple properties). Designed
+ * specifically for autocomplete.
+ *
+ * @constructor
+ * @param {array|object} items
+ * @param {object} items
+ */
+var Sifter = function(items, settings) {
+    this.items = items;
+    this.settings = settings || {diacritics: true};
+};
+
+/**
+ * Splits a search string into an array of individual
+ * regexps to be used to match results.
+ *
+ * @param {string} query
+ * @returns {array}
+ */
+Sifter.prototype.tokenize = function(query, respect_word_boundaries) {
+    query = trim(String(query || '').toLowerCase());
+    if (!query || !query.length) return [];
+
+    var i, n, regex, letter;
+    var tokens = [];
+    var words = query.split(/ +/);
+
+    for (i = 0, n = words.length; i < n; i++) {
+        regex = escape_regex(words[i]);
+        if (this.settings.diacritics) {
+            for (letter in DIACRITICS) {
+                if (DIACRITICS.hasOwnProperty(letter)) {
+                    regex = regex.replace(new RegExp(letter, 'g'), DIACRITICS[letter]);
+                }
+            }
+        }
+        if (respect_word_boundaries) regex = "\\b"+regex;
+        tokens.push({
+            string : words[i],
+            regex  : new RegExp(regex, 'i')
+        });
+    }
+
+    return tokens;
+};
+
+/**
+ * Iterates over arrays and hashes.
+ *
+ * ```
+ * this.iterator(this.items, function(item, id) {
+ *    // invoked for each item
+ * });
+ * ```
+ *
+ * @param {array|object} object
+ */
+Sifter.prototype.iterator = function(object, callback) {
+    var iterator;
+    if (is_array(object)) {
+        iterator = Array.prototype.forEach || function(callback) {
+            for (var i = 0, n = this.length; i < n; i++) {
+                callback(this[i], i, this);
+            }
+        };
+    } else {
+        iterator = function(callback) {
+            for (var key in this) {
+                if (this.hasOwnProperty(key)) {
+                    callback(this[key], key, this);
+                }
+            }
+        };
+    }
+
+    iterator.apply(object, [callback]);
+};
+
+/**
+ * Returns a function to be used to score individual results.
+ *
+ * Good matches will have a higher score than poor matches.
+ * If an item is not a match, 0 will be returned by the function.
+ *
+ * @param {object|string} search
+ * @param {object} options (optional)
+ * @returns {function}
+ */
+Sifter.prototype.getScoreFunction = function(search, options) {
+    var self, fields, tokens, token_count, nesting;
+
+    self        = this;
+    search      = self.prepareSearch(search, options);
+    tokens      = search.tokens;
+    fields      = search.options.fields;
+    token_count = tokens.length;
+    nesting     = search.options.nesting;
+
+    /**
+     * Calculates how close of a match the
+     * given value is against a search token.
+     *
+     * @param {mixed} value
+     * @param {object} token
+     * @return {number}
+     */
+    var scoreValue = function(value, token) {
+        var score, pos;
+
+        if (!value) return 0;
+        value = String(value || '');
+        pos = value.search(token.regex);
+        if (pos === -1) return 0;
+        score = token.string.length / value.length;
+        if (pos === 0) score += 0.5;
+        return score;
+    };
+
+    /**
+     * Calculates the score of an object
+     * against the search query.
+     *
+     * @param {object} token
+     * @param {object} data
+     * @return {number}
+     */
+    var scoreObject = (function() {
+        var field_count = fields.length;
+        if (!field_count) {
+            return function() { return 0; };
+        }
+        if (field_count === 1) {
+            return function(token, data) {
+                return scoreValue(getattr(data, fields[0], nesting), token);
+            };
+        }
+        return function(token, data) {
+            for (var i = 0, sum = 0; i < field_count; i++) {
+                sum += scoreValue(getattr(data, fields[i], nesting), token);
+            }
+            return sum / field_count;
+        };
+    })();
+
+    if (!token_count) {
+        return function() { return 0; };
+    }
+    if (token_count === 1) {
+        return function(data) {
+            return scoreObject(tokens[0], data);
+        };
+    }
+
+    if (search.options.conjunction === 'and') {
+        return function(data) {
+            var score;
+            for (var i = 0, sum = 0; i < token_count; i++) {
+                score = scoreObject(tokens[i], data);
+                if (score <= 0) return 0;
+                sum += score;
+            }
+            return sum / token_count;
+        };
+    } else {
+        return function(data) {
+            for (var i = 0, sum = 0; i < token_count; i++) {
+                sum += scoreObject(tokens[i], data);
+            }
+            return sum / token_count;
+        };
+    }
+};
+
+/**
+ * Returns a function that can be used to compare two
+ * results, for sorting purposes. If no sorting should
+ * be performed, `null` will be returned.
+ *
+ * @param {string|object} search
+ * @param {object} options
+ * @return function(a,b)
+ */
+Sifter.prototype.getSortFunction = function(search, options) {
+    var i, n, self, field, fields, fields_count, multiplier, multipliers, get_field, implicit_score, sort;
+
+    self   = this;
+    search = self.prepareSearch(search, options);
+    sort   = (!search.query && options.sort_empty) || options.sort;
+
+    /**
+     * Fetches the specified sort field value
+     * from a search result item.
+     *
+     * @param  {string} name
+     * @param  {object} result
+     * @return {mixed}
+     */
+    get_field = function(name, result) {
+        if (name === '$score') return result.score;
+        return getattr(self.items[result.id], name, options.nesting);
+    };
+
+    // parse options
+    fields = [];
+    if (sort) {
+        for (i = 0, n = sort.length; i < n; i++) {
+            if (search.query || sort[i].field !== '$score') {
+                fields.push(sort[i]);
+            }
+        }
+    }
+
+    // the "$score" field is implied to be the primary
+    // sort field, unless it's manually specified
+    if (search.query) {
+        implicit_score = true;
+        for (i = 0, n = fields.length; i < n; i++) {
+            if (fields[i].field === '$score') {
+                implicit_score = false;
+                break;
+            }
+        }
+        if (implicit_score) {
+            fields.unshift({field: '$score', direction: 'desc'});
+        }
+    } else {
+        for (i = 0, n = fields.length; i < n; i++) {
+            if (fields[i].field === '$score') {
+                fields.splice(i, 1);
+                break;
+            }
+        }
+    }
+
+    multipliers = [];
+    for (i = 0, n = fields.length; i < n; i++) {
+        multipliers.push(fields[i].direction === 'desc' ? -1 : 1);
+    }
+
+    // build function
+    fields_count = fields.length;
+    if (!fields_count) {
+        return null;
+    } else if (fields_count === 1) {
+        field = fields[0].field;
+        multiplier = multipliers[0];
+        return function(a, b) {
+            return multiplier * cmp(
+                get_field(field, a),
+                get_field(field, b)
+            );
+        };
+    } else {
+        return function(a, b) {
+            var i, result, field;
+            for (i = 0; i < fields_count; i++) {
+                field = fields[i].field;
+                result = multipliers[i] * cmp(
+                    get_field(field, a),
+                    get_field(field, b)
+                );
+                if (result) return result;
+            }
+            return 0;
+        };
+    }
+};
+
+/**
+ * Parses a search query and returns an object
+ * with tokens and fields ready to be populated
+ * with results.
+ *
+ * @param {string} query
+ * @param {object} options
+ * @returns {object}
+ */
+Sifter.prototype.prepareSearch = function(query, options) {
+    if (typeof query === 'object') return query;
+
+    options = extend({}, options);
+
+    var option_fields     = options.fields;
+    var option_sort       = options.sort;
+    var option_sort_empty = options.sort_empty;
+
+    if (option_fields && !is_array(option_fields)) options.fields = [option_fields];
+    if (option_sort && !is_array(option_sort)) options.sort = [option_sort];
+    if (option_sort_empty && !is_array(option_sort_empty)) options.sort_empty = [option_sort_empty];
+
+    return {
+        options : options,
+        query   : String(query || '').toLowerCase(),
+        tokens  : this.tokenize(query, options.respect_word_boundaries),
+        total   : 0,
+        items   : []
+    };
+};
+
+/**
+ * Searches through all items and returns a sorted array of matches.
+ *
+ * The `options` parameter can contain:
+ *
+ *   - fields {string|array}
+ *   - sort {array}
+ *   - score {function}
+ *   - filter {bool}
+ *   - limit {integer}
+ *
+ * Returns an object containing:
+ *
+ *   - options {object}
+ *   - query {string}
+ *   - tokens {array}
+ *   - total {int}
+ *   - items {array}
+ *
+ * @param {string} query
+ * @param {object} options
+ * @returns {object}
+ */
+Sifter.prototype.search = function(query, options) {
+    var self = this, score, search;
+    var fn_sort;
+    var fn_score;
+
+    search  = this.prepareSearch(query, options);
+    options = search.options;
+    query   = search.query;
+
+    // generate result scoring function
+    fn_score = options.score || self.getScoreFunction(search);
+
+    // perform search and sort
+    if (query.length) {
+        self.iterator(self.items, function(item, id) {
+            score = fn_score(item);
+            if (options.filter === false || score > 0) {
+                search.items.push({'score': score, 'id': id});
+            }
+        });
+    } else {
+        self.iterator(self.items, function(item, id) {
+            search.items.push({'score': 1, 'id': id});
+        });
+    }
+
+    fn_sort = self.getSortFunction(search, options);
+    if (fn_sort) search.items.sort(fn_sort);
+
+    // apply limits
+    search.total = search.items.length;
+    if (typeof options.limit === 'number') {
+        search.items = search.items.slice(0, options.limit);
+    }
+
+    return search;
+};
+
+// utilities
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+var cmp = function(a, b) {
+    if (typeof a === 'number' && typeof b === 'number') {
+        return a > b ? 1 : (a < b ? -1 : 0);
+    }
+    a = asciifold(String(a || ''));
+    b = asciifold(String(b || ''));
+    if (a > b) return 1;
+    if (b > a) return -1;
+    return 0;
+};
+
+var extend = function(a, b) {
+    var i, n, k, object;
+    for (i = 1, n = arguments.length; i < n; i++) {
+        object = arguments[i];
+        if (!object) continue;
+        for (k in object) {
+            if (object.hasOwnProperty(k)) {
+                a[k] = object[k];
+            }
+        }
+    }
+    return a;
+};
+
+/**
+ * A property getter resolving dot-notation
+ * @param  {Object}  obj     The root object to fetch property on
+ * @param  {String}  name    The optionally dotted property name to fetch
+ * @param  {Boolean} nesting Handle nesting or not
+ * @return {Object}          The resolved property value
+ */
+var getattr = function(obj, name, nesting) {
+    if (!obj || !name) return;
+    if (!nesting) return obj[name];
+    var names = name.split(".");
+    while(names.length && (obj = obj[names.shift()]));
+    return obj;
+};
+
+var trim = function(str) {
+    return (str + '').replace(/^\s+|\s+$|/g, '');
+};
+
+var escape_regex = function(str) {
+    return (str + '').replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
+};
+
+var is_array = Array.isArray || (typeof $ !== 'undefined' && $.isArray) || function(object) {
+    return Object.prototype.toString.call(object) === '[object Array]';
+};
+
+var DIACRITICS = {
+    'a': '[aḀḁĂăÂâǍǎȺⱥȦȧẠạÄäÀàÁáĀāÃãÅåąĄÃąĄ]',
+    'b': '[b␢βΒB฿𐌁ᛒ]',
+    'c': '[cĆćĈĉČčĊċC̄c̄ÇçḈḉȻȼƇƈɕᴄＣｃ]',
+    'd': '[dĎďḊḋḐḑḌḍḒḓḎḏĐđD̦d̦ƉɖƊɗƋƌᵭᶁᶑȡᴅＤｄð]',
+    'e': '[eÉéÈèÊêḘḙĚěĔĕẼẽḚḛẺẻĖėËëĒēȨȩĘęᶒɆɇȄȅẾếỀềỄễỂểḜḝḖḗḔḕȆȇẸẹỆệⱸᴇＥｅɘǝƏƐε]',
+    'f': '[fƑƒḞḟ]',
+    'g': '[gɢ₲ǤǥĜĝĞğĢģƓɠĠġ]',
+    'h': '[hĤĥĦħḨḩẖẖḤḥḢḣɦʰǶƕ]',
+    'i': '[iÍíÌìĬĭÎîǏǐÏïḮḯĨĩĮįĪīỈỉȈȉȊȋỊịḬḭƗɨɨ̆ᵻᶖİiIıɪＩｉ]',
+    'j': '[jȷĴĵɈɉʝɟʲ]',
+    'k': '[kƘƙꝀꝁḰḱǨǩḲḳḴḵκϰ₭]',
+    'l': '[lŁłĽľĻļĹĺḶḷḸḹḼḽḺḻĿŀȽƚⱠⱡⱢɫɬᶅɭȴʟＬｌ]',
+    'n': '[nŃńǸǹŇňÑñṄṅŅņṆṇṊṋṈṉN̈n̈ƝɲȠƞᵰᶇɳȵɴＮｎŊŋ]',
+    'o': '[oØøÖöÓóÒòÔôǑǒŐőŎŏȮȯỌọƟɵƠơỎỏŌōÕõǪǫȌȍՕօ]',
+    'p': '[pṔṕṖṗⱣᵽƤƥᵱ]',
+    'q': '[qꝖꝗʠɊɋꝘꝙq̃]',
+    'r': '[rŔŕɌɍŘřŖŗṘṙȐȑȒȓṚṛⱤɽ]',
+    's': '[sŚśṠṡṢṣꞨꞩŜŝŠšŞşȘșS̈s̈]',
+    't': '[tŤťṪṫŢţṬṭƮʈȚțṰṱṮṯƬƭ]',
+    'u': '[uŬŭɄʉỤụÜüÚúÙùÛûǓǔŰűŬŭƯưỦủŪūŨũŲųȔȕ∪]',
+    'v': '[vṼṽṾṿƲʋꝞꝟⱱʋ]',
+    'w': '[wẂẃẀẁŴŵẄẅẆẇẈẉ]',
+    'x': '[xẌẍẊẋχ]',
+    'y': '[yÝýỲỳŶŷŸÿỸỹẎẏỴỵɎɏƳƴ]',
+    'z': '[zŹźẐẑŽžŻżẒẓẔẕƵƶ]'
+};
+
+const asciifold = (function() {
+    var i, n, k, chunk;
+    var foreignletters = '';
+    var lookup = {};
+    for (k in DIACRITICS) {
+        if (DIACRITICS.hasOwnProperty(k)) {
+            chunk = DIACRITICS[k].substring(2, DIACRITICS[k].length - 1);
+            foreignletters += chunk;
+            for (i = 0, n = chunk.length; i < n; i++) {
+                lookup[chunk.charAt(i)] = k;
+            }
+        }
+    }
+    var regexp = new RegExp('[' +  foreignletters + ']', 'g');
+    return function(str) {
+        return str.replace(regexp, function(foreignletter) {
+            return lookup[foreignletter];
+        }).toLowerCase();
+    };
+})();
+
+// source: https://github.com/rob-balfre/svelte-select/blob/master/src/utils/isOutOfViewport.js
+function isOutOfViewport(elem) {
+  const bounding = elem.getBoundingClientRect();
+  const out = {};
+
+  out.top = bounding.top < 0 || bounding.top - bounding.height < 0;
+  out.left = bounding.left < 0;
+  out.bottom = bounding.bottom > (window.innerHeight || document.documentElement.clientHeight);
+  out.right = bounding.right > (window.innerWidth || document.documentElement.clientWidth);
+  out.any = out.top || out.left || out.bottom || out.right;
+
+  return out;
+}
+let xhr = null;
+
+function fetchRemote(url) {
+  return function(query, cb) {
+    return new Promise((resolve, reject) => {
+      xhr = new XMLHttpRequest();
+      xhr.open('GET', `${url.replace('[query]', encodeURIComponent(query))}`);
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.send();
+      
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState === 4) {
+          if (xhr.status === 200) {
+            const resp = JSON.parse(xhr.response);
+            resolve(cb ? cb(resp) : resp.data || resp.items || resp.options || resp);
+          } else {
+            reject();
+          }
+        } 
+      };
+    });
+  }
+}
+
+let timeout;
+function debounce(fn, delay) {
+	return function() {
+		const self = this;
+		const args = arguments;
+		clearTimeout(timeout);
+		timeout = setTimeout(function() {
+      fn.apply(self, args);
+		}, delay);
+	};
+}
+/**
+ * highlight-related code from selectize itself. We pass raw html through @html svelte tag
+ * base from https://github.com/selectize/selectize.js/blob/master/src/contrib/highlight.js & edited
+ */
+const itemHtml = document.createElement('div');
+itemHtml.className = 'sv-item-content';
+
+function highlightSearch(item, isSelected, $inputValue, formatter) {
+  itemHtml.innerHTML = formatter ? formatter(item, isSelected) : item;
+  if ($inputValue == '' || item.isSelected) return itemHtml.outerHTML;
+
+  const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
+  
+  highlight(itemHtml, regex);
+
+  return itemHtml.outerHTML;
+}
+
+const highlight = function(node, regex) {
+  let skip = 0;
+  // Wrap matching part of text node with highlighting <span>, e.g.
+  // Soccer  ->  <span class="highlight">Soc</span>cer  for regex = /soc/i
+  if (node.nodeType === 3) {
+    const folded = asciifold(node.data);
+    const pos = folded.search(regex);
+    // var pos = node.data.search(regex);
+    if (pos >= 0 && node.data.length > 0) {
+      const match = folded.match(regex);
+      // var match = node.data.match(regex);
+      const spannode = document.createElement('span');
+      spannode.className = 'highlight';
+      const middlebit = node.splitText(pos);
+      const endbit = middlebit.splitText(match[0].length);
+      const middleclone = middlebit.cloneNode(true);
+      spannode.appendChild(middleclone);
+      middlebit.parentNode.replaceChild(spannode, middlebit);
+      skip = 1;
+    }
+  } 
+  // Recurse element node, looking for child text nodes to highlight, unless element 
+  // is childless, <script>, <style>, or already highlighted: <span class="hightlight">
+  else if (node.nodeType === 1 && node.childNodes && !/(script|style)/i.test(node.tagName) && ( node.className !== 'highlight' || node.tagName !== 'SPAN' )) {
+    for (var i = 0; i < node.childNodes.length; ++i) {
+      i += highlight(node.childNodes[i], regex);
+    }
+  }
+  return skip;
+};
+
+/**
+ * Automatic setter for 'valueField' or 'labelField' when they are not set
+ */
+function fieldInit(type, options) {
+  const isValue = type === 'value';
+  let val = isValue  ? 'value' : 'text';              // selectize style defaults
+  if (options && options.length) {
+    const firstItem = options[0].options ? options[0].options[0] : options[0];
+    const autoAddItem = isValue ? 0 : 1;
+    const guessList = isValue
+      ? ['id', 'value', 'ID']
+      : ['name', 'title', 'label'];
+    val = Object.keys(firstItem).filter(prop => guessList.includes(prop))
+      .concat([Object.keys(firstItem)[autoAddItem]])  // auto add field (used as fallback)
+      .shift();  
+  }
+  return val;
+}
+
+const settings = {
+
+  /** ************************************ sub-component props */
+  /* HTML related */
+  name: null, // if name is defined, <select> element is created as well
+  
+  required: false,
+  multiple: false,
+  searchable: true,
+  disabled: false,
+  creatable: false,
+  clearable: false,
+  selectOnTab: false,
+  placeholder: 'Select',
+  valueField: null,
+  labelField: null,
+  max: 0,
+  delimiter: ',',
+  sortRemoteResults: true,
+  // enable collapsible multiple selection
+  collapseSelection: false, 
+  i18n: {
+    empty: 'No options',
+    nomatch: 'No matching options',    
+    max: 'Maximum items :maxItems selected',
+    fetchBefore: 'Type to search',
+    fetchWait: 'Stop typing to search',
+    fetchEmpty: 'No data related to your search',
+    collapsedSelection: count => {
+      switch (count) {
+        case 1: return '1 item';
+      }
+      return `${count} items`;
+    }
+  }
+};
+
+const subscriber_queue = [];
+/**
+ * Creates a `Readable` store that allows reading by subscription.
+ * @param value initial value
+ * @param {StartStopNotifier}start start and stop notifications for subscriptions
+ */
+function readable(value, start) {
+    return {
+        subscribe: writable(value, start).subscribe
+    };
+}
+/**
+ * Create a `Writable` store that allows both updating and reading by subscription.
+ * @param {*=}value initial value
+ * @param {StartStopNotifier=}start start and stop notifications for subscriptions
+ */
+function writable(value, start = noop) {
+    let stop;
+    const subscribers = [];
+    function set(new_value) {
+        if (safe_not_equal(value, new_value)) {
+            value = new_value;
+            if (stop) { // store is ready
+                const run_queue = !subscriber_queue.length;
+                for (let i = 0; i < subscribers.length; i += 1) {
+                    const s = subscribers[i];
+                    s[1]();
+                    subscriber_queue.push(s, value);
+                }
+                if (run_queue) {
+                    for (let i = 0; i < subscriber_queue.length; i += 2) {
+                        subscriber_queue[i][0](subscriber_queue[i + 1]);
+                    }
+                    subscriber_queue.length = 0;
+                }
+            }
+        }
+    }
+    function update(fn) {
+        set(fn(value));
+    }
+    function subscribe(run, invalidate = noop) {
+        const subscriber = [run, invalidate];
+        subscribers.push(subscriber);
+        if (subscribers.length === 1) {
+            stop = start(set) || noop;
+        }
+        run(value);
+        return () => {
+            const index = subscribers.indexOf(subscriber);
+            if (index !== -1) {
+                subscribers.splice(index, 1);
+            }
+            if (subscribers.length === 0) {
+                stop();
+                stop = null;
+            }
+        };
+    }
+    return { set, update, subscribe };
+}
+function derived(stores, fn, initial_value) {
+    const single = !Array.isArray(stores);
+    const stores_array = single
+        ? [stores]
+        : stores;
+    const auto = fn.length < 2;
+    return readable(initial_value, (set) => {
+        let inited = false;
+        const values = [];
+        let pending = 0;
+        let cleanup = noop;
+        const sync = () => {
+            if (pending) {
+                return;
+            }
+            cleanup();
+            const result = fn(single ? values[0] : values, set);
+            if (auto) {
+                set(result);
+            }
+            else {
+                cleanup = is_function(result) ? result : noop;
+            }
+        };
+        const unsubscribers = stores_array.map((store, i) => subscribe(store, (value) => {
+            values[i] = value;
+            pending &= ~(1 << i);
+            if (inited) {
+                sync();
+            }
+        }, () => {
+            pending |= (1 << i);
+        }));
+        inited = true;
+        sync();
+        return function stop() {
+            run_all(unsubscribers);
+            cleanup();
+        };
+    });
+}
+
+// import { onDestroy } from 'svelte';
+// import { debounce, xhr } from './lib/utils';
+
+const key = {};
+
+function getFilterProps(object) {
+  if (object.options) object = object.options[0];
+  const exclude = ['value', 'isSelected', 'isDisabled' ,'selected', 'disabled'];
+  return Object.keys(object).filter(prop => !exclude.includes(prop));
+}
+
+function setToggleHelper(o) {
+  if (this.has(o)) {
+    !o.isSelected && this.delete(o);
+    return false;
+  }
+  o.isSelected && this.add(o);
+  return true;
+}
+
+const initStore = (options, selection, initialSettings, dropdownMessages) => {
+  const internalSelection = new Set();
+  const selectionToggle = setToggleHelper.bind(internalSelection);
+
+  let valueField = initialSettings.currentValueField;
+  let labelField = initialSettings.currentLabelField;
+  let maxItems = initialSettings.max;
+  let isMultiple = initialSettings.multiple;
+  let isCreatable = initialSettings.creatable;
+  let searchField = initialSettings.searchField;
+  let sortField = initialSettings.sortField;
+  let optionsWithGroups = false;
+  let sifterSearchField = initialSettings.searchField;
+  let sifterSortField = initialSettings.sortField;
+  let sifterSortRemote = initialSettings.sortRemote ? true : false;
+
+  const settings = initSettings(initialSettings);
+
+  const settingsUnsubscribe = settings.subscribe(val => {
+    maxItems = val.max;
+    isMultiple = val.multiple;
+    isCreatable = val.creatable;
+    sifterSortRemote = val.sortRemote;
+    valueField = val.currentValueField;
+    labelField = val.currentLabelField;
+    if (!isMultiple && internalSelection.size > 1) {
+      opts.update(opts => opts.map(o => { o.isSelected = false; return o }));
+    }
+    if (isMultiple && maxItems && internalSelection.size > maxItems) {
+      let i = 0;
+      const reset = o => { 
+        if (o.isSelected) {
+          if (i >= maxItems) o.isSelected = false;
+          i++;
+        }
+        return o;
+      };
+      opts.update(opts => opts.map(reset));
+    }
+    if (val.searchField && searchField !== val.searchField) {
+      searchField = val.searchField;
+    }
+    if (val.sortField && sortField !== val.sortField) {
+      sortField = val.sortField;
+    }
+  });
+  
+  const inputValue = writable('');
+  const isFetchingData = writable(false);
+  const hasFocus = writable(false);
+  const hasDropdownOpened = writable(false);
+  const listMessage = writable(dropdownMessages.empty);
+  const opts = writable([]);
+  let _flatOptions = []; // for performance gain, set manually in 'updateOpts'
+  const updateOpts = (options) => {
+    optionsWithGroups = options.some(opt => opt.options);
+    
+    {
+      sifterSearchField = searchField || getFilterProps(options.length > 0 ? options[0] : { [labelField]: ''});
+      sifterSortField = searchField || (
+        optionsWithGroups
+          ? false
+          : (sortField || [{ field: labelField, direction: 'asc'}])
+      );
+    }
+
+    _flatOptions = options.reduce((res, opt) => {
+      if (opt.options) {
+        res.push(...opt.options);
+        return res;
+      }
+      res.push(opt);
+      return res;
+    }, []);
+    opts.set(options);
+    // init selection
+    options.forEach(opt => opt.isSelected && internalSelection.add(opt));
+  };
+  
+  updateOpts(options);  // init options
+
+  
+  /***************************************************************/
+  /**                    options exposed API                     */
+  /***************************************************************/
+
+  const selectOption = option => {
+    if (maxItems && internalSelection.size === maxItems) return;
+    opts.update(list => {
+      if (!isMultiple) {
+        internalSelection.forEach(opt => {
+          opt.isSelected = false;
+          // isCreatable && opt._created && list.splice(list.indexOf(opt), 1);
+        });
+      }
+      if (typeof option === 'string') {
+        option = {
+          [labelField]: `*${option}`,
+          [valueField]: encodeURIComponent(option),
+          isSelected: true,
+          _created: true,
+        };
+        list.push(option);
+      } else {
+        const searchedValue = option[valueField];
+        list.some(opt => {
+          if (opt.options) {
+            return opt.options.some(groupOpt => {
+              if (groupOpt[valueField] == searchedValue) {
+                groupOpt.isSelected = true;
+                return true;
+              }
+              return false;
+            });
+          } else {
+            if (opt[valueField] == searchedValue) {
+              opt.isSelected = true;
+              return true;
+            }
+            return false;
+          }
+        });
+      }
+      return list;
+    });
+  };
+  const deselectOption = option => opts.update(list => {
+    internalSelection.delete(option);
+    option.isSelected = false;
+    // if (option._created) {
+    //   list.splice(list.indexOf(option), 1);
+    // } 
+    return list;
+  });
+  const clearSelection = () => opts.update(list => {
+    const toClear = [];
+    list.forEach(opt => {
+      if (opt.options) {
+        opt.options.forEach(o => o.isSelected = false);
+      } else {
+        opt.isSelected = false;
+        if (opt._created) {
+          internalSelection.delete(opt);
+          // toClear.push(list.indexOf(opt));
+        }
+      }
+    });
+    toClear.length && toClear.reverse().forEach(idx => list.splice(idx, 1));
+    return list;
+  });
+
+  // init selections
+  selection &&  (Array.isArray(selection) ? selection : [selection]).forEach(selectOption);
+
+  /** ************************************ filtered results */
+  const matchingOptions = derived([opts, inputValue, settings], 
+    ([$opts, $inputValue, $settings], set) => {
+      // set dropdown list empty when max is reached
+      if ($settings.max && internalSelection.size === $settings.max) {
+        listMessage.set(dropdownMessages.max.replace(':maxItems', $settings.max));
+        set([]);
+        return;
+      }
+      if ($inputValue === '' || !sifterSortRemote) {
+        return $settings.multiple
+          ? set($opts.reduce((res, opt) => {
+            if (opt.options) {
+              if (!opt.isDisabled) {
+                const filteredOpts = opt.options.filter(o => !o.isSelected);
+                if (filteredOpts.length) {
+                  res.push({
+                    label: opt.label,
+                    options: filteredOpts
+                  });
+                }
+              }
+            } else {
+              !opt.isSelected && res.push(opt);
+            }
+            return res;
+          }, []))
+          : set($opts);
+      }
+      /**
+       * Sifter is used for searching to provide rich filter functionality.
+       * But it degradate nicely, when optgroups are present
+       */
+      const sifter = new Sifter(_flatOptions);
+      if (optionsWithGroups) {  // disable sorting 
+        sifter.getSortFunction = () => null;
+      }
+      const result = sifter.search($inputValue, {
+        fields: sifterSearchField,
+        sort: sifterSortField,
+        conjunction: 'and'
+      });
+      let mapped = result.items.map(item => _flatOptions[item.id]);
+      if (optionsWithGroups) {
+        let _s = mapped.shift();
+        mapped = $opts.reduce((res, opt) => {
+          if (opt === _s && !opt.isSelected) {
+            _s = mapped.shift();
+            res.push(opt);
+          }
+          if (opt.options) {
+            const subopts = [];
+            opt.options.forEach(o => {
+              if (o === _s && !o.isSelected) {
+                subopts.push(o);
+                _s = mapped.shift();
+              }
+            });
+            subopts.length && res.push({ label: opt.label, options: subopts });
+          }
+          return res;
+        }, []);
+      }
+      set(mapped.filter(item => !item.isSelected));
+    }
+  );
+
+  const listIndexMap = derived(matchingOptions, ($matchingOptions, set) => {
+    let base = 0;
+    let groupIndex = 0;
+    let offset = 0;
+    set(
+      $matchingOptions.reduce((res, opt, idx) => {
+        if (opt.options) {  // optGroup
+          if (opt.isDisabled) { 
+            res.push('');
+            return res;
+          }
+          res.push(opt.options.map(o => {
+            if (o.isDisabled) return '';       
+            return offset++ + groupIndex;
+          }));
+          return res;
+        }
+        groupIndex++;
+        if (opt.isDisabled) {
+          res.push(''); 
+          return res;
+        }
+        res.push(offset + base++); // increment
+        return res;
+      }, [])
+    );
+  });
+
+  /** ************************************ for keyboard navigation even through opt-groups */
+  const flatMatching = !optionsWithGroups
+    ? matchingOptions
+    : derived([matchingOptions, inputValue, settings], ([$matchingOptions, $inputValue, $settings], set) => {
+    const flatList = $inputValue !== ''
+      ? $matchingOptions.reduce((res, opt) => {
+          if (opt.options) {
+            res.push(...opt.options);
+            return res;
+          }
+          res.push(opt);
+          return res;
+        }, [])
+      : ($settings.multiple ? _flatOptions.filter(o => !o.isSelected) : _flatOptions);
+    set(flatList.filter(o => !o.isDisabled));
+  });
+
+  /** ************************************ selection set */
+  const selectedOptions = derived([opts, settings], ([$opts, $settings], set) => {
+    if (!$settings.multiple) internalSelection.clear();
+    $opts.forEach(o => {
+      if (o.options) {
+        !o.isDisabled && o.options.forEach(selectionToggle);
+        return;
+      }
+      selectionToggle(o);
+    });
+    set(Array.from(internalSelection));
+  }, Array.from(internalSelection));
+
+  const listLength = derived(opts, ($opts, set) => {
+    set(
+      $opts.reduce((res, opt) => {
+        res += opt.options ? opt.options.length : 1;
+        return res;
+      }, 0)
+    );
+  });
+  const currentListLength = derived([inputValue, flatMatching], ([$inputValue, $flatMatching], set) => {
+    set(isCreatable && $inputValue ? $flatMatching.length : $flatMatching.length - 1);
+  });
+
+  return {
+    /** context stores */
+    hasFocus,
+    hasDropdownOpened,
+    inputValue,
+    isFetchingData,
+    listMessage,
+    settings,
+    /** options:actions **/
+    selectOption,
+    deselectOption,
+    clearSelection,
+    settingsUnsubscribe,
+    /** options:getters **/
+    listLength,
+    listIndexMap,
+    matchingOptions,
+    flatMatching,
+    currentListLength,
+    selectedOptions,
+    /** options: update */
+    updateOpts
+  }
+};
+
+const initSettings = (initialSettings) => {
+  const settings = writable(initialSettings || {});
+  settings.updateOne = (name, value) => {
+    settings.update(_val => {
+      _val[name] = value;
+      return _val;
+    });
+  };
+  return settings;
+};
+
+/* src\Svelecte\components\Input.svelte generated by Svelte v3.25.0 */
+const file = "src\\Svelecte\\components\\Input.svelte";
+
+function create_fragment(ctx) {
+	let input;
+	let input_readonly_value;
+	let t0;
+	let div;
+	let t1;
+	let div_resize_listener;
+	let mounted;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			input = element("input");
+			t0 = space();
+			div = element("div");
+			t1 = text(/*shadowText*/ ctx[5]);
+			attr_dev(input, "type", "text");
+			attr_dev(input, "class", "inputBox svelte-mtw92l");
+			input.disabled = /*disabled*/ ctx[1];
+			input.readOnly = input_readonly_value = !/*searchable*/ ctx[0];
+			attr_dev(input, "style", /*inputStyle*/ ctx[7]);
+			attr_dev(input, "placeholder", /*placeholderText*/ ctx[4]);
+			add_location(input, file, 40, 0, 1308);
+			attr_dev(div, "class", "shadow-text svelte-mtw92l");
+			add_render_callback(() => /*div_elementresize_handler*/ ctx[21].call(div));
+			add_location(div, file, 52, 0, 1586);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, input, anchor);
+			/*input_binding*/ ctx[19](input);
+			set_input_value(input, /*$inputValue*/ ctx[6]);
+			insert_dev(target, t0, anchor);
+			insert_dev(target, div, anchor);
+			append_dev(div, t1);
+			div_resize_listener = add_resize_listener(div, /*div_elementresize_handler*/ ctx[21].bind(div));
+
+			if (!mounted) {
+				dispose = [
+					listen_dev(input, "input", /*input_input_handler*/ ctx[20]),
+					listen_dev(input, "focus", /*focus_handler*/ ctx[16], false, false, false),
+					listen_dev(input, "blur", /*blur_handler*/ ctx[17], false, false, false),
+					listen_dev(input, "keydown", /*onKeyDown*/ ctx[11], false, false, false),
+					listen_dev(input, "keyup", /*onKeyUp*/ ctx[12], false, false, false),
+					listen_dev(input, "paste", /*paste_handler*/ ctx[18], false, false, false)
+				];
+
+				mounted = true;
+			}
+		},
+		p: function update(ctx, [dirty]) {
+			if (dirty & /*disabled*/ 2) {
+				prop_dev(input, "disabled", /*disabled*/ ctx[1]);
+			}
+
+			if (dirty & /*searchable*/ 1 && input_readonly_value !== (input_readonly_value = !/*searchable*/ ctx[0])) {
+				prop_dev(input, "readOnly", input_readonly_value);
+			}
+
+			if (dirty & /*inputStyle*/ 128) {
+				attr_dev(input, "style", /*inputStyle*/ ctx[7]);
+			}
+
+			if (dirty & /*placeholderText*/ 16) {
+				attr_dev(input, "placeholder", /*placeholderText*/ ctx[4]);
+			}
+
+			if (dirty & /*$inputValue*/ 64 && input.value !== /*$inputValue*/ ctx[6]) {
+				set_input_value(input, /*$inputValue*/ ctx[6]);
+			}
+
+			if (dirty & /*shadowText*/ 32) set_data_dev(t1, /*shadowText*/ ctx[5]);
+		},
+		i: noop,
+		o: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(input);
+			/*input_binding*/ ctx[19](null);
+			if (detaching) detach_dev(t0);
+			if (detaching) detach_dev(div);
+			div_resize_listener();
+			mounted = false;
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance($$self, $$props, $$invalidate) {
+	let $selectedOptions;
+	let $inputValue;
+	let $hasDropdownOpened;
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Input", slots, []);
+	const focus = () => inputRef.focus();
+	let { placeholder } = $$props;
+	let { searchable } = $$props;
+	let { disabled } = $$props;
+	let { multiple } = $$props;
+	let inputRef = null;
+	let shadowWidth = 0;
+	const { inputValue, selectedOptions, hasDropdownOpened } = getContext(key);
+	validate_store(inputValue, "inputValue");
+	component_subscribe($$self, inputValue, value => $$invalidate(6, $inputValue = value));
+	validate_store(selectedOptions, "selectedOptions");
+	component_subscribe($$self, selectedOptions, value => $$invalidate(24, $selectedOptions = value));
+	validate_store(hasDropdownOpened, "hasDropdownOpened");
+	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(26, $hasDropdownOpened = value));
+	const dispatch = createEventDispatcher();
+	let disableEventBubble = false;
+
+	function onKeyDown(e) {
+		disableEventBubble = ["Enter", "Escape"].includes(e.key) && $hasDropdownOpened;
+		dispatch("keydown", e);
+	}
+
+	/** Stop event propagation on keyup, when dropdown is opened. Typically this will prevent form submit */
+	function onKeyUp(e) {
+		if (disableEventBubble) {
+			e.stopImmediatePropagation();
+			e.preventDefault();
+		}
+
+		disableEventBubble = false;
+	}
+
+	const writable_props = ["placeholder", "searchable", "disabled", "multiple"];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Input> was created with unknown prop '${key}'`);
+	});
+
+	function focus_handler(event) {
+		bubble($$self, event);
+	}
+
+	function blur_handler(event) {
+		bubble($$self, event);
+	}
+
+	function paste_handler(event) {
+		bubble($$self, event);
+	}
+
+	function input_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			inputRef = $$value;
+			$$invalidate(2, inputRef);
+		});
+	}
+
+	function input_input_handler() {
+		$inputValue = this.value;
+		inputValue.set($inputValue);
+	}
+
+	function div_elementresize_handler() {
+		shadowWidth = this.clientWidth;
+		$$invalidate(3, shadowWidth);
+	}
+
+	$$self.$$set = $$props => {
+		if ("placeholder" in $$props) $$invalidate(14, placeholder = $$props.placeholder);
+		if ("searchable" in $$props) $$invalidate(0, searchable = $$props.searchable);
+		if ("disabled" in $$props) $$invalidate(1, disabled = $$props.disabled);
+		if ("multiple" in $$props) $$invalidate(15, multiple = $$props.multiple);
+	};
+
+	$$self.$capture_state = () => ({
+		getContext,
+		onDestroy,
+		createEventDispatcher,
+		key,
+		focus,
+		placeholder,
+		searchable,
+		disabled,
+		multiple,
+		inputRef,
+		shadowWidth,
+		inputValue,
+		selectedOptions,
+		hasDropdownOpened,
+		dispatch,
+		disableEventBubble,
+		onKeyDown,
+		onKeyUp,
+		isSingleFilled,
+		$selectedOptions,
+		placeholderText,
+		shadowText,
+		$inputValue,
+		widthAddition,
+		inputStyle,
+		$hasDropdownOpened
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("placeholder" in $$props) $$invalidate(14, placeholder = $$props.placeholder);
+		if ("searchable" in $$props) $$invalidate(0, searchable = $$props.searchable);
+		if ("disabled" in $$props) $$invalidate(1, disabled = $$props.disabled);
+		if ("multiple" in $$props) $$invalidate(15, multiple = $$props.multiple);
+		if ("inputRef" in $$props) $$invalidate(2, inputRef = $$props.inputRef);
+		if ("shadowWidth" in $$props) $$invalidate(3, shadowWidth = $$props.shadowWidth);
+		if ("disableEventBubble" in $$props) disableEventBubble = $$props.disableEventBubble;
+		if ("isSingleFilled" in $$props) $$invalidate(23, isSingleFilled = $$props.isSingleFilled);
+		if ("placeholderText" in $$props) $$invalidate(4, placeholderText = $$props.placeholderText);
+		if ("shadowText" in $$props) $$invalidate(5, shadowText = $$props.shadowText);
+		if ("widthAddition" in $$props) $$invalidate(25, widthAddition = $$props.widthAddition);
+		if ("inputStyle" in $$props) $$invalidate(7, inputStyle = $$props.inputStyle);
+	};
+
+	let isSingleFilled;
+	let placeholderText;
+	let shadowText;
+	let widthAddition;
+	let inputStyle;
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty & /*$selectedOptions, multiple*/ 16809984) {
+			 $$invalidate(23, isSingleFilled = $selectedOptions.length > 0 && multiple === false);
+		}
+
+		if ($$self.$$.dirty & /*$selectedOptions, placeholder*/ 16793600) {
+			 $$invalidate(4, placeholderText = $selectedOptions.length > 0 ? "" : placeholder);
+		}
+
+		if ($$self.$$.dirty & /*$inputValue, placeholderText*/ 80) {
+			 $$invalidate(5, shadowText = $inputValue || placeholderText);
+		}
+
+		if ($$self.$$.dirty & /*$selectedOptions*/ 16777216) {
+			 $$invalidate(25, widthAddition = $selectedOptions.length === 0 ? 19 : 12);
+		}
+
+		if ($$self.$$.dirty & /*isSingleFilled, shadowWidth, widthAddition*/ 41943048) {
+			 $$invalidate(7, inputStyle = `width: ${isSingleFilled ? 2 : shadowWidth + widthAddition}px`);
+		}
+	};
+
+	return [
+		searchable,
+		disabled,
+		inputRef,
+		shadowWidth,
+		placeholderText,
+		shadowText,
+		$inputValue,
+		inputStyle,
+		inputValue,
+		selectedOptions,
+		hasDropdownOpened,
+		onKeyDown,
+		onKeyUp,
+		focus,
+		placeholder,
+		multiple,
+		focus_handler,
+		blur_handler,
+		paste_handler,
+		input_binding,
+		input_input_handler,
+		div_elementresize_handler
+	];
+}
+
+class Input extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(this, options, instance, create_fragment, safe_not_equal, {
+			focus: 13,
+			placeholder: 14,
+			searchable: 0,
+			disabled: 1,
+			multiple: 15
+		});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Input",
+			options,
+			id: create_fragment.name
+		});
+
+		const { ctx } = this.$$;
+		const props = options.props || {};
+
+		if (/*placeholder*/ ctx[14] === undefined && !("placeholder" in props)) {
+			console.warn("<Input> was created without expected prop 'placeholder'");
+		}
+
+		if (/*searchable*/ ctx[0] === undefined && !("searchable" in props)) {
+			console.warn("<Input> was created without expected prop 'searchable'");
+		}
+
+		if (/*disabled*/ ctx[1] === undefined && !("disabled" in props)) {
+			console.warn("<Input> was created without expected prop 'disabled'");
+		}
+
+		if (/*multiple*/ ctx[15] === undefined && !("multiple" in props)) {
+			console.warn("<Input> was created without expected prop 'multiple'");
+		}
+	}
+
+	get focus() {
+		return this.$$.ctx[13];
+	}
+
+	set focus(value) {
+		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get placeholder() {
+		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set placeholder(value) {
+		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get searchable() {
+		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set searchable(value) {
+		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get disabled() {
+		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set disabled(value) {
+		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get multiple() {
+		throw new Error("<Input>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set multiple(value) {
+		throw new Error("<Input>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+const mouseDownAction = e => e.preventDefault();
+
+function itemActions(node, {item, index}) {
+
+  function selectAction(e) {
+    const eventType = e.target.closest('[data-action="deselect"]') ? 'deselect' : 'select';
+    node.dispatchEvent(new CustomEvent(eventType, {
+      bubble: true,
+      detail: item
+    }));
+  }
+
+  function hoverAction() {
+    node.dispatchEvent(new CustomEvent('hover', {
+      detail: index
+    }));
+  }
+  node.onmousedown = mouseDownAction;
+  node.onclick = selectAction;
+  !item.isSelected && node.addEventListener('mouseenter', hoverAction);
+
+  return {
+    update(updated) {
+      item = updated.item;
+      index = updated.index;
+    },
+    destroy() {
+      node.removeEventListener('mousedown', mouseDownAction);
+      node.removeEventListener('click', selectAction);
+      !item.isSelected && node.removeEventListener('mouseenter', hoverAction);
+    }
+  }
+}
+
+/* src\Svelecte\components\Item.svelte generated by Svelte v3.25.0 */
+const file$1 = "src\\Svelecte\\components\\Item.svelte";
+
+// (75:0) {#if isSelected && isMultiple}
+function create_if_block(ctx) {
+	let a;
+	let svg;
+	let path;
+
+	const block = {
+		c: function create() {
+			a = element("a");
+			svg = svg_element("svg");
+			path = svg_element("path");
+			attr_dev(path, "d", "M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z");
+			add_location(path, file$1, 76, 89, 1993);
+			attr_dev(svg, "height", "16");
+			attr_dev(svg, "width", "16");
+			attr_dev(svg, "viewBox", "0 0 20 20");
+			attr_dev(svg, "aria-hidden", "true");
+			attr_dev(svg, "focusable", "false");
+			add_location(svg, file$1, 76, 4, 1908);
+			attr_dev(a, "href", "#deselect");
+			attr_dev(a, "class", "sv-item-btn");
+			attr_dev(a, "tabindex", "-1");
+			attr_dev(a, "data-action", "deselect");
+			add_location(a, file$1, 75, 2, 1825);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, a, anchor);
+			append_dev(a, svg);
+			append_dev(svg, path);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(a);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block.name,
+		type: "if",
+		source: "(75:0) {#if isSelected && isMultiple}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$1(ctx) {
+	let div;
+	let html_tag;
+	let raw_value = highlightSearch(/*item*/ ctx[1], /*isSelected*/ ctx[2], /*$inputValue*/ ctx[6], /*formatter*/ ctx[5]) + "";
+	let t;
+	let div_title_value;
+	let itemActions_action;
+	let mounted;
+	let dispose;
+	let if_block = /*isSelected*/ ctx[2] && /*isMultiple*/ ctx[4] && create_if_block(ctx);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			t = space();
+			if (if_block) if_block.c();
+			html_tag = new HtmlTag(t);
+			attr_dev(div, "class", "sv-item");
+			attr_dev(div, "title", div_title_value = /*item*/ ctx[1]._created ? "Created item" : "");
+			toggle_class(div, "is-disabled", /*isDisabled*/ ctx[3]);
+			add_location(div, file$1, 65, 0, 1541);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			html_tag.m(raw_value, div);
+			append_dev(div, t);
+			if (if_block) if_block.m(div, null);
+
+			if (!mounted) {
+				dispose = [
+					action_destroyer(itemActions_action = itemActions.call(null, div, {
+						item: /*item*/ ctx[1],
+						index: /*index*/ ctx[0]
+					})),
+					listen_dev(div, "select", /*select_handler*/ ctx[8], false, false, false),
+					listen_dev(div, "deselect", /*deselect_handler*/ ctx[9], false, false, false),
+					listen_dev(div, "hover", /*hover_handler*/ ctx[10], false, false, false)
+				];
+
+				mounted = true;
+			}
+		},
+		p: function update(ctx, [dirty]) {
+			if (dirty & /*item, isSelected, $inputValue, formatter*/ 102 && raw_value !== (raw_value = highlightSearch(/*item*/ ctx[1], /*isSelected*/ ctx[2], /*$inputValue*/ ctx[6], /*formatter*/ ctx[5]) + "")) html_tag.p(raw_value);
+
+			if (/*isSelected*/ ctx[2] && /*isMultiple*/ ctx[4]) {
+				if (if_block) ; else {
+					if_block = create_if_block(ctx);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+
+			if (dirty & /*item*/ 2 && div_title_value !== (div_title_value = /*item*/ ctx[1]._created ? "Created item" : "")) {
+				attr_dev(div, "title", div_title_value);
+			}
+
+			if (itemActions_action && is_function(itemActions_action.update) && dirty & /*item, index*/ 3) itemActions_action.update.call(null, {
+				item: /*item*/ ctx[1],
+				index: /*index*/ ctx[0]
+			});
+
+			if (dirty & /*isDisabled*/ 8) {
+				toggle_class(div, "is-disabled", /*isDisabled*/ ctx[3]);
+			}
+		},
+		i: noop,
+		o: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			if (if_block) if_block.d();
+			mounted = false;
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$1.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$1($$self, $$props, $$invalidate) {
+	let $inputValue;
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Item", slots, []);
+	const { inputValue } = getContext(key);
+	validate_store(inputValue, "inputValue");
+	component_subscribe($$self, inputValue, value => $$invalidate(6, $inputValue = value));
+	let { index = -1 } = $$props;
+	let { item = {} } = $$props;
+	let { isSelected = false } = $$props;
+	let { isDisabled = false } = $$props;
+	let { isMultiple = false } = $$props;
+	let { formatter = null } = $$props;
+	const writable_props = ["index", "item", "isSelected", "isDisabled", "isMultiple", "formatter"];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Item> was created with unknown prop '${key}'`);
+	});
+
+	function select_handler(event) {
+		bubble($$self, event);
+	}
+
+	function deselect_handler(event) {
+		bubble($$self, event);
+	}
+
+	function hover_handler(event) {
+		bubble($$self, event);
+	}
+
+	$$self.$$set = $$props => {
+		if ("index" in $$props) $$invalidate(0, index = $$props.index);
+		if ("item" in $$props) $$invalidate(1, item = $$props.item);
+		if ("isSelected" in $$props) $$invalidate(2, isSelected = $$props.isSelected);
+		if ("isDisabled" in $$props) $$invalidate(3, isDisabled = $$props.isDisabled);
+		if ("isMultiple" in $$props) $$invalidate(4, isMultiple = $$props.isMultiple);
+		if ("formatter" in $$props) $$invalidate(5, formatter = $$props.formatter);
+	};
+
+	$$self.$capture_state = () => ({
+		getContext,
+		key,
+		itemActions,
+		highlightSearch,
+		inputValue,
+		index,
+		item,
+		isSelected,
+		isDisabled,
+		isMultiple,
+		formatter,
+		$inputValue
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("index" in $$props) $$invalidate(0, index = $$props.index);
+		if ("item" in $$props) $$invalidate(1, item = $$props.item);
+		if ("isSelected" in $$props) $$invalidate(2, isSelected = $$props.isSelected);
+		if ("isDisabled" in $$props) $$invalidate(3, isDisabled = $$props.isDisabled);
+		if ("isMultiple" in $$props) $$invalidate(4, isMultiple = $$props.isMultiple);
+		if ("formatter" in $$props) $$invalidate(5, formatter = $$props.formatter);
+	};
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	return [
+		index,
+		item,
+		isSelected,
+		isDisabled,
+		isMultiple,
+		formatter,
+		$inputValue,
+		inputValue,
+		select_handler,
+		deselect_handler,
+		hover_handler
+	];
+}
+
+class Item extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(this, options, instance$1, create_fragment$1, safe_not_equal, {
+			index: 0,
+			item: 1,
+			isSelected: 2,
+			isDisabled: 3,
+			isMultiple: 4,
+			formatter: 5
+		});
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Item",
+			options,
+			id: create_fragment$1.name
+		});
+	}
+
+	get index() {
+		throw new Error("<Item>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set index(value) {
+		throw new Error("<Item>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get item() {
+		throw new Error("<Item>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set item(value) {
+		throw new Error("<Item>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get isSelected() {
+		throw new Error("<Item>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set isSelected(value) {
+		throw new Error("<Item>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get isDisabled() {
+		throw new Error("<Item>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set isDisabled(value) {
+		throw new Error("<Item>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get isMultiple() {
+		throw new Error("<Item>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set isMultiple(value) {
+		throw new Error("<Item>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get formatter() {
+		throw new Error("<Item>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set formatter(value) {
+		throw new Error("<Item>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+/* src\Svelecte\components\Control.svelte generated by Svelte v3.25.0 */
+
+const { console: console_1 } = globals;
+const file$2 = "src\\Svelecte\\components\\Control.svelte";
+
+function get_each_context(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[35] = list[i];
+	return child_ctx;
+}
+
+const get_icon_slot_changes = dirty => ({});
+const get_icon_slot_context = ctx => ({});
+
+// (55:4) {#if $selectedOptions.length }
+function create_if_block_2(ctx) {
+	let current_block_type_index;
+	let if_block;
+	let if_block_anchor;
+	let current;
+	const if_block_creators = [create_if_block_3, create_else_block];
+	const if_blocks = [];
+
+	function select_block_type(ctx, dirty) {
+		if (/*multiple*/ ctx[5] && /*collapseSelection*/ ctx[6] && !/*$hasFocus*/ ctx[9]) return 0;
+		return 1;
+	}
+
+	current_block_type_index = select_block_type(ctx);
+	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+	const block = {
+		c: function create() {
+			if_block.c();
+			if_block_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			if_blocks[current_block_type_index].m(target, anchor);
+			insert_dev(target, if_block_anchor, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			let previous_block_index = current_block_type_index;
+			current_block_type_index = select_block_type(ctx);
+
+			if (current_block_type_index === previous_block_index) {
+				if_blocks[current_block_type_index].p(ctx, dirty);
+			} else {
+				group_outros();
+
+				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+					if_blocks[previous_block_index] = null;
+				});
+
+				check_outros();
+				if_block = if_blocks[current_block_type_index];
+
+				if (!if_block) {
+					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+					if_block.c();
+				}
+
+				transition_in(if_block, 1);
+				if_block.m(if_block_anchor.parentNode, if_block_anchor);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(if_block);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(if_block);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if_blocks[current_block_type_index].d(detaching);
+			if (detaching) detach_dev(if_block_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_2.name,
+		type: "if",
+		source: "(55:4) {#if $selectedOptions.length }",
+		ctx
+	});
+
+	return block;
+}
+
+// (58:6) {:else}
+function create_else_block(ctx) {
+	let each_1_anchor;
+	let current;
+	let each_value = /*$selectedOptions*/ ctx[10];
+	validate_each_argument(each_value);
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block(get_each_context(ctx, each_value, i));
+	}
+
+	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+		each_blocks[i] = null;
+	});
+
+	const block = {
+		c: function create() {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_1_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insert_dev(target, each_1_anchor, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*renderer, $selectedOptions, multiple*/ 1060) {
+				each_value = /*$selectedOptions*/ ctx[10];
+				validate_each_argument(each_value);
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+						transition_in(each_blocks[i], 1);
+					} else {
+						each_blocks[i] = create_each_block(child_ctx);
+						each_blocks[i].c();
+						transition_in(each_blocks[i], 1);
+						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+					}
+				}
+
+				group_outros();
+
+				for (i = each_value.length; i < each_blocks.length; i += 1) {
+					out(i);
+				}
+
+				check_outros();
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+
+			for (let i = 0; i < each_value.length; i += 1) {
+				transition_in(each_blocks[i]);
+			}
+
+			current = true;
+		},
+		o: function outro(local) {
+			each_blocks = each_blocks.filter(Boolean);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				transition_out(each_blocks[i]);
+			}
+
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_each(each_blocks, detaching);
+			if (detaching) detach_dev(each_1_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_else_block.name,
+		type: "else",
+		source: "(58:6) {:else}",
+		ctx
+	});
+
+	return block;
+}
+
+// (56:6) {#if multiple && collapseSelection && !$hasFocus}
+function create_if_block_3(ctx) {
+	let t_value = /*collapseSelection*/ ctx[6](/*$selectedOptions*/ ctx[10].length) + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			t = text(t_value);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, t, anchor);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*collapseSelection, $selectedOptions*/ 1088 && t_value !== (t_value = /*collapseSelection*/ ctx[6](/*$selectedOptions*/ ctx[10].length) + "")) set_data_dev(t, t_value);
+		},
+		i: noop,
+		o: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(t);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_3.name,
+		type: "if",
+		source: "(56:6) {#if multiple && collapseSelection && !$hasFocus}",
+		ctx
+	});
+
+	return block;
+}
+
+// (59:6) {#each $selectedOptions as opt}
+function create_each_block(ctx) {
+	let item;
+	let current;
+
+	item = new Item({
+			props: {
+				formatter: /*renderer*/ ctx[2],
+				item: /*opt*/ ctx[35],
+				isSelected: true,
+				isMultiple: /*multiple*/ ctx[5]
+			},
+			$$inline: true
+		});
+
+	item.$on("deselect", /*deselect_handler*/ ctx[26]);
+
+	const block = {
+		c: function create() {
+			create_component(item.$$.fragment);
+		},
+		m: function mount(target, anchor) {
+			mount_component(item, target, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const item_changes = {};
+			if (dirty[0] & /*renderer*/ 4) item_changes.formatter = /*renderer*/ ctx[2];
+			if (dirty[0] & /*$selectedOptions*/ 1024) item_changes.item = /*opt*/ ctx[35];
+			if (dirty[0] & /*multiple*/ 32) item_changes.isMultiple = /*multiple*/ ctx[5];
+			item.$set(item_changes);
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(item.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(item.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_component(item, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block.name,
+		type: "each",
+		source: "(59:6) {#each $selectedOptions as opt}",
+		ctx
+	});
+
+	return block;
+}
+
+// (75:4) {#if clearable && $selectedOptions.length && !disabled}
+function create_if_block_1(ctx) {
+	let div;
+	let svg;
+	let path;
+	let mounted;
+	let dispose;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			svg = svg_element("svg");
+			path = svg_element("path");
+			attr_dev(path, "d", "M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z");
+			add_location(path, file$2, 79, 114, 2567);
+			attr_dev(svg, "class", "indicator-icon svelte-6rgaw");
+			attr_dev(svg, "height", "20");
+			attr_dev(svg, "width", "20");
+			attr_dev(svg, "viewBox", "0 0 20 20");
+			attr_dev(svg, "aria-hidden", "true");
+			attr_dev(svg, "focusable", "false");
+			add_location(svg, file$2, 79, 6, 2459);
+			attr_dev(div, "aria-hidden", "true");
+			attr_dev(div, "class", "indicator-container close-icon svelte-6rgaw");
+			add_location(div, file$2, 75, 4, 2302);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, svg);
+			append_dev(svg, path);
+
+			if (!mounted) {
+				dispose = [
+					listen_dev(div, "mousedown", prevent_default(/*mousedown_handler_1*/ ctx[25]), false, true, false),
+					listen_dev(div, "click", /*click_handler*/ ctx[30], false, false, false)
+				];
+
+				mounted = true;
+			}
+		},
+		p: noop,
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			mounted = false;
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_1.name,
+		type: "if",
+		source: "(75:4) {#if clearable && $selectedOptions.length && !disabled}",
+		ctx
+	});
+
+	return block;
+}
+
+// (83:4) {#if clearable}
+function create_if_block$1(ctx) {
+	let span;
+
+	const block = {
+		c: function create() {
+			span = element("span");
+			attr_dev(span, "class", "indicator-separator svelte-6rgaw");
+			add_location(span, file$2, 83, 4, 2987);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, span, anchor);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(span);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$1.name,
+		type: "if",
+		source: "(83:4) {#if clearable}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$2(ctx) {
+	let div3;
+	let t0;
+	let div0;
+	let t1;
+	let input;
+	let t2;
+	let div2;
+	let t3;
+	let t4;
+	let div1;
+	let svg;
+	let path;
+	let current;
+	let mounted;
+	let dispose;
+	const icon_slot_template = /*#slots*/ ctx[22].icon;
+	const icon_slot = create_slot(icon_slot_template, ctx, /*$$scope*/ ctx[21], get_icon_slot_context);
+	let if_block0 = /*$selectedOptions*/ ctx[10].length && create_if_block_2(ctx);
+
+	let input_props = {
+		disabled: /*disabled*/ ctx[3],
+		searchable: /*searchable*/ ctx[1],
+		placeholder: /*placeholder*/ ctx[4],
+		multiple: /*multiple*/ ctx[5]
+	};
+
+	input = new Input({ props: input_props, $$inline: true });
+	/*input_binding*/ ctx[27](input);
+	input.$on("focus", /*onFocus*/ ctx[19]);
+	input.$on("blur", /*onBlur*/ ctx[20]);
+	input.$on("keydown", /*keydown_handler*/ ctx[28]);
+	input.$on("paste", /*paste_handler*/ ctx[29]);
+	let if_block1 = /*clearable*/ ctx[0] && /*$selectedOptions*/ ctx[10].length && !/*disabled*/ ctx[3] && create_if_block_1(ctx);
+	let if_block2 = /*clearable*/ ctx[0] && create_if_block$1(ctx);
+
+	const block = {
+		c: function create() {
+			div3 = element("div");
+			if (icon_slot) icon_slot.c();
+			t0 = space();
+			div0 = element("div");
+			if (if_block0) if_block0.c();
+			t1 = space();
+			create_component(input.$$.fragment);
+			t2 = space();
+			div2 = element("div");
+			if (if_block1) if_block1.c();
+			t3 = space();
+			if (if_block2) if_block2.c();
+			t4 = space();
+			div1 = element("div");
+			svg = svg_element("svg");
+			path = svg_element("path");
+			attr_dev(div0, "class", "sv-content sv-input-row svelte-6rgaw");
+			toggle_class(div0, "has-multiSelection", /*multiple*/ ctx[5]);
+			add_location(div0, file$2, 53, 2, 1502);
+			attr_dev(path, "d", "M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z");
+			add_location(path, file$2, 87, 8, 3239);
+			attr_dev(svg, "width", "20");
+			attr_dev(svg, "class", "indicator-icon svelte-6rgaw");
+			attr_dev(svg, "viewBox", "0 0 20 20");
+			attr_dev(svg, "aria-hidden", "true");
+			attr_dev(svg, "focusable", "false");
+			add_location(svg, file$2, 86, 6, 3133);
+			attr_dev(div1, "aria-hidden", "true");
+			attr_dev(div1, "class", "indicator-container svelte-6rgaw");
+			add_location(div1, file$2, 85, 4, 3045);
+			attr_dev(div2, "class", "indicator svelte-6rgaw");
+			toggle_class(div2, "is-loading", /*$isFetchingData*/ ctx[11]);
+			add_location(div2, file$2, 73, 2, 2176);
+			attr_dev(div3, "class", "sv-control svelte-6rgaw");
+			toggle_class(div3, "is-active", /*$hasFocus*/ ctx[9]);
+			toggle_class(div3, "is-disabled", /*disabled*/ ctx[3]);
+			add_location(div3, file$2, 47, 0, 1283);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div3, anchor);
+
+			if (icon_slot) {
+				icon_slot.m(div3, null);
+			}
+
+			append_dev(div3, t0);
+			append_dev(div3, div0);
+			if (if_block0) if_block0.m(div0, null);
+			append_dev(div0, t1);
+			mount_component(input, div0, null);
+			append_dev(div3, t2);
+			append_dev(div3, div2);
+			if (if_block1) if_block1.m(div2, null);
+			append_dev(div2, t3);
+			if (if_block2) if_block2.m(div2, null);
+			append_dev(div2, t4);
+			append_dev(div2, div1);
+			append_dev(div1, svg);
+			append_dev(svg, path);
+			current = true;
+
+			if (!mounted) {
+				dispose = [
+					listen_dev(div1, "mousedown", prevent_default(/*mousedown_handler_2*/ ctx[24]), false, true, false),
+					listen_dev(div3, "mousedown", prevent_default(/*mousedown_handler*/ ctx[23]), false, true, false),
+					listen_dev(div3, "click", prevent_default(/*focusControl*/ ctx[7]), false, true, false)
+				];
+
+				mounted = true;
+			}
+		},
+		p: function update(ctx, dirty) {
+			if (icon_slot) {
+				if (icon_slot.p && dirty[0] & /*$$scope*/ 2097152) {
+					update_slot(icon_slot, icon_slot_template, ctx, /*$$scope*/ ctx[21], dirty, get_icon_slot_changes, get_icon_slot_context);
+				}
+			}
+
+			if (/*$selectedOptions*/ ctx[10].length) {
+				if (if_block0) {
+					if_block0.p(ctx, dirty);
+
+					if (dirty[0] & /*$selectedOptions*/ 1024) {
+						transition_in(if_block0, 1);
+					}
+				} else {
+					if_block0 = create_if_block_2(ctx);
+					if_block0.c();
+					transition_in(if_block0, 1);
+					if_block0.m(div0, t1);
+				}
+			} else if (if_block0) {
+				group_outros();
+
+				transition_out(if_block0, 1, 1, () => {
+					if_block0 = null;
+				});
+
+				check_outros();
+			}
+
+			const input_changes = {};
+			if (dirty[0] & /*disabled*/ 8) input_changes.disabled = /*disabled*/ ctx[3];
+			if (dirty[0] & /*searchable*/ 2) input_changes.searchable = /*searchable*/ ctx[1];
+			if (dirty[0] & /*placeholder*/ 16) input_changes.placeholder = /*placeholder*/ ctx[4];
+			if (dirty[0] & /*multiple*/ 32) input_changes.multiple = /*multiple*/ ctx[5];
+			input.$set(input_changes);
+
+			if (dirty[0] & /*multiple*/ 32) {
+				toggle_class(div0, "has-multiSelection", /*multiple*/ ctx[5]);
+			}
+
+			if (/*clearable*/ ctx[0] && /*$selectedOptions*/ ctx[10].length && !/*disabled*/ ctx[3]) {
+				if (if_block1) {
+					if_block1.p(ctx, dirty);
+				} else {
+					if_block1 = create_if_block_1(ctx);
+					if_block1.c();
+					if_block1.m(div2, t3);
+				}
+			} else if (if_block1) {
+				if_block1.d(1);
+				if_block1 = null;
+			}
+
+			if (/*clearable*/ ctx[0]) {
+				if (if_block2) ; else {
+					if_block2 = create_if_block$1(ctx);
+					if_block2.c();
+					if_block2.m(div2, t4);
+				}
+			} else if (if_block2) {
+				if_block2.d(1);
+				if_block2 = null;
+			}
+
+			if (dirty[0] & /*$isFetchingData*/ 2048) {
+				toggle_class(div2, "is-loading", /*$isFetchingData*/ ctx[11]);
+			}
+
+			if (dirty[0] & /*$hasFocus*/ 512) {
+				toggle_class(div3, "is-active", /*$hasFocus*/ ctx[9]);
+			}
+
+			if (dirty[0] & /*disabled*/ 8) {
+				toggle_class(div3, "is-disabled", /*disabled*/ ctx[3]);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(icon_slot, local);
+			transition_in(if_block0);
+			transition_in(input.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(icon_slot, local);
+			transition_out(if_block0);
+			transition_out(input.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div3);
+			if (icon_slot) icon_slot.d(detaching);
+			if (if_block0) if_block0.d();
+			/*input_binding*/ ctx[27](null);
+			destroy_component(input);
+			if (if_block1) if_block1.d();
+			if (if_block2) if_block2.d();
+			mounted = false;
+			run_all(dispose);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$2.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$2($$self, $$props, $$invalidate) {
+	let $hasFocus;
+	let $hasDropdownOpened;
+	let $inputValue;
+	let $selectedOptions;
+	let $listMessage;
+	let $isFetchingData;
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Control", slots, ['icon']);
+	let { clearable } = $$props;
+	let { searchable } = $$props;
+	let { renderer } = $$props;
+	let { disabled } = $$props;
+	let { placeholder } = $$props;
+	let { multiple } = $$props;
+	let { collapseSelection } = $$props;
+
+	function focusControl(event) {
+		if (disabled) return;
+
+		if (!event) {
+			!$hasFocus && refInput.focus();
+			set_store_value(hasDropdownOpened, $hasDropdownOpened = true);
+			return;
+		}
+
+		if (!$hasFocus) {
+			refInput.focus();
+		} else {
+			set_store_value(hasDropdownOpened, $hasDropdownOpened = !$hasDropdownOpened);
+		}
+	}
+
+	/** ************************************ context */
+	const dispatch = createEventDispatcher();
+
+	const { inputValue, hasFocus, hasDropdownOpened, selectedOptions, isFetchingData, listMessage } = getContext(key);
+	validate_store(inputValue, "inputValue");
+	component_subscribe($$self, inputValue, value => $$invalidate(33, $inputValue = value));
+	validate_store(hasFocus, "hasFocus");
+	component_subscribe($$self, hasFocus, value => $$invalidate(9, $hasFocus = value));
+	validate_store(hasDropdownOpened, "hasDropdownOpened");
+	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(31, $hasDropdownOpened = value));
+	validate_store(selectedOptions, "selectedOptions");
+	component_subscribe($$self, selectedOptions, value => $$invalidate(10, $selectedOptions = value));
+	validate_store(isFetchingData, "isFetchingData");
+	component_subscribe($$self, isFetchingData, value => $$invalidate(11, $isFetchingData = value));
+	validate_store(listMessage, "listMessage");
+	component_subscribe($$self, listMessage, value => $$invalidate(34, $listMessage = value));
+	let refInput = undefined;
+
+	function onFocus() {
+		set_store_value(hasFocus, $hasFocus = true);
+		set_store_value(hasDropdownOpened, $hasDropdownOpened = true);
+	}
+
+	function onBlur() {
+		set_store_value(hasFocus, $hasFocus = false);
+		set_store_value(hasDropdownOpened, $hasDropdownOpened = false);
+		set_store_value(inputValue, $inputValue = ""); // reset
+	}
+
+	console.log("data: ", $listMessage);
+
+	const writable_props = [
+		"clearable",
+		"searchable",
+		"renderer",
+		"disabled",
+		"placeholder",
+		"multiple",
+		"collapseSelection"
+	];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Control> was created with unknown prop '${key}'`);
+	});
+
+	function mousedown_handler(event) {
+		bubble($$self, event);
+	}
+
+	function mousedown_handler_2(event) {
+		bubble($$self, event);
+	}
+
+	function mousedown_handler_1(event) {
+		bubble($$self, event);
+	}
+
+	function deselect_handler(event) {
+		bubble($$self, event);
+	}
+
+	function input_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refInput = $$value;
+			$$invalidate(8, refInput);
+		});
+	}
+
+	function keydown_handler(event) {
+		bubble($$self, event);
+	}
+
+	function paste_handler(event) {
+		bubble($$self, event);
+	}
+
+	const click_handler = () => dispatch("deselect");
+
+	$$self.$$set = $$props => {
+		if ("clearable" in $$props) $$invalidate(0, clearable = $$props.clearable);
+		if ("searchable" in $$props) $$invalidate(1, searchable = $$props.searchable);
+		if ("renderer" in $$props) $$invalidate(2, renderer = $$props.renderer);
+		if ("disabled" in $$props) $$invalidate(3, disabled = $$props.disabled);
+		if ("placeholder" in $$props) $$invalidate(4, placeholder = $$props.placeholder);
+		if ("multiple" in $$props) $$invalidate(5, multiple = $$props.multiple);
+		if ("collapseSelection" in $$props) $$invalidate(6, collapseSelection = $$props.collapseSelection);
+		if ("$$scope" in $$props) $$invalidate(21, $$scope = $$props.$$scope);
+	};
+
+	$$self.$capture_state = () => ({
+		getContext,
+		createEventDispatcher,
+		tick,
+		key,
+		Input,
+		Item,
+		clearable,
+		searchable,
+		renderer,
+		disabled,
+		placeholder,
+		multiple,
+		collapseSelection,
+		focusControl,
+		dispatch,
+		inputValue,
+		hasFocus,
+		hasDropdownOpened,
+		selectedOptions,
+		isFetchingData,
+		listMessage,
+		refInput,
+		onFocus,
+		onBlur,
+		$hasFocus,
+		$hasDropdownOpened,
+		showSelection,
+		$inputValue,
+		$selectedOptions,
+		$listMessage,
+		$isFetchingData
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("clearable" in $$props) $$invalidate(0, clearable = $$props.clearable);
+		if ("searchable" in $$props) $$invalidate(1, searchable = $$props.searchable);
+		if ("renderer" in $$props) $$invalidate(2, renderer = $$props.renderer);
+		if ("disabled" in $$props) $$invalidate(3, disabled = $$props.disabled);
+		if ("placeholder" in $$props) $$invalidate(4, placeholder = $$props.placeholder);
+		if ("multiple" in $$props) $$invalidate(5, multiple = $$props.multiple);
+		if ("collapseSelection" in $$props) $$invalidate(6, collapseSelection = $$props.collapseSelection);
+		if ("refInput" in $$props) $$invalidate(8, refInput = $$props.refInput);
+		if ("showSelection" in $$props) showSelection = $$props.showSelection;
+	};
+
+	let showSelection;
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty[0] & /*multiple, $selectedOptions*/ 1056 | $$self.$$.dirty[1] & /*$inputValue*/ 4) {
+			 showSelection = multiple
+			? true
+			: !$inputValue && $selectedOptions.length;
+		}
+	};
+
+	return [
+		clearable,
+		searchable,
+		renderer,
+		disabled,
+		placeholder,
+		multiple,
+		collapseSelection,
+		focusControl,
+		refInput,
+		$hasFocus,
+		$selectedOptions,
+		$isFetchingData,
+		dispatch,
+		inputValue,
+		hasFocus,
+		hasDropdownOpened,
+		selectedOptions,
+		isFetchingData,
+		listMessage,
+		onFocus,
+		onBlur,
+		$$scope,
+		slots,
+		mousedown_handler,
+		mousedown_handler_2,
+		mousedown_handler_1,
+		deselect_handler,
+		input_binding,
+		keydown_handler,
+		paste_handler,
+		click_handler
+	];
+}
+
+class Control extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(
+			this,
+			options,
+			instance$2,
+			create_fragment$2,
+			safe_not_equal,
+			{
+				clearable: 0,
+				searchable: 1,
+				renderer: 2,
+				disabled: 3,
+				placeholder: 4,
+				multiple: 5,
+				collapseSelection: 6,
+				focusControl: 7
+			},
+			[-1, -1]
+		);
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Control",
+			options,
+			id: create_fragment$2.name
+		});
+
+		const { ctx } = this.$$;
+		const props = options.props || {};
+
+		if (/*clearable*/ ctx[0] === undefined && !("clearable" in props)) {
+			console_1.warn("<Control> was created without expected prop 'clearable'");
+		}
+
+		if (/*searchable*/ ctx[1] === undefined && !("searchable" in props)) {
+			console_1.warn("<Control> was created without expected prop 'searchable'");
+		}
+
+		if (/*renderer*/ ctx[2] === undefined && !("renderer" in props)) {
+			console_1.warn("<Control> was created without expected prop 'renderer'");
+		}
+
+		if (/*disabled*/ ctx[3] === undefined && !("disabled" in props)) {
+			console_1.warn("<Control> was created without expected prop 'disabled'");
+		}
+
+		if (/*placeholder*/ ctx[4] === undefined && !("placeholder" in props)) {
+			console_1.warn("<Control> was created without expected prop 'placeholder'");
+		}
+
+		if (/*multiple*/ ctx[5] === undefined && !("multiple" in props)) {
+			console_1.warn("<Control> was created without expected prop 'multiple'");
+		}
+
+		if (/*collapseSelection*/ ctx[6] === undefined && !("collapseSelection" in props)) {
+			console_1.warn("<Control> was created without expected prop 'collapseSelection'");
+		}
+	}
+
+	get clearable() {
+		throw new Error("<Control>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set clearable(value) {
+		throw new Error("<Control>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get searchable() {
+		throw new Error("<Control>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set searchable(value) {
+		throw new Error("<Control>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get renderer() {
+		throw new Error("<Control>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set renderer(value) {
+		throw new Error("<Control>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get disabled() {
+		throw new Error("<Control>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set disabled(value) {
+		throw new Error("<Control>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get placeholder() {
+		throw new Error("<Control>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set placeholder(value) {
+		throw new Error("<Control>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get multiple() {
+		throw new Error("<Control>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set multiple(value) {
+		throw new Error("<Control>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get collapseSelection() {
+		throw new Error("<Control>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set collapseSelection(value) {
+		throw new Error("<Control>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get focusControl() {
+		return this.$$.ctx[7];
+	}
+
+	set focusControl(value) {
+		throw new Error("<Control>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+/* src\Svelecte\components\Dropdown.svelte generated by Svelte v3.25.0 */
+const file$3 = "src\\Svelecte\\components\\Dropdown.svelte";
+
+function get_each_context_1(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[44] = list[i];
+	child_ctx[46] = i;
+	return child_ctx;
+}
+
+const get_dropdown_group_header_slot_changes = dirty => ({});
+const get_dropdown_group_header_slot_context = ctx => ({});
+
+function get_each_context$1(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[41] = list[i];
+	child_ctx[43] = i;
+	return child_ctx;
+}
+
+// (78:2) {#if $listLength}
+function create_if_block_3$1(ctx) {
+	let each_1_anchor;
+	let current;
+	let each_value = /*$matchingOptions*/ ctx[7];
+	validate_each_argument(each_value);
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$1(get_each_context$1(ctx, each_value, i));
+	}
+
+	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+		each_blocks[i] = null;
+	});
+
+	const block = {
+		c: function create() {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_1_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insert_dev(target, each_1_anchor, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*$matchingOptions, $listIndexMap, dropdownIndex, renderer*/ 2188 | dirty[1] & /*$$scope*/ 2) {
+				each_value = /*$matchingOptions*/ ctx[7];
+				validate_each_argument(each_value);
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context$1(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+						transition_in(each_blocks[i], 1);
+					} else {
+						each_blocks[i] = create_each_block$1(child_ctx);
+						each_blocks[i].c();
+						transition_in(each_blocks[i], 1);
+						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+					}
+				}
+
+				group_outros();
+
+				for (i = each_value.length; i < each_blocks.length; i += 1) {
+					out(i);
+				}
+
+				check_outros();
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+
+			for (let i = 0; i < each_value.length; i += 1) {
+				transition_in(each_blocks[i]);
+			}
+
+			current = true;
+		},
+		o: function outro(local) {
+			each_blocks = each_blocks.filter(Boolean);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				transition_out(each_blocks[i]);
+			}
+
+			current = false;
+		},
+		d: function destroy(detaching) {
+			destroy_each(each_blocks, detaching);
+			if (detaching) detach_dev(each_1_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_3$1.name,
+		type: "if",
+		source: "(78:2) {#if $listLength}",
+		ctx
+	});
+
+	return block;
+}
+
+// (98:6) {:else}
+function create_else_block$1(ctx) {
+	let div;
+	let item;
+	let t;
+	let div_data_pos_value;
+	let current;
+
+	item = new Item({
+			props: {
+				formatter: /*renderer*/ ctx[3],
+				index: /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]],
+				isDisabled: /*opt*/ ctx[41].isDisabled,
+				item: /*opt*/ ctx[41]
+			},
+			$$inline: true
+		});
+
+	item.$on("hover", /*hover_handler_1*/ ctx[28]);
+	item.$on("select", /*select_handler_1*/ ctx[29]);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			create_component(item.$$.fragment);
+			t = space();
+			attr_dev(div, "data-pos", div_data_pos_value = /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]]);
+			toggle_class(div, "active", /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]] === /*dropdownIndex*/ ctx[2]);
+			add_location(div, file$3, 98, 6, 3605);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			mount_component(item, div, null);
+			append_dev(div, t);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const item_changes = {};
+			if (dirty[0] & /*renderer*/ 8) item_changes.formatter = /*renderer*/ ctx[3];
+			if (dirty[0] & /*$listIndexMap*/ 2048) item_changes.index = /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]];
+			if (dirty[0] & /*$matchingOptions*/ 128) item_changes.isDisabled = /*opt*/ ctx[41].isDisabled;
+			if (dirty[0] & /*$matchingOptions*/ 128) item_changes.item = /*opt*/ ctx[41];
+
+			if (dirty[1] & /*$$scope*/ 2) {
+				item_changes.$$scope = { dirty, ctx };
+			}
+
+			item.$set(item_changes);
+
+			if (!current || dirty[0] & /*$listIndexMap*/ 2048 && div_data_pos_value !== (div_data_pos_value = /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]])) {
+				attr_dev(div, "data-pos", div_data_pos_value);
+			}
+
+			if (dirty[0] & /*$listIndexMap, dropdownIndex*/ 2052) {
+				toggle_class(div, "active", /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]] === /*dropdownIndex*/ ctx[2]);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(item.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(item.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			destroy_component(item);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_else_block$1.name,
+		type: "else",
+		source: "(98:6) {:else}",
+		ctx
+	});
+
+	return block;
+}
+
+// (81:6) {#if opt.options && Array.isArray(opt.options)}
+function create_if_block_4(ctx) {
+	let div;
+	let t;
+	let each_1_anchor;
+	let current;
+	let mounted;
+	let dispose;
+	const dropdown_group_header_slot_template = /*#slots*/ ctx[23]["dropdown-group-header"];
+	const dropdown_group_header_slot = create_slot(dropdown_group_header_slot_template, ctx, /*$$scope*/ ctx[32], get_dropdown_group_header_slot_context);
+	const dropdown_group_header_slot_or_fallback = dropdown_group_header_slot || fallback_block(ctx);
+	let each_value_1 = /*opt*/ ctx[41].options;
+	validate_each_argument(each_value_1);
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value_1.length; i += 1) {
+		each_blocks[i] = create_each_block_1(get_each_context_1(ctx, each_value_1, i));
+	}
+
+	const out = i => transition_out(each_blocks[i], 1, 1, () => {
+		each_blocks[i] = null;
+	});
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			if (dropdown_group_header_slot_or_fallback) dropdown_group_header_slot_or_fallback.c();
+			t = space();
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			each_1_anchor = empty();
+			attr_dev(div, "class", "optgroup-header svelte-195soi6");
+			add_location(div, file$3, 81, 8, 2957);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+
+			if (dropdown_group_header_slot_or_fallback) {
+				dropdown_group_header_slot_or_fallback.m(div, null);
+			}
+
+			insert_dev(target, t, anchor);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(target, anchor);
+			}
+
+			insert_dev(target, each_1_anchor, anchor);
+			current = true;
+
+			if (!mounted) {
+				dispose = listen_dev(div, "mousedown", prevent_default(/*mousedown_handler_1*/ ctx[25]), false, true, false);
+				mounted = true;
+			}
+		},
+		p: function update(ctx, dirty) {
+			if (dropdown_group_header_slot) {
+				if (dropdown_group_header_slot.p && dirty[1] & /*$$scope*/ 2) {
+					update_slot(dropdown_group_header_slot, dropdown_group_header_slot_template, ctx, /*$$scope*/ ctx[32], dirty, get_dropdown_group_header_slot_changes, get_dropdown_group_header_slot_context);
+				}
+			} else {
+				if (dropdown_group_header_slot_or_fallback && dropdown_group_header_slot_or_fallback.p && dirty[0] & /*$matchingOptions*/ 128) {
+					dropdown_group_header_slot_or_fallback.p(ctx, dirty);
+				}
+			}
+
+			if (dirty[0] & /*$listIndexMap, dropdownIndex, renderer, $matchingOptions*/ 2188) {
+				each_value_1 = /*opt*/ ctx[41].options;
+				validate_each_argument(each_value_1);
+				let i;
+
+				for (i = 0; i < each_value_1.length; i += 1) {
+					const child_ctx = get_each_context_1(ctx, each_value_1, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+						transition_in(each_blocks[i], 1);
+					} else {
+						each_blocks[i] = create_each_block_1(child_ctx);
+						each_blocks[i].c();
+						transition_in(each_blocks[i], 1);
+						each_blocks[i].m(each_1_anchor.parentNode, each_1_anchor);
+					}
+				}
+
+				group_outros();
+
+				for (i = each_value_1.length; i < each_blocks.length; i += 1) {
+					out(i);
+				}
+
+				check_outros();
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(dropdown_group_header_slot_or_fallback, local);
+
+			for (let i = 0; i < each_value_1.length; i += 1) {
+				transition_in(each_blocks[i]);
+			}
+
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(dropdown_group_header_slot_or_fallback, local);
+			each_blocks = each_blocks.filter(Boolean);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				transition_out(each_blocks[i]);
+			}
+
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			if (dropdown_group_header_slot_or_fallback) dropdown_group_header_slot_or_fallback.d(detaching);
+			if (detaching) detach_dev(t);
+			destroy_each(each_blocks, detaching);
+			if (detaching) detach_dev(each_1_anchor);
+			mounted = false;
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_4.name,
+		type: "if",
+		source: "(81:6) {#if opt.options && Array.isArray(opt.options)}",
+		ctx
+	});
+
+	return block;
+}
+
+// (83:45) <b>
+function fallback_block(ctx) {
+	let b;
+	let t_value = /*opt*/ ctx[41].label + "";
+	let t;
+
+	const block = {
+		c: function create() {
+			b = element("b");
+			t = text(t_value);
+			add_location(b, file$3, 82, 45, 3061);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, b, anchor);
+			append_dev(b, t);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*$matchingOptions*/ 128 && t_value !== (t_value = /*opt*/ ctx[41].label + "")) set_data_dev(t, t_value);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(b);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: fallback_block.name,
+		type: "fallback",
+		source: "(83:45) <b>",
+		ctx
+	});
+
+	return block;
+}
+
+// (85:8) {#each opt.options as groupOpt, j}
+function create_each_block_1(ctx) {
+	let div;
+	let item;
+	let t;
+	let div_data_pos_value;
+	let current;
+
+	item = new Item({
+			props: {
+				formatter: /*renderer*/ ctx[3],
+				isDisabled: /*opt*/ ctx[41].isDisabled || /*groupOpt*/ ctx[44].isDisabled,
+				index: /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]][/*j*/ ctx[46]],
+				item: /*groupOpt*/ ctx[44]
+			},
+			$$inline: true
+		});
+
+	item.$on("hover", /*hover_handler*/ ctx[26]);
+	item.$on("select", /*select_handler*/ ctx[27]);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			create_component(item.$$.fragment);
+			t = space();
+			attr_dev(div, "data-pos", div_data_pos_value = /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]][/*j*/ ctx[46]]);
+			attr_dev(div, "class", "optgroup-item svelte-195soi6");
+			toggle_class(div, "active", /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]][/*j*/ ctx[46]] === /*dropdownIndex*/ ctx[2]);
+			add_location(div, file$3, 85, 8, 3156);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			mount_component(item, div, null);
+			append_dev(div, t);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const item_changes = {};
+			if (dirty[0] & /*renderer*/ 8) item_changes.formatter = /*renderer*/ ctx[3];
+			if (dirty[0] & /*$matchingOptions*/ 128) item_changes.isDisabled = /*opt*/ ctx[41].isDisabled || /*groupOpt*/ ctx[44].isDisabled;
+			if (dirty[0] & /*$listIndexMap*/ 2048) item_changes.index = /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]][/*j*/ ctx[46]];
+			if (dirty[0] & /*$matchingOptions*/ 128) item_changes.item = /*groupOpt*/ ctx[44];
+
+			if (dirty[1] & /*$$scope*/ 2) {
+				item_changes.$$scope = { dirty, ctx };
+			}
+
+			item.$set(item_changes);
+
+			if (!current || dirty[0] & /*$listIndexMap*/ 2048 && div_data_pos_value !== (div_data_pos_value = /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]][/*j*/ ctx[46]])) {
+				attr_dev(div, "data-pos", div_data_pos_value);
+			}
+
+			if (dirty[0] & /*$listIndexMap, dropdownIndex*/ 2052) {
+				toggle_class(div, "active", /*$listIndexMap*/ ctx[11][/*i*/ ctx[43]][/*j*/ ctx[46]] === /*dropdownIndex*/ ctx[2]);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(item.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(item.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			destroy_component(item);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block_1.name,
+		type: "each",
+		source: "(85:8) {#each opt.options as groupOpt, j}",
+		ctx
+	});
+
+	return block;
+}
+
+// (79:4) {#each $matchingOptions as opt, i}
+function create_each_block$1(ctx) {
+	let show_if;
+	let current_block_type_index;
+	let if_block;
+	let if_block_anchor;
+	let current;
+	const if_block_creators = [create_if_block_4, create_else_block$1];
+	const if_blocks = [];
+
+	function select_block_type(ctx, dirty) {
+		if (dirty[0] & /*$matchingOptions*/ 128) show_if = !!(/*opt*/ ctx[41].options && Array.isArray(/*opt*/ ctx[41].options));
+		if (show_if) return 0;
+		return 1;
+	}
+
+	current_block_type_index = select_block_type(ctx, [-1]);
+	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+
+	const block = {
+		c: function create() {
+			if_block.c();
+			if_block_anchor = empty();
+		},
+		m: function mount(target, anchor) {
+			if_blocks[current_block_type_index].m(target, anchor);
+			insert_dev(target, if_block_anchor, anchor);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			let previous_block_index = current_block_type_index;
+			current_block_type_index = select_block_type(ctx, dirty);
+
+			if (current_block_type_index === previous_block_index) {
+				if_blocks[current_block_type_index].p(ctx, dirty);
+			} else {
+				group_outros();
+
+				transition_out(if_blocks[previous_block_index], 1, 1, () => {
+					if_blocks[previous_block_index] = null;
+				});
+
+				check_outros();
+				if_block = if_blocks[current_block_type_index];
+
+				if (!if_block) {
+					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+					if_block.c();
+				}
+
+				transition_in(if_block, 1);
+				if_block.m(if_block_anchor.parentNode, if_block_anchor);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(if_block);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(if_block);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if_blocks[current_block_type_index].d(detaching);
+			if (detaching) detach_dev(if_block_anchor);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block$1.name,
+		type: "each",
+		source: "(79:4) {#each $matchingOptions as opt, i}",
+		ctx
+	});
+
+	return block;
+}
+
+// (113:4) {#if $inputValue && creatable && !maxReached}
+function create_if_block_1$1(ctx) {
+	let div;
+	let span;
+	let t0;
+	let t1;
+	let t2;
+	let t3;
+	let mounted;
+	let dispose;
+	let if_block = /*$currentListLength*/ ctx[12] !== /*dropdownIndex*/ ctx[2] && create_if_block_2$1(ctx);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			span = element("span");
+			t0 = text("Create '");
+			t1 = text(/*$inputValue*/ ctx[8]);
+			t2 = text("'");
+			t3 = space();
+			if (if_block) if_block.c();
+			add_location(span, file$3, 114, 6, 4133);
+			attr_dev(div, "class", "creatable-row svelte-195soi6");
+			toggle_class(div, "active", /*$currentListLength*/ ctx[12] === /*dropdownIndex*/ ctx[2]);
+			add_location(div, file$3, 113, 4, 4003);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, span);
+			append_dev(span, t0);
+			append_dev(span, t1);
+			append_dev(span, t2);
+			append_dev(div, t3);
+			if (if_block) if_block.m(div, null);
+
+			if (!mounted) {
+				dispose = listen_dev(
+					div,
+					"click",
+					function () {
+						if (is_function(/*dispatch*/ ctx[14]("select", /*$inputValue*/ ctx[8]))) /*dispatch*/ ctx[14]("select", /*$inputValue*/ ctx[8]).apply(this, arguments);
+					},
+					false,
+					false,
+					false
+				);
+
+				mounted = true;
+			}
+		},
+		p: function update(new_ctx, dirty) {
+			ctx = new_ctx;
+			if (dirty[0] & /*$inputValue*/ 256) set_data_dev(t1, /*$inputValue*/ ctx[8]);
+
+			if (/*$currentListLength*/ ctx[12] !== /*dropdownIndex*/ ctx[2]) {
+				if (if_block) ; else {
+					if_block = create_if_block_2$1(ctx);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+
+			if (dirty[0] & /*$currentListLength, dropdownIndex*/ 4100) {
+				toggle_class(div, "active", /*$currentListLength*/ ctx[12] === /*dropdownIndex*/ ctx[2]);
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			if (if_block) if_block.d();
+			mounted = false;
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_1$1.name,
+		type: "if",
+		source: "(113:4) {#if $inputValue && creatable && !maxReached}",
+		ctx
+	});
+
+	return block;
+}
+
+// (116:6) {#if $currentListLength !== dropdownIndex}
+function create_if_block_2$1(ctx) {
+	let span;
+	let kbd0;
+	let t1;
+	let kbd1;
+
+	const block = {
+		c: function create() {
+			span = element("span");
+			kbd0 = element("kbd");
+			kbd0.textContent = "Ctrl";
+			t1 = text("+");
+			kbd1 = element("kbd");
+			kbd1.textContent = "Enter";
+			attr_dev(kbd0, "class", "svelte-195soi6");
+			add_location(kbd0, file$3, 116, 29, 4249);
+			attr_dev(kbd1, "class", "svelte-195soi6");
+			add_location(kbd1, file$3, 116, 45, 4265);
+			attr_dev(span, "class", "shortcut svelte-195soi6");
+			add_location(span, file$3, 116, 6, 4226);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, span, anchor);
+			append_dev(span, kbd0);
+			append_dev(span, t1);
+			append_dev(span, kbd1);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(span);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block_2$1.name,
+		type: "if",
+		source: "(116:6) {#if $currentListLength !== dropdownIndex}",
+		ctx
+	});
+
+	return block;
+}
+
+// (121:4) {#if hasEmptyList || maxReached}
+function create_if_block$2(ctx) {
+	let div;
+	let t;
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			t = text(/*$listMessage*/ ctx[13]);
+			attr_dev(div, "class", "empty-list-row svelte-195soi6");
+			add_location(div, file$3, 121, 4, 4368);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			append_dev(div, t);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*$listMessage*/ 8192) set_data_dev(t, /*$listMessage*/ ctx[13]);
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$2.name,
+		type: "if",
+		source: "(121:4) {#if hasEmptyList || maxReached}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$3(ctx) {
+	let div1;
+	let div0;
+	let t0;
+	let t1;
+	let current;
+	let mounted;
+	let dispose;
+	let if_block0 = /*$listLength*/ ctx[10] && create_if_block_3$1(ctx);
+	let if_block1 = /*$inputValue*/ ctx[8] && /*creatable*/ ctx[0] && !/*maxReached*/ ctx[1] && create_if_block_1$1(ctx);
+	let if_block2 = (/*hasEmptyList*/ ctx[6] || /*maxReached*/ ctx[1]) && create_if_block$2(ctx);
+
+	const block = {
+		c: function create() {
+			div1 = element("div");
+			div0 = element("div");
+			if (if_block0) if_block0.c();
+			t0 = space();
+			if (if_block1) if_block1.c();
+			t1 = space();
+			if (if_block2) if_block2.c();
+			attr_dev(div0, "class", "sv-dropdown-content svelte-195soi6");
+			toggle_class(div0, "max-reached", /*maxReached*/ ctx[1]);
+			add_location(div0, file$3, 76, 2, 2719);
+			attr_dev(div1, "class", "sv-dropdown svelte-195soi6");
+			attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[9]);
+			attr_dev(div1, "tabindex", "-1");
+			add_location(div1, file$3, 72, 0, 2576);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div1, anchor);
+			append_dev(div1, div0);
+			if (if_block0) if_block0.m(div0, null);
+			append_dev(div0, t0);
+			if (if_block1) if_block1.m(div0, null);
+			append_dev(div0, t1);
+			if (if_block2) if_block2.m(div0, null);
+			/*div0_binding*/ ctx[30](div0);
+			/*div1_binding*/ ctx[31](div1);
+			current = true;
+
+			if (!mounted) {
+				dispose = listen_dev(div1, "mousedown", prevent_default(/*mousedown_handler*/ ctx[24]), false, true, false);
+				mounted = true;
+			}
+		},
+		p: function update(ctx, dirty) {
+			if (/*$listLength*/ ctx[10]) {
+				if (if_block0) {
+					if_block0.p(ctx, dirty);
+
+					if (dirty[0] & /*$listLength*/ 1024) {
+						transition_in(if_block0, 1);
+					}
+				} else {
+					if_block0 = create_if_block_3$1(ctx);
+					if_block0.c();
+					transition_in(if_block0, 1);
+					if_block0.m(div0, t0);
+				}
+			} else if (if_block0) {
+				group_outros();
+
+				transition_out(if_block0, 1, 1, () => {
+					if_block0 = null;
+				});
+
+				check_outros();
+			}
+
+			if (/*$inputValue*/ ctx[8] && /*creatable*/ ctx[0] && !/*maxReached*/ ctx[1]) {
+				if (if_block1) {
+					if_block1.p(ctx, dirty);
+				} else {
+					if_block1 = create_if_block_1$1(ctx);
+					if_block1.c();
+					if_block1.m(div0, t1);
+				}
+			} else if (if_block1) {
+				if_block1.d(1);
+				if_block1 = null;
+			}
+
+			if (/*hasEmptyList*/ ctx[6] || /*maxReached*/ ctx[1]) {
+				if (if_block2) {
+					if_block2.p(ctx, dirty);
+				} else {
+					if_block2 = create_if_block$2(ctx);
+					if_block2.c();
+					if_block2.m(div0, null);
+				}
+			} else if (if_block2) {
+				if_block2.d(1);
+				if_block2 = null;
+			}
+
+			if (dirty[0] & /*maxReached*/ 2) {
+				toggle_class(div0, "max-reached", /*maxReached*/ ctx[1]);
+			}
+
+			if (!current || dirty[0] & /*$hasDropdownOpened*/ 512) {
+				attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[9]);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(if_block0);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(if_block0);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div1);
+			if (if_block0) if_block0.d();
+			if (if_block1) if_block1.d();
+			if (if_block2) if_block2.d();
+			/*div0_binding*/ ctx[30](null);
+			/*div1_binding*/ ctx[31](null);
+			mounted = false;
+			dispose();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$3.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+function instance$3($$self, $$props, $$invalidate) {
+	let $matchingOptions;
+	let $inputValue;
+	let $hasDropdownOpened;
+	let $listLength;
+	let $listIndexMap;
+	let $currentListLength;
+	let $listMessage;
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Dropdown", slots, ['dropdown-group-header']);
+	let { creatable } = $$props;
+	let { maxReached = false } = $$props;
+	let { dropdownIndex = 0 } = $$props;
+	let { renderer } = $$props;
+
+	function scrollIntoView(params) {
+		const focusedEl = container.querySelector(`[data-pos="${dropdownIndex}"]`);
+		if (!focusedEl) return;
+		const focusedRect = focusedEl.getBoundingClientRect();
+		const menuRect = scrollContainer.getBoundingClientRect();
+		const overScroll = focusedEl.offsetHeight / 3;
+
+		switch (true) {
+			case focusedEl.offsetTop < scrollContainer.scrollTop:
+				$$invalidate(5, scrollContainer.scrollTop = focusedEl.offsetTop - overScroll, scrollContainer);
+				break;
+			case focusedEl.offsetTop + focusedRect.height > scrollContainer.scrollTop + menuRect.height:
+				$$invalidate(5, scrollContainer.scrollTop = focusedEl.offsetTop + focusedRect.height - scrollContainer.offsetHeight + overScroll, scrollContainer);
+				break;
+		}
+	}
+
+	const dispatch = createEventDispatcher();
+
+	const { // getContext
+	inputValue, hasDropdownOpened, listLength, currentListLength, listMessage, isFetchingData, matchingOptions, flatMatching, selectedOptions, listIndexMap } = getContext(key);
+
+	validate_store(inputValue, "inputValue");
+	component_subscribe($$self, inputValue, value => $$invalidate(8, $inputValue = value));
+	validate_store(hasDropdownOpened, "hasDropdownOpened");
+	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(9, $hasDropdownOpened = value));
+	validate_store(listLength, "listLength");
+	component_subscribe($$self, listLength, value => $$invalidate(10, $listLength = value));
+	validate_store(currentListLength, "currentListLength");
+	component_subscribe($$self, currentListLength, value => $$invalidate(12, $currentListLength = value));
+	validate_store(listMessage, "listMessage");
+	component_subscribe($$self, listMessage, value => $$invalidate(13, $listMessage = value));
+	validate_store(matchingOptions, "matchingOptions");
+	component_subscribe($$self, matchingOptions, value => $$invalidate(7, $matchingOptions = value));
+	validate_store(listIndexMap, "listIndexMap");
+	component_subscribe($$self, listIndexMap, value => $$invalidate(11, $listIndexMap = value));
+	let container;
+	let scrollContainer;
+	let scrollPos = null;
+	let isMounted = false;
+	let hasEmptyList = false;
+	let remoteSearch = false;
+
+	function positionDropdown(val) {
+		if (!scrollContainer) return;
+		const outVp = isOutOfViewport(scrollContainer);
+
+		if (outVp.bottom && !outVp.top) {
+			$$invalidate(5, scrollContainer.style.bottom = scrollContainer.parentElement.clientHeight + 1 + "px", scrollContainer);
+		} else if (!val || outVp.top) {
+			$$invalidate(5, scrollContainer.style.bottom = "", scrollContainer); // TODO: debounce ....
+		}
+	}
+
+	let dropdownStateSubscription;
+
+	/** ************************************ lifecycle */
+	onMount(() => {
+		isMounted = true;
+
+		/** ************************************ flawless UX related tweak */
+		dropdownStateSubscription = hasDropdownOpened.subscribe(val => {
+			tick().then(() => positionDropdown(val));
+
+			// bind/unbind scroll listener
+			document[val ? "addEventListener" : "removeEventListener"]("scroll", () => positionDropdown(val));
+		});
+	});
+
+	onDestroy(() => dropdownStateSubscription());
+	const writable_props = ["creatable", "maxReached", "dropdownIndex", "renderer"];
+
+	Object.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Dropdown> was created with unknown prop '${key}'`);
+	});
+
+	function mousedown_handler(event) {
+		bubble($$self, event);
+	}
+
+	function mousedown_handler_1(event) {
+		bubble($$self, event);
+	}
+
+	function hover_handler(event) {
+		bubble($$self, event);
+	}
+
+	function select_handler(event) {
+		bubble($$self, event);
+	}
+
+	function hover_handler_1(event) {
+		bubble($$self, event);
+	}
+
+	function select_handler_1(event) {
+		bubble($$self, event);
+	}
+
+	function div0_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			container = $$value;
+			$$invalidate(4, container);
+		});
+	}
+
+	function div1_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			scrollContainer = $$value;
+			$$invalidate(5, scrollContainer);
+		});
+	}
+
+	$$self.$$set = $$props => {
+		if ("creatable" in $$props) $$invalidate(0, creatable = $$props.creatable);
+		if ("maxReached" in $$props) $$invalidate(1, maxReached = $$props.maxReached);
+		if ("dropdownIndex" in $$props) $$invalidate(2, dropdownIndex = $$props.dropdownIndex);
+		if ("renderer" in $$props) $$invalidate(3, renderer = $$props.renderer);
+		if ("$$scope" in $$props) $$invalidate(32, $$scope = $$props.$$scope);
+	};
+
+	$$self.$capture_state = () => ({
+		getContext,
+		createEventDispatcher,
+		onDestroy,
+		onMount,
+		tick,
+		Item,
+		key,
+		isOutOfViewport,
+		creatable,
+		maxReached,
+		dropdownIndex,
+		renderer,
+		scrollIntoView,
+		dispatch,
+		inputValue,
+		hasDropdownOpened,
+		listLength,
+		currentListLength,
+		listMessage,
+		isFetchingData,
+		matchingOptions,
+		flatMatching,
+		selectedOptions,
+		listIndexMap,
+		container,
+		scrollContainer,
+		scrollPos,
+		isMounted,
+		hasEmptyList,
+		remoteSearch,
+		positionDropdown,
+		dropdownStateSubscription,
+		$matchingOptions,
+		$inputValue,
+		$hasDropdownOpened,
+		$listLength,
+		$listIndexMap,
+		$currentListLength,
+		$listMessage
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("creatable" in $$props) $$invalidate(0, creatable = $$props.creatable);
+		if ("maxReached" in $$props) $$invalidate(1, maxReached = $$props.maxReached);
+		if ("dropdownIndex" in $$props) $$invalidate(2, dropdownIndex = $$props.dropdownIndex);
+		if ("renderer" in $$props) $$invalidate(3, renderer = $$props.renderer);
+		if ("container" in $$props) $$invalidate(4, container = $$props.container);
+		if ("scrollContainer" in $$props) $$invalidate(5, scrollContainer = $$props.scrollContainer);
+		if ("scrollPos" in $$props) scrollPos = $$props.scrollPos;
+		if ("isMounted" in $$props) isMounted = $$props.isMounted;
+		if ("hasEmptyList" in $$props) $$invalidate(6, hasEmptyList = $$props.hasEmptyList);
+		if ("remoteSearch" in $$props) remoteSearch = $$props.remoteSearch;
+		if ("dropdownStateSubscription" in $$props) dropdownStateSubscription = $$props.dropdownStateSubscription;
+	};
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty[0] & /*$matchingOptions, creatable, $inputValue*/ 385) {
+			 {
+				$$invalidate(6, hasEmptyList = $matchingOptions.length < 1 && (creatable ? !$inputValue : true));
+			}
+		}
+	};
+
+	return [
+		creatable,
+		maxReached,
+		dropdownIndex,
+		renderer,
+		container,
+		scrollContainer,
+		hasEmptyList,
+		$matchingOptions,
+		$inputValue,
+		$hasDropdownOpened,
+		$listLength,
+		$listIndexMap,
+		$currentListLength,
+		$listMessage,
+		dispatch,
+		inputValue,
+		hasDropdownOpened,
+		listLength,
+		currentListLength,
+		listMessage,
+		matchingOptions,
+		listIndexMap,
+		scrollIntoView,
+		slots,
+		mousedown_handler,
+		mousedown_handler_1,
+		hover_handler,
+		select_handler,
+		hover_handler_1,
+		select_handler_1,
+		div0_binding,
+		div1_binding,
+		$$scope
+	];
+}
+
+class Dropdown extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(
+			this,
+			options,
+			instance$3,
+			create_fragment$3,
+			safe_not_equal,
+			{
+				creatable: 0,
+				maxReached: 1,
+				dropdownIndex: 2,
+				renderer: 3,
+				scrollIntoView: 22
+			},
+			[-1, -1]
+		);
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Dropdown",
+			options,
+			id: create_fragment$3.name
+		});
+
+		const { ctx } = this.$$;
+		const props = options.props || {};
+
+		if (/*creatable*/ ctx[0] === undefined && !("creatable" in props)) {
+			console.warn("<Dropdown> was created without expected prop 'creatable'");
+		}
+
+		if (/*renderer*/ ctx[3] === undefined && !("renderer" in props)) {
+			console.warn("<Dropdown> was created without expected prop 'renderer'");
+		}
+	}
+
+	get creatable() {
+		throw new Error("<Dropdown>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set creatable(value) {
+		throw new Error("<Dropdown>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get maxReached() {
+		throw new Error("<Dropdown>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set maxReached(value) {
+		throw new Error("<Dropdown>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get dropdownIndex() {
+		throw new Error("<Dropdown>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set dropdownIndex(value) {
+		throw new Error("<Dropdown>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get renderer() {
+		throw new Error("<Dropdown>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set renderer(value) {
+		throw new Error("<Dropdown>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get scrollIntoView() {
+		return this.$$.ctx[22];
+	}
+
+	set scrollIntoView(value) {
+		throw new Error("<Dropdown>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+/* src\Svelecte\Svelecte.svelte generated by Svelte v3.25.0 */
+
+const { Object: Object_1 } = globals;
+const file$4 = "src\\Svelecte\\Svelecte.svelte";
+
+function get_each_context$2(ctx, list, i) {
+	const child_ctx = ctx.slice();
+	child_ctx[81] = list[i];
+	return child_ctx;
+}
+
+const get_icon_slot_changes$1 = dirty => ({});
+const get_icon_slot_context$1 = ctx => ({});
+
+// (412:4) <div slot="icon" class="icon-slot">
+function create_icon_slot(ctx) {
+	let div;
+	let current;
+	const icon_slot_template = /*#slots*/ ctx[48].icon;
+	const icon_slot = create_slot(icon_slot_template, ctx, /*$$scope*/ ctx[51], get_icon_slot_context$1);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			if (icon_slot) icon_slot.c();
+			attr_dev(div, "slot", "icon");
+			attr_dev(div, "class", "icon-slot svelte-1h9htsj");
+			add_location(div, file$4, 411, 4, 14268);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+
+			if (icon_slot) {
+				icon_slot.m(div, null);
+			}
+
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			if (icon_slot) {
+				if (icon_slot.p && dirty[1] & /*$$scope*/ 1048576) {
+					update_slot(icon_slot, icon_slot_template, ctx, /*$$scope*/ ctx[51], dirty, get_icon_slot_changes$1, get_icon_slot_context$1);
+				}
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(icon_slot, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(icon_slot, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			if (icon_slot) icon_slot.d(detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_icon_slot.name,
+		type: "slot",
+		source: "(412:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
+		ctx
+	});
+
+	return block;
+}
+
+// (420:2) {#if name && !anchor}
+function create_if_block$3(ctx) {
+	let select;
+	let each_value = /*$selectedOptions*/ ctx[17];
+	validate_each_argument(each_value);
+	let each_blocks = [];
+
+	for (let i = 0; i < each_value.length; i += 1) {
+		each_blocks[i] = create_each_block$2(get_each_context$2(ctx, each_value, i));
+	}
+
+	const block = {
+		c: function create() {
+			select = element("select");
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].c();
+			}
+
+			attr_dev(select, "name", /*name*/ ctx[3]);
+			select.multiple = /*multiple*/ ctx[1];
+			attr_dev(select, "class", "is-hidden svelte-1h9htsj");
+			attr_dev(select, "tabindex", "-1");
+			select.required = /*required*/ ctx[4];
+			select.disabled = /*disabled*/ ctx[2];
+			add_location(select, file$4, 420, 2, 14616);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, select, anchor);
+
+			for (let i = 0; i < each_blocks.length; i += 1) {
+				each_blocks[i].m(select, null);
+			}
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*$selectedOptions*/ 131072) {
+				each_value = /*$selectedOptions*/ ctx[17];
+				validate_each_argument(each_value);
+				let i;
+
+				for (i = 0; i < each_value.length; i += 1) {
+					const child_ctx = get_each_context$2(ctx, each_value, i);
+
+					if (each_blocks[i]) {
+						each_blocks[i].p(child_ctx, dirty);
+					} else {
+						each_blocks[i] = create_each_block$2(child_ctx);
+						each_blocks[i].c();
+						each_blocks[i].m(select, null);
+					}
+				}
+
+				for (; i < each_blocks.length; i += 1) {
+					each_blocks[i].d(1);
+				}
+
+				each_blocks.length = each_value.length;
+			}
+
+			if (dirty[0] & /*name*/ 8) {
+				attr_dev(select, "name", /*name*/ ctx[3]);
+			}
+
+			if (dirty[0] & /*multiple*/ 2) {
+				prop_dev(select, "multiple", /*multiple*/ ctx[1]);
+			}
+
+			if (dirty[0] & /*required*/ 16) {
+				prop_dev(select, "required", /*required*/ ctx[4]);
+			}
+
+			if (dirty[0] & /*disabled*/ 4) {
+				prop_dev(select, "disabled", /*disabled*/ ctx[2]);
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(select);
+			destroy_each(each_blocks, detaching);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_if_block$3.name,
+		type: "if",
+		source: "(420:2) {#if name && !anchor}",
+		ctx
+	});
+
+	return block;
+}
+
+// (422:4) {#each $selectedOptions as opt}
+function create_each_block$2(ctx) {
+	let option;
+	let t_value = /*opt*/ ctx[81].text + "";
+	let t;
+	let option_value_value;
+
+	const block = {
+		c: function create() {
+			option = element("option");
+			t = text(t_value);
+			option.__value = option_value_value = /*opt*/ ctx[81].value;
+			option.value = option.__value;
+			option.selected = true;
+			add_location(option, file$4, 422, 4, 14744);
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, option, anchor);
+			append_dev(option, t);
+		},
+		p: function update(ctx, dirty) {
+			if (dirty[0] & /*$selectedOptions*/ 131072 && t_value !== (t_value = /*opt*/ ctx[81].text + "")) set_data_dev(t, t_value);
+
+			if (dirty[0] & /*$selectedOptions*/ 131072 && option_value_value !== (option_value_value = /*opt*/ ctx[81].value)) {
+				prop_dev(option, "__value", option_value_value);
+				option.value = option.__value;
+			}
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(option);
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_each_block$2.name,
+		type: "each",
+		source: "(422:4) {#each $selectedOptions as opt}",
+		ctx
+	});
+
+	return block;
+}
+
+function create_fragment$4(ctx) {
+	let div;
+	let control;
+	let t0;
+	let dropdown;
+	let t1;
+	let div_class_value;
+	let current;
+
+	let control_props = {
+		renderer: /*itemRenderer*/ ctx[16],
+		disabled: /*disabled*/ ctx[2],
+		clearable: /*clearable*/ ctx[8],
+		searchable: /*searchable*/ ctx[9],
+		placeholder: /*placeholder*/ ctx[10],
+		multiple: /*multiple*/ ctx[1],
+		collapseSelection: /*collapseSelection*/ ctx[5]
+		? config.i18n.collapsedSelection
+		: null,
+		$$slots: { icon: [create_icon_slot] },
+		$$scope: { ctx }
+	};
+
+	control = new Control({ props: control_props, $$inline: true });
+	/*control_binding*/ ctx[49](control);
+	control.$on("deselect", /*onDeselect*/ ctx[26]);
+	control.$on("keydown", /*onKeyDown*/ ctx[28]);
+	control.$on("paste", /*onPaste*/ ctx[29]);
+
+	let dropdown_props = {
+		renderer: /*itemRenderer*/ ctx[16],
+		creatable: /*creatable*/ ctx[6],
+		maxReached: /*max*/ ctx[7] && /*max*/ ctx[7] === /*$selectedOptions*/ ctx[17].length,
+		dropdownIndex: /*dropdownActiveIndex*/ ctx[15]
+	};
+
+	dropdown = new Dropdown({ props: dropdown_props, $$inline: true });
+	/*dropdown_binding*/ ctx[50](dropdown);
+	dropdown.$on("select", /*onSelect*/ ctx[25]);
+	dropdown.$on("hover", /*onHover*/ ctx[27]);
+	let if_block = /*name*/ ctx[3] && !/*anchor*/ ctx[0] && create_if_block$3(ctx);
+
+	const block = {
+		c: function create() {
+			div = element("div");
+			create_component(control.$$.fragment);
+			t0 = space();
+			create_component(dropdown.$$.fragment);
+			t1 = space();
+			if (if_block) if_block.c();
+			attr_dev(div, "class", div_class_value = "" + (null_to_empty(`svelecte ${/*className*/ ctx[11]}`) + " svelte-1h9htsj"));
+			attr_dev(div, "style", /*style*/ ctx[12]);
+			toggle_class(div, "is-disabled", /*disabled*/ ctx[2]);
+			add_location(div, file$4, 404, 0, 13898);
+		},
+		l: function claim(nodes) {
+			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+		},
+		m: function mount(target, anchor) {
+			insert_dev(target, div, anchor);
+			mount_component(control, div, null);
+			append_dev(div, t0);
+			mount_component(dropdown, div, null);
+			append_dev(div, t1);
+			if (if_block) if_block.m(div, null);
+			current = true;
+		},
+		p: function update(ctx, dirty) {
+			const control_changes = {};
+			if (dirty[0] & /*itemRenderer*/ 65536) control_changes.renderer = /*itemRenderer*/ ctx[16];
+			if (dirty[0] & /*disabled*/ 4) control_changes.disabled = /*disabled*/ ctx[2];
+			if (dirty[0] & /*clearable*/ 256) control_changes.clearable = /*clearable*/ ctx[8];
+			if (dirty[0] & /*searchable*/ 512) control_changes.searchable = /*searchable*/ ctx[9];
+			if (dirty[0] & /*placeholder*/ 1024) control_changes.placeholder = /*placeholder*/ ctx[10];
+			if (dirty[0] & /*multiple*/ 2) control_changes.multiple = /*multiple*/ ctx[1];
+
+			if (dirty[0] & /*collapseSelection*/ 32) control_changes.collapseSelection = /*collapseSelection*/ ctx[5]
+			? config.i18n.collapsedSelection
+			: null;
+
+			if (dirty[1] & /*$$scope*/ 1048576) {
+				control_changes.$$scope = { dirty, ctx };
+			}
+
+			control.$set(control_changes);
+			const dropdown_changes = {};
+			if (dirty[0] & /*itemRenderer*/ 65536) dropdown_changes.renderer = /*itemRenderer*/ ctx[16];
+			if (dirty[0] & /*creatable*/ 64) dropdown_changes.creatable = /*creatable*/ ctx[6];
+			if (dirty[0] & /*max, $selectedOptions*/ 131200) dropdown_changes.maxReached = /*max*/ ctx[7] && /*max*/ ctx[7] === /*$selectedOptions*/ ctx[17].length;
+			if (dirty[0] & /*dropdownActiveIndex*/ 32768) dropdown_changes.dropdownIndex = /*dropdownActiveIndex*/ ctx[15];
+			dropdown.$set(dropdown_changes);
+
+			if (/*name*/ ctx[3] && !/*anchor*/ ctx[0]) {
+				if (if_block) {
+					if_block.p(ctx, dirty);
+				} else {
+					if_block = create_if_block$3(ctx);
+					if_block.c();
+					if_block.m(div, null);
+				}
+			} else if (if_block) {
+				if_block.d(1);
+				if_block = null;
+			}
+
+			if (!current || dirty[0] & /*className*/ 2048 && div_class_value !== (div_class_value = "" + (null_to_empty(`svelecte ${/*className*/ ctx[11]}`) + " svelte-1h9htsj"))) {
+				attr_dev(div, "class", div_class_value);
+			}
+
+			if (!current || dirty[0] & /*style*/ 4096) {
+				attr_dev(div, "style", /*style*/ ctx[12]);
+			}
+
+			if (dirty[0] & /*className, disabled*/ 2052) {
+				toggle_class(div, "is-disabled", /*disabled*/ ctx[2]);
+			}
+		},
+		i: function intro(local) {
+			if (current) return;
+			transition_in(control.$$.fragment, local);
+			transition_in(dropdown.$$.fragment, local);
+			current = true;
+		},
+		o: function outro(local) {
+			transition_out(control.$$.fragment, local);
+			transition_out(dropdown.$$.fragment, local);
+			current = false;
+		},
+		d: function destroy(detaching) {
+			if (detaching) detach_dev(div);
+			/*control_binding*/ ctx[49](null);
+			destroy_component(control);
+			/*dropdown_binding*/ ctx[50](null);
+			destroy_component(dropdown);
+			if (if_block) if_block.d();
+		}
+	};
+
+	dispatch_dev("SvelteRegisterBlock", {
+		block,
+		id: create_fragment$4.name,
+		type: "component",
+		source: "",
+		ctx
+	});
+
+	return block;
+}
+
+const formatterList = {
+	default(item) {
+		return item[this.label];
+	}
+};
+
+function addFormatter(name, formatFn) {
+	if (name instanceof Object) {
+		formatterList = Object.assign(formatterList, name);
+	} else {
+		formatterList[name] = formatFn;
+	}
+}
+
+
+const config = settings;
+
+function instance$4($$self, $$props, $$invalidate) {
+	let $hasFocus;
+	let $selectedOptions;
+	let $flatMatching;
+	let $inputValue;
+	let $hasDropdownOpened;
+	let $currentListLength;
+	let $isFetchingData;
+	let { $$slots: slots = {}, $$scope } = $$props;
+	validate_slots("Svelecte", slots, ['icon']);
+	let { name = null } = $$props;
+	let { anchor = null } = $$props;
+	let { required = false } = $$props;
+	let { multiple = settings.multiple } = $$props;
+	let { collapseSelection = settings.collapseSelection } = $$props;
+	let { disabled = settings.disabled } = $$props;
+	let { creatable = settings.creatable } = $$props;
+	let { selectOnTab = settings.selectOnTab } = $$props;
+	let { valueField = settings.valueField } = $$props;
+	let { labelField = settings.labelField } = $$props;
+	let { max = settings.max } = $$props;
+	let { renderer = null } = $$props;
+	let { clearable = settings.clearable } = $$props;
+	let { searchable = settings.searchable } = $$props;
+	let { delimiter = settings.delimiter } = $$props;
+	let { placeholder = "Select" } = $$props;
+	let { fetch = null } = $$props;
+	let { fetchMode = "auto" } = $$props;
+	let { fetchCallback = null } = $$props;
+	let { options = [] } = $$props;
+	let { searchField = null } = $$props;
+	let { sortField = null } = $$props;
+	let { sortRemote = settings.sortRemoteResults } = $$props;
+	let { searchMode = "auto" } = $$props; // FUTURE: this about implementing this
+	let { class: className = "svelecte-control" } = $$props;
+	let { style = null } = $$props;
+	let { selection = undefined } = $$props;
+	let { value = undefined } = $$props;
+
+	const getSelection = onlyValues => {
+		if (!selection) return multiple ? [] : null;
+
+		return multiple
+		? selection.map(opt => onlyValues
+			? opt[currentValueField]
+			: Object.assign({}, opt))
+		: onlyValues
+			? selection[currentValueField]
+			: Object.assign({}, selection);
+	};
+
+	const setSelection = selection => _selectByValues(selection);
+
+	const clearByParent = doDisable => {
+		clearSelection();
+		emitChangeEvent();
+		if (doDisable) $$invalidate(2, disabled = true);
+		$$invalidate(30, fetch = null);
+	};
+
+	const dispatch = createEventDispatcher();
+	let isInitialized = false;
+	let refDropdown;
+	let refControl;
+	let ignoreHover = false;
+
+	let dropdownActiveIndex = !multiple && options.some(o => o.isSelected)
+	? options.indexOf(options.filter(o => o.isSelected).shift())
+	: 0;
+
+	let fetchUnsubscribe = null;
+	let currentValueField = valueField;
+	let currentLabelField = labelField;
+
+	/** ************************************ automatic init */
+	multiple = name && !multiple ? name.endsWith("[]") : multiple;
+
+	if (searchMode === "auto") {
+		currentValueField = valueField || fieldInit("value", options);
+		currentLabelField = labelField || fieldInit("label", options);
+	}
+
+	/** ************************************ Context definition */
+	const { hasFocus, hasDropdownOpened, inputValue, isFetchingData, listMessage, settings: settings$1, selectOption, deselectOption, clearSelection, settingsUnsubscribe, listLength, listIndexMap, matchingOptions, flatMatching, currentListLength, selectedOptions, updateOpts } = initStore(
+		options,
+		selection,
+		{
+			currentValueField,
+			currentLabelField,
+			max,
+			multiple,
+			creatable,
+			searchField,
+			sortField,
+			sortRemote
+		},
+		config.i18n
+	);
+
+	validate_store(hasFocus, "hasFocus");
+	component_subscribe($$self, hasFocus, value => $$invalidate(60, $hasFocus = value));
+	validate_store(hasDropdownOpened, "hasDropdownOpened");
+	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(63, $hasDropdownOpened = value));
+	validate_store(inputValue, "inputValue");
+	component_subscribe($$self, inputValue, value => $$invalidate(62, $inputValue = value));
+	validate_store(isFetchingData, "isFetchingData");
+	component_subscribe($$self, isFetchingData, value => $$invalidate(65, $isFetchingData = value));
+	validate_store(flatMatching, "flatMatching");
+	component_subscribe($$self, flatMatching, value => $$invalidate(61, $flatMatching = value));
+	validate_store(currentListLength, "currentListLength");
+	component_subscribe($$self, currentListLength, value => $$invalidate(64, $currentListLength = value));
+	validate_store(selectedOptions, "selectedOptions");
+	component_subscribe($$self, selectedOptions, value => $$invalidate(17, $selectedOptions = value));
+
+	setContext(key, {
+		hasFocus,
+		hasDropdownOpened,
+		inputValue,
+		listMessage,
+		selectOption,
+		deselectOption,
+		clearSelection,
+		listLength,
+		matchingOptions,
+		flatMatching,
+		currentListLength,
+		selectedOptions,
+		listIndexMap,
+		isFetchingData
+	});
+
+	function createFetch(fetch) {
+		if (fetchUnsubscribe) {
+			fetchUnsubscribe();
+			fetchUnsubscribe = null;
+		}
+
+		if (!fetch) return null;
+		const fetchSource = typeof fetch === "string" ? fetchRemote(fetch) : fetch;
+		const initFetchOnly = fetchMode === "init" || fetchMode === "auto" && typeof fetch === "string" && fetch.indexOf("[query]") === -1;
+
+		const debouncedFetch = debounce(
+			query => {
+				fetchSource(query, fetchCallback || settings.fetchCallback).then(data => {
+					$$invalidate(31, options = data);
+				}).catch(() => $$invalidate(31, options = [])).finally(() => {
+					isFetchingData.set(false);
+					$hasFocus && hasDropdownOpened.set(true);
+					listMessage.set(config.i18n.fetchEmpty);
+					tick().then(() => dispatch("fetch", options));
+				});
+			},
+			500
+		);
+
+		if (initFetchOnly) {
+			if (typeof fetch === "string" && fetch.indexOf("[parent]") !== -1) return null;
+			isFetchingData.set(true);
+			debouncedFetch(null);
+			return null;
+		}
+
+		fetchUnsubscribe = inputValue.subscribe(value => {
+			if (xhr && xhr.readyState !== 4) {
+				// cancel previously run 
+				xhr.abort();
+			}
+
+			
+
+			if (!value) {
+				listMessage.set(config.i18n.fetchBefore);
+				return;
+			}
+
+			isFetchingData.set(true);
+			listMessage.set(config.i18n.fetchWait);
+			hasDropdownOpened.set(false);
+			debouncedFetch(value);
+		});
+
+		return debouncedFetch;
+	}
+
+	/** ************************************ component logic */
+	value && _selectByValues(value); // init values if passed
+
+	let prevSelection = selection;
+	let prevOptions = options;
+
+	/**
+ * Dispatch change event on add options/remove selected items
+ */
+	function emitChangeEvent() {
+		tick().then(() => {
+			dispatch("change", selection);
+		});
+	}
+
+	/**
+ * Internal helper for passed value array. Should be used for CE
+ */
+	function _selectByValues(values) {
+		if (!Array.isArray(values)) values = [values];
+		if (values && values.length && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
+		clearSelection();
+		const newAddition = [];
+
+		values.forEach(val => {
+			$flatMatching.some(opt => {
+				if (val == opt[currentValueField]) {
+					newAddition.push(opt);
+					return true;
+				}
+
+				return false;
+			});
+		});
+
+		newAddition.forEach(selectOption);
+	}
+
+	/**
+ * Add given option to selection pool
+ */
+	function onSelect(event, opt) {
+		opt = opt || event.detail;
+		if (disabled || opt.isDisabled) return;
+		selectOption(opt);
+		set_store_value(inputValue, $inputValue = "");
+
+		if (!multiple) {
+			set_store_value(hasDropdownOpened, $hasDropdownOpened = false);
+		}
+
+		emitChangeEvent();
+	}
+
+	/**
+ * Remove option/all options from selection pool
+ */
+	function onDeselect(event, opt) {
+		if (disabled) return;
+		opt = opt || event.detail;
+
+		if (opt) {
+			deselectOption(opt);
+		} else {
+			// apply for 'x' when clearable:true || ctrl+backspace || ctrl+delete
+			clearSelection();
+		}
+
+		tick().then(refControl.focusControl);
+		emitChangeEvent();
+	}
+
+	/**
+ * Dropdown hover handler - update active item
+ */
+	function onHover(event) {
+		if (ignoreHover) {
+			ignoreHover = false;
+			return;
+		}
+
+		$$invalidate(15, dropdownActiveIndex = event.detail);
+	}
+
+	/**
+ * Keyboard navigation
+ */
+	function onKeyDown(event) {
+		event = event.detail; // from dispatched event
+
+		if (creatable && delimiter.indexOf(event.key) > -1) {
+			$inputValue.length > 0 && onSelect(null, $inputValue); // prevent creating item with delimiter itself
+			event.preventDefault();
+			return;
+		}
+
+		const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey
+		? "Tab"
+		: "No-tab";
+
+		switch (event.key) {
+			case "PageDown":
+				$$invalidate(15, dropdownActiveIndex = 0);
+			case "ArrowUp":
+				if (!$hasDropdownOpened) {
+					set_store_value(hasDropdownOpened, $hasDropdownOpened = true);
+					return;
+				}
+				event.preventDefault();
+				$$invalidate(15, dropdownActiveIndex = dropdownActiveIndex == 0
+				? $currentListLength
+				: dropdownActiveIndex - 1);
+				tick().then(refDropdown.scrollIntoView);
+				ignoreHover = true;
+				break;
+			case "PageUp":
+				$$invalidate(15, dropdownActiveIndex = $currentListLength + 2);
+			case "ArrowDown":
+				if (!$hasDropdownOpened) {
+					set_store_value(hasDropdownOpened, $hasDropdownOpened = true);
+					return;
+				}
+				event.preventDefault();
+				$$invalidate(15, dropdownActiveIndex = dropdownActiveIndex >= $currentListLength
+				? 0
+				: dropdownActiveIndex + 1);
+				tick().then(refDropdown.scrollIntoView);
+				ignoreHover = true;
+				break;
+			case "Escape":
+				if ($hasDropdownOpened) {
+					// prevent ESC bubble in this case (interfering with modal closing etc. (bootstrap))
+					event.preventDefault();
+
+					event.stopPropagation();
+				}
+				if (!$inputValue) {
+					set_store_value(hasDropdownOpened, $hasDropdownOpened = false);
+				}
+				set_store_value(inputValue, $inputValue = "");
+				break;
+			case Tab:
+				set_store_value(hasDropdownOpened, $hasDropdownOpened = false);
+				event.preventDefault();
+			case "Enter":
+				if (!$hasDropdownOpened) return;
+				let activeDropdownItem = $flatMatching[dropdownActiveIndex];
+				if (creatable && $inputValue) {
+					activeDropdownItem = !activeDropdownItem || event.ctrlKey
+					? $inputValue
+					: activeDropdownItem;
+				}
+				activeDropdownItem && onSelect(null, activeDropdownItem);
+				if ($flatMatching.length <= dropdownActiveIndex) {
+					$$invalidate(15, dropdownActiveIndex = $currentListLength > 0 ? $currentListLength : 0);
+				}
+				event.preventDefault();
+				break;
+			case " ":
+				if (!$hasDropdownOpened) {
+					set_store_value(hasDropdownOpened, $hasDropdownOpened = true); // prevent form submit
+					event.preventDefault();
+				}
+				break;
+			case "Backspace":
+			case "Delete":
+				if ($inputValue === "" && $selectedOptions.length) {
+					event.ctrlKey
+					? onDeselect({})
+					: onDeselect(null, $selectedOptions.pop());
+				}
+			default:
+				if (!event.ctrlKey && !["Tab", "Shift"].includes(event.key) && !$hasDropdownOpened && !$isFetchingData) {
+					set_store_value(hasDropdownOpened, $hasDropdownOpened = true);
+				}
+				if (!multiple && $selectedOptions.length && event.key !== "Tab") event.preventDefault();
+		}
+	}
+
+	/**
+ * Enable create items by pasting
+ */
+	function onPaste(event) {
+		if (creatable) {
+			event.preventDefault();
+			const rx = new RegExp("([^" + delimiter + "\\n]+)", "g");
+			const pasted = event.clipboardData.getData("text/plain");
+			pasted.match(rx).forEach(opt => onSelect(null, opt.trim()));
+		}
+	} // do nothing otherwise
+
+	/** ************************************ component lifecycle related */
+	let currentListSubscriber;
+
+	onMount(() => {
+		$$invalidate(52, isInitialized = true);
+
+		// Lazy calling of scrollIntoView function, which is required
+		currentListSubscriber = currentListLength.subscribe(val => {
+			if (val <= dropdownActiveIndex) $$invalidate(15, dropdownActiveIndex = val);
+			if (dropdownActiveIndex < 0) $$invalidate(15, dropdownActiveIndex = 0);
+			tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
+		});
+
+		if (anchor) anchor.classList.add("anchored-select");
+	});
+
+	onDestroy(() => {
+		currentListSubscriber();
+		settingsUnsubscribe();
+	});
+
+	const writable_props = [
+		"name",
+		"anchor",
+		"required",
+		"multiple",
+		"collapseSelection",
+		"disabled",
+		"creatable",
+		"selectOnTab",
+		"valueField",
+		"labelField",
+		"max",
+		"renderer",
+		"clearable",
+		"searchable",
+		"delimiter",
+		"placeholder",
+		"fetch",
+		"fetchMode",
+		"fetchCallback",
+		"options",
+		"searchField",
+		"sortField",
+		"sortRemote",
+		"searchMode",
+		"class",
+		"style",
+		"selection",
+		"value"
+	];
+
+	Object_1.keys($$props).forEach(key => {
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Svelecte> was created with unknown prop '${key}'`);
+	});
+
+	function control_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refControl = $$value;
+			$$invalidate(14, refControl);
+		});
+	}
+
+	function dropdown_binding($$value) {
+		binding_callbacks[$$value ? "unshift" : "push"](() => {
+			refDropdown = $$value;
+			$$invalidate(13, refDropdown);
+		});
+	}
+
+	$$self.$$set = $$props => {
+		if ("name" in $$props) $$invalidate(3, name = $$props.name);
+		if ("anchor" in $$props) $$invalidate(0, anchor = $$props.anchor);
+		if ("required" in $$props) $$invalidate(4, required = $$props.required);
+		if ("multiple" in $$props) $$invalidate(1, multiple = $$props.multiple);
+		if ("collapseSelection" in $$props) $$invalidate(5, collapseSelection = $$props.collapseSelection);
+		if ("disabled" in $$props) $$invalidate(2, disabled = $$props.disabled);
+		if ("creatable" in $$props) $$invalidate(6, creatable = $$props.creatable);
+		if ("selectOnTab" in $$props) $$invalidate(34, selectOnTab = $$props.selectOnTab);
+		if ("valueField" in $$props) $$invalidate(35, valueField = $$props.valueField);
+		if ("labelField" in $$props) $$invalidate(36, labelField = $$props.labelField);
+		if ("max" in $$props) $$invalidate(7, max = $$props.max);
+		if ("renderer" in $$props) $$invalidate(37, renderer = $$props.renderer);
+		if ("clearable" in $$props) $$invalidate(8, clearable = $$props.clearable);
+		if ("searchable" in $$props) $$invalidate(9, searchable = $$props.searchable);
+		if ("delimiter" in $$props) $$invalidate(38, delimiter = $$props.delimiter);
+		if ("placeholder" in $$props) $$invalidate(10, placeholder = $$props.placeholder);
+		if ("fetch" in $$props) $$invalidate(30, fetch = $$props.fetch);
+		if ("fetchMode" in $$props) $$invalidate(39, fetchMode = $$props.fetchMode);
+		if ("fetchCallback" in $$props) $$invalidate(40, fetchCallback = $$props.fetchCallback);
+		if ("options" in $$props) $$invalidate(31, options = $$props.options);
+		if ("searchField" in $$props) $$invalidate(41, searchField = $$props.searchField);
+		if ("sortField" in $$props) $$invalidate(42, sortField = $$props.sortField);
+		if ("sortRemote" in $$props) $$invalidate(43, sortRemote = $$props.sortRemote);
+		if ("searchMode" in $$props) $$invalidate(44, searchMode = $$props.searchMode);
+		if ("class" in $$props) $$invalidate(11, className = $$props.class);
+		if ("style" in $$props) $$invalidate(12, style = $$props.style);
+		if ("selection" in $$props) $$invalidate(32, selection = $$props.selection);
+		if ("value" in $$props) $$invalidate(33, value = $$props.value);
+		if ("$$scope" in $$props) $$invalidate(51, $$scope = $$props.$$scope);
+	};
+
+	$$self.$capture_state = () => ({
+		defaults: settings,
+		debounce,
+		xhr,
+		fieldInit,
+		formatterList,
+		addFormatter,
+		config,
+		setContext,
+		onDestroy,
+		createEventDispatcher,
+		tick,
+		onMount,
+		key,
+		initStore,
+		fetchRemote,
+		Control,
+		Dropdown,
+		name,
+		anchor,
+		required,
+		multiple,
+		collapseSelection,
+		disabled,
+		creatable,
+		selectOnTab,
+		valueField,
+		labelField,
+		max,
+		renderer,
+		clearable,
+		searchable,
+		delimiter,
+		placeholder,
+		fetch,
+		fetchMode,
+		fetchCallback,
+		options,
+		searchField,
+		sortField,
+		sortRemote,
+		searchMode,
+		className,
+		style,
+		selection,
+		value,
+		getSelection,
+		setSelection,
+		clearByParent,
+		dispatch,
+		isInitialized,
+		refDropdown,
+		refControl,
+		ignoreHover,
+		dropdownActiveIndex,
+		fetchUnsubscribe,
+		currentValueField,
+		currentLabelField,
+		hasFocus,
+		hasDropdownOpened,
+		inputValue,
+		isFetchingData,
+		listMessage,
+		settings: settings$1,
+		selectOption,
+		deselectOption,
+		clearSelection,
+		settingsUnsubscribe,
+		listLength,
+		listIndexMap,
+		matchingOptions,
+		flatMatching,
+		currentListLength,
+		selectedOptions,
+		updateOpts,
+		createFetch,
+		prevSelection,
+		prevOptions,
+		emitChangeEvent,
+		_selectByValues,
+		onSelect,
+		onDeselect,
+		onHover,
+		onKeyDown,
+		onPaste,
+		currentListSubscriber,
+		initFetchOnly,
+		$hasFocus,
+		itemRenderer,
+		$selectedOptions,
+		$flatMatching,
+		$inputValue,
+		$hasDropdownOpened,
+		$currentListLength,
+		$isFetchingData
+	});
+
+	$$self.$inject_state = $$props => {
+		if ("name" in $$props) $$invalidate(3, name = $$props.name);
+		if ("anchor" in $$props) $$invalidate(0, anchor = $$props.anchor);
+		if ("required" in $$props) $$invalidate(4, required = $$props.required);
+		if ("multiple" in $$props) $$invalidate(1, multiple = $$props.multiple);
+		if ("collapseSelection" in $$props) $$invalidate(5, collapseSelection = $$props.collapseSelection);
+		if ("disabled" in $$props) $$invalidate(2, disabled = $$props.disabled);
+		if ("creatable" in $$props) $$invalidate(6, creatable = $$props.creatable);
+		if ("selectOnTab" in $$props) $$invalidate(34, selectOnTab = $$props.selectOnTab);
+		if ("valueField" in $$props) $$invalidate(35, valueField = $$props.valueField);
+		if ("labelField" in $$props) $$invalidate(36, labelField = $$props.labelField);
+		if ("max" in $$props) $$invalidate(7, max = $$props.max);
+		if ("renderer" in $$props) $$invalidate(37, renderer = $$props.renderer);
+		if ("clearable" in $$props) $$invalidate(8, clearable = $$props.clearable);
+		if ("searchable" in $$props) $$invalidate(9, searchable = $$props.searchable);
+		if ("delimiter" in $$props) $$invalidate(38, delimiter = $$props.delimiter);
+		if ("placeholder" in $$props) $$invalidate(10, placeholder = $$props.placeholder);
+		if ("fetch" in $$props) $$invalidate(30, fetch = $$props.fetch);
+		if ("fetchMode" in $$props) $$invalidate(39, fetchMode = $$props.fetchMode);
+		if ("fetchCallback" in $$props) $$invalidate(40, fetchCallback = $$props.fetchCallback);
+		if ("options" in $$props) $$invalidate(31, options = $$props.options);
+		if ("searchField" in $$props) $$invalidate(41, searchField = $$props.searchField);
+		if ("sortField" in $$props) $$invalidate(42, sortField = $$props.sortField);
+		if ("sortRemote" in $$props) $$invalidate(43, sortRemote = $$props.sortRemote);
+		if ("searchMode" in $$props) $$invalidate(44, searchMode = $$props.searchMode);
+		if ("className" in $$props) $$invalidate(11, className = $$props.className);
+		if ("style" in $$props) $$invalidate(12, style = $$props.style);
+		if ("selection" in $$props) $$invalidate(32, selection = $$props.selection);
+		if ("value" in $$props) $$invalidate(33, value = $$props.value);
+		if ("isInitialized" in $$props) $$invalidate(52, isInitialized = $$props.isInitialized);
+		if ("refDropdown" in $$props) $$invalidate(13, refDropdown = $$props.refDropdown);
+		if ("refControl" in $$props) $$invalidate(14, refControl = $$props.refControl);
+		if ("ignoreHover" in $$props) ignoreHover = $$props.ignoreHover;
+		if ("dropdownActiveIndex" in $$props) $$invalidate(15, dropdownActiveIndex = $$props.dropdownActiveIndex);
+		if ("fetchUnsubscribe" in $$props) fetchUnsubscribe = $$props.fetchUnsubscribe;
+		if ("currentValueField" in $$props) $$invalidate(55, currentValueField = $$props.currentValueField);
+		if ("currentLabelField" in $$props) $$invalidate(56, currentLabelField = $$props.currentLabelField);
+		if ("prevSelection" in $$props) $$invalidate(57, prevSelection = $$props.prevSelection);
+		if ("prevOptions" in $$props) $$invalidate(78, prevOptions = $$props.prevOptions);
+		if ("currentListSubscriber" in $$props) currentListSubscriber = $$props.currentListSubscriber;
+		if ("initFetchOnly" in $$props) initFetchOnly = $$props.initFetchOnly;
+		if ("itemRenderer" in $$props) $$invalidate(16, itemRenderer = $$props.itemRenderer);
+	};
+
+	let initFetchOnly;
+	let itemRenderer;
+
+	if ($$props && "$$inject" in $$props) {
+		$$self.$inject_state($$props.$$inject);
+	}
+
+	$$self.$$.update = () => {
+		if ($$self.$$.dirty[0] & /*fetch*/ 1073741824 | $$self.$$.dirty[1] & /*fetchMode*/ 256) {
+			/** ************************************ remote source */
+			 initFetchOnly = fetchMode === "init" || typeof fetch === "string" && fetch.indexOf("[query]") === -1;
+		}
+
+		if ($$self.$$.dirty[0] & /*fetch*/ 1073741824) {
+			 createFetch(fetch);
+		}
+
+		if ($$self.$$.dirty[1] & /*isInitialized, options, searchMode, valueField, currentValueField, labelField, currentLabelField*/ 52437041) {
+			 {
+				if (isInitialized && prevOptions !== options) {
+					if (searchMode === "auto") {
+						const ivalue = fieldInit("value", options || null);
+						const ilabel = fieldInit("label", options || null);
+						if (!valueField && currentValueField !== ivalue) $$invalidate(55, currentValueField = ivalue);
+						if (!labelField && currentLabelField !== ilabel) $$invalidate(56, currentLabelField = ilabel);
+					}
+
+					// NOTE: this event should not be emitted
+					// if (options.some(opt => opt.isSelected)) emitChangeEvent();
+					updateOpts(options);
+				}
+			}
+		}
+
+		if ($$self.$$.dirty[0] & /*multiple, $selectedOptions, anchor*/ 131075 | $$self.$$.dirty[1] & /*currentValueField, value*/ 16777220) {
+			 {
+				const _unifiedSelection = multiple
+				? $selectedOptions
+				: $selectedOptions.length ? $selectedOptions[0] : null;
+
+				$$invalidate(33, value = multiple
+				? $selectedOptions.map(opt => opt[currentValueField])
+				: $selectedOptions.length
+					? $selectedOptions[0][currentValueField]
+					: null);
+
+				$$invalidate(57, prevSelection = _unifiedSelection);
+				$$invalidate(32, selection = _unifiedSelection);
+
+				// Custom-element related
+				if (anchor) {
+					$$invalidate(
+						0,
+						anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce(
+							(res, item) => {
+								if (!item) {
+									res = "<option value=\"\" selected=\"\"></option>";
+									return res;
+								}
+
+								
+								res += `<option value="${item}" selected>${item}</option>`;
+								return res;
+							},
+							""
+						),
+						anchor
+					);
+
+					anchor.dispatchEvent(new Event("change"));
+				}
+			}
+		}
+
+		if ($$self.$$.dirty[1] & /*prevSelection, selection*/ 67108866) {
+			 {
+				if (prevSelection !== selection) {
+					clearSelection();
+
+					if (selection) {
+						Array.isArray(selection)
+						? selection.forEach(selectOption)
+						: selectOption(selection);
+					}
+
+					$$invalidate(57, prevSelection = selection);
+				}
+			}
+		}
+
+		if ($$self.$$.dirty[0] & /*max, multiple, creatable*/ 194 | $$self.$$.dirty[1] & /*searchField, sortField, currentLabelField, currentValueField, sortRemote*/ 50338816) {
+			 settings$1.set({
+				max,
+				multiple,
+				creatable,
+				searchField,
+				sortField,
+				currentLabelField,
+				currentValueField,
+				sortRemote
+			});
+		}
+
+		if ($$self.$$.dirty[1] & /*renderer, currentLabelField*/ 33554496) {
+			 $$invalidate(16, itemRenderer = typeof renderer === "function"
+			? renderer
+			: formatterList[renderer] || formatterList.default.bind({ label: currentLabelField }));
+		}
+	};
+
+	return [
+		anchor,
+		multiple,
+		disabled,
+		name,
+		required,
+		collapseSelection,
+		creatable,
+		max,
+		clearable,
+		searchable,
+		placeholder,
+		className,
+		style,
+		refDropdown,
+		refControl,
+		dropdownActiveIndex,
+		itemRenderer,
+		$selectedOptions,
+		hasFocus,
+		hasDropdownOpened,
+		inputValue,
+		isFetchingData,
+		flatMatching,
+		currentListLength,
+		selectedOptions,
+		onSelect,
+		onDeselect,
+		onHover,
+		onKeyDown,
+		onPaste,
+		fetch,
+		options,
+		selection,
+		value,
+		selectOnTab,
+		valueField,
+		labelField,
+		renderer,
+		delimiter,
+		fetchMode,
+		fetchCallback,
+		searchField,
+		sortField,
+		sortRemote,
+		searchMode,
+		getSelection,
+		setSelection,
+		clearByParent,
+		slots,
+		control_binding,
+		dropdown_binding,
+		$$scope
+	];
+}
+
+class Svelecte extends SvelteComponentDev {
+	constructor(options) {
+		super(options);
+
+		init(
+			this,
+			options,
+			instance$4,
+			create_fragment$4,
+			safe_not_equal,
+			{
+				name: 3,
+				anchor: 0,
+				required: 4,
+				multiple: 1,
+				collapseSelection: 5,
+				disabled: 2,
+				creatable: 6,
+				selectOnTab: 34,
+				valueField: 35,
+				labelField: 36,
+				max: 7,
+				renderer: 37,
+				clearable: 8,
+				searchable: 9,
+				delimiter: 38,
+				placeholder: 10,
+				fetch: 30,
+				fetchMode: 39,
+				fetchCallback: 40,
+				options: 31,
+				searchField: 41,
+				sortField: 42,
+				sortRemote: 43,
+				searchMode: 44,
+				class: 11,
+				style: 12,
+				selection: 32,
+				value: 33,
+				getSelection: 45,
+				setSelection: 46,
+				clearByParent: 47
+			},
+			[-1, -1, -1]
+		);
+
+		dispatch_dev("SvelteRegisterComponent", {
+			component: this,
+			tagName: "Svelecte",
+			options,
+			id: create_fragment$4.name
+		});
+	}
+
+	get name() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set name(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get anchor() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set anchor(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get required() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set required(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get multiple() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set multiple(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get collapseSelection() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set collapseSelection(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get disabled() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set disabled(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get creatable() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set creatable(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get selectOnTab() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set selectOnTab(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get valueField() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set valueField(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get labelField() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set labelField(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get max() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set max(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get renderer() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set renderer(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get clearable() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set clearable(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get searchable() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set searchable(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get delimiter() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set delimiter(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get placeholder() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set placeholder(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get fetch() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set fetch(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get fetchMode() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set fetchMode(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get fetchCallback() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set fetchCallback(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get options() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set options(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get searchField() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set searchField(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get sortField() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set sortField(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get sortRemote() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set sortRemote(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get searchMode() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set searchMode(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get class() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set class(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get style() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set style(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get selection() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set selection(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get value() {
+		throw new Error("<Svelecte>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set value(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get getSelection() {
+		return this.$$.ctx[45];
+	}
+
+	set getSelection(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get setSelection() {
+		return this.$$.ctx[46];
+	}
+
+	set setSelection(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get clearByParent() {
+		return this.$$.ctx[47];
+	}
+
+	set clearByParent(value) {
+		throw new Error("<Svelecte>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+}
+
+const OPTION_LIST = [
+  'options', 'fetch', 'name', 'required', 'value',
+  'multiple','disabled', 'max', 'creatable', 'delimiter',
+  'placeholder', 'renderer', 'searchable', 'clearable', 'fetch', 'valueField', 'labelField',
+  'anchor'
+];
+
+function formatValue(name, value) {
+  switch (name) {
+    case 'options':
+      if (Array.isArray(value)) return value;
+      try {
+        value = JSON.parse(value);
+        if (!Array.isArray(value)) {
+          value = [];
+        }
+      } catch (e) {
+        value = [];
+      }
+      return value;
+    case 'value':
+      return value ? value.split(',').map(item => {
+        const _v = parseInt(item);
+        return isNaN(_v) ? item : _v;
+      }) : '';
+    case 'renderer':
+      return value || 'default';
+    case 'searchable':
+      return value == 'true';
+    case 'clearable':
+      return value != 'false';
+    case 'required':
+    case 'multiple':
+    case 'creatable':
+    case 'selectOnTab':
+      return value !== null;
+    case 'disabled':
+      return value !== null;
+    case 'max':
+      return isNaN(parseInt(value)) ? 0 : parseInt(value);
+    case 'anchor':
+      return value ? document.getElementById(value) : null;
+  }
+  return value;
+}
+
+/**
+ * Connect Custom Component attributes to Svelte Component properties
+ * @param {string} name Name of the Custom Component
+ */
+const SvelecteElement = class extends HTMLElement {
+  constructor() {
+    super();
+    this.svelecte = undefined;
+    this._fetchOpts = null;
+    
+    /** ************************************ public API */
+    this.setOptions = options => this.svelecte.setOptions(options);
+    Object.defineProperties(this, {
+      'selection': {
+        get() {
+          return this.svelecte.getSelection();
+        }
+      },
+      'value': {
+        get() {
+          return this.svelecte.getSelection(true);
+        },
+        set(value) {
+          this.setAttribute('value', Array.isArray(value) ? value.join(',') : value);
+        }
+      },
+      'options': {
+        get() {
+          return this.hasAttribute('options')
+            ? JSON.parse(this.getAttribute('options'))
+            : (this._fetchOpts || []);
+        },
+        set(value) {
+          this.setAttribute('options', Array.isArray(value) ? JSON.stringify(value) : value);
+        }
+      },
+      'disabled': {
+        get() {
+          return this.getAttribute('disabled') !== null;
+        },
+        set(value) {
+          if (!value) { 
+            this.removeAttribute('disabled');
+          } else {
+            this.setAttribute('disabled', value === true ? '' : value);
+          }
+        }
+      },
+      'multiple': {
+        get() {
+          return this.getAttribute('multiple') !== null;
+        },
+        set(value) {
+          if (!value) { 
+            this.removeAttribute('multiple');
+          } else {
+            this.setAttribute('multiple', value === true ? '' : value);
+          }
+        }
+      },
+      'creatable': {
+        get() {
+          return this.getAttribute('creatable') !== null;
+        },
+        set(value) {
+          if (!value) { 
+            this.removeAttribute('creatable');
+          } else {
+            this.setAttribute('creatable', value === true ? '' : value);
+          }
+        }
+      },
+      'clearable': {
+        get() {
+          return this.getAttribute('clearable') !== 'false';
+        },
+        set(value) {
+          this.setAttribute('clearable', value ? 'true' : 'false');
+        }
+      },
+      'placeholder': {
+        get() {
+          return this.getAttribute('placeholder') || '';
+        },
+        set(value) {
+          this.setAttribute('placeholder', value || 'Select');
+        }
+      },
+      'renderer': {
+        get() {
+          return this.getAttribute('renderer') || 'default';
+        },
+        set(value) {
+          value && this.setAttribute('renderer', value);
+        }
+      },
+      'required': {
+        get() {
+          return this.hasAttribute('required');
+        },
+        set(value) {
+          if (!value) {
+            this.removeAttribute('required');
+          } else {
+            this.setAttribute('required', '');
+          }
+        }
+      },
+      'anchor': {
+        get() {
+          return this.getAttribute('anchor');
+        },
+        set(value) {
+          this.setAttribute('anchor', value);
+        }
+      },
+      'max': {
+        get() {
+          return this.getAttribute('max') || 0;
+        },
+        set(value) {
+          try {
+            value = parseInt(value);
+            if (value < 0) value = 0;
+          } catch (e) {
+            value = 0;
+          }
+          this.setAttribute('max', value);
+        }
+      },
+      'delimiter': {
+        get() {
+          return this.getAttribute('delimiter') || ',';
+        },
+        set(value) {
+          this.setAttribute('delimiter', value);
+        }
+      },
+      'valueField': {
+        get() {
+          return this.getAttribute('valueField') || '';
+        },
+        set(value) {
+          this.setAttribute('valueField', value);
+        }
+      },
+      'labelField': {
+        get() {
+          return this.getAttribute('labelField') || '';
+        },
+        set(value) {
+          this.setAttribute('labelField', value);
+        }
+      }
+    });
+  }
+
+  focus() {
+    !this.disabled && this.querySelector('input').focus();
+  }
+
+  static get observedAttributes() {
+    return OPTION_LIST;
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (this.svelecte && oldValue !== newValue) {
+      name === 'value'
+        ? this.svelecte.setSelection(formatValue(name, newValue))
+        : this.svelecte.$set({ [name]: formatValue(name, newValue) });
+    }
+  }
+
+  connectedCallback() {
+    if (this.hasAttribute('parent') || this.hasAttribute('anchor') || this.hasAttribute('lazy')) {
+      setTimeout(() => { this.render(); });
+    } else {
+      this.render();
+    }
+  }
+
+  render() {
+    let props = {};
+    for (const attr of OPTION_LIST) {
+      if (this.hasAttribute(attr)) {
+        props[attr] = formatValue(attr, this.getAttribute(attr));
+      }
+    }
+    if (this.hasAttribute('class')) {
+      props.class = this.getAttribute('class');
+    }
+    if (this.hasAttribute('parent')) {
+      delete props['fetch'];
+      props.disabled = true;
+      this.parent = document.getElementById(this.getAttribute('parent'));
+      if (!this.parent.value && this.svelecte) {
+        return;
+      }      this.parentCallback = e => {
+        if (!e.target.selection || (Array.isArray(e.target.selection) && !e.target.selection.length)) {
+          this.svelecte.clearByParent(true);
+          return;
+        }
+        !this.parent.disabled && this.removeAttribute('disabled');
+        if (this.hasAttribute('fetch')) {
+          const fetchUrl = this.getAttribute('fetch').replace('[parent]', e.target.value);
+          this.svelecte.$set({ fetch: fetchUrl, disabled: false });
+        }
+      };
+      this.parent.addEventListener('change', this.parentCallback);
+    }
+    const anchorSelect = this.querySelector('select');
+    if (anchorSelect) {
+      props['anchor'] = anchorSelect;
+      anchorSelect.tabIndex = -1; // just to be sure
+    }
+    // if (this.childElementCount > 0) {
+    //   props.options = Array.prototype.slice.call(this.children).map(opt => {
+    //     return Object.assign({
+    //       isSelected: opt.selected,
+    //       isDisabled: opt.disabled
+    //     }, opt.dataset.data ? JSON.parse(opt.dataset.data)
+    //       : {
+    //         value: opt.value,
+    //         text: opt.text,
+    //       }
+    //     );
+    //   });
+    //   this.innerHTML = '';
+    // }
+    this.svelecte = new Svelecte({
+      target: this,
+      anchor: anchorSelect,
+      props,
+    });
+    this.svelecte.$on('change', e => {
+      const value = this.svelecte.getSelection(true);
+      this.setAttribute('value', Array.isArray(value) ? value.join(',') : value);
+      this.dispatchEvent(e);
+    });
+    this.svelecte.$on('fetch', e => {
+      this._fetchOpts = e.detail;
+      this.dispatchEvent(e);
+    });
+    return true;
+  }
+
+  disconnectedCallback() {
+    this.svelecte && this.svelecte.$destroy();
+    this.parent && this.parent.removeEventListener('change', this.parentCallback);
+  }
+};
+
+export { SvelecteElement, addFormatter, config };

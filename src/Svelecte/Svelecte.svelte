@@ -27,6 +27,7 @@
   export let anchor = null;
   export let required = false;
   export let multiple = defaults.multiple;
+  export let collapseSelection = defaults.collapseSelection;
   export let disabled = defaults.disabled;
   export let creatable = defaults.creatable;
   export let selectOnTab = defaults.selectOnTab;
@@ -403,7 +404,7 @@
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
-    {disabled} {clearable} {searchable} {placeholder} {multiple}
+    {disabled} {clearable} {searchable} {placeholder} {multiple} collapseSelection={collapseSelection ? config.i18n.collapsedSelection : null}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
     on:paste={onPaste}

@@ -17,13 +17,21 @@ const settings = {
   max: 0,
   delimiter: ',',
   sortRemoteResults: true,
+  // enable collapsible multiple selection
+  collapseSelection: false, 
   i18n: {
     empty: 'No options',
     nomatch: 'No matching options',    
     max: 'Maximum items :maxItems selected',
     fetchBefore: 'Type to search',
     fetchWait: 'Stop typing to search',
-    fetchEmpty: 'No data related to your search'
+    fetchEmpty: 'No data related to your search',
+    collapsedSelection: count => {
+      switch (count) {
+        case 1: return '1 item';
+      }
+      return `${count} items`;
+    }
   }
 }
 

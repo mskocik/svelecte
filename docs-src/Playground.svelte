@@ -31,7 +31,7 @@
 			myValue = null;
 		}
 	}
-
+	let isFlexWidth = false;
 	let settings = {};
 	$: slot = slots[remoteValue];
 
@@ -52,7 +52,7 @@
 			settings = {
 				options: dataset.countryGroups(),
 				fetch: null,
-				placeholder: 'Select from country group'
+				placeholder: 'Select from country group',
 			}
 		} else {
 			settings = {
@@ -79,7 +79,7 @@
 
 <details open>
 	<summary>Previous app</summary>
-<main>
+<main style="text-align:left">
 	<!--
 	<div class="form-row">
 		<div style="display: flex; justify-content: space-between">
@@ -96,7 +96,7 @@
 		<button on:click={() => options = dataset.countryGroups()}>Switch Source</button>
 	</div>
 -->
-	<button on:click={() => { myValue = options[3] } }>Set Armenia</button>
+	<button on:click={() => { myValue = options[2] } }>Set Armenia</button>
 	<button on:click={() => { myValue = null } }>Clear</button>
 	<select bind:value={remoteValue}>
 		<option value="opts">🎨 colors</option>
@@ -105,7 +105,10 @@
 		<option value="colors">API: Colors</option>
 		<option value="json">API: User list</option>
 	</select>
-	<div class="form-row">
+	<button on:click={() => isFlexWidth = !isFlexWidth}>Flex</button>
+	<button on:click={() => { settings.multiple = !settings.multiple; settings = settings; }}>M</button>
+	<button on:click={() => { settings.collapseSelection = !settings.collapseSelection; settings = settings; }}>C</button>
+	<div class="form-row" class:flexible-svelecte={isFlexWidth}>
 		<Svelecte {...settings} bind:selection={myValue}>
 			<b slot="icon">{slot}</b>
 		</Svelecte>
@@ -151,6 +154,9 @@ Optgroups are distinguished by <code>label</code> property. And options are expe
 		font-family: 'Fira Code';
 		margin-left: 0.5rem;
 	}
+	:global(.flexible-svelecte .sv-control) {
+		display: inline-flex !important;
+	}
 	input {
 		width: 100%;
 		margin-bottom: 0;
@@ -159,9 +165,9 @@ Optgroups are distinguished by <code>label</code> property. And options are expe
 		margin-bottom: 2rem;
 		min-height: 20px;
 	}
-	.form-row:focus-within {
+	/* .form-row:focus-within {
 		box-shadow: 0 0 10px #ccc;
-	}
+	} */
 	main {
 		text-align: center;
 		max-width: 400px;

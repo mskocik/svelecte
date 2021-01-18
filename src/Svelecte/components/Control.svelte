@@ -10,6 +10,7 @@
   export let disabled;
   export let placeholder;
   export let multiple;
+  export let collapseSelection;
   export function focusControl(event) {
     if (disabled) return;
     if (!event) {
@@ -26,7 +27,7 @@
 
   /** ************************************ context */
   const dispatch = createEventDispatcher();
-  const { inputValue, hasFocus, hasDropdownOpened, selectedOptions, isFetchingData } = getContext(key);
+  const { inputValue, hasFocus, hasDropdownOpened, selectedOptions, isFetchingData, listMessage } = getContext(key);
 
   let refInput = undefined;
   $: showSelection = multiple ? true : !$inputValue && $selectedOptions.length;
@@ -41,6 +42,7 @@
     $hasDropdownOpened = false;
     $inputValue = ''; // reset
   }
+  console.log('data: ', $listMessage);
 </script>
 
 <div class="sv-control" class:is-active={$hasFocus} class:is-disabled={disabled}
@@ -51,9 +53,13 @@
   <!-- selection & input -->
   <div class="sv-content sv-input-row" class:has-multiSelection={multiple}>
     {#if $selectedOptions.length }
+      {#if multiple && collapseSelection && !$hasFocus}
+        { collapseSelection($selectedOptions.length) }
+      {:else}
       {#each $selectedOptions as opt}
       <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple}></Item>
       {/each}
+      {/if}
     {/if}
     <!-- input -->
     <Input {disabled} {searchable} {placeholder} {multiple}
