@@ -420,7 +420,7 @@
   {#if name && !anchor}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
     {#each $selectedOptions as opt}
-    <option value={opt.value} selected>{opt.text}</option>
+    <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
   </select>
   {/if}
