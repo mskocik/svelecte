@@ -84,7 +84,7 @@
         </div>
         {#each opt.options as groupOpt, j}
         <div data-pos={$listIndexMap[i][j]} class="optgroup-item" 
-          class:active={$listIndexMap[i][j] === dropdownIndex}
+          class:sv-dd-item-active={$listIndexMap[i][j] === dropdownIndex}
         >
           <Item formatter={renderer}
             isDisabled={opt.isDisabled || groupOpt.isDisabled}
@@ -97,7 +97,7 @@
         {/each}
       {:else} <!-- END opt group -->
       <div data-pos={$listIndexMap[i]}
-        class:active={$listIndexMap[i] === dropdownIndex}
+        class:sv-dd-item-active={$listIndexMap[i] === dropdownIndex}
       >
         <Item formatter={renderer}
           index={$listIndexMap[i]}

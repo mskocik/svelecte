@@ -27,10 +27,11 @@ const settings = {
     fetchWait: 'Stop typing to search',
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => {
-      switch (count) {
-        case 1: return '1 item';
-      }
-      return `${count} items`;
+      // example of plural collapse
+      // switch (count) {
+      //   case 1: return '1 selected';
+      // }
+      return `${count} selected`;
     }
   }
 }

@@ -1,5 +1,5 @@
 <script>
-  import { getContext, createEventDispatcher, tick } from 'svelte';
+  import { getContext, createEventDispatcher } from 'svelte';
   import { key } from './../contextStore.js';
   import Input from './Input.svelte';
   import Item from './Item.svelte';
@@ -28,21 +28,27 @@
   /** ************************************ context */
   const dispatch = createEventDispatcher();
   const { inputValue, hasFocus, hasDropdownOpened, selectedOptions, isFetchingData, listMessage } = getContext(key);
-
+  
+  let doCollapse = true;
   let refInput = undefined;
-  $: showSelection = multiple ? true : !$inputValue && $selectedOptions.length;
 
   function onFocus() {
     $hasFocus = true; 
     $hasDropdownOpened = true;
+    setTimeout(() => {
+    doCollapse = false;
+    }, 150);
   }
 
   function onBlur() {
     $hasFocus = false;
     $hasDropdownOpened = false;
     $inputValue = ''; // reset
+    setTimeout(() => {
+      doCollapse = true;
+    }, 100);
   }
-  console.log('data: ', $listMessage);
+
 </script>
 
 <div class="sv-control" class:is-active={$hasFocus} class:is-disabled={disabled}
@@ -53,7 +59,7 @@
   <!-- selection & input -->
   <div class="sv-content sv-input-row" class:has-multiSelection={multiple}>
     {#if $selectedOptions.length }
-      {#if multiple && collapseSelection && !$hasFocus}
+      {#if multiple && collapseSelection && doCollapse}
         { collapseSelection($selectedOptions.length) }
       {:else}
       {#each $selectedOptions as opt}

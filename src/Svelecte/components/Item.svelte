@@ -27,7 +27,7 @@
 :global(.sv-dropdown-content .sv-item) {
   padding: 3px 3px 3px 6px;
 }
-:global(.active .sv-item) {
+:global(.sv-dd-item-active > .sv-item) {
   background-color: #F2F5F8;
 }
 :global(.sv-item) {
