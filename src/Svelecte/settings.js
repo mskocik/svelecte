@@ -17,6 +17,7 @@ const settings = {
   max: 0,
   delimiter: ',',
   sortRemoteResults: true,
+  virtualList: false,
   // enable collapsible multiple selection
   collapseSelection: false, 
   i18n: {

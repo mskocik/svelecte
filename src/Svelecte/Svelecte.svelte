@@ -22,6 +22,7 @@
   import { fetchRemote } from './lib/utils.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
+  import DropdownVirtual from './components/DropdownVirtual.svelte';
 
   export let name = null;
   export let anchor = null;
@@ -43,6 +44,7 @@
   export let fetchMode = 'auto';
   export let fetchCallback = null;
   export let options = [];
+  export let virtualList = defaults.virtualList;
   // sifter related
   export let searchField = null;
   export let sortField = null;
@@ -214,6 +216,7 @@
       updateOpts(options);
     }
   }
+  $: dropdownComponent = virtualList ? DropdownVirtual : Dropdown;
 
   /**
    * Dispatch change event on add options/remove selected items
@@ -411,12 +414,12 @@
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>
-  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {creatable} 
+  <svelte:component this={dropdownComponent} bind:this={refDropdown} renderer={itemRenderer} {creatable} 
     maxReached={max && max === $selectedOptions.length}
     dropdownIndex={dropdownActiveIndex}
     on:select={onSelect} 
     on:hover={onHover}
-  ></Dropdown>
+  />
   {#if name && !anchor}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
     {#each $selectedOptions as opt}
