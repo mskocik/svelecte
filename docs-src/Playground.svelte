@@ -109,9 +109,10 @@
 	<button on:click={() => { settings.multiple = !settings.multiple; settings = settings; }}>M</button>
 	<button on:click={() => { settings.collapseSelection = !settings.collapseSelection; settings = settings; }}>C</button>
 	<div class="form-row" class:flexible-svelecte={isFlexWidth}>
-		<!-- <Svelecte {...settings} bind:selection={myValue}>
+		<Svelecte {...settings} bind:selection={myValue}>
 			<b slot="icon">{slot}</b>
-		</Svelecte> -->
+			<h3 slot="dropdown-group-header" let:item={item}>Group: {item.label}</h3>
+		</Svelecte>
 	</div>
 	{JSON.stringify(myValue)}
 </main>
@@ -120,7 +121,7 @@
 <hr>
 
 <h1 id="sub-getting-started">Getting started</h1>
-<br><br><br><br><br><br><br><br>
+<!-- <br><br><br><br><br><br><br><br> -->
 <p>
 	Svelecte provide basically every common functionality, you would expect from autocomplete/select component. It's main inspiration was selectize.js
 </p>

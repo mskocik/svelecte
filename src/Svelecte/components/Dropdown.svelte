@@ -80,7 +80,7 @@
       <!-- opt group -->
       {#if opt.options && Array.isArray(opt.options)}
         <div class="optgroup-header" on:mousedown|preventDefault>
-          <slot name="dropdown-group-header"><b>{opt.label}</b></slot>
+          <slot name="dropdown-group-header" item={opt}><b>{opt.label}</b></slot>
         </div>
         {#each opt.options as groupOpt, j}
         <div data-pos={$listIndexMap[i][j]} class="optgroup-item" 

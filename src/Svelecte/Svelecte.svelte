@@ -419,7 +419,10 @@
     dropdownIndex={dropdownActiveIndex}
     on:select={onSelect} 
     on:hover={onHover}
-  />
+    let:item={item}
+  >
+    <div slot="dropdown-group-header" {item}><slot name="dropdown-group-header" {item}><b>{item.label}</b></slot></div>
+  </svelte:component>
   {#if name && !anchor}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
     {#each $selectedOptions as opt}
