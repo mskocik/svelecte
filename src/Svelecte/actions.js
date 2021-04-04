@@ -17,7 +17,8 @@ export default function(node, {item, index}) {
   }
   node.onmousedown = mouseDownAction;
   node.onclick = selectAction;
-  !item.isSelected && node.addEventListener('mouseenter', hoverAction);
+  // !item.isSelected && 
+  node.addEventListener('mouseenter', hoverAction);
 
   return {
     update(updated) {
@@ -27,7 +28,8 @@ export default function(node, {item, index}) {
     destroy() {
       node.removeEventListener('mousedown', mouseDownAction);
       node.removeEventListener('click', selectAction);
-      !item.isSelected && node.removeEventListener('mouseenter', hoverAction);
+      // !item.isSelected && 
+      node.removeEventListener('mouseenter', hoverAction);
     }
   }
 }

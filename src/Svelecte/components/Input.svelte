@@ -1,23 +1,25 @@
 <script>
-  import { getContext, onDestroy, createEventDispatcher } from 'svelte';
-  import { key } from './../contextStore.js';
+  import { createEventDispatcher } from 'svelte';
 
   export const focus = () => inputRef.focus();
   export let placeholder;
   export let searchable;
   export let disabled;
   export let multiple;
+  /** internal props */
+  export let inputValue;
+  export let hasDropdownOpened;
+  export let selectedOptions;
 
   let inputRef = null;
   let shadowWidth = 0;
 
-  const { inputValue, selectedOptions, hasDropdownOpened } = getContext(key);
   const dispatch = createEventDispatcher();
 
-  $: isSingleFilled = $selectedOptions.length > 0 && multiple === false;
-  $: placeholderText = $selectedOptions.length > 0 ? '' : placeholder;
+  $: isSingleFilled = selectedOptions.length > 0 && multiple === false;
+  $: placeholderText = selectedOptions.length > 0 ? '' : placeholder;
   $: shadowText = $inputValue || placeholderText;
-  $: widthAddition = $selectedOptions.length === 0 ? 19 : 12;
+  $: widthAddition = selectedOptions.length === 0 ? 19 : 12;
   $: inputStyle = `width: ${isSingleFilled ? 2 : shadowWidth + widthAddition}px`;
 
   let disableEventBubble = false;

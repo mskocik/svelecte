@@ -17,9 +17,11 @@
 </script>
 
 <script>
-  import { setContext, onDestroy, createEventDispatcher, tick, onMount, } from 'svelte';
+  import { setContext, createEventDispatcher, tick, onMount } from 'svelte';
+  import { writable } from 'svelte/store';
   import { key, initStore } from './contextStore.js';
   import { fetchRemote } from './lib/utils.js';
+  import { flatList, filterList, indexList } from './lib/list.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
   import DropdownVirtual from './components/DropdownVirtual.svelte';
@@ -78,9 +80,10 @@
   let refDropdown;
   let refControl;
   let ignoreHover = false;
-  let dropdownActiveIndex = !multiple && options.some(o => o.isSelected)
-    ? options.indexOf(options.filter(o => o.isSelected).shift())
-    : 0;
+  let dropdownActiveIndex = null;
+  // !multiple && options.some(o => o.isSelected)
+  //   ? options.indexOf(options.filter(o => o.isSelected).shift())
+  //   : 0;
   let fetchUnsubscribe = null;
   let currentValueField = valueField;
   let currentLabelField = labelField;
@@ -93,10 +96,15 @@
   }
 
   /** ************************************ Context definition */
+  const inputValue = writable('');
+  const hasFocus = writable(false);
+  const hasDropdownOpened = writable(false);
+
+  let isFetchingData = false;
   const { 
-      hasFocus, hasDropdownOpened, inputValue, isFetchingData, listMessage, settings,                               // stores
+      settings,                               // stores
       selectOption, deselectOption, clearSelection, settingsUnsubscribe,                            // actions
-      listLength, listIndexMap, matchingOptions, flatMatching, currentListLength, selectedOptions,   // getters
+      listLength, matchingOptions,   // getters
       updateOpts, 
   } = initStore(
     options, selection,
@@ -105,9 +113,9 @@
   );
 
   setContext(key, {
-    hasFocus, hasDropdownOpened, inputValue, listMessage,
+    hasFocus, hasDropdownOpened, inputValue, 
     selectOption, deselectOption, clearSelection, 
-    listLength, matchingOptions, flatMatching, currentListLength, selectedOptions, listIndexMap, isFetchingData
+    listLength, matchingOptions, isFetchingData
   });
 
   
@@ -131,16 +139,16 @@
         })
         .catch(() => options = [])
         .finally(() => {
-          isFetchingData.set(false);
+          isFetchingData = false;
           $hasFocus && hasDropdownOpened.set(true);
-          listMessage.set(config.i18n.fetchEmpty);
+          listMessage = config.i18n.fetchEmpty;
           tick().then(() => dispatch('fetch', options));
         })
     }, 500);
 
     if (initFetchOnly) {
       if (typeof fetch === 'string' && fetch.indexOf('[parent]') !== -1) return null;
-      isFetchingData.set(true);
+      isFetchingData = true;
       debouncedFetch(null);
       return null;
     }
@@ -150,11 +158,10 @@
         xhr.abort();
       };
       if (!value) {
-        listMessage.set(config.i18n.fetchBefore);
+        listMessage = config.i18n.fetchBefore;
         return;
       }
-      isFetchingData.set(true);
-      listMessage.set(config.i18n.fetchWait);
+      isFetchingData = true;
       hasDropdownOpened.set(false);
       debouncedFetch(value);
     });
@@ -167,6 +174,7 @@
   value && _selectByValues(value);   // init values if passed
 
   let prevSelection = selection;
+  console.log('p', prevSelection);
 
   $: {
     if (prevSelection !== selection) {
@@ -177,16 +185,29 @@
       prevSelection = selection;
     }
   }
-  
-  $: settings.set({ max, multiple, creatable, searchField, sortField, currentLabelField, currentValueField, sortRemote });
+  /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
+  $: flatItems = flatList(options);
+  $: selectedOptions = flatItems.filter(opt => opt.isSelected);
+  $: maxReached = max && selectedOptions.length === max 
+  $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, selectedOptions.length);
+  $: listIndex = indexList(availableItems);
+  $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
+  $: {
+    if (dropdownActiveIndex === null) {
+      dropdownActiveIndex = listIndex.first;
+    } else if (dropdownActiveIndex > listIndex.last) {
+      dropdownActiveIndex = listIndex.last;
+    }
+  }
+  $: listMessage = maxReached ? config.i18n.max(max) : config.i18n.empty;
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
     const _unifiedSelection = multiple 
-      ? $selectedOptions
-      : $selectedOptions.length ? $selectedOptions[0] : null;
+      ? selectedOptions
+      : selectedOptions.length ? selectedOptions[0] : null;
     value = multiple 
-      ? $selectedOptions.map(opt => opt[currentValueField])
-      : $selectedOptions.length ? $selectedOptions[0][currentValueField] : null;
+      ? selectedOptions.map(opt => opt[currentValueField])
+      : selectedOptions.length ? selectedOptions[0][currentValueField] : null;
     prevSelection = _unifiedSelection;
     selection = _unifiedSelection;
     // Custom-element related
@@ -216,7 +237,8 @@
       updateOpts(options);
     }
   }
-  $: dropdownComponent = virtualList ? DropdownVirtual : Dropdown;
+  // $: dropdownComponent = virtualList ? DropdownVirtual : Dropdown;
+  $: dropdownComponent = Dropdown;
 
   /**
    * Dispatch change event on add options/remove selected items
@@ -236,7 +258,7 @@
     clearSelection();
     const newAddition = [];
     values.forEach(val => {
-      $flatMatching.some(opt => {
+      availableItems.some(opt => {
         if (val == (opt[currentValueField])) {
           newAddition.push(opt);
           return true;
@@ -253,7 +275,11 @@
   function onSelect(event, opt) {
     opt = opt || event.detail;
     if (disabled || opt.isDisabled) return;
-    selectOption(opt);
+    if (!multiple && selectedOptions.length) {
+      selectedOptions[0].isSelected = false;
+    }
+    opt.isSelected = true;
+    flatItems = flatItems;
     $inputValue = '';
     if (!multiple) {
       $hasDropdownOpened = false;
@@ -268,9 +294,10 @@
     if (disabled) return;
     opt = opt || event.detail;
     if (opt) {
-      deselectOption(opt);
+      opt.isSelected = false;
+      flatItems = flatItems;
     } else {  // apply for 'x' when clearable:true || ctrl+backspace || ctrl+delete
-      clearSelection();
+      flatItems = flatItems.map(opt => { if (opt.isSelected) opt.isSelected = false; return opt})
     }
     tick().then(refControl.focusControl);
     emitChangeEvent();
@@ -300,28 +327,32 @@
     const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey ? 'Tab' : 'No-tab';
     switch (event.key) {
       case 'PageDown':
-        dropdownActiveIndex = 0;
+      case 'End':
+        dropdownActiveIndex = listIndex.first;
       case 'ArrowUp': 
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
           return;
         }
         event.preventDefault();
-        dropdownActiveIndex = dropdownActiveIndex == 0 
-          ? $currentListLength
-          : dropdownActiveIndex - 1;
+        dropdownActiveIndex = dropdownActiveIndex <= listIndex.first
+          ? listIndex.last
+          : listIndex.map[dropdownActiveIndex - 1] || listIndex.map[dropdownActiveIndex - 2] || listIndex.first;
         tick().then(refDropdown.scrollIntoView);
         ignoreHover = true;
         break;
       case 'PageUp':
-        dropdownActiveIndex = $currentListLength + 2;
+      case 'Home':
+        dropdownActiveIndex = listIndex.last;
       case 'ArrowDown': 
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
           return;
         }
         event.preventDefault();
-        dropdownActiveIndex = dropdownActiveIndex >= $currentListLength ? 0 : dropdownActiveIndex + 1;
+        dropdownActiveIndex = dropdownActiveIndex >= listIndex.last
+          ? listIndex.first
+          : listIndex.map[dropdownActiveIndex + 1] || listIndex.map[dropdownActiveIndex + 2];
         tick().then(refDropdown.scrollIntoView);
         ignoreHover = true;
         break;
@@ -340,15 +371,15 @@
         event.preventDefault();
       case 'Enter':
         if (!$hasDropdownOpened) return;
-        let activeDropdownItem = $flatMatching[dropdownActiveIndex];
+        let activeDropdownItem = availableItems[dropdownActiveIndex];
         if (creatable && $inputValue) {
           activeDropdownItem = !activeDropdownItem || event.ctrlKey 
             ? $inputValue
             : activeDropdownItem
         }
         activeDropdownItem && onSelect(null, activeDropdownItem);
-        if ($flatMatching.length <= dropdownActiveIndex) {
-          dropdownActiveIndex = $currentListLength > 0 ? $currentListLength : 0;
+        if (availableItems.length <= dropdownActiveIndex) {
+          dropdownActiveIndex = currentListLength > 0 ? currentListLength : 0;
         }
         event.preventDefault(); // prevent form submit
         break;
@@ -358,16 +389,17 @@
           event.preventDefault();
         }
         break;
+      // FUTURE: handle 'PageDown' & 'PageUp'
       case 'Backspace':
       case 'Delete':
-        if ($inputValue === '' && $selectedOptions.length) {
-          event.ctrlKey ? onDeselect({}) : onDeselect(null, $selectedOptions.pop());
+        if ($inputValue === '' && selectedOptions.length) {
+          event.ctrlKey ? onDeselect({}) : onDeselect(null, selectedOptions.pop());
         }
       default:
-        if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !$isFetchingData) {
+        if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !isFetchingData) {
           $hasDropdownOpened = true;
         }
-        if (!multiple && $selectedOptions.length && event.key !== 'Tab') event.preventDefault();
+        if (!multiple && selectedOptions.length && event.key !== 'Tab') event.preventDefault();
     }
   }
 
@@ -386,46 +418,41 @@
 
   /** ************************************ component lifecycle related */
 
-  let currentListSubscriber;
-
   onMount(() => {
     isInitialized = true;
     // Lazy calling of scrollIntoView function, which is required
-    currentListSubscriber = currentListLength.subscribe(val => {
-      if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
-      if (dropdownActiveIndex < 0) dropdownActiveIndex = 0;
+    // TODO: resolve, probably already fixed
+    // if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
+    // if (dropdownActiveIndex < 0) dropdownActiveIndex = listIndexMap.first;
+    if (prevSelection && !multiple) {
+      dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevSelection[currentValueField]);
       tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
-    });
+    }
     if (anchor) anchor.classList.add('anchored-select');
-  });
-
-  onDestroy(() => {
-    currentListSubscriber();
-    settingsUnsubscribe();
   });
 </script>
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} collapseSelection={collapseSelection ? config.i18n.collapsedSelection : null}
+    inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} {selectedOptions} {isFetchingData}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
     on:paste={onPaste}
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>
-  <svelte:component this={dropdownComponent} bind:this={refDropdown} renderer={itemRenderer} {creatable} 
-    maxReached={max && max === $selectedOptions.length}
+  <svelte:component this={dropdownComponent} bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached}
     dropdownIndex={dropdownActiveIndex}
+    items={availableItems} {listIndex}
+    {inputValue} {hasDropdownOpened} {listMessage}
     on:select={onSelect} 
     on:hover={onHover}
     let:item={item}
-  >
-    <div slot="dropdown-group-header" {item}><slot name="dropdown-group-header" {item}><b>{item.label}</b></slot></div>
-  </svelte:component>
+  ></svelte:component>
   {#if name && !anchor}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
-    {#each $selectedOptions as opt}
+    {#each selectedOptions as opt}
     <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
   </select>

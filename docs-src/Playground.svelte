@@ -80,22 +80,6 @@
 <details open>
 	<summary>Previous app</summary>
 <main style="text-align:left">
-	<!--
-	<div class="form-row">
-		<div style="display: flex; justify-content: space-between">
-			<div>
-				<button on:click={() => --maxItems}>-</button>
-				{maxItems}
-				<button on:click={() => ++maxItems}>+</button>
-			</div>
-			<label><input type="checkbox" bind:checked={searchable}>Searchable</label>
-			<label><input type="checkbox" bind:checked={creatable}>Createable</label>
-			<label><input type="checkbox" bind:checked={multiple}>Multiple</label>
-		</div>
-		<Svelecte {options} class="svelecte-control test" max={maxItems} {multiple} {searchable} {creatable} delimiter=";"></Svelecte>
-		<button on:click={() => options = dataset.countryGroups()}>Switch Source</button>
-	</div>
--->
 	<button on:click={() => { myValue = options[2] } }>Set Armenia</button>
 	<button on:click={() => { myValue = null } }>Clear</button>
 	<select bind:value={remoteValue}>
@@ -109,9 +93,8 @@
 	<button on:click={() => { settings.multiple = !settings.multiple; settings = settings; }}>M</button>
 	<button on:click={() => { settings.collapseSelection = !settings.collapseSelection; settings = settings; }}>C</button>
 	<div class="form-row" class:flexible-svelecte={isFlexWidth}>
-		<Svelecte {...settings} bind:selection={myValue}>
+		<Svelecte {...settings} bind:selection={myValue} max={3} name="select">
 			<b slot="icon">{slot}</b>
-			<h3 slot="dropdown-group-header" let:item={item}>Group: {item.label}</h3>
 		</Svelecte>
 	</div>
 	{JSON.stringify(myValue)}
@@ -134,7 +117,7 @@ npm install svelecte --save
 
 <h3>Basic Usage</h3>
 
-<Svelecte {options} virtualList={true}></Svelecte>
+<!-- <Svelecte {options} virtualList={true}></Svelecte> -->
 
 <details>
 	<summary>Show code</summary>
@@ -142,7 +125,7 @@ npm install svelecte --save
 
 <h3>Option groups</h3>
 
-<Svelecte options={groups}></Svelecte>
+<!-- <Svelecte options={groups}></Svelecte> -->
 
 Optgroups are distinguished by <code>label</code> property. And options are expected to be found under <code>options</code> property.
 

@@ -8,9 +8,9 @@ const app = new Playground({
 	target: document.getElementById('app')
 });
 
-window.customElements.define('el-svelecte', SvelecteElement);
-addFormatter('dotted', item => `<span style="background-color:${item.hex}" class="color"></span> ${item.text}`);
-addFormatter('caps', item => item.text.toUpperCase());
+// window.customElements.define('el-svelecte', SvelecteElement);
+// addFormatter('dotted', item => `<span style="background-color:${item.hex}" class="color"></span> ${item.text}`);
+// addFormatter('caps', item => item.text.toUpperCase());
 
 // setTimeout(() => {
 // 	window.el = document.querySelector('el-svelecte');

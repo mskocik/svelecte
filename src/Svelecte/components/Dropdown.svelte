@@ -1,15 +1,21 @@
 <script>
-  import { getContext, createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
-  import Item from './Item.svelte';
-  import { key } from './../contextStore.js';
+  import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
   import { isOutOfViewport} from './../lib/utils.js';
+  import Item from './Item.svelte';
 
   export let creatable;
   export let maxReached = false;
   export let dropdownIndex = 0;
   export let renderer;
+  export let items= [];
+  /** internal props */
+  export let inputValue;
+  export let listIndex;
+  export let hasDropdownOpened;
+  export let listMessage;
 
   export function scrollIntoView(params) {
+    console.log(dropdownIndex);
     const focusedEl = container.querySelector(`[data-pos="${dropdownIndex}"]`);
     if (!focusedEl) return;
     const focusedRect = focusedEl.getBoundingClientRect();
@@ -26,10 +32,6 @@
   }
 
   const dispatch = createEventDispatcher();
-  const {  // getContext
-    inputValue, hasDropdownOpened, listLength, currentListLength, listMessage,
-    isFetchingData, matchingOptions, flatMatching, selectedOptions, listIndexMap
-  } = getContext(key);
 
   let container;
   let scrollContainer;
@@ -37,9 +39,10 @@
   let isMounted = false;
   let hasEmptyList = false;
   let remoteSearch = false;
+  let currentListLength = 0; // TODO: fix for creatable
 
   $: {
-    hasEmptyList = $matchingOptions.length < 1 && (creatable 
+    hasEmptyList = items.length < 1 && (creatable 
       ? !$inputValue
       : true
     );
@@ -50,7 +53,7 @@
     const outVp = isOutOfViewport(scrollContainer);
     if (outVp.bottom && !outVp.top) {
       scrollContainer.style.bottom = (scrollContainer.parentElement.clientHeight + 1) + 'px';
-      // TODO: debounce ....
+      // FUTURE: debounce ....
     } else if (!val || outVp.top) {
       scrollContainer.style.bottom = '';
     }
@@ -75,52 +78,31 @@
   on:mousedown|preventDefault
 >
   <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
-  {#if $listLength}
-    {#each $matchingOptions as opt, i}
-      <!-- opt group -->
-      {#if opt.options && Array.isArray(opt.options)}
-        <div class="optgroup-header" on:mousedown|preventDefault>
-          <slot name="dropdown-group-header" item={opt}><b>{opt.label}</b></slot>
-        </div>
-        {#each opt.options as groupOpt, j}
-        <div data-pos={$listIndexMap[i][j]} class="optgroup-item" 
-          class:sv-dd-item-active={$listIndexMap[i][j] === dropdownIndex}
-        >
-          <Item formatter={renderer}
-            isDisabled={opt.isDisabled || groupOpt.isDisabled}
-            index={$listIndexMap[i][j]}
-            item={groupOpt}
-            on:hover
-            on:select>
-          </Item>
-        </div>
-        {/each}
-      {:else} <!-- END opt group -->
-      <div data-pos={$listIndexMap[i]}
-        class:sv-dd-item-active={$listIndexMap[i] === dropdownIndex}
-      >
+  {#if items.length}
+    {#each items as opt, i}
+      <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] === dropdownIndex}>
         <Item formatter={renderer}
-          index={$listIndexMap[i]}
+          index={listIndex.map[i]}
           isDisabled={opt.isDisabled}
           item={opt}
+          inputValue={$inputValue}
           on:hover
           on:select>
         </Item>
       </div>
-      {/if}
     {/each}
   {/if}
-    {#if $inputValue && creatable && !maxReached}
-    <div class="creatable-row" on:click={dispatch('select', $inputValue)} class:active={$currentListLength === dropdownIndex}>
+  {#if $inputValue && creatable && !maxReached}
+    <div class="creatable-row" on:click={dispatch('select', $inputValue)} class:active={currentListLength === dropdownIndex}>
       <span>Create '{$inputValue}'</span>
-      {#if $currentListLength !== dropdownIndex}
+      {#if currentListLength !== dropdownIndex}
       <span class="shortcut"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
       {/if}
     </div>
-    {/if}
-    {#if hasEmptyList || maxReached}
-    <div class="empty-list-row">{$listMessage}</div>
-    {/if}
+  {/if}
+  {#if hasEmptyList || maxReached}
+    <div class="empty-list-row">{listMessage}</div>
+  {/if}
   </div>
 </div>
 
@@ -184,10 +166,6 @@
   text-align: left;
 }
 
-.optgroup-header {
-  padding: 3px 3px 3px 6px;
-  font-weight: bold;
-}
 .optgroup-item {
   margin-left: 0.5rem;
 }

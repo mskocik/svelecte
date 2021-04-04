@@ -10,7 +10,7 @@
   <!-- Favicon and title -->
 	<link rel='icon' type='image/png' href='favicon.png'>
 	<link rel='stylesheet' href='global.css'>
-	<link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.0/css/halfmoon-variables.min.css" rel="stylesheet" />
+	<link href="https://unpkg.com/@primer/css@^16.0.0/dist/primer.css" rel="stylesheet" />
 	<link rel='stylesheet' href='assets/docs.css'>
 
 	<style>
@@ -33,21 +33,13 @@
 		}
 	</style>
   <title>Svelecte - select with autocomplete written in Svelte</title>
-
-  <!-- Halfmoon CSS -->
-  <!--
-    Or,
-    Use the following (no variables, supports IE11):
-    <link href="https://cdn.jsdelivr.net/npm/halfmoon@1.1.0/css/halfmoon.min.css" rel="stylesheet" />
-    Learn more: https://www.gethalfmoon.com/docs/customize/#notes-on-browser-compatibility
-  -->
 </head>
-<body class="with-custom-webkit-scrollbars with-custom-css-scrollbars" data-set-preferred-mode-onload="true">
+<body>
   <!-- Modals go here -->
   <!-- Reference: https://www.gethalfmoon.com/docs/modal -->
 
   <!-- Page wrapper start -->
-  <div class="page-wrapper with-navbar with-sidebar">
+  <div class="d-flex">
 
     <!-- Navbar start -->
     <nav class="navbar">
@@ -230,6 +222,5 @@
 
   <!-- Halfmoon JS -->
   <script src='assets/docs.js' defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/halfmoon@1.1.0/js/halfmoon.min.js"></script>
 </body>
 </html>

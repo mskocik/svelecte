@@ -23,9 +23,8 @@ const settings = {
   i18n: {
     empty: 'No options',
     nomatch: 'No matching options',    
-    max: 'Maximum items :maxItems selected',
+    max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to search',
-    fetchWait: 'Stop typing to search',
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => {
       // example of plural collapse

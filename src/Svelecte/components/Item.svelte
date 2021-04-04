@@ -1,10 +1,8 @@
 <script>
-  import { getContext } from 'svelte';
-  import { key } from './../contextStore.js';
   import itemActions from './../actions.js';
   import { highlightSearch } from './../lib/utils.js';
 
-  const { inputValue } = getContext(key);
+  export let inputValue;  // value only
 
   export let index = -1;
   export let item = {};
@@ -15,6 +13,9 @@
   export let formatter = null;
 </script>
 
+{#if item.$isGroupHeader}
+<div class="optgroup-header" on:mousedown|preventDefault><b>{item.label}</b></div>
+{:else}
 <div class="sv-item"
   title={item._created ? 'Created item' : ''}
   class:is-disabled={isDisabled}
@@ -23,15 +24,20 @@
   on:deselect
   on:hover
 >
-  {@html highlightSearch(item, isSelected, $inputValue, formatter)}
+  {@html highlightSearch(item, isSelected, inputValue, formatter)}
 {#if isSelected && isMultiple}
   <a href="#deselect" class="sv-item-btn" tabindex="-1" data-action="deselect">
     <svg height="16" width="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path></svg>
   </a>
 {/if}
 </div>
+{/if}
 
 <style>
+.optgroup-header {
+  padding: 3px 3px 3px 6px;
+  font-weight: bold;
+}
 :global(.has-multiSelection .sv-item) {
   background-color: #efefef;
   margin: 2px 4px 2px 0;

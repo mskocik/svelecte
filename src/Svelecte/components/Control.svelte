@@ -1,6 +1,5 @@
 <script>
-  import { getContext, createEventDispatcher } from 'svelte';
-  import { key } from './../contextStore.js';
+  import { createEventDispatcher } from 'svelte';
   import Input from './Input.svelte';
   import Item from './Item.svelte';
 
@@ -11,6 +10,14 @@
   export let placeholder;
   export let multiple;
   export let collapseSelection;
+  /** internal props */
+  export let inputValue;
+  export let hasFocus;
+  export let hasDropdownOpened;
+  export let selectedOptions;
+  export let isFetchingData;
+
+
   export function focusControl(event) {
     if (disabled) return;
     if (!event) {
@@ -27,7 +34,6 @@
 
   /** ************************************ context */
   const dispatch = createEventDispatcher();
-  const { inputValue, hasFocus, hasDropdownOpened, selectedOptions, isFetchingData, listMessage } = getContext(key);
   
   let doCollapse = true;
   let refInput = undefined;
@@ -58,17 +64,18 @@
   <slot name="icon"></slot>
   <!-- selection & input -->
   <div class="sv-content sv-input-row" class:has-multiSelection={multiple}>
-    {#if $selectedOptions.length }
+    {#if selectedOptions.length }
       {#if multiple && collapseSelection && doCollapse}
-        { collapseSelection($selectedOptions.length) }
+        { collapseSelection(selectedOptions.length) }
       {:else}
-      {#each $selectedOptions as opt}
-      <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple}></Item>
+      {#each selectedOptions as opt}
+      <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple} inputValue={$inputValue}></Item>
       {/each}
       {/if}
     {/if}
     <!-- input -->
     <Input {disabled} {searchable} {placeholder} {multiple}
+      {inputValue} {hasDropdownOpened} {selectedOptions}
       bind:this={refInput}
       on:focus={onFocus}
       on:blur={onBlur}
@@ -77,8 +84,8 @@
     ></Input>
   </div>
   <!-- buttons, indicators -->
-  <div class="indicator" class:is-loading={$isFetchingData} >
-    {#if clearable && $selectedOptions.length && !disabled}
+  <div class="indicator" class:is-loading={isFetchingData} >
+    {#if clearable && selectedOptions.length && !disabled}
     <div aria-hidden="true" class="indicator-container close-icon"
       on:mousedown|preventDefault
       on:click={() => dispatch('deselect')}
