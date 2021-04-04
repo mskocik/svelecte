@@ -93,7 +93,7 @@
 	<button on:click={() => { settings.multiple = !settings.multiple; settings = settings; }}>M</button>
 	<button on:click={() => { settings.collapseSelection = !settings.collapseSelection; settings = settings; }}>C</button>
 	<div class="form-row" class:flexible-svelecte={isFlexWidth}>
-		<Svelecte {...settings} bind:selection={myValue} max={3} name="select">
+		<Svelecte {...settings} bind:selection={myValue} max={3} name="select" virtualList creatable>
 			<b slot="icon">{slot}</b>
 		</Svelecte>
 	</div>

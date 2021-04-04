@@ -9,6 +9,7 @@ const settings = {
   searchable: true,
   disabled: false,
   creatable: false,
+  creatablePrefix: '👉',
   clearable: false,
   selectOnTab: false,
   placeholder: 'Select',

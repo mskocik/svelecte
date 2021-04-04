@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
+  import VirtualList from 'svelte-tiny-virtual-list';
   import { isOutOfViewport} from './../lib/utils.js';
   import Item from './Item.svelte';
 
@@ -8,6 +9,7 @@
   export let dropdownIndex = 0;
   export let renderer;
   export let items= [];
+  export let virtualList;
   /** internal props */
   export let inputValue;
   export let listIndex;
@@ -73,24 +75,46 @@
   onDestroy(() => dropdownStateSubscription());
 </script>
 
-<div class="sv-dropdown" aria-expanded={$hasDropdownOpened} tabindex="-1" 
+<div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened} tabindex="-1" 
   bind:this={scrollContainer}
   on:mousedown|preventDefault
 >
   <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
   {#if items.length}
-    {#each items as opt, i}
-      <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] === dropdownIndex}>
-        <Item formatter={renderer}
-          index={listIndex.map[i]}
-          isDisabled={opt.isDisabled}
-          item={opt}
-          inputValue={$inputValue}
-          on:hover
-          on:select>
-        </Item>
-      </div>
-    {/each}
+    {#if virtualList}
+      <VirtualList
+      width="100%"
+      height={Math.min(242, items.length * 27)}
+      itemCount={items.length}
+      itemSize={27}
+      scrollToAlignment="auto"
+      scrollToIndex={items.length && isMounted ? dropdownIndex :  null}
+      >
+        <div slot="item" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>
+          <Item formatter={renderer}
+            index={listIndex.map[index]}
+            isDisabled={items[index].isDisabled}
+            item={items[index]}
+            inputValue={$inputValue}
+            on:hover
+            on:select>
+          </Item>
+        </div>
+      </VirtualList>
+    {:else}
+      {#each items as opt, i}
+        <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] === dropdownIndex}>
+          <Item formatter={renderer}
+            index={listIndex.map[i]}
+            isDisabled={opt.isDisabled}
+            item={opt}
+            inputValue={$inputValue}
+            on:hover
+            on:select>
+          </Item>
+        </div>
+      {/each}
+    {/if}
   {/if}
   {#if $inputValue && creatable && !maxReached}
     <div class="creatable-row" on:click={dispatch('select', $inputValue)} class:active={currentListLength === dropdownIndex}>
@@ -122,6 +146,9 @@
   border-radius: .25rem;
   box-shadow: 0 6px 12px rgba(0,0,0,0.175);
   z-index: 2;
+}
+.sv-dropdown.is-virtual {
+  overflow-y: hidden;
 }
 .sv-dropdown[aria-expanded="true"] { display: block; }
 .sv-dropdown-content.max-reached { opacity: 0.75; cursor: not-allowed; }
@@ -164,9 +191,5 @@
   overflow: hidden;
   padding: 3px 3px 3px 6px;
   text-align: left;
-}
-
-.optgroup-item {
-  margin-left: 0.5rem;
 }
 </style>

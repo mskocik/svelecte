@@ -24,7 +24,6 @@
   import { flatList, filterList, indexList } from './lib/list.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
-  import DropdownVirtual from './components/DropdownVirtual.svelte';
 
   export let name = null;
   export let anchor = null;
@@ -33,6 +32,7 @@
   export let collapseSelection = defaults.collapseSelection;
   export let disabled = defaults.disabled;
   export let creatable = defaults.creatable;
+  export let creatablePrefix = defaults.creatablePrefix;
   export let selectOnTab = defaults.selectOnTab;
   export let valueField = defaults.valueField;
   export let labelField = defaults.labelField;
@@ -278,6 +278,15 @@
     if (!multiple && selectedOptions.length) {
       selectedOptions[0].isSelected = false;
     }
+    if (typeof opt === 'string') {
+      opt = {
+        [currentLabelField]: `${creatablePrefix}${opt}`,
+        [currentValueField]: encodeURIComponent(opt),
+        isSelected: true,
+        _created: true,
+      };
+      options = [...options, opt];
+    }
     opt.isSelected = true;
     flatItems = flatItems;
     $inputValue = '';
@@ -442,14 +451,14 @@
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>
-  <svelte:component this={dropdownComponent} bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached}
+  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached} virtualList={creatable ? false : virtualList}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
     {inputValue} {hasDropdownOpened} {listMessage}
     on:select={onSelect} 
     on:hover={onHover}
     let:item={item}
-  ></svelte:component>
+  ></Dropdown>
   {#if name && !anchor}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
     {#each selectedOptions as opt}
