@@ -9,6 +9,7 @@
   export let dropdownIndex = 0;
   export let renderer;
   export let items= [];
+  export let alreadyCreated;
   export let virtualList;
   export let vlItemSize;
   export let vlHeight;
@@ -171,7 +172,10 @@
     {/if}
   {/if}
   {#if $inputValue && creatable && !maxReached}
-    <div class="creatable-row" on:click={dispatch('select', $inputValue)} class:active={currentListLength === dropdownIndex}>
+    <div class="creatable-row" on:click={dispatch('select', $inputValue)}
+      class:active={currentListLength === dropdownIndex}
+      class:is-disabled={alreadyCreated.includes($inputValue)}
+    >
       <span>Create '{$inputValue}'</span>
       {#if currentListLength !== dropdownIndex}
       <span class="shortcut"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
@@ -219,6 +223,14 @@
 .creatable-row:active,
 .creatable-row.active {
     background-color: #F2F5F8;
+}
+.creatable-row.active.is-disabled {
+  opacity: 0.5;
+  background-color: rgb(252, 186, 186);
+}
+.creatable-row.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .shortcut {

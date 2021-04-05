@@ -170,27 +170,28 @@
   }
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
   let selectedOptions = new Set();
+  let alreadyCreated = [];
   $: flatItems = flatList(options);
   $: maxReached = max && selectedOptions.length === max 
   $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, selectedOptions.length);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
-  $: listIndex = indexList(availableItems, currentListLength);
-  // $: {
-  //   if (dropdownActiveIndex === null) {
-  //     dropdownActiveIndex = listIndex.first;
-  //   } else if (dropdownActiveIndex > listIndex.last) {
-  //     dropdownActiveIndex = listIndex.last;
-  //   }
-  // }
+  $: listIndex = indexList(availableItems, creatable && $inputValue);
+  $: {
+    if (dropdownActiveIndex === null) {
+      dropdownActiveIndex = listIndex.first;
+    } else if (dropdownActiveIndex > listIndex.last) {
+      dropdownActiveIndex = listIndex.last;
+    }
+  }
   $: listMessage = maxReached ? config.i18n.max(max) : config.i18n.empty;
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
     const _unifiedSelection = multiple 
       ? Array.from(selectedOptions)
-      : selectedOptions.size ? selectedOptions[0] : null;
+      : selectedOptions.size ? [...selectedOptions][0] : null;
     value = multiple 
       ? Array.from(selectedOptions).map(opt => opt[currentValueField])
-      : selectedOptions.size ? selectedOptions[0][currentValueField] : null;
+      : selectedOptions.size ? [...selectedOptions][0][currentValueField] : null;
     prevSelection = _unifiedSelection;
     selection = _unifiedSelection;
     // Custom-element related
@@ -217,7 +218,6 @@
       }
       // NOTE: this event should not be emitted
       // if (options.some(opt => opt.isSelected)) emitChangeEvent();
-      // option
     }
   }
   // $: dropdownComponent = virtualList ? DropdownVirtual : Dropdown;
@@ -256,6 +256,8 @@
     if (maxReached) return;
     
     if (typeof opt === 'string') {
+      if (alreadyCreated.includes(opt)) return;
+      alreadyCreated.push(opt);
       opt = {
         [currentLabelField]: `${creatablePrefix}${opt}`,
         [currentValueField]: encodeURIComponent(opt),
@@ -304,7 +306,6 @@
   function onDeselect(event, opt) {
     if (disabled) return;
     opt = opt || event.detail;
-    console.log('deselect', opt);
     if (opt) {
       deselectOption(opt);
     } else {  // apply for 'x' when clearable:true || ctrl+backspace || ctrl+delete
@@ -453,7 +454,7 @@
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>
-  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached} 
+  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached} {alreadyCreated}
     virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}

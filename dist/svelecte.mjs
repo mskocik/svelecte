@@ -1369,8 +1369,10 @@ let indexMapping = {
   map: [],
   first: null,
   last: null,
+  hasCreateRow: false,
   next(curr, prevOnUndefined) {
     const val = this.map[++curr];
+    if (this.hasCreateRow && curr === this.last) return this.last;
     if (val === '') return this.next(curr);
     if (val === undefined) {
       if (curr > this.map.length) curr = this.first - 1;
@@ -1380,6 +1382,7 @@ let indexMapping = {
   },
   prev(curr) {
     const val = this.map[--curr];
+    if (this.hasCreateRow && curr === this.first) return this.first;
     if (val === '') return this.prev(curr);
     if (!val) return this.last;
     return val;
@@ -1457,16 +1460,17 @@ function filterList(options, inputValue, excludeSelected) {
   return mapped;
 }
 
-function indexList(options) {
+function indexList(options, includeCreateRow) {
   const map = optionsWithGroups
     ? options.reduce((res, opt, index) => {
       res.push(opt.$isGroupHeader ? '' : index);
       return res;
     }, [])
     : Object.keys(options);
+  indexMapping.hasCreateRow = !!includeCreateRow;
   indexMapping.map = map;
   indexMapping.first = map[0] !== '' ? 0 : 1;
-  indexMapping.last = map.length - 1;
+  indexMapping.last = map.length ? map.length - (includeCreateRow ? 0 : 1) : 0;
   return indexMapping;
 }
 
@@ -4583,12 +4587,12 @@ const file$4 = "src\\Svelecte\\components\\Dropdown.svelte";
 
 function get_each_context$2(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[39] = list[i];
-	child_ctx[41] = i;
+	child_ctx[40] = list[i];
+	child_ctx[42] = i;
 	return child_ctx;
 }
 
-// (137:2) {#if items.length}
+// (138:2) {#if items.length}
 function create_if_block_3$1(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -4598,7 +4602,7 @@ function create_if_block_3$1(ctx) {
 	const if_blocks = [];
 
 	function select_block_type(ctx, dirty) {
-		if (/*virtualList*/ ctx[5]) return 0;
+		if (/*virtualList*/ ctx[6]) return 0;
 		return 1;
 	}
 
@@ -4659,14 +4663,14 @@ function create_if_block_3$1(ctx) {
 		block,
 		id: create_if_block_3$1.name,
 		type: "if",
-		source: "(137:2) {#if items.length}",
+		source: "(138:2) {#if items.length}",
 		ctx
 	});
 
 	return block;
 }
 
-// (158:4) {:else}
+// (159:4) {:else}
 function create_else_block$2(ctx) {
 	let each_1_anchor;
 	let current;
@@ -4699,7 +4703,7 @@ function create_else_block$2(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*listIndex, dropdownIndex, renderer, items, $inputValue*/ 262297) {
+			if (dirty[0] & /*listIndex, dropdownIndex, renderer, items, $inputValue*/ 524569) {
 				each_value = /*items*/ ctx[4];
 				validate_each_argument(each_value);
 				let i;
@@ -4755,39 +4759,39 @@ function create_else_block$2(ctx) {
 		block,
 		id: create_else_block$2.name,
 		type: "else",
-		source: "(158:4) {:else}",
+		source: "(159:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (138:4) {#if virtualList}
+// (139:4) {#if virtualList}
 function create_if_block_4(ctx) {
 	let virtuallist;
 	let current;
 
 	let virtuallist_props = {
 		width: "100%",
-		height: /*vl_listHeight*/ ctx[17],
+		height: /*vl_listHeight*/ ctx[18],
 		itemCount: /*items*/ ctx[4].length,
-		itemSize: /*vl_itemSize*/ ctx[14],
+		itemSize: /*vl_itemSize*/ ctx[15],
 		scrollToAlignment: "auto",
-		scrollToIndex: /*items*/ ctx[4].length && /*isMounted*/ ctx[12]
+		scrollToIndex: /*items*/ ctx[4].length && /*isMounted*/ ctx[13]
 		? /*dropdownIndex*/ ctx[0]
 		: null,
 		$$slots: {
 			item: [
 				create_item_slot,
-				({ index, style }) => ({ 37: index, 38: style }),
-				({ index, style }) => [0, (index ? 64 : 0) | (style ? 128 : 0)]
+				({ index, style }) => ({ 38: index, 39: style }),
+				({ index, style }) => [0, (index ? 128 : 0) | (style ? 256 : 0)]
 			]
 		},
 		$$scope: { ctx }
 	};
 
 	virtuallist = new VirtualList({ props: virtuallist_props, $$inline: true });
-	/*virtuallist_binding*/ ctx[27](virtuallist);
+	/*virtuallist_binding*/ ctx[28](virtuallist);
 
 	const block = {
 		c: function create() {
@@ -4799,15 +4803,15 @@ function create_if_block_4(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			const virtuallist_changes = {};
-			if (dirty[0] & /*vl_listHeight*/ 131072) virtuallist_changes.height = /*vl_listHeight*/ ctx[17];
+			if (dirty[0] & /*vl_listHeight*/ 262144) virtuallist_changes.height = /*vl_listHeight*/ ctx[18];
 			if (dirty[0] & /*items*/ 16) virtuallist_changes.itemCount = /*items*/ ctx[4].length;
-			if (dirty[0] & /*vl_itemSize*/ 16384) virtuallist_changes.itemSize = /*vl_itemSize*/ ctx[14];
+			if (dirty[0] & /*vl_itemSize*/ 32768) virtuallist_changes.itemSize = /*vl_itemSize*/ ctx[15];
 
-			if (dirty[0] & /*items, isMounted, dropdownIndex*/ 4113) virtuallist_changes.scrollToIndex = /*items*/ ctx[4].length && /*isMounted*/ ctx[12]
+			if (dirty[0] & /*items, isMounted, dropdownIndex*/ 8209) virtuallist_changes.scrollToIndex = /*items*/ ctx[4].length && /*isMounted*/ ctx[13]
 			? /*dropdownIndex*/ ctx[0]
 			: null;
 
-			if (dirty[0] & /*dropdownIndex, renderer, listIndex, items, $inputValue*/ 262297 | dirty[1] & /*$$scope, style, index*/ 2240) {
+			if (dirty[0] & /*dropdownIndex, renderer, listIndex, items, $inputValue*/ 524569 | dirty[1] & /*$$scope, style, index*/ 4480) {
 				virtuallist_changes.$$scope = { dirty, ctx };
 			}
 
@@ -4823,7 +4827,7 @@ function create_if_block_4(ctx) {
 			current = false;
 		},
 		d: function destroy(detaching) {
-			/*virtuallist_binding*/ ctx[27](null);
+			/*virtuallist_binding*/ ctx[28](null);
 			destroy_component(virtuallist, detaching);
 		}
 	};
@@ -4832,14 +4836,14 @@ function create_if_block_4(ctx) {
 		block,
 		id: create_if_block_4.name,
 		type: "if",
-		source: "(138:4) {#if virtualList}",
+		source: "(139:4) {#if virtualList}",
 		ctx
 	});
 
 	return block;
 }
 
-// (159:6) {#each items as opt, i}
+// (160:6) {#each items as opt, i}
 function create_each_block$2(ctx) {
 	let div;
 	let item;
@@ -4850,25 +4854,25 @@ function create_each_block$2(ctx) {
 	item = new Item({
 			props: {
 				formatter: /*renderer*/ ctx[3],
-				index: /*listIndex*/ ctx[7].map[/*i*/ ctx[41]],
-				isDisabled: /*opt*/ ctx[39].isDisabled,
-				item: /*opt*/ ctx[39],
-				inputValue: /*$inputValue*/ ctx[18]
+				index: /*listIndex*/ ctx[8].map[/*i*/ ctx[42]],
+				isDisabled: /*opt*/ ctx[40].isDisabled,
+				item: /*opt*/ ctx[40],
+				inputValue: /*$inputValue*/ ctx[19]
 			},
 			$$inline: true
 		});
 
-	item.$on("hover", /*hover_handler_1*/ ctx[28]);
-	item.$on("select", /*select_handler_1*/ ctx[29]);
+	item.$on("hover", /*hover_handler_1*/ ctx[29]);
+	item.$on("select", /*select_handler_1*/ ctx[30]);
 
 	const block = {
 		c: function create() {
 			div = element("div");
 			create_component(item.$$.fragment);
 			t = space();
-			attr_dev(div, "data-pos", div_data_pos_value = /*listIndex*/ ctx[7].map[/*i*/ ctx[41]]);
-			toggle_class(div, "sv-dd-item-active", /*listIndex*/ ctx[7].map[/*i*/ ctx[41]] === /*dropdownIndex*/ ctx[0]);
-			add_location(div, file$4, 159, 8, 5894);
+			attr_dev(div, "data-pos", div_data_pos_value = /*listIndex*/ ctx[8].map[/*i*/ ctx[42]]);
+			toggle_class(div, "sv-dd-item-active", /*listIndex*/ ctx[8].map[/*i*/ ctx[42]] === /*dropdownIndex*/ ctx[0]);
+			add_location(div, file$4, 160, 8, 5924);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -4879,23 +4883,23 @@ function create_each_block$2(ctx) {
 		p: function update(ctx, dirty) {
 			const item_changes = {};
 			if (dirty[0] & /*renderer*/ 8) item_changes.formatter = /*renderer*/ ctx[3];
-			if (dirty[0] & /*listIndex*/ 128) item_changes.index = /*listIndex*/ ctx[7].map[/*i*/ ctx[41]];
-			if (dirty[0] & /*items*/ 16) item_changes.isDisabled = /*opt*/ ctx[39].isDisabled;
-			if (dirty[0] & /*items*/ 16) item_changes.item = /*opt*/ ctx[39];
-			if (dirty[0] & /*$inputValue*/ 262144) item_changes.inputValue = /*$inputValue*/ ctx[18];
+			if (dirty[0] & /*listIndex*/ 256) item_changes.index = /*listIndex*/ ctx[8].map[/*i*/ ctx[42]];
+			if (dirty[0] & /*items*/ 16) item_changes.isDisabled = /*opt*/ ctx[40].isDisabled;
+			if (dirty[0] & /*items*/ 16) item_changes.item = /*opt*/ ctx[40];
+			if (dirty[0] & /*$inputValue*/ 524288) item_changes.inputValue = /*$inputValue*/ ctx[19];
 
-			if (dirty[1] & /*$$scope*/ 2048) {
+			if (dirty[1] & /*$$scope*/ 4096) {
 				item_changes.$$scope = { dirty, ctx };
 			}
 
 			item.$set(item_changes);
 
-			if (!current || dirty[0] & /*listIndex*/ 128 && div_data_pos_value !== (div_data_pos_value = /*listIndex*/ ctx[7].map[/*i*/ ctx[41]])) {
+			if (!current || dirty[0] & /*listIndex*/ 256 && div_data_pos_value !== (div_data_pos_value = /*listIndex*/ ctx[8].map[/*i*/ ctx[42]])) {
 				attr_dev(div, "data-pos", div_data_pos_value);
 			}
 
-			if (dirty[0] & /*listIndex, dropdownIndex*/ 129) {
-				toggle_class(div, "sv-dd-item-active", /*listIndex*/ ctx[7].map[/*i*/ ctx[41]] === /*dropdownIndex*/ ctx[0]);
+			if (dirty[0] & /*listIndex, dropdownIndex*/ 257) {
+				toggle_class(div, "sv-dd-item-active", /*listIndex*/ ctx[8].map[/*i*/ ctx[42]] === /*dropdownIndex*/ ctx[0]);
 			}
 		},
 		i: function intro(local) {
@@ -4917,14 +4921,14 @@ function create_each_block$2(ctx) {
 		block,
 		id: create_each_block$2.name,
 		type: "each",
-		source: "(159:6) {#each items as opt, i}",
+		source: "(160:6) {#each items as opt, i}",
 		ctx
 	});
 
 	return block;
 }
 
-// (147:8) <div slot="item" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>
+// (148:8) <div slot="item" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>
 function create_item_slot(ctx) {
 	let div;
 	let item;
@@ -4934,25 +4938,25 @@ function create_item_slot(ctx) {
 	item = new Item({
 			props: {
 				formatter: /*renderer*/ ctx[3],
-				index: /*listIndex*/ ctx[7].map[/*index*/ ctx[37]],
-				isDisabled: /*items*/ ctx[4][/*index*/ ctx[37]].isDisabled,
-				item: /*items*/ ctx[4][/*index*/ ctx[37]],
-				inputValue: /*$inputValue*/ ctx[18]
+				index: /*listIndex*/ ctx[8].map[/*index*/ ctx[38]],
+				isDisabled: /*items*/ ctx[4][/*index*/ ctx[38]].isDisabled,
+				item: /*items*/ ctx[4][/*index*/ ctx[38]],
+				inputValue: /*$inputValue*/ ctx[19]
 			},
 			$$inline: true
 		});
 
-	item.$on("hover", /*hover_handler*/ ctx[25]);
-	item.$on("select", /*select_handler*/ ctx[26]);
+	item.$on("hover", /*hover_handler*/ ctx[26]);
+	item.$on("select", /*select_handler*/ ctx[27]);
 
 	const block = {
 		c: function create() {
 			div = element("div");
 			create_component(item.$$.fragment);
 			attr_dev(div, "slot", "item");
-			attr_dev(div, "style", div_style_value = /*style*/ ctx[38]);
-			toggle_class(div, "sv-dd-item-active", /*index*/ ctx[37] === /*dropdownIndex*/ ctx[0]);
-			add_location(div, file$4, 146, 8, 5441);
+			attr_dev(div, "style", div_style_value = /*style*/ ctx[39]);
+			toggle_class(div, "sv-dd-item-active", /*index*/ ctx[38] === /*dropdownIndex*/ ctx[0]);
+			add_location(div, file$4, 147, 8, 5471);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -4962,23 +4966,23 @@ function create_item_slot(ctx) {
 		p: function update(ctx, dirty) {
 			const item_changes = {};
 			if (dirty[0] & /*renderer*/ 8) item_changes.formatter = /*renderer*/ ctx[3];
-			if (dirty[0] & /*listIndex*/ 128 | dirty[1] & /*index*/ 64) item_changes.index = /*listIndex*/ ctx[7].map[/*index*/ ctx[37]];
-			if (dirty[0] & /*items*/ 16 | dirty[1] & /*index*/ 64) item_changes.isDisabled = /*items*/ ctx[4][/*index*/ ctx[37]].isDisabled;
-			if (dirty[0] & /*items*/ 16 | dirty[1] & /*index*/ 64) item_changes.item = /*items*/ ctx[4][/*index*/ ctx[37]];
-			if (dirty[0] & /*$inputValue*/ 262144) item_changes.inputValue = /*$inputValue*/ ctx[18];
+			if (dirty[0] & /*listIndex*/ 256 | dirty[1] & /*index*/ 128) item_changes.index = /*listIndex*/ ctx[8].map[/*index*/ ctx[38]];
+			if (dirty[0] & /*items*/ 16 | dirty[1] & /*index*/ 128) item_changes.isDisabled = /*items*/ ctx[4][/*index*/ ctx[38]].isDisabled;
+			if (dirty[0] & /*items*/ 16 | dirty[1] & /*index*/ 128) item_changes.item = /*items*/ ctx[4][/*index*/ ctx[38]];
+			if (dirty[0] & /*$inputValue*/ 524288) item_changes.inputValue = /*$inputValue*/ ctx[19];
 
-			if (dirty[1] & /*$$scope*/ 2048) {
+			if (dirty[1] & /*$$scope*/ 4096) {
 				item_changes.$$scope = { dirty, ctx };
 			}
 
 			item.$set(item_changes);
 
-			if (!current || dirty[1] & /*style*/ 128 && div_style_value !== (div_style_value = /*style*/ ctx[38])) {
+			if (!current || dirty[1] & /*style*/ 256 && div_style_value !== (div_style_value = /*style*/ ctx[39])) {
 				attr_dev(div, "style", div_style_value);
 			}
 
-			if (dirty[0] & /*dropdownIndex*/ 1 | dirty[1] & /*index*/ 64) {
-				toggle_class(div, "sv-dd-item-active", /*index*/ ctx[37] === /*dropdownIndex*/ ctx[0]);
+			if (dirty[0] & /*dropdownIndex*/ 1 | dirty[1] & /*index*/ 128) {
+				toggle_class(div, "sv-dd-item-active", /*index*/ ctx[38] === /*dropdownIndex*/ ctx[0]);
 			}
 		},
 		i: function intro(local) {
@@ -5000,14 +5004,14 @@ function create_item_slot(ctx) {
 		block,
 		id: create_item_slot.name,
 		type: "slot",
-		source: "(147:8) <div slot=\\\"item\\\" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>",
+		source: "(148:8) <div slot=\\\"item\\\" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (173:2) {#if $inputValue && creatable && !maxReached}
+// (174:2) {#if $inputValue && creatable && !maxReached}
 function create_if_block_1$2(ctx) {
 	let div;
 	let span;
@@ -5017,21 +5021,22 @@ function create_if_block_1$2(ctx) {
 	let t3;
 	let mounted;
 	let dispose;
-	let if_block = /*currentListLength*/ ctx[16] !== /*dropdownIndex*/ ctx[0] && create_if_block_2$1(ctx);
+	let if_block = /*currentListLength*/ ctx[17] !== /*dropdownIndex*/ ctx[0] && create_if_block_2$1(ctx);
 
 	const block = {
 		c: function create() {
 			div = element("div");
 			span = element("span");
 			t0 = text("Create '");
-			t1 = text(/*$inputValue*/ ctx[18]);
+			t1 = text(/*$inputValue*/ ctx[19]);
 			t2 = text("'");
 			t3 = space();
 			if (if_block) if_block.c();
-			add_location(span, file$4, 174, 6, 6467);
-			attr_dev(div, "class", "creatable-row svelte-2nw4gl");
-			toggle_class(div, "active", /*currentListLength*/ ctx[16] === /*dropdownIndex*/ ctx[0]);
-			add_location(div, file$4, 173, 4, 6338);
+			add_location(span, file$4, 178, 6, 6574);
+			attr_dev(div, "class", "creatable-row svelte-mhc3oe");
+			toggle_class(div, "active", /*currentListLength*/ ctx[17] === /*dropdownIndex*/ ctx[0]);
+			toggle_class(div, "is-disabled", /*alreadyCreated*/ ctx[5].includes(/*$inputValue*/ ctx[19]));
+			add_location(div, file$4, 174, 4, 6368);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -5047,7 +5052,7 @@ function create_if_block_1$2(ctx) {
 					div,
 					"click",
 					function () {
-						if (is_function(/*dispatch*/ ctx[20]("select", /*$inputValue*/ ctx[18]))) /*dispatch*/ ctx[20]("select", /*$inputValue*/ ctx[18]).apply(this, arguments);
+						if (is_function(/*dispatch*/ ctx[21]("select", /*$inputValue*/ ctx[19]))) /*dispatch*/ ctx[21]("select", /*$inputValue*/ ctx[19]).apply(this, arguments);
 					},
 					false,
 					false,
@@ -5059,9 +5064,9 @@ function create_if_block_1$2(ctx) {
 		},
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
-			if (dirty[0] & /*$inputValue*/ 262144) set_data_dev(t1, /*$inputValue*/ ctx[18]);
+			if (dirty[0] & /*$inputValue*/ 524288) set_data_dev(t1, /*$inputValue*/ ctx[19]);
 
-			if (/*currentListLength*/ ctx[16] !== /*dropdownIndex*/ ctx[0]) {
+			if (/*currentListLength*/ ctx[17] !== /*dropdownIndex*/ ctx[0]) {
 				if (if_block) ; else {
 					if_block = create_if_block_2$1(ctx);
 					if_block.c();
@@ -5072,8 +5077,12 @@ function create_if_block_1$2(ctx) {
 				if_block = null;
 			}
 
-			if (dirty[0] & /*currentListLength, dropdownIndex*/ 65537) {
-				toggle_class(div, "active", /*currentListLength*/ ctx[16] === /*dropdownIndex*/ ctx[0]);
+			if (dirty[0] & /*currentListLength, dropdownIndex*/ 131073) {
+				toggle_class(div, "active", /*currentListLength*/ ctx[17] === /*dropdownIndex*/ ctx[0]);
+			}
+
+			if (dirty[0] & /*alreadyCreated, $inputValue*/ 524320) {
+				toggle_class(div, "is-disabled", /*alreadyCreated*/ ctx[5].includes(/*$inputValue*/ ctx[19]));
 			}
 		},
 		d: function destroy(detaching) {
@@ -5088,14 +5097,14 @@ function create_if_block_1$2(ctx) {
 		block,
 		id: create_if_block_1$2.name,
 		type: "if",
-		source: "(173:2) {#if $inputValue && creatable && !maxReached}",
+		source: "(174:2) {#if $inputValue && creatable && !maxReached}",
 		ctx
 	});
 
 	return block;
 }
 
-// (176:6) {#if currentListLength !== dropdownIndex}
+// (180:6) {#if currentListLength !== dropdownIndex}
 function create_if_block_2$1(ctx) {
 	let span;
 	let kbd0;
@@ -5110,12 +5119,12 @@ function create_if_block_2$1(ctx) {
 			t1 = text("+");
 			kbd1 = element("kbd");
 			kbd1.textContent = "Enter";
-			attr_dev(kbd0, "class", "svelte-2nw4gl");
-			add_location(kbd0, file$4, 176, 29, 6582);
-			attr_dev(kbd1, "class", "svelte-2nw4gl");
-			add_location(kbd1, file$4, 176, 45, 6598);
-			attr_dev(span, "class", "shortcut svelte-2nw4gl");
-			add_location(span, file$4, 176, 6, 6559);
+			attr_dev(kbd0, "class", "svelte-mhc3oe");
+			add_location(kbd0, file$4, 180, 29, 6689);
+			attr_dev(kbd1, "class", "svelte-mhc3oe");
+			add_location(kbd1, file$4, 180, 45, 6705);
+			attr_dev(span, "class", "shortcut svelte-mhc3oe");
+			add_location(span, file$4, 180, 6, 6666);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -5132,14 +5141,14 @@ function create_if_block_2$1(ctx) {
 		block,
 		id: create_if_block_2$1.name,
 		type: "if",
-		source: "(176:6) {#if currentListLength !== dropdownIndex}",
+		source: "(180:6) {#if currentListLength !== dropdownIndex}",
 		ctx
 	});
 
 	return block;
 }
 
-// (181:2) {#if hasEmptyList || maxReached}
+// (185:2) {#if hasEmptyList || maxReached}
 function create_if_block$2(ctx) {
 	let div;
 	let t;
@@ -5147,16 +5156,16 @@ function create_if_block$2(ctx) {
 	const block = {
 		c: function create() {
 			div = element("div");
-			t = text(/*listMessage*/ ctx[9]);
-			attr_dev(div, "class", "empty-list-row svelte-2nw4gl");
-			add_location(div, file$4, 181, 4, 6697);
+			t = text(/*listMessage*/ ctx[10]);
+			attr_dev(div, "class", "empty-list-row svelte-mhc3oe");
+			add_location(div, file$4, 185, 4, 6804);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
 			append_dev(div, t);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*listMessage*/ 512) set_data_dev(t, /*listMessage*/ ctx[9]);
+			if (dirty[0] & /*listMessage*/ 1024) set_data_dev(t, /*listMessage*/ ctx[10]);
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div);
@@ -5167,7 +5176,7 @@ function create_if_block$2(ctx) {
 		block,
 		id: create_if_block$2.name,
 		type: "if",
-		source: "(181:2) {#if hasEmptyList || maxReached}",
+		source: "(185:2) {#if hasEmptyList || maxReached}",
 		ctx
 	});
 
@@ -5183,8 +5192,8 @@ function create_fragment$4(ctx) {
 	let mounted;
 	let dispose;
 	let if_block0 = /*items*/ ctx[4].length && create_if_block_3$1(ctx);
-	let if_block1 = /*$inputValue*/ ctx[18] && /*creatable*/ ctx[1] && !/*maxReached*/ ctx[2] && create_if_block_1$2(ctx);
-	let if_block2 = (/*hasEmptyList*/ ctx[13] || /*maxReached*/ ctx[2]) && create_if_block$2(ctx);
+	let if_block1 = /*$inputValue*/ ctx[19] && /*creatable*/ ctx[1] && !/*maxReached*/ ctx[2] && create_if_block_1$2(ctx);
+	let if_block2 = (/*hasEmptyList*/ ctx[14] || /*maxReached*/ ctx[2]) && create_if_block$2(ctx);
 
 	const block = {
 		c: function create() {
@@ -5195,14 +5204,14 @@ function create_fragment$4(ctx) {
 			if (if_block1) if_block1.c();
 			t1 = space();
 			if (if_block2) if_block2.c();
-			attr_dev(div0, "class", "sv-dropdown-content svelte-2nw4gl");
+			attr_dev(div0, "class", "sv-dropdown-content svelte-mhc3oe");
 			toggle_class(div0, "max-reached", /*maxReached*/ ctx[2]);
-			add_location(div0, file$4, 135, 2, 5015);
-			attr_dev(div1, "class", "sv-dropdown svelte-2nw4gl");
-			attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[19]);
+			add_location(div0, file$4, 136, 2, 5045);
+			attr_dev(div1, "class", "sv-dropdown svelte-mhc3oe");
+			attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[20]);
 			attr_dev(div1, "tabindex", "-1");
-			toggle_class(div1, "is-virtual", /*virtualList*/ ctx[5]);
-			add_location(div1, file$4, 131, 0, 4841);
+			toggle_class(div1, "is-virtual", /*virtualList*/ ctx[6]);
+			add_location(div1, file$4, 132, 0, 4871);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5215,12 +5224,12 @@ function create_fragment$4(ctx) {
 			if (if_block1) if_block1.m(div0, null);
 			append_dev(div0, t1);
 			if (if_block2) if_block2.m(div0, null);
-			/*div0_binding*/ ctx[30](div0);
-			/*div1_binding*/ ctx[31](div1);
+			/*div0_binding*/ ctx[31](div0);
+			/*div1_binding*/ ctx[32](div1);
 			current = true;
 
 			if (!mounted) {
-				dispose = listen_dev(div1, "mousedown", prevent_default(/*mousedown_handler*/ ctx[24]), false, true, false);
+				dispose = listen_dev(div1, "mousedown", prevent_default(/*mousedown_handler*/ ctx[25]), false, true, false);
 				mounted = true;
 			}
 		},
@@ -5248,7 +5257,7 @@ function create_fragment$4(ctx) {
 				check_outros();
 			}
 
-			if (/*$inputValue*/ ctx[18] && /*creatable*/ ctx[1] && !/*maxReached*/ ctx[2]) {
+			if (/*$inputValue*/ ctx[19] && /*creatable*/ ctx[1] && !/*maxReached*/ ctx[2]) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
 				} else {
@@ -5261,7 +5270,7 @@ function create_fragment$4(ctx) {
 				if_block1 = null;
 			}
 
-			if (/*hasEmptyList*/ ctx[13] || /*maxReached*/ ctx[2]) {
+			if (/*hasEmptyList*/ ctx[14] || /*maxReached*/ ctx[2]) {
 				if (if_block2) {
 					if_block2.p(ctx, dirty);
 				} else {
@@ -5278,12 +5287,12 @@ function create_fragment$4(ctx) {
 				toggle_class(div0, "max-reached", /*maxReached*/ ctx[2]);
 			}
 
-			if (!current || dirty[0] & /*$hasDropdownOpened*/ 524288) {
-				attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[19]);
+			if (!current || dirty[0] & /*$hasDropdownOpened*/ 1048576) {
+				attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[20]);
 			}
 
-			if (dirty[0] & /*virtualList*/ 32) {
-				toggle_class(div1, "is-virtual", /*virtualList*/ ctx[5]);
+			if (dirty[0] & /*virtualList*/ 64) {
+				toggle_class(div1, "is-virtual", /*virtualList*/ ctx[6]);
 			}
 		},
 		i: function intro(local) {
@@ -5300,8 +5309,8 @@ function create_fragment$4(ctx) {
 			if (if_block0) if_block0.d();
 			if (if_block1) if_block1.d();
 			if (if_block2) if_block2.d();
-			/*div0_binding*/ ctx[30](null);
-			/*div1_binding*/ ctx[31](null);
+			/*div0_binding*/ ctx[31](null);
+			/*div1_binding*/ ctx[32](null);
 			mounted = false;
 			dispose();
 		}
@@ -5321,11 +5330,11 @@ function create_fragment$4(ctx) {
 function instance$4($$self, $$props, $$invalidate) {
 	let $inputValue,
 		$$unsubscribe_inputValue = noop,
-		$$subscribe_inputValue = () => ($$unsubscribe_inputValue(), $$unsubscribe_inputValue = subscribe(inputValue, $$value => $$invalidate(18, $inputValue = $$value)), inputValue);
+		$$subscribe_inputValue = () => ($$unsubscribe_inputValue(), $$unsubscribe_inputValue = subscribe(inputValue, $$value => $$invalidate(19, $inputValue = $$value)), inputValue);
 
 	let $hasDropdownOpened,
 		$$unsubscribe_hasDropdownOpened = noop,
-		$$subscribe_hasDropdownOpened = () => ($$unsubscribe_hasDropdownOpened(), $$unsubscribe_hasDropdownOpened = subscribe(hasDropdownOpened, $$value => $$invalidate(19, $hasDropdownOpened = $$value)), hasDropdownOpened);
+		$$subscribe_hasDropdownOpened = () => ($$unsubscribe_hasDropdownOpened(), $$unsubscribe_hasDropdownOpened = subscribe(hasDropdownOpened, $$value => $$invalidate(20, $hasDropdownOpened = $$value)), hasDropdownOpened);
 
 	$$self.$$.on_destroy.push(() => $$unsubscribe_inputValue());
 	$$self.$$.on_destroy.push(() => $$unsubscribe_hasDropdownOpened());
@@ -5336,6 +5345,7 @@ function instance$4($$self, $$props, $$invalidate) {
 	let { dropdownIndex = 0 } = $$props;
 	let { renderer } = $$props;
 	let { items = [] } = $$props;
+	let { alreadyCreated } = $$props;
 	let { virtualList } = $$props;
 	let { vlItemSize } = $$props;
 	let { vlHeight } = $$props;
@@ -5358,10 +5368,10 @@ function instance$4($$self, $$props, $$invalidate) {
 
 		switch (true) {
 			case focusedEl.offsetTop < scrollContainer.scrollTop:
-				$$invalidate(11, scrollContainer.scrollTop = focusedEl.offsetTop - overScroll, scrollContainer);
+				$$invalidate(12, scrollContainer.scrollTop = focusedEl.offsetTop - overScroll, scrollContainer);
 				break;
 			case focusedEl.offsetTop + focusedRect.height > scrollContainer.scrollTop + menuRect.height:
-				$$invalidate(11, scrollContainer.scrollTop = focusedEl.offsetTop + focusedRect.height - scrollContainer.offsetHeight + overScroll, scrollContainer);
+				$$invalidate(12, scrollContainer.scrollTop = focusedEl.offsetTop + focusedRect.height - scrollContainer.offsetHeight + overScroll, scrollContainer);
 				break;
 		}
 	}
@@ -5381,9 +5391,9 @@ function instance$4($$self, $$props, $$invalidate) {
 		const outVp = isOutOfViewport(scrollContainer);
 
 		if (outVp.bottom && !outVp.top) {
-			$$invalidate(11, scrollContainer.style.bottom = scrollContainer.parentElement.clientHeight + 1 + "px", scrollContainer);
+			$$invalidate(12, scrollContainer.style.bottom = scrollContainer.parentElement.clientHeight + 1 + "px", scrollContainer);
 		} else if (!val || outVp.top) {
-			$$invalidate(11, scrollContainer.style.bottom = "", scrollContainer); // FUTURE: debounce ....
+			$$invalidate(12, scrollContainer.style.bottom = "", scrollContainer); // FUTURE: debounce ....
 		}
 	}
 
@@ -5407,10 +5417,10 @@ function instance$4($$self, $$props, $$invalidate) {
 			return value;
 		};
 
-		$$invalidate(32, vl_height = pixelGetter(scrollContainer, "maxHeight") - pixelGetter(scrollContainer, "paddingTop") - pixelGetter(scrollContainer, "paddingBottom"));
+		$$invalidate(33, vl_height = pixelGetter(scrollContainer, "maxHeight") - pixelGetter(scrollContainer, "paddingTop") - pixelGetter(scrollContainer, "paddingBottom"));
 
 		// get item size (hacky style)
-		$$invalidate(11, scrollContainer.style = "opacity: 0; display: block", scrollContainer);
+		$$invalidate(12, scrollContainer.style = "opacity: 0; display: block", scrollContainer);
 
 		const firstItem = refVirtualList.$$.ctx[0].firstElementChild.firstElementChild;
 		firstItem.style = "";
@@ -5422,12 +5432,12 @@ function instance$4($$self, $$props, $$invalidate) {
 		if (firstSize !== secondSize) {
 			const groupHeaderSize = items[0].$isGroupHeader ? firstSize : secondSize;
 			const regularItemSize = items[0].$isGroupHeader ? secondSize : firstSize;
-			$$invalidate(14, vl_itemSize = items.map(opt => opt.$isGroupHeader ? groupHeaderSize : regularItemSize));
+			$$invalidate(15, vl_itemSize = items.map(opt => opt.$isGroupHeader ? groupHeaderSize : regularItemSize));
 		} else {
-			$$invalidate(14, vl_itemSize = firstSize);
+			$$invalidate(15, vl_itemSize = firstSize);
 		}
 
-		$$invalidate(11, scrollContainer.style = "", scrollContainer);
+		$$invalidate(12, scrollContainer.style = "", scrollContainer);
 	}
 
 	let dropdownStateSubscription;
@@ -5442,7 +5452,7 @@ function instance$4($$self, $$props, $$invalidate) {
 			document[val ? "addEventListener" : "removeEventListener"]("scroll", () => positionDropdown(val));
 		});
 
-		$$invalidate(12, isMounted = true);
+		$$invalidate(13, isMounted = true);
 	});
 
 	onDestroy(() => dropdownStateSubscription());
@@ -5453,6 +5463,7 @@ function instance$4($$self, $$props, $$invalidate) {
 		"dropdownIndex",
 		"renderer",
 		"items",
+		"alreadyCreated",
 		"virtualList",
 		"vlItemSize",
 		"vlHeight",
@@ -5481,7 +5492,7 @@ function instance$4($$self, $$props, $$invalidate) {
 	function virtuallist_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			refVirtualList = $$value;
-			$$invalidate(15, refVirtualList);
+			$$invalidate(16, refVirtualList);
 		});
 	}
 
@@ -5496,14 +5507,14 @@ function instance$4($$self, $$props, $$invalidate) {
 	function div0_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			container = $$value;
-			$$invalidate(10, container);
+			$$invalidate(11, container);
 		});
 	}
 
 	function div1_binding($$value) {
 		binding_callbacks[$$value ? "unshift" : "push"](() => {
 			scrollContainer = $$value;
-			$$invalidate(11, scrollContainer);
+			$$invalidate(12, scrollContainer);
 		});
 	}
 
@@ -5513,13 +5524,14 @@ function instance$4($$self, $$props, $$invalidate) {
 		if ("dropdownIndex" in $$props) $$invalidate(0, dropdownIndex = $$props.dropdownIndex);
 		if ("renderer" in $$props) $$invalidate(3, renderer = $$props.renderer);
 		if ("items" in $$props) $$invalidate(4, items = $$props.items);
-		if ("virtualList" in $$props) $$invalidate(5, virtualList = $$props.virtualList);
-		if ("vlItemSize" in $$props) $$invalidate(21, vlItemSize = $$props.vlItemSize);
-		if ("vlHeight" in $$props) $$invalidate(22, vlHeight = $$props.vlHeight);
-		if ("inputValue" in $$props) $$subscribe_inputValue($$invalidate(6, inputValue = $$props.inputValue));
-		if ("listIndex" in $$props) $$invalidate(7, listIndex = $$props.listIndex);
-		if ("hasDropdownOpened" in $$props) $$subscribe_hasDropdownOpened($$invalidate(8, hasDropdownOpened = $$props.hasDropdownOpened));
-		if ("listMessage" in $$props) $$invalidate(9, listMessage = $$props.listMessage);
+		if ("alreadyCreated" in $$props) $$invalidate(5, alreadyCreated = $$props.alreadyCreated);
+		if ("virtualList" in $$props) $$invalidate(6, virtualList = $$props.virtualList);
+		if ("vlItemSize" in $$props) $$invalidate(22, vlItemSize = $$props.vlItemSize);
+		if ("vlHeight" in $$props) $$invalidate(23, vlHeight = $$props.vlHeight);
+		if ("inputValue" in $$props) $$subscribe_inputValue($$invalidate(7, inputValue = $$props.inputValue));
+		if ("listIndex" in $$props) $$invalidate(8, listIndex = $$props.listIndex);
+		if ("hasDropdownOpened" in $$props) $$subscribe_hasDropdownOpened($$invalidate(9, hasDropdownOpened = $$props.hasDropdownOpened));
+		if ("listMessage" in $$props) $$invalidate(10, listMessage = $$props.listMessage);
 	};
 
 	$$self.$capture_state = () => ({
@@ -5535,6 +5547,7 @@ function instance$4($$self, $$props, $$invalidate) {
 		dropdownIndex,
 		renderer,
 		items,
+		alreadyCreated,
 		virtualList,
 		vlItemSize,
 		vlHeight,
@@ -5567,24 +5580,25 @@ function instance$4($$self, $$props, $$invalidate) {
 		if ("dropdownIndex" in $$props) $$invalidate(0, dropdownIndex = $$props.dropdownIndex);
 		if ("renderer" in $$props) $$invalidate(3, renderer = $$props.renderer);
 		if ("items" in $$props) $$invalidate(4, items = $$props.items);
-		if ("virtualList" in $$props) $$invalidate(5, virtualList = $$props.virtualList);
-		if ("vlItemSize" in $$props) $$invalidate(21, vlItemSize = $$props.vlItemSize);
-		if ("vlHeight" in $$props) $$invalidate(22, vlHeight = $$props.vlHeight);
-		if ("inputValue" in $$props) $$subscribe_inputValue($$invalidate(6, inputValue = $$props.inputValue));
-		if ("listIndex" in $$props) $$invalidate(7, listIndex = $$props.listIndex);
-		if ("hasDropdownOpened" in $$props) $$subscribe_hasDropdownOpened($$invalidate(8, hasDropdownOpened = $$props.hasDropdownOpened));
-		if ("listMessage" in $$props) $$invalidate(9, listMessage = $$props.listMessage);
-		if ("container" in $$props) $$invalidate(10, container = $$props.container);
-		if ("scrollContainer" in $$props) $$invalidate(11, scrollContainer = $$props.scrollContainer);
-		if ("isMounted" in $$props) $$invalidate(12, isMounted = $$props.isMounted);
-		if ("hasEmptyList" in $$props) $$invalidate(13, hasEmptyList = $$props.hasEmptyList);
-		if ("vl_height" in $$props) $$invalidate(32, vl_height = $$props.vl_height);
-		if ("vl_itemSize" in $$props) $$invalidate(14, vl_itemSize = $$props.vl_itemSize);
-		if ("vl_autoMode" in $$props) $$invalidate(34, vl_autoMode = $$props.vl_autoMode);
-		if ("refVirtualList" in $$props) $$invalidate(15, refVirtualList = $$props.refVirtualList);
+		if ("alreadyCreated" in $$props) $$invalidate(5, alreadyCreated = $$props.alreadyCreated);
+		if ("virtualList" in $$props) $$invalidate(6, virtualList = $$props.virtualList);
+		if ("vlItemSize" in $$props) $$invalidate(22, vlItemSize = $$props.vlItemSize);
+		if ("vlHeight" in $$props) $$invalidate(23, vlHeight = $$props.vlHeight);
+		if ("inputValue" in $$props) $$subscribe_inputValue($$invalidate(7, inputValue = $$props.inputValue));
+		if ("listIndex" in $$props) $$invalidate(8, listIndex = $$props.listIndex);
+		if ("hasDropdownOpened" in $$props) $$subscribe_hasDropdownOpened($$invalidate(9, hasDropdownOpened = $$props.hasDropdownOpened));
+		if ("listMessage" in $$props) $$invalidate(10, listMessage = $$props.listMessage);
+		if ("container" in $$props) $$invalidate(11, container = $$props.container);
+		if ("scrollContainer" in $$props) $$invalidate(12, scrollContainer = $$props.scrollContainer);
+		if ("isMounted" in $$props) $$invalidate(13, isMounted = $$props.isMounted);
+		if ("hasEmptyList" in $$props) $$invalidate(14, hasEmptyList = $$props.hasEmptyList);
+		if ("vl_height" in $$props) $$invalidate(33, vl_height = $$props.vl_height);
+		if ("vl_itemSize" in $$props) $$invalidate(15, vl_itemSize = $$props.vl_itemSize);
+		if ("vl_autoMode" in $$props) $$invalidate(35, vl_autoMode = $$props.vl_autoMode);
+		if ("refVirtualList" in $$props) $$invalidate(16, refVirtualList = $$props.refVirtualList);
 		if ("dropdownStateSubscription" in $$props) dropdownStateSubscription = $$props.dropdownStateSubscription;
-		if ("currentListLength" in $$props) $$invalidate(16, currentListLength = $$props.currentListLength);
-		if ("vl_listHeight" in $$props) $$invalidate(17, vl_listHeight = $$props.vl_listHeight);
+		if ("currentListLength" in $$props) $$invalidate(17, currentListLength = $$props.currentListLength);
+		if ("vl_listHeight" in $$props) $$invalidate(18, vl_listHeight = $$props.vl_listHeight);
 	};
 
 	let currentListLength;
@@ -5596,24 +5610,24 @@ function instance$4($$self, $$props, $$invalidate) {
 
 	$$self.$$.update = () => {
 		if ($$self.$$.dirty[0] & /*items*/ 16) {
-			 $$invalidate(16, currentListLength = items.length);
+			 $$invalidate(17, currentListLength = items.length);
 		}
 
-		if ($$self.$$.dirty[0] & /*items, creatable, $inputValue, virtualList, isMounted, hasEmptyList*/ 274482) {
+		if ($$self.$$.dirty[0] & /*items, creatable, $inputValue, virtualList, isMounted, hasEmptyList*/ 548946) {
 			 {
-				$$invalidate(13, hasEmptyList = items.length < 1 && (creatable ? !$inputValue : true));
+				$$invalidate(14, hasEmptyList = items.length < 1 && (creatable ? !$inputValue : true));
 
 				// required when changing item list 'on-the-fly' for VL
 				if (virtualList && isMounted && vl_autoMode) {
 					if (hasEmptyList) $$invalidate(0, dropdownIndex = null);
-					$$invalidate(14, vl_itemSize = 0);
+					$$invalidate(15, vl_itemSize = 0);
 					tick().then(virtualListDmensionsResolver);
 				}
 			}
 		}
 
-		if ($$self.$$.dirty[0] & /*vl_itemSize, items*/ 16400 | $$self.$$.dirty[1] & /*vl_height*/ 2) {
-			 $$invalidate(17, vl_listHeight = Math.min(vl_height, Array.isArray(vl_itemSize)
+		if ($$self.$$.dirty[0] & /*vl_itemSize, items*/ 32784 | $$self.$$.dirty[1] & /*vl_height*/ 4) {
+			 $$invalidate(18, vl_listHeight = Math.min(vl_height, Array.isArray(vl_itemSize)
 			? vl_itemSize.reduce(
 					(res, num) => {
 						res += num;
@@ -5631,6 +5645,7 @@ function instance$4($$self, $$props, $$invalidate) {
 		maxReached,
 		renderer,
 		items,
+		alreadyCreated,
 		virtualList,
 		inputValue,
 		listIndex,
@@ -5677,14 +5692,15 @@ class Dropdown extends SvelteComponentDev {
 				dropdownIndex: 0,
 				renderer: 3,
 				items: 4,
-				virtualList: 5,
-				vlItemSize: 21,
-				vlHeight: 22,
-				inputValue: 6,
-				listIndex: 7,
-				hasDropdownOpened: 8,
-				listMessage: 9,
-				scrollIntoView: 23
+				alreadyCreated: 5,
+				virtualList: 6,
+				vlItemSize: 22,
+				vlHeight: 23,
+				inputValue: 7,
+				listIndex: 8,
+				hasDropdownOpened: 9,
+				listMessage: 10,
+				scrollIntoView: 24
 			},
 			[-1, -1]
 		);
@@ -5707,31 +5723,35 @@ class Dropdown extends SvelteComponentDev {
 			console.warn("<Dropdown> was created without expected prop 'renderer'");
 		}
 
-		if (/*virtualList*/ ctx[5] === undefined && !("virtualList" in props)) {
+		if (/*alreadyCreated*/ ctx[5] === undefined && !("alreadyCreated" in props)) {
+			console.warn("<Dropdown> was created without expected prop 'alreadyCreated'");
+		}
+
+		if (/*virtualList*/ ctx[6] === undefined && !("virtualList" in props)) {
 			console.warn("<Dropdown> was created without expected prop 'virtualList'");
 		}
 
-		if (/*vlItemSize*/ ctx[21] === undefined && !("vlItemSize" in props)) {
+		if (/*vlItemSize*/ ctx[22] === undefined && !("vlItemSize" in props)) {
 			console.warn("<Dropdown> was created without expected prop 'vlItemSize'");
 		}
 
-		if (/*vlHeight*/ ctx[22] === undefined && !("vlHeight" in props)) {
+		if (/*vlHeight*/ ctx[23] === undefined && !("vlHeight" in props)) {
 			console.warn("<Dropdown> was created without expected prop 'vlHeight'");
 		}
 
-		if (/*inputValue*/ ctx[6] === undefined && !("inputValue" in props)) {
+		if (/*inputValue*/ ctx[7] === undefined && !("inputValue" in props)) {
 			console.warn("<Dropdown> was created without expected prop 'inputValue'");
 		}
 
-		if (/*listIndex*/ ctx[7] === undefined && !("listIndex" in props)) {
+		if (/*listIndex*/ ctx[8] === undefined && !("listIndex" in props)) {
 			console.warn("<Dropdown> was created without expected prop 'listIndex'");
 		}
 
-		if (/*hasDropdownOpened*/ ctx[8] === undefined && !("hasDropdownOpened" in props)) {
+		if (/*hasDropdownOpened*/ ctx[9] === undefined && !("hasDropdownOpened" in props)) {
 			console.warn("<Dropdown> was created without expected prop 'hasDropdownOpened'");
 		}
 
-		if (/*listMessage*/ ctx[9] === undefined && !("listMessage" in props)) {
+		if (/*listMessage*/ ctx[10] === undefined && !("listMessage" in props)) {
 			console.warn("<Dropdown> was created without expected prop 'listMessage'");
 		}
 	}
@@ -5773,6 +5793,14 @@ class Dropdown extends SvelteComponentDev {
 	}
 
 	set items(value) {
+		throw new Error("<Dropdown>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	get alreadyCreated() {
+		throw new Error("<Dropdown>: Props cannot be read directly from the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
+	}
+
+	set alreadyCreated(value) {
 		throw new Error("<Dropdown>: Props cannot be set directly on the component instance unless compiling with 'accessors: true' or '<svelte:options accessors/>'");
 	}
 
@@ -5833,7 +5861,7 @@ class Dropdown extends SvelteComponentDev {
 	}
 
 	get scrollIntoView() {
-		return this.$$.ctx[23];
+		return this.$$.ctx[24];
 	}
 
 	set scrollIntoView(value) {
@@ -5843,24 +5871,24 @@ class Dropdown extends SvelteComponentDev {
 
 /* src\Svelecte\Svelecte.svelte generated by Svelte v3.25.0 */
 
-const { Object: Object_1$1, console: console_1 } = globals;
+const { Object: Object_1$1 } = globals;
 const file$5 = "src\\Svelecte\\Svelecte.svelte";
 
 function get_each_context$3(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[77] = list[i];
+	child_ctx[78] = list[i];
 	return child_ctx;
 }
 
 const get_icon_slot_changes$1 = dirty => ({});
 const get_icon_slot_context$1 = ctx => ({});
 
-// (454:4) <div slot="icon" class="icon-slot">
+// (455:4) <div slot="icon" class="icon-slot">
 function create_icon_slot(ctx) {
 	let div;
 	let current;
-	const icon_slot_template = /*#slots*/ ctx[55].icon;
-	const icon_slot = create_slot(icon_slot_template, ctx, /*$$scope*/ ctx[58], get_icon_slot_context$1);
+	const icon_slot_template = /*#slots*/ ctx[56].icon;
+	const icon_slot = create_slot(icon_slot_template, ctx, /*$$scope*/ ctx[59], get_icon_slot_context$1);
 
 	const block = {
 		c: function create() {
@@ -5868,7 +5896,7 @@ function create_icon_slot(ctx) {
 			if (icon_slot) icon_slot.c();
 			attr_dev(div, "slot", "icon");
 			attr_dev(div, "class", "icon-slot svelte-1h9htsj");
-			add_location(div, file$5, 453, 4, 15828);
+			add_location(div, file$5, 454, 4, 15882);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -5881,8 +5909,8 @@ function create_icon_slot(ctx) {
 		},
 		p: function update(ctx, dirty) {
 			if (icon_slot) {
-				if (icon_slot.p && dirty[1] & /*$$scope*/ 134217728) {
-					update_slot(icon_slot, icon_slot_template, ctx, /*$$scope*/ ctx[58], dirty, get_icon_slot_changes$1, get_icon_slot_context$1);
+				if (icon_slot.p && dirty[1] & /*$$scope*/ 268435456) {
+					update_slot(icon_slot, icon_slot_template, ctx, /*$$scope*/ ctx[59], dirty, get_icon_slot_changes$1, get_icon_slot_context$1);
 				}
 			}
 		},
@@ -5905,14 +5933,14 @@ function create_icon_slot(ctx) {
 		block,
 		id: create_icon_slot.name,
 		type: "slot",
-		source: "(454:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
+		source: "(455:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (465:2) {#if name && !anchor}
+// (466:2) {#if name && !anchor}
 function create_if_block$3(ctx) {
 	let select;
 	let each_value = Array.from(/*selectedOptions*/ ctx[21]);
@@ -5937,7 +5965,7 @@ function create_if_block$3(ctx) {
 			attr_dev(select, "tabindex", "-1");
 			select.required = /*required*/ ctx[4];
 			select.disabled = /*disabled*/ ctx[2];
-			add_location(select, file$5, 465, 2, 16320);
+			add_location(select, file$5, 466, 2, 16390);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, select, anchor);
@@ -5997,17 +6025,17 @@ function create_if_block$3(ctx) {
 		block,
 		id: create_if_block$3.name,
 		type: "if",
-		source: "(465:2) {#if name && !anchor}",
+		source: "(466:2) {#if name && !anchor}",
 		ctx
 	});
 
 	return block;
 }
 
-// (467:4) {#each Array.from(selectedOptions) as opt}
+// (468:4) {#each Array.from(selectedOptions) as opt}
 function create_each_block$3(ctx) {
 	let option;
-	let t_value = /*opt*/ ctx[77][/*currentLabelField*/ ctx[19]] + "";
+	let t_value = /*opt*/ ctx[78][/*currentLabelField*/ ctx[19]] + "";
 	let t;
 	let option_value_value;
 
@@ -6015,19 +6043,19 @@ function create_each_block$3(ctx) {
 		c: function create() {
 			option = element("option");
 			t = text(t_value);
-			option.__value = option_value_value = /*opt*/ ctx[77][/*currentValueField*/ ctx[18]];
+			option.__value = option_value_value = /*opt*/ ctx[78][/*currentValueField*/ ctx[18]];
 			option.value = option.__value;
 			option.selected = true;
-			add_location(option, file$5, 467, 4, 16459);
+			add_location(option, file$5, 468, 4, 16529);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, option, anchor);
 			append_dev(option, t);
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*selectedOptions, currentLabelField*/ 2621440 && t_value !== (t_value = /*opt*/ ctx[77][/*currentLabelField*/ ctx[19]] + "")) set_data_dev(t, t_value);
+			if (dirty[0] & /*selectedOptions, currentLabelField*/ 2621440 && t_value !== (t_value = /*opt*/ ctx[78][/*currentLabelField*/ ctx[19]] + "")) set_data_dev(t, t_value);
 
-			if (dirty[0] & /*selectedOptions, currentValueField*/ 2359296 && option_value_value !== (option_value_value = /*opt*/ ctx[77][/*currentValueField*/ ctx[18]])) {
+			if (dirty[0] & /*selectedOptions, currentValueField*/ 2359296 && option_value_value !== (option_value_value = /*opt*/ ctx[78][/*currentValueField*/ ctx[18]])) {
 				prop_dev(option, "__value", option_value_value);
 				option.value = option.__value;
 			}
@@ -6041,7 +6069,7 @@ function create_each_block$3(ctx) {
 		block,
 		id: create_each_block$3.name,
 		type: "each",
-		source: "(467:4) {#each Array.from(selectedOptions) as opt}",
+		source: "(468:4) {#each Array.from(selectedOptions) as opt}",
 		ctx
 	});
 
@@ -6077,15 +6105,16 @@ function create_fragment$5(ctx) {
 	};
 
 	control = new Control({ props: control_props, $$inline: true });
-	/*control_binding*/ ctx[56](control);
-	control.$on("deselect", /*onDeselect*/ ctx[31]);
-	control.$on("keydown", /*onKeyDown*/ ctx[33]);
-	control.$on("paste", /*onPaste*/ ctx[34]);
+	/*control_binding*/ ctx[57](control);
+	control.$on("deselect", /*onDeselect*/ ctx[32]);
+	control.$on("keydown", /*onKeyDown*/ ctx[34]);
+	control.$on("paste", /*onPaste*/ ctx[35]);
 
 	let dropdown_props = {
 		renderer: /*itemRenderer*/ ctx[26],
 		creatable: /*creatable*/ ctx[6],
 		maxReached: /*maxReached*/ ctx[23],
+		alreadyCreated: /*alreadyCreated*/ ctx[30],
 		virtualList: /*creatable*/ ctx[6] ? false : /*virtualList*/ ctx[10],
 		vlHeight: /*vlHeight*/ ctx[11],
 		vlItemSize: /*vlItemSize*/ ctx[12],
@@ -6098,9 +6127,9 @@ function create_fragment$5(ctx) {
 	};
 
 	dropdown = new Dropdown({ props: dropdown_props, $$inline: true });
-	/*dropdown_binding*/ ctx[57](dropdown);
-	dropdown.$on("select", /*onSelect*/ ctx[30]);
-	dropdown.$on("hover", /*onHover*/ ctx[32]);
+	/*dropdown_binding*/ ctx[58](dropdown);
+	dropdown.$on("select", /*onSelect*/ ctx[31]);
+	dropdown.$on("hover", /*onHover*/ ctx[33]);
 	let if_block = /*name*/ ctx[3] && !/*anchor*/ ctx[0] && create_if_block$3(ctx);
 
 	const block = {
@@ -6114,7 +6143,7 @@ function create_fragment$5(ctx) {
 			attr_dev(div, "class", div_class_value = "" + (null_to_empty(`svelecte ${/*className*/ ctx[13]}`) + " svelte-1h9htsj"));
 			attr_dev(div, "style", /*style*/ ctx[14]);
 			toggle_class(div, "is-disabled", /*disabled*/ ctx[2]);
-			add_location(div, file$5, 445, 0, 15308);
+			add_location(div, file$5, 446, 0, 15362);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6144,7 +6173,7 @@ function create_fragment$5(ctx) {
 			if (dirty[0] & /*selectedOptions*/ 2097152) control_changes.selectedOptions = Array.from(/*selectedOptions*/ ctx[21]);
 			if (dirty[0] & /*isFetchingData*/ 1048576) control_changes.isFetchingData = /*isFetchingData*/ ctx[20];
 
-			if (dirty[1] & /*$$scope*/ 134217728) {
+			if (dirty[1] & /*$$scope*/ 268435456) {
 				control_changes.$$scope = { dirty, ctx };
 			}
 
@@ -6200,9 +6229,9 @@ function create_fragment$5(ctx) {
 		},
 		d: function destroy(detaching) {
 			if (detaching) detach_dev(div);
-			/*control_binding*/ ctx[56](null);
+			/*control_binding*/ ctx[57](null);
 			destroy_component(control);
-			/*dropdown_binding*/ ctx[57](null);
+			/*dropdown_binding*/ ctx[58](null);
 			destroy_component(dropdown);
 			if (if_block) if_block.d();
 		}
@@ -6293,7 +6322,7 @@ function instance$5($$self, $$props, $$invalidate) {
 		clearSelection();
 		emitChangeEvent();
 		if (doDisable) $$invalidate(2, disabled = true);
-		$$invalidate(35, fetch = null);
+		$$invalidate(36, fetch = null);
 	};
 
 	const dispatch = createEventDispatcher();
@@ -6323,13 +6352,13 @@ function instance$5($$self, $$props, $$invalidate) {
 	const inputValue = writable("");
 
 	validate_store(inputValue, "inputValue");
-	component_subscribe($$self, inputValue, value => $$invalidate(66, $inputValue = value));
+	component_subscribe($$self, inputValue, value => $$invalidate(67, $inputValue = value));
 	const hasFocus = writable(false);
 	validate_store(hasFocus, "hasFocus");
-	component_subscribe($$self, hasFocus, value => $$invalidate(64, $hasFocus = value));
+	component_subscribe($$self, hasFocus, value => $$invalidate(65, $hasFocus = value));
 	const hasDropdownOpened = writable(false);
 	validate_store(hasDropdownOpened, "hasDropdownOpened");
-	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(69, $hasDropdownOpened = value));
+	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(70, $hasDropdownOpened = value));
 	let isFetchingData = false;
 
 	function createFetch(fetch) {
@@ -6345,8 +6374,8 @@ function instance$5($$self, $$props, $$invalidate) {
 		const debouncedFetch = debounce(
 			query => {
 				fetchSource(query, fetchCallback || settings.fetchCallback).then(data => {
-					$$invalidate(36, options = data);
-				}).catch(() => $$invalidate(36, options = [])).finally(() => {
+					$$invalidate(37, options = data);
+				}).catch(() => $$invalidate(37, options = [])).finally(() => {
 					$$invalidate(20, isFetchingData = false);
 					$hasFocus && hasDropdownOpened.set(true);
 					$$invalidate(22, listMessage = config.i18n.fetchEmpty);
@@ -6392,6 +6421,7 @@ function instance$5($$self, $$props, $$invalidate) {
 	/** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
 	let selectedOptions = new Set();
 
+	let alreadyCreated = [];
 	let prevOptions = options;
 
 	/**
@@ -6430,6 +6460,9 @@ function instance$5($$self, $$props, $$invalidate) {
 		if (maxReached) return;
 
 		if (typeof opt === "string") {
+			if (alreadyCreated.includes(opt)) return;
+			alreadyCreated.push(opt);
+
 			opt = {
 				[currentLabelField]: `${creatablePrefix}${opt}`,
 				[currentValueField]: encodeURIComponent(opt),
@@ -6437,20 +6470,20 @@ function instance$5($$self, $$props, $$invalidate) {
 				_created: true
 			};
 
-			$$invalidate(36, options = [...options, opt]);
+			$$invalidate(37, options = [...options, opt]);
 		}
 
 		opt.isSelected = true;
 		!selectedOptions.has(opt) && selectedOptions.add(opt);
 		$$invalidate(21, selectedOptions);
-		($$invalidate(65, flatItems), $$invalidate(36, options));
+		($$invalidate(66, flatItems), $$invalidate(37, options));
 	}
 
 	function deselectOption(opt) {
 		selectedOptions.delete(opt);
 		opt.isSelected = false;
 		$$invalidate(21, selectedOptions);
-		($$invalidate(65, flatItems), $$invalidate(36, options));
+		($$invalidate(66, flatItems), $$invalidate(37, options));
 	}
 
 	/**
@@ -6481,7 +6514,6 @@ function instance$5($$self, $$props, $$invalidate) {
 	function onDeselect(event, opt) {
 		if (disabled) return;
 		opt = opt || event.detail;
-		console.log("deselect", opt);
 
 		if (opt) {
 			deselectOption(opt);
@@ -6619,7 +6651,7 @@ function instance$5($$self, $$props, $$invalidate) {
 
 	/** ************************************ component lifecycle related */
 	onMount(() => {
-		$$invalidate(59, isInitialized = true);
+		$$invalidate(60, isInitialized = true);
 
 		// Lazy calling of scrollIntoView function, which is required
 		// TODO: resolve, probably already fixed
@@ -6671,7 +6703,7 @@ function instance$5($$self, $$props, $$invalidate) {
 	];
 
 	Object_1$1.keys($$props).forEach(key => {
-		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console_1.warn(`<Svelecte> was created with unknown prop '${key}'`);
+		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<Svelecte> was created with unknown prop '${key}'`);
 	});
 
 	function control_binding($$value) {
@@ -6696,32 +6728,32 @@ function instance$5($$self, $$props, $$invalidate) {
 		if ("collapseSelection" in $$props) $$invalidate(5, collapseSelection = $$props.collapseSelection);
 		if ("disabled" in $$props) $$invalidate(2, disabled = $$props.disabled);
 		if ("creatable" in $$props) $$invalidate(6, creatable = $$props.creatable);
-		if ("creatablePrefix" in $$props) $$invalidate(39, creatablePrefix = $$props.creatablePrefix);
-		if ("selectOnTab" in $$props) $$invalidate(40, selectOnTab = $$props.selectOnTab);
-		if ("valueField" in $$props) $$invalidate(41, valueField = $$props.valueField);
-		if ("labelField" in $$props) $$invalidate(42, labelField = $$props.labelField);
-		if ("max" in $$props) $$invalidate(43, max = $$props.max);
-		if ("renderer" in $$props) $$invalidate(44, renderer = $$props.renderer);
+		if ("creatablePrefix" in $$props) $$invalidate(40, creatablePrefix = $$props.creatablePrefix);
+		if ("selectOnTab" in $$props) $$invalidate(41, selectOnTab = $$props.selectOnTab);
+		if ("valueField" in $$props) $$invalidate(42, valueField = $$props.valueField);
+		if ("labelField" in $$props) $$invalidate(43, labelField = $$props.labelField);
+		if ("max" in $$props) $$invalidate(44, max = $$props.max);
+		if ("renderer" in $$props) $$invalidate(45, renderer = $$props.renderer);
 		if ("clearable" in $$props) $$invalidate(7, clearable = $$props.clearable);
 		if ("searchable" in $$props) $$invalidate(8, searchable = $$props.searchable);
-		if ("delimiter" in $$props) $$invalidate(45, delimiter = $$props.delimiter);
+		if ("delimiter" in $$props) $$invalidate(46, delimiter = $$props.delimiter);
 		if ("placeholder" in $$props) $$invalidate(9, placeholder = $$props.placeholder);
-		if ("fetch" in $$props) $$invalidate(35, fetch = $$props.fetch);
-		if ("fetchMode" in $$props) $$invalidate(46, fetchMode = $$props.fetchMode);
-		if ("fetchCallback" in $$props) $$invalidate(47, fetchCallback = $$props.fetchCallback);
-		if ("options" in $$props) $$invalidate(36, options = $$props.options);
+		if ("fetch" in $$props) $$invalidate(36, fetch = $$props.fetch);
+		if ("fetchMode" in $$props) $$invalidate(47, fetchMode = $$props.fetchMode);
+		if ("fetchCallback" in $$props) $$invalidate(48, fetchCallback = $$props.fetchCallback);
+		if ("options" in $$props) $$invalidate(37, options = $$props.options);
 		if ("virtualList" in $$props) $$invalidate(10, virtualList = $$props.virtualList);
 		if ("vlHeight" in $$props) $$invalidate(11, vlHeight = $$props.vlHeight);
 		if ("vlItemSize" in $$props) $$invalidate(12, vlItemSize = $$props.vlItemSize);
-		if ("searchField" in $$props) $$invalidate(48, searchField = $$props.searchField);
-		if ("sortField" in $$props) $$invalidate(49, sortField = $$props.sortField);
-		if ("sortRemote" in $$props) $$invalidate(50, sortRemote = $$props.sortRemote);
-		if ("searchMode" in $$props) $$invalidate(51, searchMode = $$props.searchMode);
+		if ("searchField" in $$props) $$invalidate(49, searchField = $$props.searchField);
+		if ("sortField" in $$props) $$invalidate(50, sortField = $$props.sortField);
+		if ("sortRemote" in $$props) $$invalidate(51, sortRemote = $$props.sortRemote);
+		if ("searchMode" in $$props) $$invalidate(52, searchMode = $$props.searchMode);
 		if ("class" in $$props) $$invalidate(13, className = $$props.class);
 		if ("style" in $$props) $$invalidate(14, style = $$props.style);
-		if ("selection" in $$props) $$invalidate(37, selection = $$props.selection);
-		if ("value" in $$props) $$invalidate(38, value = $$props.value);
-		if ("$$scope" in $$props) $$invalidate(58, $$scope = $$props.$$scope);
+		if ("selection" in $$props) $$invalidate(38, selection = $$props.selection);
+		if ("value" in $$props) $$invalidate(39, value = $$props.value);
+		if ("$$scope" in $$props) $$invalidate(59, $$scope = $$props.$$scope);
 	};
 
 	$$self.$capture_state = () => ({
@@ -6793,6 +6825,7 @@ function instance$5($$self, $$props, $$invalidate) {
 		createFetch,
 		prevSelection,
 		selectedOptions,
+		alreadyCreated,
 		prevOptions,
 		emitChangeEvent,
 		_selectByValues,
@@ -6825,32 +6858,32 @@ function instance$5($$self, $$props, $$invalidate) {
 		if ("collapseSelection" in $$props) $$invalidate(5, collapseSelection = $$props.collapseSelection);
 		if ("disabled" in $$props) $$invalidate(2, disabled = $$props.disabled);
 		if ("creatable" in $$props) $$invalidate(6, creatable = $$props.creatable);
-		if ("creatablePrefix" in $$props) $$invalidate(39, creatablePrefix = $$props.creatablePrefix);
-		if ("selectOnTab" in $$props) $$invalidate(40, selectOnTab = $$props.selectOnTab);
-		if ("valueField" in $$props) $$invalidate(41, valueField = $$props.valueField);
-		if ("labelField" in $$props) $$invalidate(42, labelField = $$props.labelField);
-		if ("max" in $$props) $$invalidate(43, max = $$props.max);
-		if ("renderer" in $$props) $$invalidate(44, renderer = $$props.renderer);
+		if ("creatablePrefix" in $$props) $$invalidate(40, creatablePrefix = $$props.creatablePrefix);
+		if ("selectOnTab" in $$props) $$invalidate(41, selectOnTab = $$props.selectOnTab);
+		if ("valueField" in $$props) $$invalidate(42, valueField = $$props.valueField);
+		if ("labelField" in $$props) $$invalidate(43, labelField = $$props.labelField);
+		if ("max" in $$props) $$invalidate(44, max = $$props.max);
+		if ("renderer" in $$props) $$invalidate(45, renderer = $$props.renderer);
 		if ("clearable" in $$props) $$invalidate(7, clearable = $$props.clearable);
 		if ("searchable" in $$props) $$invalidate(8, searchable = $$props.searchable);
-		if ("delimiter" in $$props) $$invalidate(45, delimiter = $$props.delimiter);
+		if ("delimiter" in $$props) $$invalidate(46, delimiter = $$props.delimiter);
 		if ("placeholder" in $$props) $$invalidate(9, placeholder = $$props.placeholder);
-		if ("fetch" in $$props) $$invalidate(35, fetch = $$props.fetch);
-		if ("fetchMode" in $$props) $$invalidate(46, fetchMode = $$props.fetchMode);
-		if ("fetchCallback" in $$props) $$invalidate(47, fetchCallback = $$props.fetchCallback);
-		if ("options" in $$props) $$invalidate(36, options = $$props.options);
+		if ("fetch" in $$props) $$invalidate(36, fetch = $$props.fetch);
+		if ("fetchMode" in $$props) $$invalidate(47, fetchMode = $$props.fetchMode);
+		if ("fetchCallback" in $$props) $$invalidate(48, fetchCallback = $$props.fetchCallback);
+		if ("options" in $$props) $$invalidate(37, options = $$props.options);
 		if ("virtualList" in $$props) $$invalidate(10, virtualList = $$props.virtualList);
 		if ("vlHeight" in $$props) $$invalidate(11, vlHeight = $$props.vlHeight);
 		if ("vlItemSize" in $$props) $$invalidate(12, vlItemSize = $$props.vlItemSize);
-		if ("searchField" in $$props) $$invalidate(48, searchField = $$props.searchField);
-		if ("sortField" in $$props) $$invalidate(49, sortField = $$props.sortField);
-		if ("sortRemote" in $$props) $$invalidate(50, sortRemote = $$props.sortRemote);
-		if ("searchMode" in $$props) $$invalidate(51, searchMode = $$props.searchMode);
+		if ("searchField" in $$props) $$invalidate(49, searchField = $$props.searchField);
+		if ("sortField" in $$props) $$invalidate(50, sortField = $$props.sortField);
+		if ("sortRemote" in $$props) $$invalidate(51, sortRemote = $$props.sortRemote);
+		if ("searchMode" in $$props) $$invalidate(52, searchMode = $$props.searchMode);
 		if ("className" in $$props) $$invalidate(13, className = $$props.className);
 		if ("style" in $$props) $$invalidate(14, style = $$props.style);
-		if ("selection" in $$props) $$invalidate(37, selection = $$props.selection);
-		if ("value" in $$props) $$invalidate(38, value = $$props.value);
-		if ("isInitialized" in $$props) $$invalidate(59, isInitialized = $$props.isInitialized);
+		if ("selection" in $$props) $$invalidate(38, selection = $$props.selection);
+		if ("value" in $$props) $$invalidate(39, value = $$props.value);
+		if ("isInitialized" in $$props) $$invalidate(60, isInitialized = $$props.isInitialized);
 		if ("refDropdown" in $$props) $$invalidate(15, refDropdown = $$props.refDropdown);
 		if ("refControl" in $$props) $$invalidate(16, refControl = $$props.refControl);
 		if ("ignoreHover" in $$props) ignoreHover = $$props.ignoreHover;
@@ -6859,15 +6892,16 @@ function instance$5($$self, $$props, $$invalidate) {
 		if ("currentValueField" in $$props) $$invalidate(18, currentValueField = $$props.currentValueField);
 		if ("currentLabelField" in $$props) $$invalidate(19, currentLabelField = $$props.currentLabelField);
 		if ("isFetchingData" in $$props) $$invalidate(20, isFetchingData = $$props.isFetchingData);
-		if ("prevSelection" in $$props) $$invalidate(62, prevSelection = $$props.prevSelection);
+		if ("prevSelection" in $$props) $$invalidate(63, prevSelection = $$props.prevSelection);
 		if ("selectedOptions" in $$props) $$invalidate(21, selectedOptions = $$props.selectedOptions);
-		if ("prevOptions" in $$props) $$invalidate(72, prevOptions = $$props.prevOptions);
+		if ("alreadyCreated" in $$props) $$invalidate(30, alreadyCreated = $$props.alreadyCreated);
+		if ("prevOptions" in $$props) $$invalidate(73, prevOptions = $$props.prevOptions);
 		if ("initFetchOnly" in $$props) initFetchOnly = $$props.initFetchOnly;
 		if ("listMessage" in $$props) $$invalidate(22, listMessage = $$props.listMessage);
-		if ("flatItems" in $$props) $$invalidate(65, flatItems = $$props.flatItems);
+		if ("flatItems" in $$props) $$invalidate(66, flatItems = $$props.flatItems);
 		if ("maxReached" in $$props) $$invalidate(23, maxReached = $$props.maxReached);
 		if ("availableItems" in $$props) $$invalidate(24, availableItems = $$props.availableItems);
-		if ("currentListLength" in $$props) $$invalidate(67, currentListLength = $$props.currentListLength);
+		if ("currentListLength" in $$props) currentListLength = $$props.currentListLength;
 		if ("listIndex" in $$props) $$invalidate(25, listIndex = $$props.listIndex);
 		if ("itemRenderer" in $$props) $$invalidate(26, itemRenderer = $$props.itemRenderer);
 		if ("dropdownComponent" in $$props) dropdownComponent = $$props.dropdownComponent;
@@ -6888,16 +6922,16 @@ function instance$5($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[1] & /*fetchMode, fetch*/ 32784) {
+		if ($$self.$$.dirty[1] & /*fetchMode, fetch*/ 65568) {
 			/** ************************************ remote source */
 			 initFetchOnly = fetchMode === "init" || typeof fetch === "string" && fetch.indexOf("[query]") === -1;
 		}
 
-		if ($$self.$$.dirty[1] & /*fetch*/ 16) {
+		if ($$self.$$.dirty[1] & /*fetch*/ 32) {
 			 createFetch(fetch);
 		}
 
-		if ($$self.$$.dirty[0] & /*currentValueField, currentLabelField*/ 786432 | $$self.$$.dirty[1] & /*isInitialized, options, searchMode, valueField, labelField*/ 269487136) {
+		if ($$self.$$.dirty[0] & /*currentValueField, currentLabelField*/ 786432 | $$self.$$.dirty[1] & /*isInitialized, options, searchMode, valueField, labelField*/ 538974272) {
 			 {
 				if (isInitialized && prevOptions !== options) {
 					if (searchMode === "auto") {
@@ -6908,23 +6942,23 @@ function instance$5($$self, $$props, $$invalidate) {
 					}
 				} // NOTE: this event should not be emitted
 				// if (options.some(opt => opt.isSelected)) emitChangeEvent();
-			} // option
+			}
 		}
 
-		if ($$self.$$.dirty[0] & /*multiple, selectedOptions, currentValueField, anchor*/ 2359299 | $$self.$$.dirty[1] & /*value*/ 128) {
+		if ($$self.$$.dirty[0] & /*multiple, selectedOptions, currentValueField, anchor*/ 2359299 | $$self.$$.dirty[1] & /*value*/ 256) {
 			 {
 				const _unifiedSelection = multiple
 				? Array.from(selectedOptions)
-				: selectedOptions.size ? selectedOptions[0] : null;
+				: selectedOptions.size ? [...selectedOptions][0] : null;
 
-				$$invalidate(38, value = multiple
+				$$invalidate(39, value = multiple
 				? Array.from(selectedOptions).map(opt => opt[currentValueField])
 				: selectedOptions.size
-					? selectedOptions[0][currentValueField]
+					? [...selectedOptions][0][currentValueField]
 					: null);
 
-				$$invalidate(62, prevSelection = _unifiedSelection);
-				$$invalidate(37, selection = _unifiedSelection);
+				$$invalidate(63, prevSelection = _unifiedSelection);
+				$$invalidate(38, selection = _unifiedSelection);
 
 				// Custom-element related
 				if (anchor) {
@@ -6951,7 +6985,7 @@ function instance$5($$self, $$props, $$invalidate) {
 			}
 		}
 
-		if ($$self.$$.dirty[1] & /*selection*/ 64 | $$self.$$.dirty[2] & /*prevSelection*/ 1) {
+		if ($$self.$$.dirty[1] & /*selection*/ 128 | $$self.$$.dirty[2] & /*prevSelection*/ 2) {
 			 {
 				if (prevSelection !== selection) {
 					clearSelection();
@@ -6962,47 +6996,50 @@ function instance$5($$self, $$props, $$invalidate) {
 						: selectOption(selection);
 					}
 
-					$$invalidate(62, prevSelection = selection);
+					$$invalidate(63, prevSelection = selection);
 				}
 			}
 		}
 
-		if ($$self.$$.dirty[1] & /*options*/ 32) {
-			 $$invalidate(65, flatItems = flatList(options));
+		if ($$self.$$.dirty[1] & /*options*/ 64) {
+			 $$invalidate(66, flatItems = flatList(options));
 		}
 
-		if ($$self.$$.dirty[0] & /*selectedOptions*/ 2097152 | $$self.$$.dirty[1] & /*max*/ 4096) {
+		if ($$self.$$.dirty[0] & /*selectedOptions*/ 2097152 | $$self.$$.dirty[1] & /*max*/ 8192) {
 			 $$invalidate(23, maxReached = max && selectedOptions.length === max);
 		}
 
-		if ($$self.$$.dirty[0] & /*maxReached, multiple, selectedOptions*/ 10485762 | $$self.$$.dirty[2] & /*flatItems, $inputValue*/ 24) {
+		if ($$self.$$.dirty[0] & /*maxReached, multiple, selectedOptions*/ 10485762 | $$self.$$.dirty[2] & /*flatItems, $inputValue*/ 48) {
 			 $$invalidate(24, availableItems = maxReached
 			? []
 			: filterList(flatItems, $inputValue, multiple, selectedOptions.length));
 		}
 
-		if ($$self.$$.dirty[0] & /*creatable, availableItems*/ 16777280 | $$self.$$.dirty[2] & /*$inputValue*/ 16) {
-			 $$invalidate(67, currentListLength = creatable && $inputValue
+		if ($$self.$$.dirty[0] & /*creatable, availableItems*/ 16777280 | $$self.$$.dirty[2] & /*$inputValue*/ 32) {
+			 currentListLength = creatable && $inputValue
 			? availableItems.length
-			: availableItems.length - 1);
+			: availableItems.length - 1;
 		}
 
-		if ($$self.$$.dirty[0] & /*availableItems*/ 16777216 | $$self.$$.dirty[2] & /*currentListLength*/ 32) {
-			 $$invalidate(25, listIndex = indexList(availableItems));
+		if ($$self.$$.dirty[0] & /*availableItems, creatable*/ 16777280 | $$self.$$.dirty[2] & /*$inputValue*/ 32) {
+			 $$invalidate(25, listIndex = indexList(availableItems, creatable && $inputValue));
 		}
 
-		if ($$self.$$.dirty[0] & /*maxReached*/ 8388608 | $$self.$$.dirty[1] & /*max*/ 4096) {
-			// $: {
-			//   if (dropdownActiveIndex === null) {
-			//     dropdownActiveIndex = listIndex.first;
-			//   } else if (dropdownActiveIndex > listIndex.last) {
-			//     dropdownActiveIndex = listIndex.last;
-			//   }
-			// }
+		if ($$self.$$.dirty[0] & /*dropdownActiveIndex, listIndex*/ 33685504) {
+			 {
+				if (dropdownActiveIndex === null) {
+					$$invalidate(17, dropdownActiveIndex = listIndex.first);
+				} else if (dropdownActiveIndex > listIndex.last) {
+					$$invalidate(17, dropdownActiveIndex = listIndex.last);
+				}
+			}
+		}
+
+		if ($$self.$$.dirty[0] & /*maxReached*/ 8388608 | $$self.$$.dirty[1] & /*max*/ 8192) {
 			 $$invalidate(22, listMessage = maxReached ? config.i18n.max(max) : config.i18n.empty);
 		}
 
-		if ($$self.$$.dirty[0] & /*currentLabelField*/ 524288 | $$self.$$.dirty[1] & /*renderer*/ 8192) {
+		if ($$self.$$.dirty[0] & /*currentLabelField*/ 524288 | $$self.$$.dirty[1] & /*renderer*/ 16384) {
 			 $$invalidate(26, itemRenderer = typeof renderer === "function"
 			? renderer
 			: formatterList[renderer] || formatterList.default.bind({ label: currentLabelField }));
@@ -7042,6 +7079,7 @@ function instance$5($$self, $$props, $$invalidate) {
 		inputValue,
 		hasFocus,
 		hasDropdownOpened,
+		alreadyCreated,
 		onSelect,
 		onDeselect,
 		onHover,
@@ -7092,34 +7130,34 @@ class Svelecte extends SvelteComponentDev {
 				collapseSelection: 5,
 				disabled: 2,
 				creatable: 6,
-				creatablePrefix: 39,
-				selectOnTab: 40,
-				valueField: 41,
-				labelField: 42,
-				max: 43,
-				renderer: 44,
+				creatablePrefix: 40,
+				selectOnTab: 41,
+				valueField: 42,
+				labelField: 43,
+				max: 44,
+				renderer: 45,
 				clearable: 7,
 				searchable: 8,
-				delimiter: 45,
+				delimiter: 46,
 				placeholder: 9,
-				fetch: 35,
-				fetchMode: 46,
-				fetchCallback: 47,
-				options: 36,
+				fetch: 36,
+				fetchMode: 47,
+				fetchCallback: 48,
+				options: 37,
 				virtualList: 10,
 				vlHeight: 11,
 				vlItemSize: 12,
-				searchField: 48,
-				sortField: 49,
-				sortRemote: 50,
-				searchMode: 51,
+				searchField: 49,
+				sortField: 50,
+				sortRemote: 51,
+				searchMode: 52,
 				class: 13,
 				style: 14,
-				selection: 37,
-				value: 38,
-				getSelection: 52,
-				setSelection: 53,
-				clearByParent: 54
+				selection: 38,
+				value: 39,
+				getSelection: 53,
+				setSelection: 54,
+				clearByParent: 55
 			},
 			[-1, -1, -1]
 		);
@@ -7389,7 +7427,7 @@ class Svelecte extends SvelteComponentDev {
 	}
 
 	get getSelection() {
-		return this.$$.ctx[52];
+		return this.$$.ctx[53];
 	}
 
 	set getSelection(value) {
@@ -7397,7 +7435,7 @@ class Svelecte extends SvelteComponentDev {
 	}
 
 	get setSelection() {
-		return this.$$.ctx[53];
+		return this.$$.ctx[54];
 	}
 
 	set setSelection(value) {
@@ -7405,7 +7443,7 @@ class Svelecte extends SvelteComponentDev {
 	}
 
 	get clearByParent() {
-		return this.$$.ctx[54];
+		return this.$$.ctx[55];
 	}
 
 	set clearByParent(value) {

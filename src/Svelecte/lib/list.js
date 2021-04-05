@@ -6,8 +6,10 @@ let indexMapping = {
   map: [],
   first: null,
   last: null,
+  hasCreateRow: false,
   next(curr, prevOnUndefined) {
     const val = this.map[++curr];
+    if (this.hasCreateRow && curr === this.last) return this.last;
     if (val === '') return this.next(curr);
     if (val === undefined) {
       if (curr > this.map.length) curr = this.first - 1;
@@ -17,6 +19,7 @@ let indexMapping = {
   },
   prev(curr) {
     const val = this.map[--curr];
+    if (this.hasCreateRow && curr === this.first) return this.first;
     if (val === '') return this.prev(curr);
     if (!val) return this.last;
     return val;
@@ -94,16 +97,17 @@ export function filterList(options, inputValue, excludeSelected) {
   return mapped;
 }
 
-export function indexList(options) {
+export function indexList(options, includeCreateRow) {
   const map = optionsWithGroups
     ? options.reduce((res, opt, index) => {
       res.push(opt.$isGroupHeader ? '' : index);
       return res;
     }, [])
     : Object.keys(options);
+  indexMapping.hasCreateRow = !!includeCreateRow;
   indexMapping.map = map;
   indexMapping.first = map[0] !== '' ? 0 : 1;
-  indexMapping.last = map.length - 1;
+  indexMapping.last = map.length ? map.length - (includeCreateRow ? 0 : 1) : 0;
   return indexMapping;
 }
 
