@@ -17,9 +17,8 @@
 </script>
 
 <script>
-  import { setContext, createEventDispatcher, tick, onMount } from 'svelte';
+  import { createEventDispatcher, tick, onMount } from 'svelte';
   import { writable } from 'svelte/store';
-  import { key, initStore } from './contextStore.js';
   import { fetchRemote } from './lib/utils.js';
   import { flatList, filterList, indexList } from './lib/list.js';
   import Control from './components/Control.svelte';
@@ -103,23 +102,6 @@
   const hasDropdownOpened = writable(false);
 
   let isFetchingData = false;
-  const { 
-      settings,                               // stores
-      selectOption, deselectOption, clearSelection, settingsUnsubscribe,                            // actions
-      listLength, matchingOptions,   // getters
-      updateOpts, 
-  } = initStore(
-    options, selection,
-    { currentValueField, currentLabelField, max, multiple, creatable, searchField, sortField, sortRemote },
-    config.i18n
-  );
-
-  setContext(key, {
-    hasFocus, hasDropdownOpened, inputValue, 
-    selectOption, deselectOption, clearSelection, 
-    listLength, matchingOptions, isFetchingData
-  });
-
   
   /** ************************************ remote source */
   $: initFetchOnly = fetchMode === 'init' || (typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
@@ -187,8 +169,8 @@
     }
   }
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
+  let selectedOptions = new Set();
   $: flatItems = flatList(options);
-  $: selectedOptions = flatItems.filter(opt => opt.isSelected);
   $: maxReached = max && selectedOptions.length === max 
   $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, selectedOptions.length);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
@@ -204,11 +186,11 @@
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
     const _unifiedSelection = multiple 
-      ? selectedOptions
-      : selectedOptions.length ? selectedOptions[0] : null;
+      ? Array.from(selectedOptions)
+      : selectedOptions.size ? selectedOptions[0] : null;
     value = multiple 
-      ? selectedOptions.map(opt => opt[currentValueField])
-      : selectedOptions.length ? selectedOptions[0][currentValueField] : null;
+      ? Array.from(selectedOptions).map(opt => opt[currentValueField])
+      : selectedOptions.size ? selectedOptions[0][currentValueField] : null;
     prevSelection = _unifiedSelection;
     selection = _unifiedSelection;
     // Custom-element related
@@ -235,7 +217,7 @@
       }
       // NOTE: this event should not be emitted
       // if (options.some(opt => opt.isSelected)) emitChangeEvent();
-      updateOpts(options);
+      // option
     }
   }
   // $: dropdownComponent = virtualList ? DropdownVirtual : Dropdown;
@@ -270,15 +252,9 @@
     newAddition.forEach(selectOption);
   }
 
-  /**
-   * Add given option to selection pool
-   */
-  function onSelect(event, opt) {
-    opt = opt || event.detail;
-    if (disabled || opt.isDisabled) return;
-    if (!multiple && selectedOptions.length) {
-      selectedOptions[0].isSelected = false;
-    }
+  function selectOption(opt) {
+    if (maxReached) return;
+    
     if (typeof opt === 'string') {
       opt = {
         [currentLabelField]: `${creatablePrefix}${opt}`,
@@ -289,7 +265,26 @@
       options = [...options, opt];
     }
     opt.isSelected = true;
+    !selectedOptions.has(opt) && selectedOptions.add(opt);
+    selectedOptions = selectedOptions;
     flatItems = flatItems;
+  }
+
+  function deselectOption(opt) {
+    selectedOptions.delete(opt);
+    opt.isSelected = false;
+    selectedOptions = selectedOptions;
+    flatItems = flatItems;
+  }
+
+  /**
+   * Add given option to selection pool
+   */
+  function onSelect(event, opt) {
+    opt = opt || event.detail;
+    if (disabled || opt.isDisabled) return;
+    
+    selectOption(opt);
     $inputValue = '';
     if (!multiple) {
       $hasDropdownOpened = false;
@@ -309,16 +304,16 @@
   function onDeselect(event, opt) {
     if (disabled) return;
     opt = opt || event.detail;
+    console.log('deselect', opt);
     if (opt) {
-      opt.isSelected = false;
-      flatItems = flatItems;
+      deselectOption(opt);
     } else {  // apply for 'x' when clearable:true || ctrl+backspace || ctrl+delete
-      flatItems = flatItems.map(opt => { if (opt.isSelected) opt.isSelected = false; return opt})
+      selectedOptions.forEach(deselectOption);
     }
     tick().then(refControl.focusControl);
     emitChangeEvent();
     tick().then(() => {
-        dropdownActiveIndex = listIndex.next(-1);
+        dropdownActiveIndex = listIndex.next(dropdownActiveIndex - 1); 
       })
   }
 
@@ -407,8 +402,8 @@
       // FUTURE: handle 'PageDown' & 'PageUp'
       case 'Backspace':
       case 'Delete':
-        if ($inputValue === '' && selectedOptions.length) {
-          event.ctrlKey ? onDeselect({}) : onDeselect(null, selectedOptions.pop());
+        if ($inputValue === '' && selectedOptions.size) {
+          event.ctrlKey ? onDeselect({ /** no detail prop */}) : onDeselect(null, [...selectedOptions].pop());
         }
       default:
         if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !isFetchingData) {
@@ -439,6 +434,7 @@
     // TODO: resolve, probably already fixed
     // if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
     // if (dropdownActiveIndex < 0) dropdownActiveIndex = listIndexMap.first;
+    dropdownActiveIndex = listIndex.first;
     if (prevSelection && !multiple) {
       dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevSelection[currentValueField]);
       tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
@@ -450,7 +446,7 @@
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} collapseSelection={collapseSelection ? config.i18n.collapsedSelection : null}
-    inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} {selectedOptions} {isFetchingData}
+    inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={Array.from(selectedOptions)} {isFetchingData}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
     on:paste={onPaste}
@@ -468,7 +464,7 @@
   ></Dropdown>
   {#if name && !anchor}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
-    {#each selectedOptions as opt}
+    {#each Array.from(selectedOptions) as opt}
     <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
   </select>

@@ -9,7 +9,10 @@ let indexMapping = {
   next(curr, prevOnUndefined) {
     const val = this.map[++curr];
     if (val === '') return this.next(curr);
-    if (val === undefined) return prevOnUndefined ? this.prev(curr) : this.next(curr);
+    if (val === undefined) {
+      if (curr > this.map.length) curr = this.first - 1;
+      return prevOnUndefined === true ? this.prev(curr) : this.next(curr);
+    }
     return val;
   },
   prev(curr) {
