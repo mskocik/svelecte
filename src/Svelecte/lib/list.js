@@ -6,10 +6,10 @@ let indexMapping = {
   map: [],
   first: null,
   last: null,
-  next(curr) {
+  next(curr, prevOnUndefined) {
     const val = this.map[++curr];
     if (val === '') return this.next(curr);
-    if (!val) return this.first;
+    if (val === undefined) return prevOnUndefined ? this.prev(curr) : this.next(curr);
     return val;
   },
   prev(curr) {
@@ -45,11 +45,16 @@ export function flatList(options) {
 export function filterList(options, inputValue, excludeSelected) {
   if (!inputValue) {
     if (excludeSelected) {
-      return options
+      options = options
         .filter(opt => !opt.isSelected)
         .filter((opt, idx, self) => {
-          // TODO: issue #4
-          if (opt.$isGroupHeader && ((self[idx + 1] && self[idx + 1].$isGroupHeader) || idx ===0)) return false;
+          if (opt.$isGroupHeader &&
+            (
+              (self[idx + 1] && self[idx + 1].$isGroupHeader) 
+            || self.length <= 1
+            || self.length - 1 === idx
+            )
+          ) return false;
           return true;
         })
     }

@@ -45,6 +45,13 @@
 
   let vl_height = vlHeight;
   let vl_itemSize = vlItemSize;
+  $: vl_listHeight = Math.min(vl_height, Array.isArray(vl_itemSize) 
+    ? vl_itemSize.reduce((res, num) => {
+      res+= num;
+      return res;
+    }, 0)
+    : items.length * vl_itemSize
+  );
   let vl_autoMode = vlHeight === null && vlItemSize === null;
   let refVirtualList;
 
@@ -131,7 +138,7 @@
     {#if virtualList}
       <VirtualList bind:this={refVirtualList}
         width="100%"
-        height={Math.min(vl_height, Array.isArray(vl_itemSize) ? vl_height : items.length * vl_itemSize)}
+        height={vl_listHeight}
         itemCount={items.length}
         itemSize={vl_itemSize}
         scrollToAlignment="auto"

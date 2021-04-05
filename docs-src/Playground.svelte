@@ -50,6 +50,7 @@
 			}
 		} else if (remoteValue === 'groups') {
 			settings = {
+				multiple: true,
 				options: dataset.countryGroups(),
 				fetch: null,
 				placeholder: 'Select from country group',
@@ -93,7 +94,7 @@
 	<button on:click={() => { settings.multiple = !settings.multiple; settings = settings; }}>M</button>
 	<button on:click={() => { settings.collapseSelection = !settings.collapseSelection; settings = settings; }}>C</button>
 	<div class="form-row" class:flexible-svelecte={isFlexWidth}>
-		<Svelecte {...settings} bind:selection={myValue} max={3} name="select">
+		<Svelecte {...settings} bind:selection={myValue} name="select" virtualList>
 			<b slot="icon">{slot}</b>
 		</Svelecte>
 	</div>

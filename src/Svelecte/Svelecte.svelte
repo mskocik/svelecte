@@ -297,7 +297,7 @@
       tick().then(() => {
         dropdownActiveIndex = maxReached
           ? null
-          : listIndex.next(dropdownActiveIndex - 1);
+          : listIndex.next(dropdownActiveIndex - 1, true);
       })
     }
     emitChangeEvent();
