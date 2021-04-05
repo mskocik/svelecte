@@ -191,8 +191,8 @@
   $: selectedOptions = flatItems.filter(opt => opt.isSelected);
   $: maxReached = max && selectedOptions.length === max 
   $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, selectedOptions.length);
-  $: listIndex = indexList(availableItems);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
+  $: listIndex = indexList(availableItems, currentListLength);
   // $: {
   //   if (dropdownActiveIndex === null) {
   //     dropdownActiveIndex = listIndex.first;
@@ -447,7 +447,6 @@
   });
 </script>
 
-{dropdownActiveIndex}
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} collapseSelection={collapseSelection ? config.i18n.collapsedSelection : null}

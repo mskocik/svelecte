@@ -41,7 +41,7 @@
   let scrollContainer;
   let isMounted = false;
   let hasEmptyList = false;
-  let currentListLength = 0;
+  $: currentListLength = items.length; 
 
   let vl_height = vlHeight;
   let vl_itemSize = vlItemSize;
@@ -53,7 +53,6 @@
       ? !$inputValue
       : true
     );
-    if (maxReached) dropdownIndex = null;
     // required when changing item list 'on-the-fly' for VL
     if (virtualList && isMounted && vl_autoMode) {
       if (hasEmptyList) dropdownIndex = null;

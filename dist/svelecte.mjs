@@ -4979,7 +4979,7 @@ function get_each_context$2(ctx, list, i) {
 	return child_ctx;
 }
 
-// (131:2) {#if items.length}
+// (130:2) {#if items.length}
 function create_if_block_3$1(ctx) {
 	let current_block_type_index;
 	let if_block;
@@ -5050,14 +5050,14 @@ function create_if_block_3$1(ctx) {
 		block,
 		id: create_if_block_3$1.name,
 		type: "if",
-		source: "(131:2) {#if items.length}",
+		source: "(130:2) {#if items.length}",
 		ctx
 	});
 
 	return block;
 }
 
-// (152:4) {:else}
+// (151:4) {:else}
 function create_else_block$2(ctx) {
 	let each_1_anchor;
 	let current;
@@ -5090,7 +5090,7 @@ function create_else_block$2(ctx) {
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (dirty[0] & /*listIndex, dropdownIndex, renderer, items, $inputValue*/ 131225) {
+			if (dirty[0] & /*listIndex, dropdownIndex, renderer, items, $inputValue*/ 262297) {
 				each_value = /*items*/ ctx[4];
 				validate_each_argument(each_value);
 				let i;
@@ -5146,14 +5146,14 @@ function create_else_block$2(ctx) {
 		block,
 		id: create_else_block$2.name,
 		type: "else",
-		source: "(152:4) {:else}",
+		source: "(151:4) {:else}",
 		ctx
 	});
 
 	return block;
 }
 
-// (132:4) {#if virtualList}
+// (131:4) {#if virtualList}
 function create_if_block_4(ctx) {
 	let virtuallist;
 	let current;
@@ -5204,7 +5204,7 @@ function create_if_block_4(ctx) {
 			? /*dropdownIndex*/ ctx[0]
 			: null;
 
-			if (dirty[0] & /*dropdownIndex, renderer, listIndex, items, $inputValue*/ 131225 | dirty[1] & /*$$scope, style, index*/ 1120) {
+			if (dirty[0] & /*dropdownIndex, renderer, listIndex, items, $inputValue*/ 262297 | dirty[1] & /*$$scope, style, index*/ 1120) {
 				virtuallist_changes.$$scope = { dirty, ctx };
 			}
 
@@ -5229,14 +5229,14 @@ function create_if_block_4(ctx) {
 		block,
 		id: create_if_block_4.name,
 		type: "if",
-		source: "(132:4) {#if virtualList}",
+		source: "(131:4) {#if virtualList}",
 		ctx
 	});
 
 	return block;
 }
 
-// (153:6) {#each items as opt, i}
+// (152:6) {#each items as opt, i}
 function create_each_block$2(ctx) {
 	let div;
 	let item;
@@ -5250,7 +5250,7 @@ function create_each_block$2(ctx) {
 				index: /*listIndex*/ ctx[7].map[/*i*/ ctx[40]],
 				isDisabled: /*opt*/ ctx[38].isDisabled,
 				item: /*opt*/ ctx[38],
-				inputValue: /*$inputValue*/ ctx[17]
+				inputValue: /*$inputValue*/ ctx[18]
 			},
 			$$inline: true
 		});
@@ -5265,7 +5265,7 @@ function create_each_block$2(ctx) {
 			t = space();
 			attr_dev(div, "data-pos", div_data_pos_value = /*listIndex*/ ctx[7].map[/*i*/ ctx[40]]);
 			toggle_class(div, "sv-dd-item-active", /*listIndex*/ ctx[7].map[/*i*/ ctx[40]] === /*dropdownIndex*/ ctx[0]);
-			add_location(div, file$4, 153, 8, 5801);
+			add_location(div, file$4, 152, 8, 5769);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -5279,7 +5279,7 @@ function create_each_block$2(ctx) {
 			if (dirty[0] & /*listIndex*/ 128) item_changes.index = /*listIndex*/ ctx[7].map[/*i*/ ctx[40]];
 			if (dirty[0] & /*items*/ 16) item_changes.isDisabled = /*opt*/ ctx[38].isDisabled;
 			if (dirty[0] & /*items*/ 16) item_changes.item = /*opt*/ ctx[38];
-			if (dirty[0] & /*$inputValue*/ 131072) item_changes.inputValue = /*$inputValue*/ ctx[17];
+			if (dirty[0] & /*$inputValue*/ 262144) item_changes.inputValue = /*$inputValue*/ ctx[18];
 
 			if (dirty[1] & /*$$scope*/ 1024) {
 				item_changes.$$scope = { dirty, ctx };
@@ -5314,14 +5314,14 @@ function create_each_block$2(ctx) {
 		block,
 		id: create_each_block$2.name,
 		type: "each",
-		source: "(153:6) {#each items as opt, i}",
+		source: "(152:6) {#each items as opt, i}",
 		ctx
 	});
 
 	return block;
 }
 
-// (141:8) <div slot="item" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>
+// (140:8) <div slot="item" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>
 function create_item_slot(ctx) {
 	let div;
 	let item;
@@ -5334,7 +5334,7 @@ function create_item_slot(ctx) {
 				index: /*listIndex*/ ctx[7].map[/*index*/ ctx[36]],
 				isDisabled: /*items*/ ctx[4][/*index*/ ctx[36]].isDisabled,
 				item: /*items*/ ctx[4][/*index*/ ctx[36]],
-				inputValue: /*$inputValue*/ ctx[17]
+				inputValue: /*$inputValue*/ ctx[18]
 			},
 			$$inline: true
 		});
@@ -5349,7 +5349,7 @@ function create_item_slot(ctx) {
 			attr_dev(div, "slot", "item");
 			attr_dev(div, "style", div_style_value = /*style*/ ctx[37]);
 			toggle_class(div, "sv-dd-item-active", /*index*/ ctx[36] === /*dropdownIndex*/ ctx[0]);
-			add_location(div, file$4, 140, 8, 5348);
+			add_location(div, file$4, 139, 8, 5316);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -5362,7 +5362,7 @@ function create_item_slot(ctx) {
 			if (dirty[0] & /*listIndex*/ 128 | dirty[1] & /*index*/ 32) item_changes.index = /*listIndex*/ ctx[7].map[/*index*/ ctx[36]];
 			if (dirty[0] & /*items*/ 16 | dirty[1] & /*index*/ 32) item_changes.isDisabled = /*items*/ ctx[4][/*index*/ ctx[36]].isDisabled;
 			if (dirty[0] & /*items*/ 16 | dirty[1] & /*index*/ 32) item_changes.item = /*items*/ ctx[4][/*index*/ ctx[36]];
-			if (dirty[0] & /*$inputValue*/ 131072) item_changes.inputValue = /*$inputValue*/ ctx[17];
+			if (dirty[0] & /*$inputValue*/ 262144) item_changes.inputValue = /*$inputValue*/ ctx[18];
 
 			if (dirty[1] & /*$$scope*/ 1024) {
 				item_changes.$$scope = { dirty, ctx };
@@ -5397,14 +5397,14 @@ function create_item_slot(ctx) {
 		block,
 		id: create_item_slot.name,
 		type: "slot",
-		source: "(141:8) <div slot=\\\"item\\\" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>",
+		source: "(140:8) <div slot=\\\"item\\\" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>",
 		ctx
 	});
 
 	return block;
 }
 
-// (167:2) {#if $inputValue && creatable && !maxReached}
+// (166:2) {#if $inputValue && creatable && !maxReached}
 function create_if_block_1$2(ctx) {
 	let div;
 	let span;
@@ -5414,21 +5414,21 @@ function create_if_block_1$2(ctx) {
 	let t3;
 	let mounted;
 	let dispose;
-	let if_block = /*currentListLength*/ ctx[20] !== /*dropdownIndex*/ ctx[0] && create_if_block_2$1(ctx);
+	let if_block = /*currentListLength*/ ctx[17] !== /*dropdownIndex*/ ctx[0] && create_if_block_2$1(ctx);
 
 	const block = {
 		c: function create() {
 			div = element("div");
 			span = element("span");
 			t0 = text("Create '");
-			t1 = text(/*$inputValue*/ ctx[17]);
+			t1 = text(/*$inputValue*/ ctx[18]);
 			t2 = text("'");
 			t3 = space();
 			if (if_block) if_block.c();
-			add_location(span, file$4, 168, 6, 6374);
+			add_location(span, file$4, 167, 6, 6342);
 			attr_dev(div, "class", "creatable-row svelte-2nw4gl");
-			toggle_class(div, "active", /*currentListLength*/ ctx[20] === /*dropdownIndex*/ ctx[0]);
-			add_location(div, file$4, 167, 4, 6245);
+			toggle_class(div, "active", /*currentListLength*/ ctx[17] === /*dropdownIndex*/ ctx[0]);
+			add_location(div, file$4, 166, 4, 6213);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -5444,7 +5444,7 @@ function create_if_block_1$2(ctx) {
 					div,
 					"click",
 					function () {
-						if (is_function(/*dispatch*/ ctx[19]("select", /*$inputValue*/ ctx[17]))) /*dispatch*/ ctx[19]("select", /*$inputValue*/ ctx[17]).apply(this, arguments);
+						if (is_function(/*dispatch*/ ctx[20]("select", /*$inputValue*/ ctx[18]))) /*dispatch*/ ctx[20]("select", /*$inputValue*/ ctx[18]).apply(this, arguments);
 					},
 					false,
 					false,
@@ -5456,9 +5456,9 @@ function create_if_block_1$2(ctx) {
 		},
 		p: function update(new_ctx, dirty) {
 			ctx = new_ctx;
-			if (dirty[0] & /*$inputValue*/ 131072) set_data_dev(t1, /*$inputValue*/ ctx[17]);
+			if (dirty[0] & /*$inputValue*/ 262144) set_data_dev(t1, /*$inputValue*/ ctx[18]);
 
-			if (/*currentListLength*/ ctx[20] !== /*dropdownIndex*/ ctx[0]) {
+			if (/*currentListLength*/ ctx[17] !== /*dropdownIndex*/ ctx[0]) {
 				if (if_block) ; else {
 					if_block = create_if_block_2$1(ctx);
 					if_block.c();
@@ -5469,8 +5469,8 @@ function create_if_block_1$2(ctx) {
 				if_block = null;
 			}
 
-			if (dirty[0] & /*currentListLength, dropdownIndex*/ 1048577) {
-				toggle_class(div, "active", /*currentListLength*/ ctx[20] === /*dropdownIndex*/ ctx[0]);
+			if (dirty[0] & /*currentListLength, dropdownIndex*/ 131073) {
+				toggle_class(div, "active", /*currentListLength*/ ctx[17] === /*dropdownIndex*/ ctx[0]);
 			}
 		},
 		d: function destroy(detaching) {
@@ -5485,14 +5485,14 @@ function create_if_block_1$2(ctx) {
 		block,
 		id: create_if_block_1$2.name,
 		type: "if",
-		source: "(167:2) {#if $inputValue && creatable && !maxReached}",
+		source: "(166:2) {#if $inputValue && creatable && !maxReached}",
 		ctx
 	});
 
 	return block;
 }
 
-// (170:6) {#if currentListLength !== dropdownIndex}
+// (169:6) {#if currentListLength !== dropdownIndex}
 function create_if_block_2$1(ctx) {
 	let span;
 	let kbd0;
@@ -5508,11 +5508,11 @@ function create_if_block_2$1(ctx) {
 			kbd1 = element("kbd");
 			kbd1.textContent = "Enter";
 			attr_dev(kbd0, "class", "svelte-2nw4gl");
-			add_location(kbd0, file$4, 170, 29, 6489);
+			add_location(kbd0, file$4, 169, 29, 6457);
 			attr_dev(kbd1, "class", "svelte-2nw4gl");
-			add_location(kbd1, file$4, 170, 45, 6505);
+			add_location(kbd1, file$4, 169, 45, 6473);
 			attr_dev(span, "class", "shortcut svelte-2nw4gl");
-			add_location(span, file$4, 170, 6, 6466);
+			add_location(span, file$4, 169, 6, 6434);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, span, anchor);
@@ -5529,14 +5529,14 @@ function create_if_block_2$1(ctx) {
 		block,
 		id: create_if_block_2$1.name,
 		type: "if",
-		source: "(170:6) {#if currentListLength !== dropdownIndex}",
+		source: "(169:6) {#if currentListLength !== dropdownIndex}",
 		ctx
 	});
 
 	return block;
 }
 
-// (175:2) {#if hasEmptyList || maxReached}
+// (174:2) {#if hasEmptyList || maxReached}
 function create_if_block$2(ctx) {
 	let div;
 	let t;
@@ -5546,7 +5546,7 @@ function create_if_block$2(ctx) {
 			div = element("div");
 			t = text(/*listMessage*/ ctx[9]);
 			attr_dev(div, "class", "empty-list-row svelte-2nw4gl");
-			add_location(div, file$4, 175, 4, 6604);
+			add_location(div, file$4, 174, 4, 6572);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -5564,7 +5564,7 @@ function create_if_block$2(ctx) {
 		block,
 		id: create_if_block$2.name,
 		type: "if",
-		source: "(175:2) {#if hasEmptyList || maxReached}",
+		source: "(174:2) {#if hasEmptyList || maxReached}",
 		ctx
 	});
 
@@ -5580,7 +5580,7 @@ function create_fragment$4(ctx) {
 	let mounted;
 	let dispose;
 	let if_block0 = /*items*/ ctx[4].length && create_if_block_3$1(ctx);
-	let if_block1 = /*$inputValue*/ ctx[17] && /*creatable*/ ctx[1] && !/*maxReached*/ ctx[2] && create_if_block_1$2(ctx);
+	let if_block1 = /*$inputValue*/ ctx[18] && /*creatable*/ ctx[1] && !/*maxReached*/ ctx[2] && create_if_block_1$2(ctx);
 	let if_block2 = (/*hasEmptyList*/ ctx[13] || /*maxReached*/ ctx[2]) && create_if_block$2(ctx);
 
 	const block = {
@@ -5594,12 +5594,12 @@ function create_fragment$4(ctx) {
 			if (if_block2) if_block2.c();
 			attr_dev(div0, "class", "sv-dropdown-content svelte-2nw4gl");
 			toggle_class(div0, "max-reached", /*maxReached*/ ctx[2]);
-			add_location(div0, file$4, 129, 2, 4847);
+			add_location(div0, file$4, 128, 2, 4815);
 			attr_dev(div1, "class", "sv-dropdown svelte-2nw4gl");
-			attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[18]);
+			attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[19]);
 			attr_dev(div1, "tabindex", "-1");
 			toggle_class(div1, "is-virtual", /*virtualList*/ ctx[5]);
-			add_location(div1, file$4, 125, 0, 4673);
+			add_location(div1, file$4, 124, 0, 4641);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -5645,7 +5645,7 @@ function create_fragment$4(ctx) {
 				check_outros();
 			}
 
-			if (/*$inputValue*/ ctx[17] && /*creatable*/ ctx[1] && !/*maxReached*/ ctx[2]) {
+			if (/*$inputValue*/ ctx[18] && /*creatable*/ ctx[1] && !/*maxReached*/ ctx[2]) {
 				if (if_block1) {
 					if_block1.p(ctx, dirty);
 				} else {
@@ -5675,8 +5675,8 @@ function create_fragment$4(ctx) {
 				toggle_class(div0, "max-reached", /*maxReached*/ ctx[2]);
 			}
 
-			if (!current || dirty[0] & /*$hasDropdownOpened*/ 262144) {
-				attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[18]);
+			if (!current || dirty[0] & /*$hasDropdownOpened*/ 524288) {
+				attr_dev(div1, "aria-expanded", /*$hasDropdownOpened*/ ctx[19]);
 			}
 
 			if (dirty[0] & /*virtualList*/ 32) {
@@ -5718,11 +5718,11 @@ function create_fragment$4(ctx) {
 function instance$4($$self, $$props, $$invalidate) {
 	let $inputValue,
 		$$unsubscribe_inputValue = noop,
-		$$subscribe_inputValue = () => ($$unsubscribe_inputValue(), $$unsubscribe_inputValue = subscribe(inputValue, $$value => $$invalidate(17, $inputValue = $$value)), inputValue);
+		$$subscribe_inputValue = () => ($$unsubscribe_inputValue(), $$unsubscribe_inputValue = subscribe(inputValue, $$value => $$invalidate(18, $inputValue = $$value)), inputValue);
 
 	let $hasDropdownOpened,
 		$$unsubscribe_hasDropdownOpened = noop,
-		$$subscribe_hasDropdownOpened = () => ($$unsubscribe_hasDropdownOpened(), $$unsubscribe_hasDropdownOpened = subscribe(hasDropdownOpened, $$value => $$invalidate(18, $hasDropdownOpened = $$value)), hasDropdownOpened);
+		$$subscribe_hasDropdownOpened = () => ($$unsubscribe_hasDropdownOpened(), $$unsubscribe_hasDropdownOpened = subscribe(hasDropdownOpened, $$value => $$invalidate(19, $hasDropdownOpened = $$value)), hasDropdownOpened);
 
 	$$self.$$.on_destroy.push(() => $$unsubscribe_inputValue());
 	$$self.$$.on_destroy.push(() => $$unsubscribe_hasDropdownOpened());
@@ -5768,7 +5768,6 @@ function instance$4($$self, $$props, $$invalidate) {
 	let scrollContainer;
 	let isMounted = false;
 	let hasEmptyList = false;
-	let currentListLength = 0;
 	let vl_height = vlHeight;
 	let vl_itemSize = vlItemSize;
 	let vl_autoMode = vlHeight === null && vlItemSize === null;
@@ -5946,7 +5945,6 @@ function instance$4($$self, $$props, $$invalidate) {
 		scrollContainer,
 		isMounted,
 		hasEmptyList,
-		currentListLength,
 		vl_height,
 		vl_itemSize,
 		vl_autoMode,
@@ -5954,6 +5952,7 @@ function instance$4($$self, $$props, $$invalidate) {
 		positionDropdown,
 		virtualListDmensionsResolver,
 		dropdownStateSubscription,
+		currentListLength,
 		$inputValue,
 		$hasDropdownOpened
 	});
@@ -5975,23 +5974,28 @@ function instance$4($$self, $$props, $$invalidate) {
 		if ("scrollContainer" in $$props) $$invalidate(11, scrollContainer = $$props.scrollContainer);
 		if ("isMounted" in $$props) $$invalidate(12, isMounted = $$props.isMounted);
 		if ("hasEmptyList" in $$props) $$invalidate(13, hasEmptyList = $$props.hasEmptyList);
-		if ("currentListLength" in $$props) $$invalidate(20, currentListLength = $$props.currentListLength);
 		if ("vl_height" in $$props) $$invalidate(14, vl_height = $$props.vl_height);
 		if ("vl_itemSize" in $$props) $$invalidate(15, vl_itemSize = $$props.vl_itemSize);
 		if ("vl_autoMode" in $$props) $$invalidate(33, vl_autoMode = $$props.vl_autoMode);
 		if ("refVirtualList" in $$props) $$invalidate(16, refVirtualList = $$props.refVirtualList);
 		if ("dropdownStateSubscription" in $$props) dropdownStateSubscription = $$props.dropdownStateSubscription;
+		if ("currentListLength" in $$props) $$invalidate(17, currentListLength = $$props.currentListLength);
 	};
+
+	let currentListLength;
 
 	if ($$props && "$$inject" in $$props) {
 		$$self.$inject_state($$props.$$inject);
 	}
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty[0] & /*items, creatable, $inputValue, maxReached, virtualList, isMounted, hasEmptyList*/ 143414) {
+		if ($$self.$$.dirty[0] & /*items*/ 16) {
+			 $$invalidate(17, currentListLength = items.length);
+		}
+
+		if ($$self.$$.dirty[0] & /*items, creatable, $inputValue, virtualList, isMounted, hasEmptyList*/ 274482) {
 			 {
 				$$invalidate(13, hasEmptyList = items.length < 1 && (creatable ? !$inputValue : true));
-				if (maxReached) $$invalidate(0, dropdownIndex = null);
 
 				// required when changing item list 'on-the-fly' for VL
 				if (virtualList && isMounted && vl_autoMode) {
@@ -6021,10 +6025,10 @@ function instance$4($$self, $$props, $$invalidate) {
 		vl_height,
 		vl_itemSize,
 		refVirtualList,
+		currentListLength,
 		$inputValue,
 		$hasDropdownOpened,
 		dispatch,
-		currentListLength,
 		vlItemSize,
 		vlHeight,
 		scrollIntoView,
@@ -6233,7 +6237,7 @@ function get_each_context$3(ctx, list, i) {
 const get_icon_slot_changes$1 = dirty => ({});
 const get_icon_slot_context$1 = ctx => ({});
 
-// (459:4) <div slot="icon" class="icon-slot">
+// (458:4) <div slot="icon" class="icon-slot">
 function create_icon_slot(ctx) {
 	let div;
 	let current;
@@ -6246,7 +6250,7 @@ function create_icon_slot(ctx) {
 			if (icon_slot) icon_slot.c();
 			attr_dev(div, "slot", "icon");
 			attr_dev(div, "class", "icon-slot svelte-1h9htsj");
-			add_location(div, file$5, 458, 4, 16173);
+			add_location(div, file$5, 457, 4, 16169);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, div, anchor);
@@ -6283,14 +6287,14 @@ function create_icon_slot(ctx) {
 		block,
 		id: create_icon_slot.name,
 		type: "slot",
-		source: "(459:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
+		source: "(458:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
 		ctx
 	});
 
 	return block;
 }
 
-// (470:2) {#if name && !anchor}
+// (469:2) {#if name && !anchor}
 function create_if_block$3(ctx) {
 	let select;
 	let each_value = /*selectedOptions*/ ctx[22];
@@ -6315,7 +6319,7 @@ function create_if_block$3(ctx) {
 			attr_dev(select, "tabindex", "-1");
 			select.required = /*required*/ ctx[4];
 			select.disabled = /*disabled*/ ctx[2];
-			add_location(select, file$5, 470, 2, 16665);
+			add_location(select, file$5, 469, 2, 16661);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, select, anchor);
@@ -6375,14 +6379,14 @@ function create_if_block$3(ctx) {
 		block,
 		id: create_if_block$3.name,
 		type: "if",
-		source: "(470:2) {#if name && !anchor}",
+		source: "(469:2) {#if name && !anchor}",
 		ctx
 	});
 
 	return block;
 }
 
-// (472:4) {#each selectedOptions as opt}
+// (471:4) {#each selectedOptions as opt}
 function create_each_block$3(ctx) {
 	let option;
 	let t_value = /*opt*/ ctx[83][/*currentLabelField*/ ctx[19]] + "";
@@ -6396,7 +6400,7 @@ function create_each_block$3(ctx) {
 			option.__value = option_value_value = /*opt*/ ctx[83][/*currentValueField*/ ctx[18]];
 			option.value = option.__value;
 			option.selected = true;
-			add_location(option, file$5, 472, 4, 16792);
+			add_location(option, file$5, 471, 4, 16788);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, option, anchor);
@@ -6419,7 +6423,7 @@ function create_each_block$3(ctx) {
 		block,
 		id: create_each_block$3.name,
 		type: "each",
-		source: "(472:4) {#each selectedOptions as opt}",
+		source: "(471:4) {#each selectedOptions as opt}",
 		ctx
 	});
 
@@ -6427,13 +6431,11 @@ function create_each_block$3(ctx) {
 }
 
 function create_fragment$5(ctx) {
-	let t0;
-	let t1;
 	let div;
 	let control;
-	let t2;
+	let t0;
 	let dropdown;
-	let t3;
+	let t1;
 	let div_class_value;
 	let current;
 
@@ -6485,35 +6487,30 @@ function create_fragment$5(ctx) {
 
 	const block = {
 		c: function create() {
-			t0 = text(/*dropdownActiveIndex*/ ctx[17]);
-			t1 = space();
 			div = element("div");
 			create_component(control.$$.fragment);
-			t2 = space();
+			t0 = space();
 			create_component(dropdown.$$.fragment);
-			t3 = space();
+			t1 = space();
 			if (if_block) if_block.c();
 			attr_dev(div, "class", div_class_value = "" + (null_to_empty(`svelecte ${/*className*/ ctx[13]}`) + " svelte-1h9htsj"));
 			attr_dev(div, "style", /*style*/ ctx[14]);
 			toggle_class(div, "is-disabled", /*disabled*/ ctx[2]);
-			add_location(div, file$5, 450, 0, 15681);
+			add_location(div, file$5, 449, 0, 15677);
 		},
 		l: function claim(nodes) {
 			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
 		},
 		m: function mount(target, anchor) {
-			insert_dev(target, t0, anchor);
-			insert_dev(target, t1, anchor);
 			insert_dev(target, div, anchor);
 			mount_component(control, div, null);
-			append_dev(div, t2);
+			append_dev(div, t0);
 			mount_component(dropdown, div, null);
-			append_dev(div, t3);
+			append_dev(div, t1);
 			if (if_block) if_block.m(div, null);
 			current = true;
 		},
 		p: function update(ctx, dirty) {
-			if (!current || dirty[0] & /*dropdownActiveIndex*/ 131072) set_data_dev(t0, /*dropdownActiveIndex*/ ctx[17]);
 			const control_changes = {};
 			if (dirty[0] & /*itemRenderer*/ 67108864) control_changes.renderer = /*itemRenderer*/ ctx[26];
 			if (dirty[0] & /*disabled*/ 4) control_changes.disabled = /*disabled*/ ctx[2];
@@ -6584,8 +6581,6 @@ function create_fragment$5(ctx) {
 			current = false;
 		},
 		d: function destroy(detaching) {
-			if (detaching) detach_dev(t0);
-			if (detaching) detach_dev(t1);
 			if (detaching) detach_dev(div);
 			/*control_binding*/ ctx[56](null);
 			destroy_component(control);
@@ -7221,8 +7216,8 @@ function instance$5($$self, $$props, $$invalidate) {
 		maxReached,
 		availableItems,
 		$inputValue,
-		listIndex,
 		currentListLength,
+		listIndex,
 		itemRenderer,
 		dropdownComponent,
 		$hasDropdownOpened
@@ -7278,8 +7273,8 @@ function instance$5($$self, $$props, $$invalidate) {
 		if ("selectedOptions" in $$props) $$invalidate(22, selectedOptions = $$props.selectedOptions);
 		if ("maxReached" in $$props) $$invalidate(23, maxReached = $$props.maxReached);
 		if ("availableItems" in $$props) $$invalidate(24, availableItems = $$props.availableItems);
+		if ("currentListLength" in $$props) $$invalidate(67, currentListLength = $$props.currentListLength);
 		if ("listIndex" in $$props) $$invalidate(25, listIndex = $$props.listIndex);
-		if ("currentListLength" in $$props) currentListLength = $$props.currentListLength;
 		if ("itemRenderer" in $$props) $$invalidate(26, itemRenderer = $$props.itemRenderer);
 		if ("dropdownComponent" in $$props) dropdownComponent = $$props.dropdownComponent;
 	};
@@ -7289,8 +7284,8 @@ function instance$5($$self, $$props, $$invalidate) {
 	let selectedOptions;
 	let maxReached;
 	let availableItems;
-	let listIndex;
 	let currentListLength;
+	let listIndex;
 	let listMessage;
 	let itemRenderer;
 	let dropdownComponent;
@@ -7401,14 +7396,14 @@ function instance$5($$self, $$props, $$invalidate) {
 			: filterList(flatItems, $inputValue, multiple, selectedOptions.length));
 		}
 
-		if ($$self.$$.dirty[0] & /*availableItems*/ 16777216) {
-			 $$invalidate(25, listIndex = indexList(availableItems));
+		if ($$self.$$.dirty[0] & /*creatable, availableItems*/ 16777280 | $$self.$$.dirty[2] & /*$inputValue*/ 16) {
+			 $$invalidate(67, currentListLength = creatable && $inputValue
+			? availableItems.length
+			: availableItems.length - 1);
 		}
 
-		if ($$self.$$.dirty[0] & /*creatable, availableItems*/ 16777280 | $$self.$$.dirty[2] & /*$inputValue*/ 16) {
-			 currentListLength = creatable && $inputValue
-			? availableItems.length
-			: availableItems.length - 1;
+		if ($$self.$$.dirty[0] & /*availableItems*/ 16777216 | $$self.$$.dirty[2] & /*currentListLength*/ 32) {
+			 $$invalidate(25, listIndex = indexList(availableItems));
 		}
 
 		if ($$self.$$.dirty[0] & /*maxReached*/ 8388608 | $$self.$$.dirty[1] & /*max*/ 4096) {
