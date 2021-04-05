@@ -75,7 +75,7 @@ Sifter.prototype.tokenize = function(query, respect_word_boundaries) {
  */
 Sifter.prototype.iterator = function(object, callback) {
     var iterator;
-    if (is_array(object)) {
+    if (Array.isArray(object)) {
         iterator = Array.prototype.forEach || function(callback) {
             for (var i = 0, n = this.length; i < n; i++) {
                 callback(this[i], i, this);
@@ -118,7 +118,7 @@ Sifter.prototype.getScoreFunction = function(search, options) {
      * Calculates how close of a match the
      * given value is against a search token.
      *
-     * @param {mixed} value
+     * @param {string | number} value
      * @param {object} token
      * @return {number}
      */
@@ -211,7 +211,6 @@ Sifter.prototype.getSortFunction = function(search, options) {
      *
      * @param  {string} name
      * @param  {object} result
-     * @return {mixed}
      */
     get_field = function(name, result) {
         if (name === '$score') return result.score;
@@ -302,9 +301,9 @@ Sifter.prototype.prepareSearch = function(query, options) {
     var option_sort       = options.sort;
     var option_sort_empty = options.sort_empty;
 
-    if (option_fields && !is_array(option_fields)) options.fields = [option_fields];
-    if (option_sort && !is_array(option_sort)) options.sort = [option_sort];
-    if (option_sort_empty && !is_array(option_sort_empty)) options.sort_empty = [option_sort_empty];
+    if (option_fields && !Array.isArray(option_fields)) options.fields = [option_fields];
+    if (option_sort && !Array.isArray(option_sort)) options.sort = [option_sort];
+    if (option_sort_empty && !Array.isArray(option_sort_empty)) options.sort_empty = [option_sort_empty];
 
     return {
         options : options,
@@ -425,10 +424,6 @@ var trim = function(str) {
 
 var escape_regex = function(str) {
     return (str + '').replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
-};
-
-var is_array = Array.isArray || (typeof $ !== 'undefined' && $.isArray) || function(object) {
-    return Object.prototype.toString.call(object) === '[object Array]';
 };
 
 var DIACRITICS = {
