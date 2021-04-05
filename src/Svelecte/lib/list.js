@@ -2,6 +2,23 @@ import Sifter from './sifter';
 
 let sifter = null;
 let optionsWithGroups = false;
+let indexMapping = {
+  map: [],
+  first: null,
+  last: null,
+  next(curr) {
+    const val = this.map[++curr];
+    if (val === '') return this.next(curr);
+    if (!val) return this.first;
+    return val;
+  },
+  prev(curr) {
+    const val = this.map[--curr];
+    if (val === '') return this.prev(curr);
+    if (!val) return this.last;
+    return val;
+  }
+};
 
 // TODO: implement customization of this
 let sifterSearchField = ['text'];
@@ -76,12 +93,10 @@ export function indexList(options) {
       return res;
     }, [])
     : Object.keys(options);
-  const mapObj = {
-    map,
-    first: map[0] !== '' ? 0 : 1,
-    last: map.length - 1,
-  }
-  return mapObj;
+  indexMapping.map = map;
+  indexMapping.first = map[0] !== '' ? 0 : 1;
+  indexMapping.last = map.length - 1;
+  return indexMapping;
 }
 
 function getFilterProps(object) {

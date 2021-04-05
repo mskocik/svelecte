@@ -93,7 +93,7 @@
 	<button on:click={() => { settings.multiple = !settings.multiple; settings = settings; }}>M</button>
 	<button on:click={() => { settings.collapseSelection = !settings.collapseSelection; settings = settings; }}>C</button>
 	<div class="form-row" class:flexible-svelecte={isFlexWidth}>
-		<Svelecte {...settings} bind:selection={myValue} max={3} name="select" virtualList creatable>
+		<Svelecte {...settings} bind:selection={myValue} max={3} name="select">
 			<b slot="icon">{slot}</b>
 		</Svelecte>
 	</div>
@@ -158,6 +158,8 @@ Optgroups are distinguished by <code>label</code> property. And options are expe
 		margin: 2rem auto;
 	}
 	:global(.optgroup-header) {
+		height: 40px;
+		padding-top: 10px !important;
 		text-align: left;
 	}
 	details {

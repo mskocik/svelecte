@@ -47,6 +47,8 @@
   export let fetchCallback = null;
   export let options = [];
   export let virtualList = defaults.virtualList;
+  export let vlHeight = defaults.vlHeight;
+  export let vlItemSize = defaults.vlItemSize;
   // sifter related
   export let searchField = null;
   export let sortField = null;
@@ -174,7 +176,6 @@
   value && _selectByValues(value);   // init values if passed
 
   let prevSelection = selection;
-  console.log('p', prevSelection);
 
   $: {
     if (prevSelection !== selection) {
@@ -192,13 +193,13 @@
   $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, selectedOptions.length);
   $: listIndex = indexList(availableItems);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
-  $: {
-    if (dropdownActiveIndex === null) {
-      dropdownActiveIndex = listIndex.first;
-    } else if (dropdownActiveIndex > listIndex.last) {
-      dropdownActiveIndex = listIndex.last;
-    }
-  }
+  // $: {
+  //   if (dropdownActiveIndex === null) {
+  //     dropdownActiveIndex = listIndex.first;
+  //   } else if (dropdownActiveIndex > listIndex.last) {
+  //     dropdownActiveIndex = listIndex.last;
+  //   }
+  // }
   $: listMessage = maxReached ? config.i18n.max(max) : config.i18n.empty;
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
@@ -292,6 +293,12 @@
     $inputValue = '';
     if (!multiple) {
       $hasDropdownOpened = false;
+    } else {
+      tick().then(() => {
+        dropdownActiveIndex = maxReached
+          ? null
+          : listIndex.next(dropdownActiveIndex - 1);
+      })
     }
     emitChangeEvent();
   }
@@ -310,6 +317,9 @@
     }
     tick().then(refControl.focusControl);
     emitChangeEvent();
+    tick().then(() => {
+        dropdownActiveIndex = listIndex.next(-1);
+      })
   }
 
   /**
@@ -344,9 +354,7 @@
           return;
         }
         event.preventDefault();
-        dropdownActiveIndex = dropdownActiveIndex <= listIndex.first
-          ? listIndex.last
-          : listIndex.map[dropdownActiveIndex - 1] || listIndex.map[dropdownActiveIndex - 2] || listIndex.first;
+        dropdownActiveIndex = listIndex.prev(dropdownActiveIndex);
         tick().then(refDropdown.scrollIntoView);
         ignoreHover = true;
         break;
@@ -359,9 +367,7 @@
           return;
         }
         event.preventDefault();
-        dropdownActiveIndex = dropdownActiveIndex >= listIndex.last
-          ? listIndex.first
-          : listIndex.map[dropdownActiveIndex + 1] || listIndex.map[dropdownActiveIndex + 2];
+        dropdownActiveIndex = listIndex.next(dropdownActiveIndex);
         tick().then(refDropdown.scrollIntoView);
         ignoreHover = true;
         break;
@@ -388,7 +394,7 @@
         }
         activeDropdownItem && onSelect(null, activeDropdownItem);
         if (availableItems.length <= dropdownActiveIndex) {
-          dropdownActiveIndex = currentListLength > 0 ? currentListLength : 0;
+          dropdownActiveIndex = currentListLength > 0 ? currentListLength : listIndex.first;
         }
         event.preventDefault(); // prevent form submit
         break;
@@ -441,6 +447,7 @@
   });
 </script>
 
+{dropdownActiveIndex}
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} collapseSelection={collapseSelection ? config.i18n.collapsedSelection : null}
@@ -451,7 +458,8 @@
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>
-  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached} virtualList={creatable ? false : virtualList}
+  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached} 
+    virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
     {inputValue} {hasDropdownOpened} {listMessage}
@@ -467,7 +475,6 @@
   </select>
   {/if}
 </div>
-
 <style>
 .svelecte { position: relative; flex: 1 1 auto; }
 .svelecte.is-disabled { pointer-events: none; }

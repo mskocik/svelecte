@@ -9,7 +9,7 @@ const settings = {
   searchable: true,
   disabled: false,
   creatable: false,
-  creatablePrefix: '👉',
+  creatablePrefix: '*',
   clearable: false,
   selectOnTab: false,
   placeholder: 'Select',
@@ -19,6 +19,8 @@ const settings = {
   delimiter: ',',
   sortRemoteResults: true,
   virtualList: false,
+  vlItemSize: null,
+  vlHeight: null,
   // enable collapsible multiple selection
   collapseSelection: false, 
   i18n: {

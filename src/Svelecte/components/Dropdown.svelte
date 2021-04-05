@@ -10,6 +10,8 @@
   export let renderer;
   export let items= [];
   export let virtualList;
+  export let vlItemSize;
+  export let vlHeight;
   /** internal props */
   export let inputValue;
   export let listIndex;
@@ -17,7 +19,7 @@
   export let listMessage;
 
   export function scrollIntoView(params) {
-    console.log(dropdownIndex);
+    if (virtualList) return;
     const focusedEl = container.querySelector(`[data-pos="${dropdownIndex}"]`);
     if (!focusedEl) return;
     const focusedRect = focusedEl.getBoundingClientRect();
@@ -37,17 +39,27 @@
 
   let container;
   let scrollContainer;
-  let scrollPos = null;
   let isMounted = false;
   let hasEmptyList = false;
-  let remoteSearch = false;
-  let currentListLength = 0; // TODO: fix for creatable
+  let currentListLength = 0;
+
+  let vl_height = vlHeight;
+  let vl_itemSize = vlItemSize;
+  let vl_autoMode = vlHeight === null && vlItemSize === null;
+  let refVirtualList;
 
   $: {
     hasEmptyList = items.length < 1 && (creatable 
       ? !$inputValue
       : true
     );
+    if (maxReached) dropdownIndex = null;
+    // required when changing item list 'on-the-fly' for VL
+    if (virtualList && isMounted && vl_autoMode) {
+      if (hasEmptyList) dropdownIndex = null;
+      vl_itemSize = 0;
+      tick().then(virtualListDmensionsResolver);
+    }
   }
 
   function positionDropdown(val) {
@@ -61,16 +73,52 @@
     }
   }
 
+  function virtualListDmensionsResolver() {
+    if (!refVirtualList) return;
+    const pixelGetter = (el, prop) => {
+      const styles = window.getComputedStyle(el);
+      let { groups: { value, unit } } = styles[prop].match(/(?<value>\d+)(?<unit>[a-zA-Z]+)/);
+      value = parseFloat(value);
+      if (unit !== 'px') {
+        const el = unit === 'rem'
+          ? document.documentElement
+          : scrollContainer.parentElement;
+        const multipler = parseFloat(window.getComputedStyle(el).fontSize.match(/\d+/).shift());
+        value = multipler * value; 
+      }
+      return value;
+    }
+    vl_height = pixelGetter(scrollContainer, 'maxHeight')
+      - pixelGetter(scrollContainer, 'paddingTop')
+      - pixelGetter(scrollContainer, 'paddingBottom');
+    // get item size (hacky style)
+    scrollContainer.style = 'opacity: 0; display: block';
+    const firstItem = refVirtualList.$$.ctx[0].firstElementChild.firstElementChild;
+    firstItem.style = '';
+    const firstSize = firstItem.getBoundingClientRect().height;
+    const secondItem = refVirtualList.$$.ctx[0].firstElementChild.firstElementChild.nextElementSibling;
+    secondItem.style = '';
+    const secondSize = secondItem.getBoundingClientRect().height;
+    if (firstSize !== secondSize) {
+      const groupHeaderSize = items[0].$isGroupHeader ? firstSize : secondSize;
+      const regularItemSize = items[0].$isGroupHeader ? secondSize : firstSize;
+      vl_itemSize = items.map(opt => opt.$isGroupHeader ? groupHeaderSize : regularItemSize);
+    } else {
+      vl_itemSize = firstSize;
+    }
+    scrollContainer.style = '';
+  }
+
   let dropdownStateSubscription; 
   /** ************************************ lifecycle */
   onMount(() => {
-    isMounted = true;
     /** ************************************ flawless UX related tweak */
     dropdownStateSubscription = hasDropdownOpened.subscribe(val => {
       tick().then(() => positionDropdown(val));
       // bind/unbind scroll listener
       document[val ? 'addEventListener' : 'removeEventListener']('scroll', () => positionDropdown(val));
     });
+    isMounted = true;
   });
   onDestroy(() => dropdownStateSubscription());
 </script>
@@ -82,13 +130,13 @@
   <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
   {#if items.length}
     {#if virtualList}
-      <VirtualList
-      width="100%"
-      height={Math.min(242, items.length * 27)}
-      itemCount={items.length}
-      itemSize={27}
-      scrollToAlignment="auto"
-      scrollToIndex={items.length && isMounted ? dropdownIndex :  null}
+      <VirtualList bind:this={refVirtualList}
+        width="100%"
+        height={Math.min(vl_height, Array.isArray(vl_itemSize) ? vl_height : items.length * vl_itemSize)}
+        itemCount={items.length}
+        itemSize={vl_itemSize}
+        scrollToAlignment="auto"
+        scrollToIndex={items.length && isMounted ? dropdownIndex :  null}
       >
         <div slot="item" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>
           <Item formatter={renderer}
