@@ -25,7 +25,5 @@
     "url": "https://github.com/mskocik/svelecte"
   },
   "homepage": "https://mskocik.github.io/svelecte/",
-  "dependencies": {
-    "svelte-tiny-virtual-list": "^1.1.5"
-  }
+  "dependencies": {}
 }

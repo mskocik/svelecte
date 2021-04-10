@@ -1,6 +1,9 @@
 <script>
   import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
-  import VirtualList from 'svelte-tiny-virtual-list';
+  /**
+	 * Fixed version of svelte-tiny-virtual-list, because of unresolved issue #5 in main repo
+	 */
+  import VirtualList from './../dependency/VirtualList.svelte';
   import { isOutOfViewport} from './../lib/utils.js';
   import Item from './Item.svelte';
 
