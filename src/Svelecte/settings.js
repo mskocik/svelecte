@@ -1,27 +1,30 @@
 const settings = {
-
-  /** ************************************ sub-component props */
-  /* HTML related */
-  name: null, // if name is defined, <select> element is created as well
-  
-  required: false,
-  multiple: false,
-  collapseSelection: false, // enable collapsible multiple selection
-  searchable: true,
-  disabled: false,
-  creatable: false,
-  creatablePrefix: '*',
-  clearable: false,
-  selectOnTab: false,
-  placeholder: 'Select',
   valueField: null,
   labelField: null,
+  required: false,
+  placeholder: 'Select',
+  searchable: true,
+  disabled: false,
+  // ui
+  clearable: false,
+  selectOnTab: false,
+  // multi
+  multiple: false,
   max: 0,
+  collapseSelection: false, // enable collapsible multiple selection
+  // html
+  name: null, // if name is defined, <select> element is created as well
+  // create
+  creatable: false,
+  creatablePrefix: '*',
   delimiter: ',',
-  sortRemoteResults: true,
+  // virtual list
   virtualList: false,
   vlItemSize: null,
   vlHeight: null,
+  // sifter
+  sortRemoteResults: true,
+  // i18n
   i18n: {
     empty: 'No options',
     nomatch: 'No matching options',    

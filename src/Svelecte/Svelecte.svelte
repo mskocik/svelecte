@@ -24,27 +24,34 @@
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
 
-  export let name = null;
-  export let anchor = null;
-  export let required = false;
-  export let multiple = defaults.multiple;
-  export let collapseSelection = defaults.collapseSelection;
-  export let disabled = defaults.disabled;
-  export let creatable = defaults.creatable;
-  export let creatablePrefix = defaults.creatablePrefix;
-  export let selectOnTab = defaults.selectOnTab;
+  // basic
+  export let options = [];
   export let valueField = defaults.valueField;
   export let labelField = defaults.labelField;
-  export let max = defaults.max;
+  export let required = false;
+  export let placeholder = 'Select';
+  export let searchable = defaults.searchable;
+  export let disabled = defaults.disabled;
+  // UI, UX
   export let renderer = null;
   export let clearable = defaults.clearable;
-  export let searchable = defaults.searchable;
+  export let selectOnTab = defaults.selectOnTab;
+  // multiple
+  export let multiple = defaults.multiple;
+  export let max = defaults.max;
+  export let collapseSelection = defaults.collapseSelection;
+  // form and CE
+  export let name = null;
+  export let anchor = null;
+  // creating 
+  export let creatable = defaults.creatable;
+  export let creatablePrefix = defaults.creatablePrefix;
   export let delimiter = defaults.delimiter;
-  export let placeholder = 'Select';
+  // remote
   export let fetch = null;
   export let fetchMode = 'auto';
   export let fetchCallback = null;
-  export let options = [];
+  // virtual list
   export let virtualList = defaults.virtualList;
   export let vlHeight = defaults.vlHeight;
   export let vlItemSize = defaults.vlItemSize;
@@ -52,11 +59,11 @@
   export let searchField = null;
   export let sortField = null;
   export let sortRemote = defaults.sortRemoteResults;
-
+  // styling
   let className = 'svelecte-control';
   export { className as class};
   export let style = null;
-  /** ************************************ API */
+  // API: public
   export let selection = undefined;
   export let value = undefined;
   export const getSelection = onlyValues => {
@@ -66,7 +73,8 @@
       : (onlyValues ? selection[currentValueField] : Object.assign({}, selection));
   };
   export const setSelection = selection => _selectByValues(selection);
-  export const clearByParent = doDisable => {
+  // API: internal for CE
+  export const clearByParent = doDisable => { 
     clearSelection();
     emitChangeEvent();
     if (doDisable) disabled = true;
@@ -80,9 +88,6 @@
   let refControl;
   let ignoreHover = false;
   let dropdownActiveIndex = null;
-  // !multiple && options.some(o => o.isSelected)
-  //   ? options.indexOf(options.filter(o => o.isSelected).shift())
-  //   : 0;
   let fetchUnsubscribe = null;
   let currentValueField = valueField;
   let currentLabelField = labelField;
@@ -100,7 +105,7 @@
   let isFetchingData = false;
   
   /** ************************************ remote source */
-  $: initFetchOnly = fetchMode === 'init' || (typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
+  // $: initFetchOnly = fetchMode === 'init' || (typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
   $: createFetch(fetch);
 
   function createFetch(fetch) {
@@ -244,6 +249,9 @@
     newAddition.forEach(selectOption);
   }
 
+  /**
+   * Add given option to selection pool
+   */
   function selectOption(opt) {
     if (maxReached) return;
     
@@ -265,6 +273,9 @@
     flatItems = flatItems;
   }
 
+  /**
+   * Remove option/all options from selection pool
+   */
   function deselectOption(opt) {
     selectedOptions.delete(opt);
     opt.isSelected = false;
@@ -272,13 +283,13 @@
     flatItems = flatItems;
   }
 
+
   function clearSelection() {
-    selectedOptions.clear();
-    options.forEach(opt => opt.isSelected = false);
+    selectedOptions.forEach(deselectOption);
   }
 
   /**
-   * Add given option to selection pool
+   * Handle user action on select
    */
   function onSelect(event, opt) {
     opt = opt || event.detail;
@@ -298,9 +309,6 @@
     emitChangeEvent();
   }
 
-  /**
-   * Remove option/all options from selection pool
-   */
   function onDeselect(event, opt) {
     if (disabled) return;
     opt = opt || event.detail;
@@ -434,7 +442,7 @@
     // if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
     // if (dropdownActiveIndex < 0) dropdownActiveIndex = listIndexMap.first;
     if (creatable) {
-      alreadyCreated = availableItems.map(opt => opt[currentValueField]).filter(opt => opt);
+      alreadyCreated = flatItems.map(opt => opt[currentValueField]).filter(opt => opt);
     }
     dropdownActiveIndex = listIndex.first;
     if (prevSelection && !multiple) {

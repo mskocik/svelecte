@@ -82,7 +82,7 @@
 	<summary>Previous app</summary>
 <main style="text-align:left">
 	<button on:click={() => { myValue = options[2] } }>Set Armenia</button>
-	<button on:click={() => { myValue = null } }>Clear</button>
+	<button on:click={() => { myValue = settings.multiple ? [] : null } }>Clear</button>
 	<select bind:value={remoteValue}>
 		<option value="opts">🎨 colors</option>
 		<option value="countries">🌍 countries</option>
