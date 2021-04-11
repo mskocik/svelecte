@@ -6,6 +6,7 @@ const settings = {
   
   required: false,
   multiple: false,
+  collapseSelection: false, // enable collapsible multiple selection
   searchable: true,
   disabled: false,
   creatable: false,
@@ -21,8 +22,6 @@ const settings = {
   virtualList: false,
   vlItemSize: null,
   vlHeight: null,
-  // enable collapsible multiple selection
-  collapseSelection: false, 
   i18n: {
     empty: 'No options',
     nomatch: 'No matching options',    

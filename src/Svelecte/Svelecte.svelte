@@ -52,8 +52,6 @@
   export let searchField = null;
   export let sortField = null;
   export let sortRemote = defaults.sortRemoteResults;
-  // 'auto' means, when there are optgroups, don't use Sifter for sortings
-  export let searchMode = 'auto'; // FUTURE: this about implementing this
 
   let className = 'svelecte-control';
   export { className as class};
@@ -91,10 +89,8 @@
   
   /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
-  if (searchMode === 'auto') {
     currentValueField = valueField || fieldInit('value', options);
     currentLabelField = labelField || fieldInit('label', options);
-  }
 
   /** ************************************ Context definition */
   const inputValue = writable('');
@@ -117,7 +113,7 @@
     const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
     const initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
     const debouncedFetch = debounce(query => {
-      fetchSource(query, fetchCallback || defaults.fetchCallback)
+      fetchSource(query, fetchCallback)
         .then(data => {
           options = data;
         })
@@ -210,12 +206,10 @@
   let prevOptions = options;
   $: {
     if (isInitialized && prevOptions !== options) {
-      if (searchMode === 'auto') {
-        const ivalue = fieldInit('value', options || null);
-        const ilabel = fieldInit('label', options || null);
-        if (!valueField && currentValueField !== ivalue) currentValueField = ivalue;
-        if (!labelField && currentLabelField !== ilabel) currentLabelField = ilabel;
-      }
+      const ivalue = fieldInit('value', options || null);
+      const ilabel = fieldInit('label', options || null);
+      if (!valueField && currentValueField !== ivalue) currentValueField = ivalue;
+      if (!labelField && currentLabelField !== ilabel) currentLabelField = ilabel;
       // NOTE: this event should not be emitted
       // if (options.some(opt => opt.isSelected)) emitChangeEvent();
     }
@@ -267,6 +261,7 @@
       options = [...options, opt];
     }
     opt.isSelected = true;
+    if (!multiple) selectedOptions.clear();
     !selectedOptions.has(opt) && selectedOptions.add(opt);
     selectedOptions = selectedOptions;
     flatItems = flatItems;
@@ -277,6 +272,11 @@
     opt.isSelected = false;
     selectedOptions = selectedOptions;
     flatItems = flatItems;
+  }
+
+  function clearSelection() {
+    selectedOptions.clear();
+    options.forEach(opt => opt.isSelected = false);
   }
 
   /**
