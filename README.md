@@ -1,8 +1,8 @@
 # Svelecte
 
-Proud descendant of Selectize.js written with Svelte. Also usable as custom element (CE), which behaves very similar to standard `<select>` element.
+Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as custom element (CE), which behaves very similar to standard `<select>` element.
 
-## Features
+## 📃 Features
 
 
 - searchable
@@ -14,9 +14,18 @@ Proud descendant of Selectize.js written with Svelte. Also usable as custom elem
 - remote data fetch
 - virtual list support
 
-## Documentation
+## 🔧 Installation
+
+```
+npm install svelecte --save
+```
 
 Playground with detailed documentation can be found at [here](https://mskocik.github.io/svelecte/).
+
+## ⚙ Configuration & API
+
+### Exposed properties:
+
 
 Property  | Type   | Default | Description
 ----------|--------|---------|------------
@@ -47,13 +56,29 @@ searchField | string\|array | `null` | Specify item property that will be used t
 sortField | string | `null` | Specify sort property. If not specified, first after `value` field will be used
 sortRemote | bool | `true` | sort items (by relevancy) when results are fetched from remote
 
+### Emitted events:
+
 Event | arguments | description
 ------|-----------|-------------
 fetch | options   | newly fetched remote options
 change| selection | selected objects * if `anchor` is defined, `change` event is called also on it
 
-## Based on
+### Public methods:
+
+Method        | arguments | description
+--------------|-----------|---------
+focus         | -         | focus input
+getSelection  | bool      | return selection, if `true` is passed, only values are returns, whole objects otherwise 
+setSelection  | array     | set selection programmatically
+<!-- clearByParent | bool | internal for CE  -->
+
+## 🙏 Thanks to 
 
 - [selectize.js](https://github.com/selectize/selectize.js)
 - [sifter](https://github.com/brianreavis/sifter.js)
+- [svelte-select](https://github.com/rob-balfre/svelte-select) 
+- [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list)
 
+## License
+
+[MIT License](https://github.com/Skayo/svelte-tiny-virtual-list/blob/master/LICENSE)

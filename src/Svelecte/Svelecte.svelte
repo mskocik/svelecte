@@ -214,8 +214,6 @@
       // if (options.some(opt => opt.isSelected)) emitChangeEvent();
     }
   }
-  // $: dropdownComponent = virtualList ? DropdownVirtual : Dropdown;
-  $: dropdownComponent = Dropdown;
 
   /**
    * Dispatch change event on add options/remove selected items
@@ -435,6 +433,9 @@
     // TODO: resolve, probably already fixed
     // if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
     // if (dropdownActiveIndex < 0) dropdownActiveIndex = listIndexMap.first;
+    if (creatable) {
+      alreadyCreated = availableItems.map(opt => opt[currentValueField]).filter(opt => opt);
+    }
     dropdownActiveIndex = listIndex.first;
     if (prevSelection && !multiple) {
       dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevSelection[currentValueField]);
@@ -446,7 +447,7 @@
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
-    {disabled} {clearable} {searchable} {placeholder} {multiple} collapseSelection={collapseSelection ? config.i18n.collapsedSelection : null}
+    {disabled} {clearable} {searchable} {placeholder} {multiple} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={Array.from(selectedOptions)} {isFetchingData}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
@@ -471,6 +472,7 @@
   </select>
   {/if}
 </div>
+
 <style>
 .svelecte { position: relative; flex: 1 1 auto; }
 .svelecte.is-disabled { pointer-events: none; }

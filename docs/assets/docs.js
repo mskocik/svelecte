@@ -1369,13 +1369,10 @@ var app = (function () {
         max: num => `Maximum items ${num} selected`,
         fetchBefore: 'Type to search',
         fetchEmpty: 'No data related to your search',
-        collapsedSelection: count => {
-          // example of plural collapse
-          // switch (count) {
-          //   case 1: return '1 selected';
-          // }
-          return `${count} selected`;
-        }
+        collapsedSelection: count => `${count} selected`
+      },
+      collapseSelectionFn: function(selectionCount, selection) {
+        return settings.i18n.collapsedSelection(selectionCount);
       }
     };
 
@@ -2606,7 +2603,7 @@ var app = (function () {
 
     // (68:6) {#if multiple && collapseSelection && doCollapse}
     function create_if_block_3(ctx) {
-    	let t_value = /*collapseSelection*/ ctx[6](/*selectedOptions*/ ctx[10].length) + "";
+    	let t_value = /*collapseSelection*/ ctx[6](/*selectedOptions*/ ctx[10].length, /*selectedOptions*/ ctx[10]) + "";
     	let t;
 
     	const block = {
@@ -2617,7 +2614,7 @@ var app = (function () {
     			insert_dev(target, t, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*collapseSelection, selectedOptions*/ 1088 && t_value !== (t_value = /*collapseSelection*/ ctx[6](/*selectedOptions*/ ctx[10].length) + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*collapseSelection, selectedOptions*/ 1088 && t_value !== (t_value = /*collapseSelection*/ ctx[6](/*selectedOptions*/ ctx[10].length, /*selectedOptions*/ ctx[10]) + "")) set_data_dev(t, t_value);
     		},
     		i: noop,
     		o: noop,
@@ -2710,17 +2707,17 @@ var app = (function () {
     			svg = svg_element("svg");
     			path = svg_element("path");
     			attr_dev(path, "d", "M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z");
-    			add_location(path, file$2, 92, 114, 2671);
+    			add_location(path, file$2, 92, 114, 2688);
     			attr_dev(svg, "class", "indicator-icon svelte-6rgaw");
     			attr_dev(svg, "height", "20");
     			attr_dev(svg, "width", "20");
     			attr_dev(svg, "viewBox", "0 0 20 20");
     			attr_dev(svg, "aria-hidden", "true");
     			attr_dev(svg, "focusable", "false");
-    			add_location(svg, file$2, 92, 6, 2563);
+    			add_location(svg, file$2, 92, 6, 2580);
     			attr_dev(div, "aria-hidden", "true");
     			attr_dev(div, "class", "indicator-container close-icon svelte-6rgaw");
-    			add_location(div, file$2, 88, 4, 2406);
+    			add_location(div, file$2, 88, 4, 2423);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -2763,7 +2760,7 @@ var app = (function () {
     		c: function create() {
     			span = element("span");
     			attr_dev(span, "class", "indicator-separator svelte-6rgaw");
-    			add_location(span, file$2, 96, 4, 3091);
+    			add_location(span, file$2, 96, 4, 3108);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, span, anchor);
@@ -2845,19 +2842,19 @@ var app = (function () {
     			toggle_class(div0, "has-multiSelection", /*multiple*/ ctx[5]);
     			add_location(div0, file$2, 65, 2, 1528);
     			attr_dev(path, "d", "M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z");
-    			add_location(path, file$2, 100, 8, 3343);
+    			add_location(path, file$2, 100, 8, 3360);
     			attr_dev(svg, "width", "20");
     			attr_dev(svg, "class", "indicator-icon svelte-6rgaw");
     			attr_dev(svg, "viewBox", "0 0 20 20");
     			attr_dev(svg, "aria-hidden", "true");
     			attr_dev(svg, "focusable", "false");
-    			add_location(svg, file$2, 99, 6, 3237);
+    			add_location(svg, file$2, 99, 6, 3254);
     			attr_dev(div1, "aria-hidden", "true");
     			attr_dev(div1, "class", "indicator-container svelte-6rgaw");
-    			add_location(div1, file$2, 98, 4, 3149);
+    			add_location(div1, file$2, 98, 4, 3166);
     			attr_dev(div2, "class", "indicator svelte-6rgaw");
     			toggle_class(div2, "is-loading", /*isFetchingData*/ ctx[11]);
-    			add_location(div2, file$2, 86, 2, 2282);
+    			add_location(div2, file$2, 86, 2, 2299);
     			attr_dev(div3, "class", "sv-control svelte-6rgaw");
     			toggle_class(div3, "is-active", /*$hasFocus*/ ctx[15]);
     			toggle_class(div3, "is-disabled", /*disabled*/ ctx[3]);
@@ -5944,14 +5941,14 @@ var app = (function () {
 
     function get_each_context$3(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[78] = list[i];
+    	child_ctx[77] = list[i];
     	return child_ctx;
     }
 
     const get_icon_slot_changes$1 = dirty => ({});
     const get_icon_slot_context$1 = ctx => ({});
 
-    // (455:4) <div slot="icon" class="icon-slot">
+    // (456:4) <div slot="icon" class="icon-slot">
     function create_icon_slot(ctx) {
     	let div;
     	let current;
@@ -5964,7 +5961,7 @@ var app = (function () {
     			if (icon_slot) icon_slot.c();
     			attr_dev(div, "slot", "icon");
     			attr_dev(div, "class", "icon-slot svelte-1h9htsj");
-    			add_location(div, file$5, 454, 4, 15781);
+    			add_location(div, file$5, 455, 4, 15793);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div, anchor);
@@ -6001,14 +5998,14 @@ var app = (function () {
     		block,
     		id: create_icon_slot.name,
     		type: "slot",
-    		source: "(455:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
+    		source: "(456:4) <div slot=\\\"icon\\\" class=\\\"icon-slot\\\">",
     		ctx
     	});
 
     	return block;
     }
 
-    // (466:2) {#if name && !anchor}
+    // (467:2) {#if name && !anchor}
     function create_if_block$3(ctx) {
     	let select;
     	let each_value = Array.from(/*selectedOptions*/ ctx[21]);
@@ -6033,7 +6030,7 @@ var app = (function () {
     			attr_dev(select, "tabindex", "-1");
     			select.required = /*required*/ ctx[4];
     			select.disabled = /*disabled*/ ctx[2];
-    			add_location(select, file$5, 466, 2, 16289);
+    			add_location(select, file$5, 467, 2, 16301);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, select, anchor);
@@ -6093,17 +6090,17 @@ var app = (function () {
     		block,
     		id: create_if_block$3.name,
     		type: "if",
-    		source: "(466:2) {#if name && !anchor}",
+    		source: "(467:2) {#if name && !anchor}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (468:4) {#each Array.from(selectedOptions) as opt}
+    // (469:4) {#each Array.from(selectedOptions) as opt}
     function create_each_block$3(ctx) {
     	let option;
-    	let t_value = /*opt*/ ctx[78][/*currentLabelField*/ ctx[19]] + "";
+    	let t_value = /*opt*/ ctx[77][/*currentLabelField*/ ctx[19]] + "";
     	let t;
     	let option_value_value;
 
@@ -6111,19 +6108,19 @@ var app = (function () {
     		c: function create() {
     			option = element("option");
     			t = text(t_value);
-    			option.__value = option_value_value = /*opt*/ ctx[78][/*currentValueField*/ ctx[18]];
+    			option.__value = option_value_value = /*opt*/ ctx[77][/*currentValueField*/ ctx[18]];
     			option.value = option.__value;
     			option.selected = true;
-    			add_location(option, file$5, 468, 4, 16428);
+    			add_location(option, file$5, 469, 4, 16440);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, option, anchor);
     			append_dev(option, t);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty[0] & /*selectedOptions, currentLabelField*/ 2621440 && t_value !== (t_value = /*opt*/ ctx[78][/*currentLabelField*/ ctx[19]] + "")) set_data_dev(t, t_value);
+    			if (dirty[0] & /*selectedOptions, currentLabelField*/ 2621440 && t_value !== (t_value = /*opt*/ ctx[77][/*currentLabelField*/ ctx[19]] + "")) set_data_dev(t, t_value);
 
-    			if (dirty[0] & /*selectedOptions, currentValueField*/ 2359296 && option_value_value !== (option_value_value = /*opt*/ ctx[78][/*currentValueField*/ ctx[18]])) {
+    			if (dirty[0] & /*selectedOptions, currentValueField*/ 2359296 && option_value_value !== (option_value_value = /*opt*/ ctx[77][/*currentValueField*/ ctx[18]])) {
     				prop_dev(option, "__value", option_value_value);
     				option.value = option.__value;
     			}
@@ -6137,7 +6134,7 @@ var app = (function () {
     		block,
     		id: create_each_block$3.name,
     		type: "each",
-    		source: "(468:4) {#each Array.from(selectedOptions) as opt}",
+    		source: "(469:4) {#each Array.from(selectedOptions) as opt}",
     		ctx
     	});
 
@@ -6154,18 +6151,18 @@ var app = (function () {
     	let current;
 
     	let control_props = {
-    		renderer: /*itemRenderer*/ ctx[26],
+    		renderer: /*itemRenderer*/ ctx[27],
     		disabled: /*disabled*/ ctx[2],
     		clearable: /*clearable*/ ctx[7],
     		searchable: /*searchable*/ ctx[8],
     		placeholder: /*placeholder*/ ctx[9],
     		multiple: /*multiple*/ ctx[1],
     		collapseSelection: /*collapseSelection*/ ctx[5]
-    		? config.i18n.collapsedSelection
+    		? config.collapseSelectionFn
     		: null,
-    		inputValue: /*inputValue*/ ctx[27],
-    		hasFocus: /*hasFocus*/ ctx[28],
-    		hasDropdownOpened: /*hasDropdownOpened*/ ctx[29],
+    		inputValue: /*inputValue*/ ctx[28],
+    		hasFocus: /*hasFocus*/ ctx[29],
+    		hasDropdownOpened: /*hasDropdownOpened*/ ctx[30],
     		selectedOptions: Array.from(/*selectedOptions*/ ctx[21]),
     		isFetchingData: /*isFetchingData*/ ctx[20],
     		$$slots: { icon: [create_icon_slot] },
@@ -6179,19 +6176,19 @@ var app = (function () {
     	control.$on("paste", /*onPaste*/ ctx[35]);
 
     	let dropdown_props = {
-    		renderer: /*itemRenderer*/ ctx[26],
+    		renderer: /*itemRenderer*/ ctx[27],
     		creatable: /*creatable*/ ctx[6],
-    		maxReached: /*maxReached*/ ctx[23],
-    		alreadyCreated: /*alreadyCreated*/ ctx[30],
+    		maxReached: /*maxReached*/ ctx[24],
+    		alreadyCreated: /*alreadyCreated*/ ctx[22],
     		virtualList: /*creatable*/ ctx[6] ? false : /*virtualList*/ ctx[10],
     		vlHeight: /*vlHeight*/ ctx[11],
     		vlItemSize: /*vlItemSize*/ ctx[12],
     		dropdownIndex: /*dropdownActiveIndex*/ ctx[17],
-    		items: /*availableItems*/ ctx[24],
-    		listIndex: /*listIndex*/ ctx[25],
-    		inputValue: /*inputValue*/ ctx[27],
-    		hasDropdownOpened: /*hasDropdownOpened*/ ctx[29],
-    		listMessage: /*listMessage*/ ctx[22]
+    		items: /*availableItems*/ ctx[25],
+    		listIndex: /*listIndex*/ ctx[26],
+    		inputValue: /*inputValue*/ ctx[28],
+    		hasDropdownOpened: /*hasDropdownOpened*/ ctx[30],
+    		listMessage: /*listMessage*/ ctx[23]
     	};
 
     	dropdown = new Dropdown({ props: dropdown_props, $$inline: true });
@@ -6211,7 +6208,7 @@ var app = (function () {
     			attr_dev(div, "class", div_class_value = "" + (null_to_empty(`svelecte ${/*className*/ ctx[13]}`) + " svelte-1h9htsj"));
     			attr_dev(div, "style", /*style*/ ctx[14]);
     			toggle_class(div, "is-disabled", /*disabled*/ ctx[2]);
-    			add_location(div, file$5, 446, 0, 15261);
+    			add_location(div, file$5, 447, 0, 15277);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -6227,7 +6224,7 @@ var app = (function () {
     		},
     		p: function update(ctx, dirty) {
     			const control_changes = {};
-    			if (dirty[0] & /*itemRenderer*/ 67108864) control_changes.renderer = /*itemRenderer*/ ctx[26];
+    			if (dirty[0] & /*itemRenderer*/ 134217728) control_changes.renderer = /*itemRenderer*/ ctx[27];
     			if (dirty[0] & /*disabled*/ 4) control_changes.disabled = /*disabled*/ ctx[2];
     			if (dirty[0] & /*clearable*/ 128) control_changes.clearable = /*clearable*/ ctx[7];
     			if (dirty[0] & /*searchable*/ 256) control_changes.searchable = /*searchable*/ ctx[8];
@@ -6235,7 +6232,7 @@ var app = (function () {
     			if (dirty[0] & /*multiple*/ 2) control_changes.multiple = /*multiple*/ ctx[1];
 
     			if (dirty[0] & /*collapseSelection*/ 32) control_changes.collapseSelection = /*collapseSelection*/ ctx[5]
-    			? config.i18n.collapsedSelection
+    			? config.collapseSelectionFn
     			: null;
 
     			if (dirty[0] & /*selectedOptions*/ 2097152) control_changes.selectedOptions = Array.from(/*selectedOptions*/ ctx[21]);
@@ -6247,16 +6244,17 @@ var app = (function () {
 
     			control.$set(control_changes);
     			const dropdown_changes = {};
-    			if (dirty[0] & /*itemRenderer*/ 67108864) dropdown_changes.renderer = /*itemRenderer*/ ctx[26];
+    			if (dirty[0] & /*itemRenderer*/ 134217728) dropdown_changes.renderer = /*itemRenderer*/ ctx[27];
     			if (dirty[0] & /*creatable*/ 64) dropdown_changes.creatable = /*creatable*/ ctx[6];
-    			if (dirty[0] & /*maxReached*/ 8388608) dropdown_changes.maxReached = /*maxReached*/ ctx[23];
+    			if (dirty[0] & /*maxReached*/ 16777216) dropdown_changes.maxReached = /*maxReached*/ ctx[24];
+    			if (dirty[0] & /*alreadyCreated*/ 4194304) dropdown_changes.alreadyCreated = /*alreadyCreated*/ ctx[22];
     			if (dirty[0] & /*creatable, virtualList*/ 1088) dropdown_changes.virtualList = /*creatable*/ ctx[6] ? false : /*virtualList*/ ctx[10];
     			if (dirty[0] & /*vlHeight*/ 2048) dropdown_changes.vlHeight = /*vlHeight*/ ctx[11];
     			if (dirty[0] & /*vlItemSize*/ 4096) dropdown_changes.vlItemSize = /*vlItemSize*/ ctx[12];
     			if (dirty[0] & /*dropdownActiveIndex*/ 131072) dropdown_changes.dropdownIndex = /*dropdownActiveIndex*/ ctx[17];
-    			if (dirty[0] & /*availableItems*/ 16777216) dropdown_changes.items = /*availableItems*/ ctx[24];
-    			if (dirty[0] & /*listIndex*/ 33554432) dropdown_changes.listIndex = /*listIndex*/ ctx[25];
-    			if (dirty[0] & /*listMessage*/ 4194304) dropdown_changes.listMessage = /*listMessage*/ ctx[22];
+    			if (dirty[0] & /*availableItems*/ 33554432) dropdown_changes.items = /*availableItems*/ ctx[25];
+    			if (dirty[0] & /*listIndex*/ 67108864) dropdown_changes.listIndex = /*listIndex*/ ctx[26];
+    			if (dirty[0] & /*listMessage*/ 8388608) dropdown_changes.listMessage = /*listMessage*/ ctx[23];
     			dropdown.$set(dropdown_changes);
 
     			if (/*name*/ ctx[3] && !/*anchor*/ ctx[0]) {
@@ -6423,7 +6421,7 @@ var app = (function () {
     	component_subscribe($$self, hasFocus, value => $$invalidate(64, $hasFocus = value));
     	const hasDropdownOpened = writable(false);
     	validate_store(hasDropdownOpened, "hasDropdownOpened");
-    	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(69, $hasDropdownOpened = value));
+    	component_subscribe($$self, hasDropdownOpened, value => $$invalidate(68, $hasDropdownOpened = value));
     	let isFetchingData = false;
 
     	function createFetch(fetch) {
@@ -6443,7 +6441,7 @@ var app = (function () {
     				}).catch(() => $$invalidate(37, options = [])).finally(() => {
     					$$invalidate(20, isFetchingData = false);
     					$hasFocus && hasDropdownOpened.set(true);
-    					$$invalidate(22, listMessage = config.i18n.fetchEmpty);
+    					$$invalidate(23, listMessage = config.i18n.fetchEmpty);
     					tick().then(() => dispatch("fetch", options));
     				});
     			},
@@ -6466,7 +6464,7 @@ var app = (function () {
     			
 
     			if (!value) {
-    				$$invalidate(22, listMessage = config.i18n.fetchBefore);
+    				$$invalidate(23, listMessage = config.i18n.fetchBefore);
     				return;
     			}
 
@@ -6728,6 +6726,10 @@ var app = (function () {
     		// TODO: resolve, probably already fixed
     		// if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
     		// if (dropdownActiveIndex < 0) dropdownActiveIndex = listIndexMap.first;
+    		if (creatable) {
+    			$$invalidate(22, alreadyCreated = availableItems.map(opt => opt[currentValueField]).filter(opt => opt));
+    		}
+
     		$$invalidate(17, dropdownActiveIndex = listIndex.first);
 
     		if (prevSelection && !multiple) {
@@ -6915,7 +6917,6 @@ var app = (function () {
     		currentListLength,
     		listIndex,
     		itemRenderer,
-    		dropdownComponent,
     		$hasDropdownOpened
     	});
 
@@ -6962,17 +6963,16 @@ var app = (function () {
     		if ("isFetchingData" in $$props) $$invalidate(20, isFetchingData = $$props.isFetchingData);
     		if ("prevSelection" in $$props) $$invalidate(62, prevSelection = $$props.prevSelection);
     		if ("selectedOptions" in $$props) $$invalidate(21, selectedOptions = $$props.selectedOptions);
-    		if ("alreadyCreated" in $$props) $$invalidate(30, alreadyCreated = $$props.alreadyCreated);
-    		if ("prevOptions" in $$props) $$invalidate(72, prevOptions = $$props.prevOptions);
+    		if ("alreadyCreated" in $$props) $$invalidate(22, alreadyCreated = $$props.alreadyCreated);
+    		if ("prevOptions" in $$props) $$invalidate(71, prevOptions = $$props.prevOptions);
     		if ("initFetchOnly" in $$props) initFetchOnly = $$props.initFetchOnly;
-    		if ("listMessage" in $$props) $$invalidate(22, listMessage = $$props.listMessage);
+    		if ("listMessage" in $$props) $$invalidate(23, listMessage = $$props.listMessage);
     		if ("flatItems" in $$props) $$invalidate(65, flatItems = $$props.flatItems);
-    		if ("maxReached" in $$props) $$invalidate(23, maxReached = $$props.maxReached);
-    		if ("availableItems" in $$props) $$invalidate(24, availableItems = $$props.availableItems);
+    		if ("maxReached" in $$props) $$invalidate(24, maxReached = $$props.maxReached);
+    		if ("availableItems" in $$props) $$invalidate(25, availableItems = $$props.availableItems);
     		if ("currentListLength" in $$props) currentListLength = $$props.currentListLength;
-    		if ("listIndex" in $$props) $$invalidate(25, listIndex = $$props.listIndex);
-    		if ("itemRenderer" in $$props) $$invalidate(26, itemRenderer = $$props.itemRenderer);
-    		if ("dropdownComponent" in $$props) dropdownComponent = $$props.dropdownComponent;
+    		if ("listIndex" in $$props) $$invalidate(26, listIndex = $$props.listIndex);
+    		if ("itemRenderer" in $$props) $$invalidate(27, itemRenderer = $$props.itemRenderer);
     	};
 
     	let initFetchOnly;
@@ -6983,7 +6983,6 @@ var app = (function () {
     	let listIndex;
     	let listMessage;
     	let itemRenderer;
-    	let dropdownComponent;
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
@@ -7072,26 +7071,26 @@ var app = (function () {
     		}
 
     		if ($$self.$$.dirty[0] & /*selectedOptions*/ 2097152 | $$self.$$.dirty[1] & /*max*/ 8192) {
-    			 $$invalidate(23, maxReached = max && selectedOptions.length === max);
+    			 $$invalidate(24, maxReached = max && selectedOptions.length === max);
     		}
 
-    		if ($$self.$$.dirty[0] & /*maxReached, multiple, selectedOptions*/ 10485762 | $$self.$$.dirty[2] & /*flatItems, $inputValue*/ 24) {
-    			 $$invalidate(24, availableItems = maxReached
+    		if ($$self.$$.dirty[0] & /*maxReached, multiple, selectedOptions*/ 18874370 | $$self.$$.dirty[2] & /*flatItems, $inputValue*/ 24) {
+    			 $$invalidate(25, availableItems = maxReached
     			? []
     			: filterList(flatItems, $inputValue, multiple, selectedOptions.length));
     		}
 
-    		if ($$self.$$.dirty[0] & /*creatable, availableItems*/ 16777280 | $$self.$$.dirty[2] & /*$inputValue*/ 16) {
+    		if ($$self.$$.dirty[0] & /*creatable, availableItems*/ 33554496 | $$self.$$.dirty[2] & /*$inputValue*/ 16) {
     			 currentListLength = creatable && $inputValue
     			? availableItems.length
     			: availableItems.length - 1;
     		}
 
-    		if ($$self.$$.dirty[0] & /*availableItems, creatable*/ 16777280 | $$self.$$.dirty[2] & /*$inputValue*/ 16) {
-    			 $$invalidate(25, listIndex = indexList(availableItems, creatable && $inputValue));
+    		if ($$self.$$.dirty[0] & /*availableItems, creatable*/ 33554496 | $$self.$$.dirty[2] & /*$inputValue*/ 16) {
+    			 $$invalidate(26, listIndex = indexList(availableItems, creatable && $inputValue));
     		}
 
-    		if ($$self.$$.dirty[0] & /*dropdownActiveIndex, listIndex*/ 33685504) {
+    		if ($$self.$$.dirty[0] & /*dropdownActiveIndex, listIndex*/ 67239936) {
     			 {
     				if (dropdownActiveIndex === null) {
     					$$invalidate(17, dropdownActiveIndex = listIndex.first);
@@ -7101,18 +7100,16 @@ var app = (function () {
     			}
     		}
 
-    		if ($$self.$$.dirty[0] & /*maxReached*/ 8388608 | $$self.$$.dirty[1] & /*max*/ 8192) {
-    			 $$invalidate(22, listMessage = maxReached ? config.i18n.max(max) : config.i18n.empty);
+    		if ($$self.$$.dirty[0] & /*maxReached*/ 16777216 | $$self.$$.dirty[1] & /*max*/ 8192) {
+    			 $$invalidate(23, listMessage = maxReached ? config.i18n.max(max) : config.i18n.empty);
     		}
 
     		if ($$self.$$.dirty[0] & /*currentLabelField*/ 524288 | $$self.$$.dirty[1] & /*renderer*/ 16384) {
-    			 $$invalidate(26, itemRenderer = typeof renderer === "function"
+    			 $$invalidate(27, itemRenderer = typeof renderer === "function"
     			? renderer
     			: formatterList[renderer] || formatterList.default.bind({ label: currentLabelField }));
     		}
     	};
-
-    	 dropdownComponent = Dropdown;
 
     	return [
     		anchor,
@@ -7137,6 +7134,7 @@ var app = (function () {
     		currentLabelField,
     		isFetchingData,
     		selectedOptions,
+    		alreadyCreated,
     		listMessage,
     		maxReached,
     		availableItems,
@@ -7145,7 +7143,6 @@ var app = (function () {
     		inputValue,
     		hasFocus,
     		hasDropdownOpened,
-    		alreadyCreated,
     		onSelect,
     		onDeselect,
     		onHover,

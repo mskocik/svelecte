@@ -28,13 +28,10 @@ const settings = {
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to search',
     fetchEmpty: 'No data related to your search',
-    collapsedSelection: count => {
-      // example of plural collapse
-      // switch (count) {
-      //   case 1: return '1 selected';
-      // }
-      return `${count} selected`;
-    }
+    collapsedSelection: count => `${count} selected`
+  },
+  collapseSelectionFn: function(selectionCount, selection) {
+    return settings.i18n.collapsedSelection(selectionCount);
   }
 }
 

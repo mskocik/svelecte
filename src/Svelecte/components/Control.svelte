@@ -66,7 +66,7 @@
   <div class="sv-content sv-input-row" class:has-multiSelection={multiple}>
     {#if selectedOptions.length }
       {#if multiple && collapseSelection && doCollapse}
-        { collapseSelection(selectedOptions.length) }
+        { collapseSelection(selectedOptions.length, selectedOptions) }
       {:else}
       {#each selectedOptions as opt}
       <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple} inputValue={$inputValue}></Item>
