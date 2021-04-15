@@ -7642,7 +7642,7 @@ const SvelecteElement = class extends HTMLElement {
           return this.hasAttribute('required');
         },
         set(value) {
-          if (!value) {
+          if (!value && value !== '') {
             this.removeAttribute('required');
           } else {
             this.setAttribute('required', '');
@@ -7745,6 +7745,7 @@ const SvelecteElement = class extends HTMLElement {
         }
         !this.parent.disabled && this.removeAttribute('disabled');
         if (this.hasAttribute('fetch')) {
+          this.svelecte.clearByParent(true);
           const fetchUrl = this.getAttribute('fetch').replace('[parent]', e.target.value);
           this.svelecte.$set({ fetch: fetchUrl, disabled: false });
         }

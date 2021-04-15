@@ -1,4 +1,6 @@
-var Svelecte = (function (exports) {
+
+(function(l, r) { if (l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (window.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(window.document);
+(function () {
     'use strict';
 
     function noop() { }
@@ -140,11 +142,35 @@ var Svelecte = (function (exports) {
         else if (node.getAttribute(attribute) !== value)
             node.setAttribute(attribute, value);
     }
+    function set_custom_element_data(node, prop, value) {
+        if (prop in node) {
+            node[prop] = value;
+        }
+        else {
+            attr(node, prop, value);
+        }
+    }
+    function to_number(value) {
+        return value === '' ? null : +value;
+    }
     function children(element) {
         return Array.from(element.childNodes);
     }
     function set_input_value(input, value) {
         input.value = value == null ? '' : value;
+    }
+    function select_option(select, value) {
+        for (let i = 0; i < select.options.length; i += 1) {
+            const option = select.options[i];
+            if (option.__value === value) {
+                option.selected = true;
+                return;
+            }
+        }
+    }
+    function select_value(select) {
+        const selected_option = select.querySelector(':checked') || select.options[0];
+        return selected_option && selected_option.__value;
     }
     // unfortunately this can't be a constant as that wouldn't be tree-shakeable
     // so we cache the result instead
@@ -297,6 +323,9 @@ var Svelecte = (function (exports) {
     }
     function add_render_callback(fn) {
         render_callbacks.push(fn);
+    }
+    function add_flush_callback(fn) {
+        flush_callbacks.push(fn);
     }
     let flushing = false;
     const seen_callbacks = new Set();
@@ -477,6 +506,51 @@ var Svelecte = (function (exports) {
                 throw new Error(`Cannot have duplicate keys in a keyed each`);
             }
             keys.add(key);
+        }
+    }
+
+    function get_spread_update(levels, updates) {
+        const update = {};
+        const to_null_out = {};
+        const accounted_for = { $$scope: 1 };
+        let i = levels.length;
+        while (i--) {
+            const o = levels[i];
+            const n = updates[i];
+            if (n) {
+                for (const key in o) {
+                    if (!(key in n))
+                        to_null_out[key] = 1;
+                }
+                for (const key in n) {
+                    if (!accounted_for[key]) {
+                        update[key] = n[key];
+                        accounted_for[key] = 1;
+                    }
+                }
+                levels[i] = n;
+            }
+            else {
+                for (const key in o) {
+                    accounted_for[key] = 1;
+                }
+            }
+        }
+        for (const key in to_null_out) {
+            if (!(key in update))
+                update[key] = undefined;
+        }
+        return update;
+    }
+    function get_spread_object(spread_props) {
+        return typeof spread_props === 'object' && spread_props !== null ? spread_props : {};
+    }
+
+    function bind(component, name, callback) {
+        const index = component.$$.props[name];
+        if (index !== undefined) {
+            component.$$.bound[index] = callback;
+            callback(component.$$.ctx[index]);
         }
     }
     function create_component(block) {
@@ -7797,10 +7871,2904 @@ var Svelecte = (function (exports) {
       }
     };
 
-    exports.SvelecteElement = SvelecteElement;
-    exports.addFormatter = addFormatter;
-    exports.config = config;
+    const dataset = {
+      countryGroups: () => [
+        {
+          label: 'A',
+          options: [{
+            value: 'al',
+            text: 'Albania'
+          },
+          {
+            value: 'ad',
+            text: 'Andorra'
+          },
+          {
+            value: 'am',
+            text: 'Armenia'
+          },
+          {
+            value: 'a',
+            text: 'Austria'
+          },
+          {
+            value: 'az',
+            text: 'Azerbaijan'
+          }]
+        },
+        {
+          label: 'B',
+          options: [{
+            value: 'by',
+            text: 'Belarus'
+          },
+          {
+            value: 'be',
+            text: 'Belgium'
+          },
+          {
+            value: 'ba',
+            text: 'Bosnia and Herzegovina'
+          },
+          {
+            value: 'bg',
+            text: 'Bulgaria'
+          }]
+        },
+        {
+          label: 'C',
+          options: [{
+            value: 'hr',
+            text: 'Croatia'
+          },
+          {
+            value: 'cy',
+            text: 'Cyprus'
+          },
+          {
+            value: 'cz',
+            text: 'Czechia'
+          }]
+        }
+      ],
+      countries: () => [
+        {
+          value: 'al',
+          text: 'Albania'
+        },
+        {
+          value: 'ad',
+          text: 'Andorra'
+        },
+        {
+          value: 'am',
+          text: 'Armenia'
+        },
+        {
+          value: 'a',
+          text: 'Austria'
+        },
+        {
+          value: 'az',
+          text: 'Azerbaijan'
+        },
+        {
+          value: 'by',
+          text: 'Belarus'
+        },
+        {
+          value: 'be',
+          text: 'Belgium'
+        },
+        {
+          value: 'ba',
+          text: 'Bosnia and Herzegovina'
+        },
+        {
+          value: 'bg',
+          text: 'Bulgaria'
+        },
+        {
+          value: 'hr',
+          text: 'Croatia'
+        },
+        {
+          value: 'cy',
+          text: 'Cyprus'
+        },
+        {
+          value: 'cz',
+          text: 'Czechia'
+        },
+        {
+          value: 'dk',
+          text: 'Denmark'
+        },
+        {
+          value: 'ee',
+          text: 'Estonia'
+        },
+        {
+          value: 'fi',
+          text: 'Finland'
+        },
+        {
+          value: 'fr',
+          text: 'France'
+        },
+        {
+          value: 'ge',
+          text: 'Georgia'
+        },
+        {
+          value: 'de',
+          text: 'Germany'
+        },
+        {
+          value: 'gr',
+          text: 'Greece'
+        },
+        {
+          value: 'hu',
+          text: 'Hungary'
+        },
+        {
+          value: 'is',
+          text: 'Iceland'
+        },
+        {
+          value: 'ie',
+          text: 'Ireland'
+        },
+        {
+          value: 'it',
+          text: 'Italy'
+        },
+        {
+          value: 'xk',
+          text: 'Kosovo'
+        },
+        {
+          value: 'lv',
+          text: 'Latvia'
+        },
+        {
+          value: 'li',
+          text: 'Liechtenstein'
+        },
+        {
+          value: 'lt',
+          text: 'Lithuania'
+        },
+        {
+          value: 'lu',
+          text: 'Luxembourg'
+        },
+        {
+          value: 'mt',
+          text: 'Malta'
+        },
+        {
+          value: 'md',
+          text: 'Moldova'
+        },
+        {
+          value: 'me',
+          text: 'Montenegro'
+        },
+        {
+          value: 'nl',
+          text: 'Netherlands'
+        },
+        {
+          value: 'mk',
+          text: 'North Macedonia (formerly Macedonia)'
+        },
+        {
+          value: 'no',
+          text: 'Norway'
+        },
+        {
+          value: 'pl',
+          text: 'Poland'
+        },
+        {
+          value: 'pt',
+          text: 'Portugal'
+        },
+        {
+          value: 'ro',
+          text: 'Romania'
+        },
+        {
+          value: 'ru',
+          text: 'Russia'
+        },
+        {
+          value: 'rs',
+          text: 'Serbia'
+        },
+        {
+          value: 'sk',
+          text: 'Slovakia'
+        },
+        {
+          value: 'sl',
+          text: 'Slovenia'
+        },
+        {
+          value: 'es',
+          text: 'Spain'
+        },
+        {
+          value: 'se',
+          text: 'Sweden'
+        },
+        {
+          value: 'ch',
+          text: 'Switzerland'
+        },
+        {
+          value: 'tr',
+          text: 'Turkey'
+        },
+        {
+          value: 'ua',
+          text: 'Ukraine'
+        },
+        {
+          value: 'uk',
+          text: 'United Kingdom'
+        },
+      ],
+      colors: () => [
+        {
+          value: 'aqua',
+          text: 'Aqua',
+          hex: '#00FFFF'
+        },
+        {
+          value: 'black',
+          text: 'Black',
+          hex: '#000000'
+        },
+        {
+          value: 'blue',
+          text: 'Blue',
+          hex: '#0000FF'
+        },
+        {
+          value: 'gray',
+          text: 'Gray',
+          hex: '#808080'
+        },
+        {
+          value: 'green',
+          text: 'Green',
+          hex: '#008000'
+        },
+        {
+          value: 'fuchsia',
+          text: 'Fuchsia',
+          hex: '#FF00FF'
+        },
+        {
+          value: 'lime',
+          text: 'Lime',
+          hex: '#00FF00'
+        },
+        {
+          value: 'maroon',
+          text: 'Maroon',
+          hex: '#800000'
+        },
+        {
+          value: 'navy',
+          text: 'Navy',
+          hex: '#000080'
+        },
+        {
+          value: 'olive',
+          text: 'Olive',
+          hex: '#808000'
+        },
+        {
+          value: 'purple',
+          text: 'Purple',
+          hex: '#800080'
+        },
+        {
+          value: 'red',
+          text: 'Red',
+          hex: '#FF0000'
+        },
+        {
+          value: 'silver',
+          text: 'Silver',
+          hex: '#C0C0C0'
+        },
+        {
+          value: 'teal',
+          text: 'Teal',
+          hex: '#008080'
+        },
+        {
+          value: 'yellow',
+          text: 'Yellow',
+          hex: '#FFFF00'
+        },
+        {
+          value: 'white',
+          text: 'White',
+          hex: '#FFFFFF'
+        }
+      ]
+    };
 
-    return exports;
+    /* docs\src\examples\01-basic.svelte generated by Svelte v3.25.0 */
+    const file$6 = "docs\\src\\examples\\01-basic.svelte";
 
-}({}));
+    function create_fragment$6(ctx) {
+    	let svelecte;
+    	let updating_selection;
+    	let updating_value;
+    	let t0;
+    	let div0;
+    	let t1;
+    	let code0;
+    	let t3;
+    	let b0;
+    	let t4_value = JSON.stringify(/*selection*/ ctx[0]) + "";
+    	let t4;
+    	let t5;
+    	let div1;
+    	let t6;
+    	let code1;
+    	let t8;
+    	let b1;
+    	let t9;
+    	let current;
+
+    	function svelecte_selection_binding(value) {
+    		/*svelecte_selection_binding*/ ctx[3].call(null, value);
+    	}
+
+    	function svelecte_value_binding(value) {
+    		/*svelecte_value_binding*/ ctx[4].call(null, value);
+    	}
+
+    	let svelecte_props = {
+    		options: /*options*/ ctx[2],
+    		placeholder: "Select country"
+    	};
+
+    	if (/*selection*/ ctx[0] !== void 0) {
+    		svelecte_props.selection = /*selection*/ ctx[0];
+    	}
+
+    	if (/*value*/ ctx[1] !== void 0) {
+    		svelecte_props.value = /*value*/ ctx[1];
+    	}
+
+    	svelecte = new Svelecte({ props: svelecte_props, $$inline: true });
+    	binding_callbacks.push(() => bind(svelecte, "selection", svelecte_selection_binding));
+    	binding_callbacks.push(() => bind(svelecte, "value", svelecte_value_binding));
+
+    	const block = {
+    		c: function create() {
+    			create_component(svelecte.$$.fragment);
+    			t0 = space();
+    			div0 = element("div");
+    			t1 = text("Current ");
+    			code0 = element("code");
+    			code0.textContent = "selection";
+    			t3 = text(" value: ");
+    			b0 = element("b");
+    			t4 = text(t4_value);
+    			t5 = space();
+    			div1 = element("div");
+    			t6 = text("Current ");
+    			code1 = element("code");
+    			code1.textContent = "value";
+    			t8 = text(" value: ");
+    			b1 = element("b");
+    			t9 = text(/*value*/ ctx[1]);
+    			add_location(code0, file$6, 16, 13, 339);
+    			add_location(b0, file$6, 16, 43, 369);
+    			add_location(div0, file$6, 16, 0, 326);
+    			add_location(code1, file$6, 17, 13, 425);
+    			add_location(b1, file$6, 17, 39, 451);
+    			add_location(div1, file$6, 17, 0, 412);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(svelecte, target, anchor);
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, div0, anchor);
+    			append_dev(div0, t1);
+    			append_dev(div0, code0);
+    			append_dev(div0, t3);
+    			append_dev(div0, b0);
+    			append_dev(b0, t4);
+    			insert_dev(target, t5, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, t6);
+    			append_dev(div1, code1);
+    			append_dev(div1, t8);
+    			append_dev(div1, b1);
+    			append_dev(b1, t9);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const svelecte_changes = {};
+
+    			if (!updating_selection && dirty & /*selection*/ 1) {
+    				updating_selection = true;
+    				svelecte_changes.selection = /*selection*/ ctx[0];
+    				add_flush_callback(() => updating_selection = false);
+    			}
+
+    			if (!updating_value && dirty & /*value*/ 2) {
+    				updating_value = true;
+    				svelecte_changes.value = /*value*/ ctx[1];
+    				add_flush_callback(() => updating_value = false);
+    			}
+
+    			svelecte.$set(svelecte_changes);
+    			if ((!current || dirty & /*selection*/ 1) && t4_value !== (t4_value = JSON.stringify(/*selection*/ ctx[0]) + "")) set_data_dev(t4, t4_value);
+    			if (!current || dirty & /*value*/ 2) set_data_dev(t9, /*value*/ ctx[1]);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(svelecte.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(svelecte.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(svelecte, detaching);
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(div0);
+    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(div1);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$6.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$6($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("_01_basic", slots, []);
+    	let options = dataset.countries();
+    	let selection = null;
+    	let value = null;
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_01_basic> was created with unknown prop '${key}'`);
+    	});
+
+    	function svelecte_selection_binding(value) {
+    		selection = value;
+    		$$invalidate(0, selection);
+    	}
+
+    	function svelecte_value_binding(value$1) {
+    		value = value$1;
+    		$$invalidate(1, value);
+    	}
+
+    	$$self.$capture_state = () => ({
+    		Svelecte,
+    		dataset,
+    		options,
+    		selection,
+    		value
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("options" in $$props) $$invalidate(2, options = $$props.options);
+    		if ("selection" in $$props) $$invalidate(0, selection = $$props.selection);
+    		if ("value" in $$props) $$invalidate(1, value = $$props.value);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [selection, value, options, svelecte_selection_binding, svelecte_value_binding];
+    }
+
+    class _01_basic extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$6, create_fragment$6, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_01_basic",
+    			options,
+    			id: create_fragment$6.name
+    		});
+    	}
+    }
+
+    /* docs\src\examples\02-basicPlain.svelte generated by Svelte v3.25.0 */
+    const file$7 = "docs\\src\\examples\\02-basicPlain.svelte";
+
+    function create_fragment$7(ctx) {
+    	let svelecte;
+    	let updating_selection;
+    	let updating_value;
+    	let t0;
+    	let div0;
+    	let t1;
+    	let label0;
+    	let input0;
+    	let input0_value_value;
+    	let t2;
+    	let t3;
+    	let label1;
+    	let input1;
+    	let input1_value_value;
+    	let t4;
+    	let t5;
+    	let div1;
+    	let t6;
+    	let code0;
+    	let t8;
+    	let b0;
+    	let t9_value = JSON.stringify(/*selection*/ ctx[1]) + "";
+    	let t9;
+    	let t10;
+    	let br;
+    	let t11;
+    	let code1;
+    	let t13;
+    	let b1;
+    	let t14;
+    	let current;
+    	let mounted;
+    	let dispose;
+
+    	function svelecte_selection_binding(value) {
+    		/*svelecte_selection_binding*/ ctx[4].call(null, value);
+    	}
+
+    	function svelecte_value_binding(value) {
+    		/*svelecte_value_binding*/ ctx[5].call(null, value);
+    	}
+
+    	let svelecte_props = {
+    		options: /*options*/ ctx[3],
+    		labelAsValue: /*labelAsValue*/ ctx[0],
+    		placeholder: "Select country"
+    	};
+
+    	if (/*selection*/ ctx[1] !== void 0) {
+    		svelecte_props.selection = /*selection*/ ctx[1];
+    	}
+
+    	if (/*value*/ ctx[2] !== void 0) {
+    		svelecte_props.value = /*value*/ ctx[2];
+    	}
+
+    	svelecte = new Svelecte({ props: svelecte_props, $$inline: true });
+    	binding_callbacks.push(() => bind(svelecte, "selection", svelecte_selection_binding));
+    	binding_callbacks.push(() => bind(svelecte, "value", svelecte_value_binding));
+
+    	const block = {
+    		c: function create() {
+    			create_component(svelecte.$$.fragment);
+    			t0 = space();
+    			div0 = element("div");
+    			t1 = text("Pick\r\n  ");
+    			label0 = element("label");
+    			input0 = element("input");
+    			t2 = text(" value");
+    			t3 = space();
+    			label1 = element("label");
+    			input1 = element("input");
+    			t4 = text(" label");
+    			t5 = space();
+    			div1 = element("div");
+    			t6 = text("Current ");
+    			code0 = element("code");
+    			code0.textContent = "selection";
+    			t8 = text(" value: ");
+    			b0 = element("b");
+    			t9 = text(t9_value);
+    			t10 = space();
+    			br = element("br");
+    			t11 = text("\r\n  Current ");
+    			code1 = element("code");
+    			code1.textContent = "value";
+    			t13 = text(" value: ");
+    			b1 = element("b");
+    			t14 = text(/*value*/ ctx[2]);
+    			attr_dev(input0, "type", "radio");
+    			input0.__value = input0_value_value = false;
+    			input0.value = input0.__value;
+    			/*$$binding_groups*/ ctx[7][0].push(input0);
+    			add_location(input0, file$7, 21, 9, 466);
+    			add_location(label0, file$7, 21, 2, 459);
+    			attr_dev(input1, "type", "radio");
+    			attr_dev(input1, "id", "");
+    			input1.__value = input1_value_value = true;
+    			input1.value = input1.__value;
+    			/*$$binding_groups*/ ctx[7][0].push(input1);
+    			add_location(input1, file$7, 22, 9, 551);
+    			add_location(label1, file$7, 22, 2, 544);
+    			attr_dev(div0, "class", "float-right");
+    			add_location(div0, file$7, 19, 0, 422);
+    			add_location(code0, file$7, 26, 10, 659);
+    			add_location(b0, file$7, 26, 40, 689);
+    			add_location(br, file$7, 27, 2, 728);
+    			add_location(code1, file$7, 28, 10, 744);
+    			add_location(b1, file$7, 28, 36, 770);
+    			add_location(div1, file$7, 25, 0, 642);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(svelecte, target, anchor);
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, div0, anchor);
+    			append_dev(div0, t1);
+    			append_dev(div0, label0);
+    			append_dev(label0, input0);
+    			input0.checked = input0.__value === /*labelAsValue*/ ctx[0];
+    			append_dev(label0, t2);
+    			append_dev(div0, t3);
+    			append_dev(div0, label1);
+    			append_dev(label1, input1);
+    			input1.checked = input1.__value === /*labelAsValue*/ ctx[0];
+    			append_dev(label1, t4);
+    			insert_dev(target, t5, anchor);
+    			insert_dev(target, div1, anchor);
+    			append_dev(div1, t6);
+    			append_dev(div1, code0);
+    			append_dev(div1, t8);
+    			append_dev(div1, b0);
+    			append_dev(b0, t9);
+    			append_dev(div1, t10);
+    			append_dev(div1, br);
+    			append_dev(div1, t11);
+    			append_dev(div1, code1);
+    			append_dev(div1, t13);
+    			append_dev(div1, b1);
+    			append_dev(b1, t14);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input0, "change", /*input0_change_handler*/ ctx[6]),
+    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[8])
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const svelecte_changes = {};
+    			if (dirty & /*labelAsValue*/ 1) svelecte_changes.labelAsValue = /*labelAsValue*/ ctx[0];
+
+    			if (!updating_selection && dirty & /*selection*/ 2) {
+    				updating_selection = true;
+    				svelecte_changes.selection = /*selection*/ ctx[1];
+    				add_flush_callback(() => updating_selection = false);
+    			}
+
+    			if (!updating_value && dirty & /*value*/ 4) {
+    				updating_value = true;
+    				svelecte_changes.value = /*value*/ ctx[2];
+    				add_flush_callback(() => updating_value = false);
+    			}
+
+    			svelecte.$set(svelecte_changes);
+
+    			if (dirty & /*labelAsValue*/ 1) {
+    				input0.checked = input0.__value === /*labelAsValue*/ ctx[0];
+    			}
+
+    			if (dirty & /*labelAsValue*/ 1) {
+    				input1.checked = input1.__value === /*labelAsValue*/ ctx[0];
+    			}
+
+    			if ((!current || dirty & /*selection*/ 2) && t9_value !== (t9_value = JSON.stringify(/*selection*/ ctx[1]) + "")) set_data_dev(t9, t9_value);
+    			if (!current || dirty & /*value*/ 4) set_data_dev(t14, /*value*/ ctx[2]);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(svelecte.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(svelecte.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(svelecte, detaching);
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(div0);
+    			/*$$binding_groups*/ ctx[7][0].splice(/*$$binding_groups*/ ctx[7][0].indexOf(input0), 1);
+    			/*$$binding_groups*/ ctx[7][0].splice(/*$$binding_groups*/ ctx[7][0].indexOf(input1), 1);
+    			if (detaching) detach_dev(t5);
+    			if (detaching) detach_dev(div1);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$7.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$7($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("_02_basicPlain", slots, []);
+    	let options = dataset.countries().map(opt => opt.text);
+    	let labelAsValue = false;
+    	let selection = null;
+    	let value = null;
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_02_basicPlain> was created with unknown prop '${key}'`);
+    	});
+
+    	const $$binding_groups = [[]];
+
+    	function svelecte_selection_binding(value) {
+    		selection = value;
+    		$$invalidate(1, selection);
+    	}
+
+    	function svelecte_value_binding(value$1) {
+    		value = value$1;
+    		$$invalidate(2, value);
+    	}
+
+    	function input0_change_handler() {
+    		labelAsValue = this.__value;
+    		$$invalidate(0, labelAsValue);
+    	}
+
+    	function input1_change_handler() {
+    		labelAsValue = this.__value;
+    		$$invalidate(0, labelAsValue);
+    	}
+
+    	$$self.$capture_state = () => ({
+    		Svelecte,
+    		dataset,
+    		options,
+    		labelAsValue,
+    		selection,
+    		value
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("options" in $$props) $$invalidate(3, options = $$props.options);
+    		if ("labelAsValue" in $$props) $$invalidate(0, labelAsValue = $$props.labelAsValue);
+    		if ("selection" in $$props) $$invalidate(1, selection = $$props.selection);
+    		if ("value" in $$props) $$invalidate(2, value = $$props.value);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [
+    		labelAsValue,
+    		selection,
+    		value,
+    		options,
+    		svelecte_selection_binding,
+    		svelecte_value_binding,
+    		input0_change_handler,
+    		$$binding_groups,
+    		input1_change_handler
+    	];
+    }
+
+    class _02_basicPlain extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$7, create_fragment$7, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_02_basicPlain",
+    			options,
+    			id: create_fragment$7.name
+    		});
+    	}
+    }
+
+    /* docs\src\examples\03-groups.svelte generated by Svelte v3.25.0 */
+
+    function create_fragment$8(ctx) {
+    	let svelecte;
+    	let current;
+
+    	svelecte = new Svelecte({
+    			props: { options: dataset.countryGroups() },
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(svelecte.$$.fragment);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(svelecte, target, anchor);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(svelecte.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(svelecte.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(svelecte, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$8.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$8($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("_03_groups", slots, []);
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_03_groups> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({ Svelecte, dataset });
+    	return [];
+    }
+
+    class _03_groups extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$8, create_fragment$8, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_03_groups",
+    			options,
+    			id: create_fragment$8.name
+    		});
+    	}
+    }
+
+    /* docs\src\examples\04-item-rendering.svelte generated by Svelte v3.25.0 */
+
+    function create_fragment$9(ctx) {
+    	let svelecte;
+    	let current;
+
+    	svelecte = new Svelecte({
+    			props: {
+    				options: /*options*/ ctx[0],
+    				renderer: colorRenderer,
+    				placeholder: "Select color"
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(svelecte.$$.fragment);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(svelecte, target, anchor);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(svelecte.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(svelecte.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(svelecte, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$9.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function colorRenderer(item, isSelected) {
+    	if (isSelected) {
+    		return `<div class="color-item" style="background-color: ${item.hex}">
+        Selected color
+      </div>`;
+    	}
+
+    	return `<span class="color-item" style="background-color: ${item.hex};">
+      </span>${item.text}`;
+    }
+
+    function instance$9($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("_04_item_rendering", slots, []);
+    	let options = dataset.colors();
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_04_item_rendering> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({
+    		Svelecte,
+    		dataset,
+    		options,
+    		colorRenderer
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("options" in $$props) $$invalidate(0, options = $$props.options);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [options];
+    }
+
+    class _04_item_rendering extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$9, create_fragment$9, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_04_item_rendering",
+    			options,
+    			id: create_fragment$9.name
+    		});
+    	}
+    }
+
+    /* docs\src\examples\05-slot.svelte generated by Svelte v3.25.0 */
+    const file$8 = "docs\\src\\examples\\05-slot.svelte";
+
+    // (17:2) <b slot="icon">
+    function create_icon_slot$1(ctx) {
+    	let b;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			b = element("b");
+    			t = text(/*iconSlot*/ ctx[1]);
+    			attr_dev(b, "slot", "icon");
+    			add_location(b, file$8, 16, 2, 379);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, b, anchor);
+    			append_dev(b, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*iconSlot*/ 2) set_data_dev(t, /*iconSlot*/ ctx[1]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(b);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_icon_slot$1.name,
+    		type: "slot",
+    		source: "(17:2) <b slot=\\\"icon\\\">",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$a(ctx) {
+    	let svelecte;
+    	let updating_value;
+    	let current;
+
+    	function svelecte_value_binding(value) {
+    		/*svelecte_value_binding*/ ctx[3].call(null, value);
+    	}
+
+    	let svelecte_props = {
+    		options: /*options*/ ctx[2],
+    		placeholder: "Pick your color, even the black 😉",
+    		$$slots: { icon: [create_icon_slot$1] },
+    		$$scope: { ctx }
+    	};
+
+    	if (/*iconValue*/ ctx[0] !== void 0) {
+    		svelecte_props.value = /*iconValue*/ ctx[0];
+    	}
+
+    	svelecte = new Svelecte({ props: svelecte_props, $$inline: true });
+    	binding_callbacks.push(() => bind(svelecte, "value", svelecte_value_binding));
+
+    	const block = {
+    		c: function create() {
+    			create_component(svelecte.$$.fragment);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(svelecte, target, anchor);
+    			current = true;
+    		},
+    		p: function update(ctx, [dirty]) {
+    			const svelecte_changes = {};
+
+    			if (dirty & /*$$scope, iconSlot*/ 18) {
+    				svelecte_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_value && dirty & /*iconValue*/ 1) {
+    				updating_value = true;
+    				svelecte_changes.value = /*iconValue*/ ctx[0];
+    				add_flush_callback(() => updating_value = false);
+    			}
+
+    			svelecte.$set(svelecte_changes);
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(svelecte.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(svelecte.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(svelecte, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$a.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$a($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("_05_slot", slots, []);
+    	let options = dataset.colors();
+    	let iconValue = null;
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_05_slot> was created with unknown prop '${key}'`);
+    	});
+
+    	function svelecte_value_binding(value) {
+    		iconValue = value;
+    		$$invalidate(0, iconValue);
+    	}
+
+    	$$self.$capture_state = () => ({
+    		Svelecte,
+    		dataset,
+    		options,
+    		iconValue,
+    		iconSlot
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("options" in $$props) $$invalidate(2, options = $$props.options);
+    		if ("iconValue" in $$props) $$invalidate(0, iconValue = $$props.iconValue);
+    		if ("iconSlot" in $$props) $$invalidate(1, iconSlot = $$props.iconSlot);
+    	};
+
+    	let iconSlot;
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*iconValue*/ 1) {
+    			 $$invalidate(1, iconSlot = iconValue ? iconValue === "black" ? "💀" : "👍" : "👉");
+    		}
+    	};
+
+    	return [iconValue, iconSlot, options, svelecte_value_binding];
+    }
+
+    class _05_slot extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$a, create_fragment$a, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_05_slot",
+    			options,
+    			id: create_fragment$a.name
+    		});
+    	}
+    }
+
+    /* docs\src\examples\06-fetch.svelte generated by Svelte v3.25.0 */
+
+    function create_fragment$b(ctx) {
+    	let svelecte;
+    	let current;
+
+    	svelecte = new Svelecte({
+    			props: {
+    				placeholder: "Start typing ('re' for example)",
+    				fetch: "https://my-json-server.typicode.com/mskocik/svelecte-db/colors?value_like=[query]"
+    			},
+    			$$inline: true
+    		});
+
+    	const block = {
+    		c: function create() {
+    			create_component(svelecte.$$.fragment);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(svelecte, target, anchor);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(svelecte.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(svelecte.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(svelecte, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$b.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$b($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("_06_fetch", slots, []);
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_06_fetch> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({ Svelecte });
+    	return [];
+    }
+
+    class _06_fetch extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$b, create_fragment$b, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_06_fetch",
+    			options,
+    			id: create_fragment$b.name
+    		});
+    	}
+    }
+
+    /* docs\src\examples\07-playground.svelte generated by Svelte v3.25.0 */
+    const file$9 = "docs\\src\\examples\\07-playground.svelte";
+
+    // (130:8) <b slot="icon">
+    function create_icon_slot$2(ctx) {
+    	let b;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			b = element("b");
+    			t = text(/*slot*/ ctx[17]);
+    			attr_dev(b, "slot", "icon");
+    			add_location(b, file$9, 129, 8, 3888);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, b, anchor);
+    			append_dev(b, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty[0] & /*slot*/ 131072) set_data_dev(t, /*slot*/ ctx[17]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(b);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_icon_slot$2.name,
+    		type: "slot",
+    		source: "(130:8) <b slot=\\\"icon\\\">",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$c(ctx) {
+    	let div4;
+    	let div1;
+    	let h4;
+    	let t1;
+    	let div0;
+    	let svelecte;
+    	let updating_selection;
+    	let t2;
+    	let t3_value = JSON.stringify(/*myValue*/ ctx[1]) + "";
+    	let t3;
+    	let t4;
+    	let p0;
+    	let t5;
+    	let button0;
+    	let t7;
+    	let div3;
+    	let fieldset5;
+    	let legend0;
+    	let t9;
+    	let div2;
+    	let fieldset0;
+    	let legend1;
+    	let t11;
+    	let select0;
+    	let option0;
+    	let option1;
+    	let option2;
+    	let option3;
+    	let option4;
+    	let t17;
+    	let p1;
+    	let t18;
+    	let br0;
+    	let t19;
+    	let code0;
+    	let t21;
+    	let br1;
+    	let t22;
+    	let t23;
+    	let fieldset1;
+    	let legend2;
+    	let t25;
+    	let label0;
+    	let input0;
+    	let t26;
+    	let br2;
+    	let t27;
+    	let label1;
+    	let input1;
+    	let t28;
+    	let t29;
+    	let input2;
+    	let input2_disabled_value;
+    	let t30;
+    	let input3;
+    	let input3_disabled_value;
+    	let br3;
+    	let t31;
+    	let label2;
+    	let input4;
+    	let t32;
+    	let br4;
+    	let t33;
+    	let button1;
+    	let t35;
+    	let fieldset2;
+    	let legend3;
+    	let t37;
+    	let label3;
+    	let input5;
+    	let t38;
+    	let t39;
+    	let input6;
+    	let input6_disabled_value;
+    	let t40;
+    	let br5;
+    	let t41;
+    	let label4;
+    	let input7;
+    	let input7_disabled_value;
+    	let t42;
+    	let t43;
+    	let fieldset3;
+    	let legend4;
+    	let t45;
+    	let input8;
+    	let br6;
+    	let t46;
+    	let label5;
+    	let input9;
+    	let t47;
+    	let br7;
+    	let t48;
+    	let label6;
+    	let input10;
+    	let t49;
+    	let br8;
+    	let t50;
+    	let label7;
+    	let input11;
+    	let t51;
+    	let code1;
+    	let t53;
+    	let hr;
+    	let t54;
+    	let label8;
+    	let input12;
+    	let t55;
+    	let t56;
+    	let fieldset4;
+    	let legend5;
+    	let t58;
+    	let span;
+    	let t60;
+    	let select1;
+    	let option5;
+    	let option6;
+    	let current;
+    	let mounted;
+    	let dispose;
+    	const svelecte_spread_levels = [/*settings*/ ctx[16], { name: "select" }];
+
+    	function svelecte_selection_binding(value) {
+    		/*svelecte_selection_binding*/ ctx[22].call(null, value);
+    	}
+
+    	let svelecte_props = {
+    		$$slots: { icon: [create_icon_slot$2] },
+    		$$scope: { ctx }
+    	};
+
+    	for (let i = 0; i < svelecte_spread_levels.length; i += 1) {
+    		svelecte_props = assign(svelecte_props, svelecte_spread_levels[i]);
+    	}
+
+    	if (/*myValue*/ ctx[1] !== void 0) {
+    		svelecte_props.selection = /*myValue*/ ctx[1];
+    	}
+
+    	svelecte = new Svelecte({ props: svelecte_props, $$inline: true });
+    	binding_callbacks.push(() => bind(svelecte, "selection", svelecte_selection_binding));
+    	/*svelecte_binding*/ ctx[23](svelecte);
+
+    	const block = {
+    		c: function create() {
+    			div4 = element("div");
+    			div1 = element("div");
+    			h4 = element("h4");
+    			h4.textContent = "Complex playground";
+    			t1 = space();
+    			div0 = element("div");
+    			create_component(svelecte.$$.fragment);
+    			t2 = text("\n      Current value: ");
+    			t3 = text(t3_value);
+    			t4 = space();
+    			p0 = element("p");
+    			t5 = text("Complete playground with almost options available. Try for example ");
+    			button0 = element("button");
+    			button0.textContent = "collapsible multiselection";
+    			t7 = space();
+    			div3 = element("div");
+    			fieldset5 = element("fieldset");
+    			legend0 = element("legend");
+    			legend0.textContent = "Customize";
+    			t9 = space();
+    			div2 = element("div");
+    			fieldset0 = element("fieldset");
+    			legend1 = element("legend");
+    			legend1.textContent = "Options";
+    			t11 = space();
+    			select0 = element("select");
+    			option0 = element("option");
+    			option0.textContent = "🎨 colors";
+    			option1 = element("option");
+    			option1.textContent = "🌍 countries";
+    			option2 = element("option");
+    			option2.textContent = "🔠 country groups";
+    			option3 = element("option");
+    			option3.textContent = "💬 [API]: Colors";
+    			option4 = element("option");
+    			option4.textContent = "💬 [API]: User list";
+    			t17 = space();
+    			p1 = element("p");
+    			t18 = text("Options prefixed with");
+    			br0 = element("br");
+    			t19 = space();
+    			code0 = element("code");
+    			code0.textContent = "[API]";
+    			t21 = text("are demonstrate");
+    			br1 = element("br");
+    			t22 = text("\n            AJAX fetching.");
+    			t23 = space();
+    			fieldset1 = element("fieldset");
+    			legend2 = element("legend");
+    			legend2.textContent = "Control";
+    			t25 = space();
+    			label0 = element("label");
+    			input0 = element("input");
+    			t26 = text(" Disabled");
+    			br2 = element("br");
+    			t27 = space();
+    			label1 = element("label");
+    			input1 = element("input");
+    			t28 = text(" Creatable");
+    			t29 = space();
+    			input2 = element("input");
+    			t30 = space();
+    			input3 = element("input");
+    			br3 = element("br");
+    			t31 = space();
+    			label2 = element("label");
+    			input4 = element("input");
+    			t32 = text(" Use virtual list");
+    			br4 = element("br");
+    			t33 = space();
+    			button1 = element("button");
+    			button1.textContent = "Clear selection";
+    			t35 = space();
+    			fieldset2 = element("fieldset");
+    			legend3 = element("legend");
+    			legend3.textContent = "Multiple";
+    			t37 = space();
+    			label3 = element("label");
+    			input5 = element("input");
+    			t38 = text(" Multiple");
+    			t39 = space();
+    			input6 = element("input");
+    			t40 = space();
+    			br5 = element("br");
+    			t41 = space();
+    			label4 = element("label");
+    			input7 = element("input");
+    			t42 = text(" Collapse selection");
+    			t43 = space();
+    			fieldset3 = element("fieldset");
+    			legend4 = element("legend");
+    			legend4.textContent = "UI";
+    			t45 = text("\n          Placeholder ");
+    			input8 = element("input");
+    			br6 = element("br");
+    			t46 = space();
+    			label5 = element("label");
+    			input9 = element("input");
+    			t47 = text(" Searchable");
+    			br7 = element("br");
+    			t48 = space();
+    			label6 = element("label");
+    			input10 = element("input");
+    			t49 = text(" Clearable");
+    			br8 = element("br");
+    			t50 = space();
+    			label7 = element("label");
+    			input11 = element("input");
+    			t51 = text(" Select on ");
+    			code1 = element("code");
+    			code1.textContent = "Tab";
+    			t53 = space();
+    			hr = element("hr");
+    			t54 = space();
+    			label8 = element("label");
+    			input12 = element("input");
+    			t55 = text(" Inline width");
+    			t56 = space();
+    			fieldset4 = element("fieldset");
+    			legend5 = element("legend");
+    			legend5.textContent = "Styling";
+    			t58 = space();
+    			span = element("span");
+    			span.textContent = "CSS class";
+    			t60 = space();
+    			select1 = element("select");
+    			option5 = element("option");
+    			option5.textContent = "svelecte-control (default)";
+    			option6 = element("option");
+    			option6.textContent = "red style (custom)";
+    			attr_dev(h4, "id", "sub-playground");
+    			add_location(h4, file$9, 125, 4, 3663);
+    			add_location(button0, file$9, 133, 89, 4069);
+    			attr_dev(p0, "class", "mt-2");
+    			add_location(p0, file$9, 133, 6, 3986);
+    			attr_dev(div0, "class", "form-row example-wrap svelte-dlp1nv");
+    			toggle_class(div0, "flexible-svelecte", /*isFlexWidth*/ ctx[4]);
+    			add_location(div0, file$9, 127, 4, 3720);
+    			attr_dev(div1, "class", "column col-xl-12 col-5");
+    			add_location(div1, file$9, 124, 2, 3622);
+    			attr_dev(legend0, "class", "svelte-dlp1nv");
+    			add_location(legend0, file$9, 138, 6, 4228);
+    			attr_dev(legend1, "class", "svelte-dlp1nv");
+    			add_location(legend1, file$9, 141, 10, 4324);
+    			option0.__value = "opts";
+    			option0.value = option0.__value;
+    			add_location(option0, file$9, 143, 12, 4459);
+    			option1.__value = "countries";
+    			option1.value = option1.__value;
+    			add_location(option1, file$9, 144, 12, 4511);
+    			option2.__value = "groups";
+    			option2.value = option2.__value;
+    			add_location(option2, file$9, 145, 12, 4571);
+    			option3.__value = "colors";
+    			option3.value = option3.__value;
+    			add_location(option3, file$9, 146, 12, 4633);
+    			option4.__value = "json";
+    			option4.value = option4.__value;
+    			add_location(option4, file$9, 147, 12, 4694);
+    			add_location(select0, file$9, 142, 10, 4359);
+    			add_location(br0, file$9, 150, 33, 4811);
+    			add_location(code0, file$9, 151, 12, 4828);
+    			add_location(br1, file$9, 151, 45, 4861);
+    			add_location(p1, file$9, 149, 10, 4774);
+    			attr_dev(fieldset0, "class", "col svelte-dlp1nv");
+    			add_location(fieldset0, file$9, 140, 8, 4291);
+    			attr_dev(legend2, "class", "svelte-dlp1nv");
+    			add_location(legend2, file$9, 156, 10, 4947);
+    			attr_dev(input0, "type", "checkbox");
+    			add_location(input0, file$9, 157, 17, 4989);
+    			add_location(label0, file$9, 157, 10, 4982);
+    			add_location(br2, file$9, 157, 130, 5102);
+    			attr_dev(input1, "type", "checkbox");
+    			add_location(input1, file$9, 158, 17, 5124);
+    			add_location(label1, file$9, 158, 10, 5117);
+    			attr_dev(input2, "class", "input-sm input-short svelte-dlp1nv");
+    			attr_dev(input2, "placeholder", "Item prefix");
+    			input2.disabled = input2_disabled_value = !/*settings*/ ctx[16].creatable;
+    			add_location(input2, file$9, 159, 10, 5252);
+    			attr_dev(input3, "class", "input-sm input-short svelte-dlp1nv");
+    			attr_dev(input3, "placeholder", "Delimiter");
+    			input3.disabled = input3_disabled_value = !/*settings*/ ctx[16].creatable;
+    			add_location(input3, file$9, 160, 10, 5439);
+    			add_location(br3, file$9, 160, 172, 5601);
+    			attr_dev(input4, "type", "checkbox");
+    			add_location(input4, file$9, 161, 17, 5623);
+    			add_location(label2, file$9, 161, 10, 5616);
+    			add_location(br4, file$9, 161, 144, 5750);
+    			attr_dev(button1, "class", "btn mt-2");
+    			add_location(button1, file$9, 162, 10, 5765);
+    			attr_dev(fieldset1, "class", "svelte-dlp1nv");
+    			add_location(fieldset1, file$9, 155, 8, 4926);
+    			attr_dev(legend3, "class", "svelte-dlp1nv");
+    			add_location(legend3, file$9, 166, 10, 5927);
+    			attr_dev(input5, "type", "checkbox");
+    			add_location(input5, file$9, 167, 17, 5970);
+    			add_location(label3, file$9, 167, 10, 5963);
+    			attr_dev(input6, "class", "input-sm svelte-dlp1nv");
+    			attr_dev(input6, "type", "number");
+    			attr_dev(input6, "placeholder", "limit");
+    			input6.disabled = input6_disabled_value = !/*settings*/ ctx[16].multiple;
+    			attr_dev(input6, "min", "0");
+    			add_location(input6, file$9, 168, 10, 6095);
+    			add_location(br5, file$9, 169, 10, 6270);
+    			attr_dev(input7, "type", "checkbox");
+    			input7.disabled = input7_disabled_value = !/*settings*/ ctx[16].multiple;
+    			add_location(input7, file$9, 170, 17, 6292);
+    			add_location(label4, file$9, 170, 10, 6285);
+    			attr_dev(fieldset2, "class", "svelte-dlp1nv");
+    			add_location(fieldset2, file$9, 165, 8, 5906);
+    			attr_dev(legend4, "class", "svelte-dlp1nv");
+    			add_location(legend4, file$9, 175, 10, 6534);
+    			attr_dev(input8, "class", "input-sm");
+    			add_location(input8, file$9, 176, 22, 6576);
+    			add_location(br6, file$9, 176, 129, 6683);
+    			attr_dev(input9, "type", "checkbox");
+    			add_location(input9, file$9, 177, 17, 6705);
+    			add_location(label5, file$9, 177, 10, 6698);
+    			add_location(br7, file$9, 177, 136, 6824);
+    			attr_dev(input10, "type", "checkbox");
+    			add_location(input10, file$9, 178, 17, 6846);
+    			add_location(label6, file$9, 178, 10, 6839);
+    			add_location(br8, file$9, 178, 133, 6962);
+    			attr_dev(input11, "type", "checkbox");
+    			add_location(input11, file$9, 179, 17, 6984);
+    			add_location(code1, file$9, 179, 130, 7097);
+    			add_location(label7, file$9, 179, 10, 6977);
+    			add_location(hr, file$9, 180, 10, 7132);
+    			attr_dev(input12, "type", "checkbox");
+    			add_location(input12, file$9, 181, 17, 7154);
+    			add_location(label8, file$9, 181, 10, 7147);
+    			attr_dev(fieldset3, "class", "svelte-dlp1nv");
+    			add_location(fieldset3, file$9, 174, 8, 6513);
+    			attr_dev(legend5, "class", "svelte-dlp1nv");
+    			add_location(legend5, file$9, 185, 10, 7276);
+    			add_location(span, file$9, 186, 10, 7311);
+    			option5.__value = "svelecte-control";
+    			option5.value = option5.__value;
+    			add_location(option5, file$9, 188, 12, 7445);
+    			option6.__value = "svelecte-control custom-css";
+    			option6.value = option6.__value;
+    			add_location(option6, file$9, 189, 12, 7526);
+    			if (/*classSelection*/ ctx[2] === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[52].call(select1));
+    			add_location(select1, file$9, 187, 10, 7344);
+    			attr_dev(fieldset4, "class", "svelte-dlp1nv");
+    			add_location(fieldset4, file$9, 184, 8, 7255);
+    			attr_dev(div2, "class", "columns");
+    			add_location(div2, file$9, 139, 6, 4261);
+    			attr_dev(fieldset5, "class", "svelte-dlp1nv");
+    			add_location(fieldset5, file$9, 137, 4, 4211);
+    			attr_dev(div3, "class", "column col-xl-12 col-7");
+    			add_location(div3, file$9, 136, 2, 4170);
+    			attr_dev(div4, "class", "columns");
+    			add_location(div4, file$9, 123, 0, 3598);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div4, anchor);
+    			append_dev(div4, div1);
+    			append_dev(div1, h4);
+    			append_dev(div1, t1);
+    			append_dev(div1, div0);
+    			mount_component(svelecte, div0, null);
+    			append_dev(div0, t2);
+    			append_dev(div0, t3);
+    			append_dev(div0, t4);
+    			append_dev(div0, p0);
+    			append_dev(p0, t5);
+    			append_dev(p0, button0);
+    			append_dev(div4, t7);
+    			append_dev(div4, div3);
+    			append_dev(div3, fieldset5);
+    			append_dev(fieldset5, legend0);
+    			append_dev(fieldset5, t9);
+    			append_dev(fieldset5, div2);
+    			append_dev(div2, fieldset0);
+    			append_dev(fieldset0, legend1);
+    			append_dev(fieldset0, t11);
+    			append_dev(fieldset0, select0);
+    			append_dev(select0, option0);
+    			append_dev(select0, option1);
+    			append_dev(select0, option2);
+    			append_dev(select0, option3);
+    			append_dev(select0, option4);
+    			append_dev(fieldset0, t17);
+    			append_dev(fieldset0, p1);
+    			append_dev(p1, t18);
+    			append_dev(p1, br0);
+    			append_dev(p1, t19);
+    			append_dev(p1, code0);
+    			append_dev(p1, t21);
+    			append_dev(p1, br1);
+    			append_dev(p1, t22);
+    			append_dev(div2, t23);
+    			append_dev(div2, fieldset1);
+    			append_dev(fieldset1, legend2);
+    			append_dev(fieldset1, t25);
+    			append_dev(fieldset1, label0);
+    			append_dev(label0, input0);
+    			input0.checked = /*disabled*/ ctx[11];
+    			append_dev(label0, t26);
+    			append_dev(fieldset1, br2);
+    			append_dev(fieldset1, t27);
+    			append_dev(fieldset1, label1);
+    			append_dev(label1, input1);
+    			input1.checked = /*creatable*/ ctx[12];
+    			append_dev(label1, t28);
+    			append_dev(fieldset1, t29);
+    			append_dev(fieldset1, input2);
+    			set_input_value(input2, /*creatablePrefix*/ ctx[13]);
+    			append_dev(fieldset1, t30);
+    			append_dev(fieldset1, input3);
+    			set_input_value(input3, /*delimiter*/ ctx[14]);
+    			append_dev(fieldset1, br3);
+    			append_dev(fieldset1, t31);
+    			append_dev(fieldset1, label2);
+    			append_dev(label2, input4);
+    			input4.checked = /*virtualList*/ ctx[15];
+    			append_dev(label2, t32);
+    			append_dev(fieldset1, br4);
+    			append_dev(fieldset1, t33);
+    			append_dev(fieldset1, button1);
+    			append_dev(div2, t35);
+    			append_dev(div2, fieldset2);
+    			append_dev(fieldset2, legend3);
+    			append_dev(fieldset2, t37);
+    			append_dev(fieldset2, label3);
+    			append_dev(label3, input5);
+    			input5.checked = /*multiple*/ ctx[5];
+    			append_dev(label3, t38);
+    			append_dev(fieldset2, t39);
+    			append_dev(fieldset2, input6);
+    			set_input_value(input6, /*max*/ ctx[6]);
+    			append_dev(fieldset2, t40);
+    			append_dev(fieldset2, br5);
+    			append_dev(fieldset2, t41);
+    			append_dev(fieldset2, label4);
+    			append_dev(label4, input7);
+    			input7.checked = /*collapseSelection*/ ctx[7];
+    			append_dev(label4, t42);
+    			append_dev(div2, t43);
+    			append_dev(div2, fieldset3);
+    			append_dev(fieldset3, legend4);
+    			append_dev(fieldset3, t45);
+    			append_dev(fieldset3, input8);
+    			set_input_value(input8, /*settings*/ ctx[16].placeholder);
+    			append_dev(fieldset3, br6);
+    			append_dev(fieldset3, t46);
+    			append_dev(fieldset3, label5);
+    			append_dev(label5, input9);
+    			input9.checked = /*searchable*/ ctx[8];
+    			append_dev(label5, t47);
+    			append_dev(fieldset3, br7);
+    			append_dev(fieldset3, t48);
+    			append_dev(fieldset3, label6);
+    			append_dev(label6, input10);
+    			input10.checked = /*clearable*/ ctx[9];
+    			append_dev(label6, t49);
+    			append_dev(fieldset3, br8);
+    			append_dev(fieldset3, t50);
+    			append_dev(fieldset3, label7);
+    			append_dev(label7, input11);
+    			input11.checked = /*selectOnTab*/ ctx[10];
+    			append_dev(label7, t51);
+    			append_dev(label7, code1);
+    			append_dev(fieldset3, t53);
+    			append_dev(fieldset3, hr);
+    			append_dev(fieldset3, t54);
+    			append_dev(fieldset3, label8);
+    			append_dev(label8, input12);
+    			input12.checked = /*isFlexWidth*/ ctx[4];
+    			append_dev(label8, t55);
+    			append_dev(div2, t56);
+    			append_dev(div2, fieldset4);
+    			append_dev(fieldset4, legend5);
+    			append_dev(fieldset4, t58);
+    			append_dev(fieldset4, span);
+    			append_dev(fieldset4, t60);
+    			append_dev(fieldset4, select1);
+    			append_dev(select1, option5);
+    			append_dev(select1, option6);
+    			select_option(select1, /*classSelection*/ ctx[2]);
+    			current = true;
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(button0, "click", /*onPresetCollapsible*/ ctx[19], false, false, false),
+    					listen_dev(select0, "change", /*change_handler*/ ctx[24], false, false, false),
+    					listen_dev(select0, "blur", /*blur_handler*/ ctx[21], false, false, false),
+    					listen_dev(input0, "change", /*change_handler_1*/ ctx[25], false, false, false),
+    					listen_dev(input0, "change", /*input0_change_handler*/ ctx[26]),
+    					listen_dev(input1, "change", /*change_handler_2*/ ctx[27], false, false, false),
+    					listen_dev(input1, "change", /*input1_change_handler*/ ctx[28]),
+    					listen_dev(input2, "input", /*input_handler*/ ctx[29], false, false, false),
+    					listen_dev(input2, "input", /*input2_input_handler*/ ctx[30]),
+    					listen_dev(input3, "input", /*input_handler_1*/ ctx[31], false, false, false),
+    					listen_dev(input3, "input", /*input3_input_handler*/ ctx[32]),
+    					listen_dev(input4, "change", /*change_handler_3*/ ctx[33], false, false, false),
+    					listen_dev(input4, "change", /*input4_change_handler*/ ctx[34]),
+    					listen_dev(button1, "click", /*click_handler*/ ctx[35], false, false, false),
+    					listen_dev(input5, "change", /*change_handler_4*/ ctx[36], false, false, false),
+    					listen_dev(input5, "change", /*input5_change_handler*/ ctx[37]),
+    					listen_dev(input6, "input", /*input_handler_2*/ ctx[38], false, false, false),
+    					listen_dev(input6, "input", /*input6_input_handler*/ ctx[39]),
+    					listen_dev(input7, "change", /*change_handler_5*/ ctx[40], false, false, false),
+    					listen_dev(input7, "change", /*input7_change_handler*/ ctx[41]),
+    					listen_dev(input8, "input", /*input_handler_3*/ ctx[42], false, false, false),
+    					listen_dev(input8, "input", /*input8_input_handler*/ ctx[43]),
+    					listen_dev(input9, "change", /*change_handler_6*/ ctx[44], false, false, false),
+    					listen_dev(input9, "change", /*input9_change_handler*/ ctx[45]),
+    					listen_dev(input10, "change", /*change_handler_7*/ ctx[46], false, false, false),
+    					listen_dev(input10, "change", /*input10_change_handler*/ ctx[47]),
+    					listen_dev(input11, "change", /*change_handler_8*/ ctx[48], false, false, false),
+    					listen_dev(input11, "change", /*input11_change_handler*/ ctx[49]),
+    					listen_dev(input12, "change", /*input12_change_handler*/ ctx[50]),
+    					listen_dev(select1, "change", /*change_handler_9*/ ctx[51], false, false, false),
+    					listen_dev(select1, "change", /*select1_change_handler*/ ctx[52]),
+    					listen_dev(select1, "blur", /*blur_handler_1*/ ctx[20], false, false, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, dirty) {
+    			const svelecte_changes = (dirty[0] & /*settings*/ 65536)
+    			? get_spread_update(svelecte_spread_levels, [get_spread_object(/*settings*/ ctx[16]), svelecte_spread_levels[1]])
+    			: {};
+
+    			if (dirty[0] & /*slot*/ 131072 | dirty[1] & /*$$scope*/ 67108864) {
+    				svelecte_changes.$$scope = { dirty, ctx };
+    			}
+
+    			if (!updating_selection && dirty[0] & /*myValue*/ 2) {
+    				updating_selection = true;
+    				svelecte_changes.selection = /*myValue*/ ctx[1];
+    				add_flush_callback(() => updating_selection = false);
+    			}
+
+    			svelecte.$set(svelecte_changes);
+    			if ((!current || dirty[0] & /*myValue*/ 2) && t3_value !== (t3_value = JSON.stringify(/*myValue*/ ctx[1]) + "")) set_data_dev(t3, t3_value);
+
+    			if (dirty[0] & /*isFlexWidth*/ 16) {
+    				toggle_class(div0, "flexible-svelecte", /*isFlexWidth*/ ctx[4]);
+    			}
+
+    			if (dirty[0] & /*disabled*/ 2048) {
+    				input0.checked = /*disabled*/ ctx[11];
+    			}
+
+    			if (dirty[0] & /*creatable*/ 4096) {
+    				input1.checked = /*creatable*/ ctx[12];
+    			}
+
+    			if (!current || dirty[0] & /*settings*/ 65536 && input2_disabled_value !== (input2_disabled_value = !/*settings*/ ctx[16].creatable)) {
+    				prop_dev(input2, "disabled", input2_disabled_value);
+    			}
+
+    			if (dirty[0] & /*creatablePrefix*/ 8192 && input2.value !== /*creatablePrefix*/ ctx[13]) {
+    				set_input_value(input2, /*creatablePrefix*/ ctx[13]);
+    			}
+
+    			if (!current || dirty[0] & /*settings*/ 65536 && input3_disabled_value !== (input3_disabled_value = !/*settings*/ ctx[16].creatable)) {
+    				prop_dev(input3, "disabled", input3_disabled_value);
+    			}
+
+    			if (dirty[0] & /*delimiter*/ 16384 && input3.value !== /*delimiter*/ ctx[14]) {
+    				set_input_value(input3, /*delimiter*/ ctx[14]);
+    			}
+
+    			if (dirty[0] & /*virtualList*/ 32768) {
+    				input4.checked = /*virtualList*/ ctx[15];
+    			}
+
+    			if (dirty[0] & /*multiple*/ 32) {
+    				input5.checked = /*multiple*/ ctx[5];
+    			}
+
+    			if (!current || dirty[0] & /*settings*/ 65536 && input6_disabled_value !== (input6_disabled_value = !/*settings*/ ctx[16].multiple)) {
+    				prop_dev(input6, "disabled", input6_disabled_value);
+    			}
+
+    			if (dirty[0] & /*max*/ 64 && to_number(input6.value) !== /*max*/ ctx[6]) {
+    				set_input_value(input6, /*max*/ ctx[6]);
+    			}
+
+    			if (!current || dirty[0] & /*settings*/ 65536 && input7_disabled_value !== (input7_disabled_value = !/*settings*/ ctx[16].multiple)) {
+    				prop_dev(input7, "disabled", input7_disabled_value);
+    			}
+
+    			if (dirty[0] & /*collapseSelection*/ 128) {
+    				input7.checked = /*collapseSelection*/ ctx[7];
+    			}
+
+    			if (dirty[0] & /*settings*/ 65536 && input8.value !== /*settings*/ ctx[16].placeholder) {
+    				set_input_value(input8, /*settings*/ ctx[16].placeholder);
+    			}
+
+    			if (dirty[0] & /*searchable*/ 256) {
+    				input9.checked = /*searchable*/ ctx[8];
+    			}
+
+    			if (dirty[0] & /*clearable*/ 512) {
+    				input10.checked = /*clearable*/ ctx[9];
+    			}
+
+    			if (dirty[0] & /*selectOnTab*/ 1024) {
+    				input11.checked = /*selectOnTab*/ ctx[10];
+    			}
+
+    			if (dirty[0] & /*isFlexWidth*/ 16) {
+    				input12.checked = /*isFlexWidth*/ ctx[4];
+    			}
+
+    			if (dirty[0] & /*classSelection*/ 4) {
+    				select_option(select1, /*classSelection*/ ctx[2]);
+    			}
+    		},
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(svelecte.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(svelecte.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div4);
+    			/*svelecte_binding*/ ctx[23](null);
+    			destroy_component(svelecte);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$c.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function fetchCallback(resp) {
+    	return resp.map(user => {
+    		return {
+    			id: user.id,
+    			name: user.name,
+    			email: user.email,
+    			street: `${user.address.street} ${user.address.suite}`,
+    			city: user.address.city
+    		};
+    	});
+    }
+
+    function fetchRenderer(item, isSelected) {
+    	return isSelected
+    	? `<figure class="avatar avatar-sm" data-initial="${item.name.split(" ").map(w => w[0]).slice(0, 2).join("")}" style="background-color: #5755d9;"></figure>
+          ${item.name}`
+    	: `${item.name}, ${item.street}`;
+    }
+
+    function instance$c($$self, $$props, $$invalidate) {
+    	let { $$slots: slots$1 = {}, $$scope } = $$props;
+    	validate_slots("_07_playground", slots$1, []);
+    	let remoteValue = "opts";
+    	let myValue = null;
+    	let classSelection = "svelecte-control";
+
+    	const remotes = {
+    		colors: "https://my-json-server.typicode.com/mskocik/svelecte-db/colors?value_like=[query]",
+    		json: "https://jsonplaceholder.typicode.com/users/"
+    	};
+
+    	const slots = {
+    		opts: "🎨",
+    		countries: "🌍",
+    		groups: "🔠",
+    		colors: "⚡",
+    		json: "🙋"
+    	};
+
+    	let cmp;
+    	let isFlexWidth = false;
+    	let { multiple, max, collapseSelection, placeholder, searchable, clearable, selectOnTab, disabled, creatable, creatablePrefix, delimiter, virtualList, style } = settings;
+    	let settings$1 = { searchable: true };
+
+    	function s(prop, value) {
+    		$$invalidate(16, settings$1[prop] = value !== null ? value : !settings$1[prop], settings$1);
+    		(((((((((((((($$invalidate(16, settings$1), $$invalidate(0, remoteValue)), $$invalidate(5, multiple)), $$invalidate(6, max)), $$invalidate(7, collapseSelection)), $$invalidate(8, searchable)), $$invalidate(9, clearable)), $$invalidate(10, selectOnTab)), $$invalidate(11, disabled)), $$invalidate(12, creatable)), $$invalidate(13, creatablePrefix)), $$invalidate(14, delimiter)), $$invalidate(15, virtualList)), $$invalidate(56, style)), $$invalidate(2, classSelection));
+    	}
+
+    	function onPresetCollapsible() {
+    		$$invalidate(5, multiple = true);
+    		$$invalidate(7, collapseSelection = true);
+    		$$invalidate(4, isFlexWidth = true);
+    		$$invalidate(0, remoteValue = "countries");
+    		const countries = dataset.countries();
+
+    		setTimeout(() => {
+    			cmp.setSelection([countries[2], countries[7]]);
+    		});
+
+    		setTimeout(
+    			() => {
+    				document.querySelector("#example-7 input").focus();
+    			},
+    			500
+    		);
+    	}
+
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_07_playground> was created with unknown prop '${key}'`);
+    	});
+
+    	function blur_handler_1(event) {
+    		bubble($$self, event);
+    	}
+
+    	function blur_handler(event) {
+    		bubble($$self, event);
+    	}
+
+    	function svelecte_selection_binding(value) {
+    		myValue = value;
+    		$$invalidate(1, myValue);
+    	}
+
+    	function svelecte_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			cmp = $$value;
+    			$$invalidate(3, cmp);
+    		});
+    	}
+
+    	const change_handler = e => {
+    		cmp.clearByParent();
+    		$$invalidate(0, remoteValue = e.target.value);
+    	};
+
+    	const change_handler_1 = e => s("disabled", e.target.checked);
+
+    	function input0_change_handler() {
+    		disabled = this.checked;
+    		$$invalidate(11, disabled);
+    	}
+
+    	const change_handler_2 = e => s("creatable", e.target.checked);
+
+    	function input1_change_handler() {
+    		creatable = this.checked;
+    		$$invalidate(12, creatable);
+    	}
+
+    	const input_handler = e => s("creatablePrefix", e.target.value);
+
+    	function input2_input_handler() {
+    		creatablePrefix = this.value;
+    		$$invalidate(13, creatablePrefix);
+    	}
+
+    	const input_handler_1 = e => s("delimiter", e.target.value);
+
+    	function input3_input_handler() {
+    		delimiter = this.value;
+    		$$invalidate(14, delimiter);
+    	}
+
+    	const change_handler_3 = e => s("virtualList", e.target.checked);
+
+    	function input4_change_handler() {
+    		virtualList = this.checked;
+    		$$invalidate(15, virtualList);
+    	}
+
+    	const click_handler = () => {
+    		$$invalidate(1, myValue = settings$1.multiple ? [] : null);
+    	};
+
+    	const change_handler_4 = e => s("multiple", e.target.checked);
+
+    	function input5_change_handler() {
+    		multiple = this.checked;
+    		$$invalidate(5, multiple);
+    	}
+
+    	const input_handler_2 = e => s("max", parseInt(e.target.value));
+
+    	function input6_input_handler() {
+    		max = to_number(this.value);
+    		$$invalidate(6, max);
+    	}
+
+    	const change_handler_5 = e => s("collapseSelection", e.target.checked);
+
+    	function input7_change_handler() {
+    		collapseSelection = this.checked;
+    		$$invalidate(7, collapseSelection);
+    	}
+
+    	const input_handler_3 = e => s("placeholder", e.target.value);
+
+    	function input8_input_handler() {
+    		settings$1.placeholder = this.value;
+    		(((((((((((((($$invalidate(16, settings$1), $$invalidate(0, remoteValue)), $$invalidate(5, multiple)), $$invalidate(6, max)), $$invalidate(7, collapseSelection)), $$invalidate(8, searchable)), $$invalidate(9, clearable)), $$invalidate(10, selectOnTab)), $$invalidate(11, disabled)), $$invalidate(12, creatable)), $$invalidate(13, creatablePrefix)), $$invalidate(14, delimiter)), $$invalidate(15, virtualList)), $$invalidate(56, style)), $$invalidate(2, classSelection));
+    	}
+
+    	const change_handler_6 = e => s("searchable", e.target.checked);
+
+    	function input9_change_handler() {
+    		searchable = this.checked;
+    		$$invalidate(8, searchable);
+    	}
+
+    	const change_handler_7 = e => s("clearable", e.target.checked);
+
+    	function input10_change_handler() {
+    		clearable = this.checked;
+    		$$invalidate(9, clearable);
+    	}
+
+    	const change_handler_8 = e => s("selectOnTab", e.target.checked);
+
+    	function input11_change_handler() {
+    		selectOnTab = this.checked;
+    		$$invalidate(10, selectOnTab);
+    	}
+
+    	function input12_change_handler() {
+    		isFlexWidth = this.checked;
+    		$$invalidate(4, isFlexWidth);
+    	}
+
+    	const change_handler_9 = e => s("class", e.target.value);
+
+    	function select1_change_handler() {
+    		classSelection = select_value(this);
+    		$$invalidate(2, classSelection);
+    	}
+
+    	$$self.$capture_state = () => ({
+    		Svelecte,
+    		config: settings,
+    		dataset,
+    		remoteValue,
+    		myValue,
+    		classSelection,
+    		remotes,
+    		slots,
+    		cmp,
+    		isFlexWidth,
+    		multiple,
+    		max,
+    		collapseSelection,
+    		placeholder,
+    		searchable,
+    		clearable,
+    		selectOnTab,
+    		disabled,
+    		creatable,
+    		creatablePrefix,
+    		delimiter,
+    		virtualList,
+    		style,
+    		settings: settings$1,
+    		s,
+    		fetchCallback,
+    		fetchRenderer,
+    		onPresetCollapsible,
+    		slot
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("remoteValue" in $$props) $$invalidate(0, remoteValue = $$props.remoteValue);
+    		if ("myValue" in $$props) $$invalidate(1, myValue = $$props.myValue);
+    		if ("classSelection" in $$props) $$invalidate(2, classSelection = $$props.classSelection);
+    		if ("cmp" in $$props) $$invalidate(3, cmp = $$props.cmp);
+    		if ("isFlexWidth" in $$props) $$invalidate(4, isFlexWidth = $$props.isFlexWidth);
+    		if ("multiple" in $$props) $$invalidate(5, multiple = $$props.multiple);
+    		if ("max" in $$props) $$invalidate(6, max = $$props.max);
+    		if ("collapseSelection" in $$props) $$invalidate(7, collapseSelection = $$props.collapseSelection);
+    		if ("placeholder" in $$props) placeholder = $$props.placeholder;
+    		if ("searchable" in $$props) $$invalidate(8, searchable = $$props.searchable);
+    		if ("clearable" in $$props) $$invalidate(9, clearable = $$props.clearable);
+    		if ("selectOnTab" in $$props) $$invalidate(10, selectOnTab = $$props.selectOnTab);
+    		if ("disabled" in $$props) $$invalidate(11, disabled = $$props.disabled);
+    		if ("creatable" in $$props) $$invalidate(12, creatable = $$props.creatable);
+    		if ("creatablePrefix" in $$props) $$invalidate(13, creatablePrefix = $$props.creatablePrefix);
+    		if ("delimiter" in $$props) $$invalidate(14, delimiter = $$props.delimiter);
+    		if ("virtualList" in $$props) $$invalidate(15, virtualList = $$props.virtualList);
+    		if ("style" in $$props) $$invalidate(56, style = $$props.style);
+    		if ("settings" in $$props) $$invalidate(16, settings$1 = $$props.settings);
+    		if ("slot" in $$props) $$invalidate(17, slot = $$props.slot);
+    	};
+
+    	let slot;
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty[0] & /*remoteValue*/ 1) {
+    			 $$invalidate(17, slot = slots[remoteValue]);
+    		}
+
+    		if ($$self.$$.dirty[0] & /*remoteValue, multiple, max, collapseSelection, searchable, clearable, selectOnTab, disabled, creatable, creatablePrefix, delimiter, virtualList, classSelection*/ 65509) {
+    			 {
+    				if (remoteValue === "opts") {
+    					$$invalidate(16, settings$1 = {
+    						multiple,
+    						max,
+    						collapseSelection,
+    						searchable,
+    						clearable,
+    						selectOnTab,
+    						disabled,
+    						creatable,
+    						creatablePrefix,
+    						delimiter,
+    						virtualList,
+    						style,
+    						class: classSelection,
+    						options: dataset.colors(),
+    						fetch: null,
+    						placeholder: "Pick your color"
+    					});
+    				} else if (remoteValue === "countries") {
+    					$$invalidate(16, settings$1 = {
+    						multiple,
+    						max,
+    						collapseSelection,
+    						searchable,
+    						clearable,
+    						selectOnTab,
+    						disabled,
+    						creatable,
+    						creatablePrefix,
+    						delimiter,
+    						virtualList,
+    						style,
+    						class: classSelection,
+    						options: dataset.countries(),
+    						fetch: null,
+    						placeholder: "Choose your favourite European country"
+    					});
+    				} else if (remoteValue === "groups") {
+    					$$invalidate(16, settings$1 = {
+    						multiple,
+    						max,
+    						collapseSelection,
+    						searchable,
+    						clearable,
+    						selectOnTab,
+    						disabled,
+    						creatable,
+    						creatablePrefix,
+    						delimiter,
+    						virtualList,
+    						style,
+    						class: classSelection,
+    						options: dataset.countryGroups(),
+    						fetch: null,
+    						placeholder: "Select from country group"
+    					});
+    				} else {
+    					$$invalidate(16, settings$1 = {
+    						multiple,
+    						max,
+    						collapseSelection,
+    						searchable,
+    						clearable,
+    						selectOnTab,
+    						disabled,
+    						creatable,
+    						creatablePrefix,
+    						delimiter,
+    						virtualList,
+    						style,
+    						class: classSelection,
+    						fetch: remotes[remoteValue],
+    						fetchCallback: remoteValue === "json" ? fetchCallback : null,
+    						placeholder: remoteValue === "json"
+    						? "Select from prefetched list"
+    						: "Search for color",
+    						renderer: remoteValue === "json" ? fetchRenderer : null,
+    						options: []
+    					});
+    				}
+    			}
+    		}
+    	};
+
+    	return [
+    		remoteValue,
+    		myValue,
+    		classSelection,
+    		cmp,
+    		isFlexWidth,
+    		multiple,
+    		max,
+    		collapseSelection,
+    		searchable,
+    		clearable,
+    		selectOnTab,
+    		disabled,
+    		creatable,
+    		creatablePrefix,
+    		delimiter,
+    		virtualList,
+    		settings$1,
+    		slot,
+    		s,
+    		onPresetCollapsible,
+    		blur_handler_1,
+    		blur_handler,
+    		svelecte_selection_binding,
+    		svelecte_binding,
+    		change_handler,
+    		change_handler_1,
+    		input0_change_handler,
+    		change_handler_2,
+    		input1_change_handler,
+    		input_handler,
+    		input2_input_handler,
+    		input_handler_1,
+    		input3_input_handler,
+    		change_handler_3,
+    		input4_change_handler,
+    		click_handler,
+    		change_handler_4,
+    		input5_change_handler,
+    		input_handler_2,
+    		input6_input_handler,
+    		change_handler_5,
+    		input7_change_handler,
+    		input_handler_3,
+    		input8_input_handler,
+    		change_handler_6,
+    		input9_change_handler,
+    		change_handler_7,
+    		input10_change_handler,
+    		change_handler_8,
+    		input11_change_handler,
+    		input12_change_handler,
+    		change_handler_9,
+    		select1_change_handler
+    	];
+    }
+
+    class _07_playground extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$c, create_fragment$c, safe_not_equal, {}, [-1, -1]);
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_07_playground",
+    			options,
+    			id: create_fragment$c.name
+    		});
+    	}
+    }
+
+    /* docs\src\examples\08-custom-element.svelte generated by Svelte v3.25.0 */
+    const file$a = "docs\\src\\examples\\08-custom-element.svelte";
+
+    function create_fragment$d(ctx) {
+    	let div;
+    	let form;
+    	let t0;
+    	let select0;
+    	let option0;
+    	let option1;
+    	let option2;
+    	let option3;
+    	let t5;
+    	let select1;
+    	let option4;
+    	let option5;
+    	let t7;
+    	let option5_disabled_value;
+    	let option6;
+    	let t9;
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			div = element("div");
+    			form = element("form");
+    			t0 = text("Create new\r\n    ");
+    			select0 = element("select");
+    			option0 = element("option");
+    			option0.textContent = "Select options";
+    			option1 = element("option");
+    			option1.textContent = "Colors";
+    			option2 = element("option");
+    			option2.textContent = "Countries";
+    			option3 = element("option");
+    			option3.textContent = "Groups";
+    			t5 = space();
+    			select1 = element("select");
+    			option4 = element("option");
+    			option4.textContent = "Default";
+    			option5 = element("option");
+    			t7 = text("Dotted (color only)");
+    			option6 = element("option");
+    			option6.textContent = "Caps";
+    			t9 = space();
+    			button = element("button");
+    			button.textContent = "Add Svelecte";
+    			option0.__value = "";
+    			option0.value = option0.__value;
+    			add_location(option0, file$a, 47, 6, 1540);
+    			option1.__value = "colors";
+    			option1.value = option1.__value;
+    			add_location(option1, file$a, 48, 6, 1588);
+    			option2.__value = "countries";
+    			option2.value = option2.__value;
+    			add_location(option2, file$a, 49, 6, 1634);
+    			option3.__value = "countryGroups";
+    			option3.value = option3.__value;
+    			add_location(option3, file$a, 50, 6, 1686);
+    			select0.required = true;
+    			if (/*optionList*/ ctx[1] === void 0) add_render_callback(() => /*select0_change_handler*/ ctx[4].call(select0));
+    			add_location(select0, file$a, 46, 4, 1491);
+    			option4.__value = "";
+    			option4.value = option4.__value;
+    			add_location(option4, file$a, 53, 6, 1796);
+    			option5.__value = "dotted";
+    			option5.value = option5.__value;
+    			option5.disabled = option5_disabled_value = /*optionList*/ ctx[1] !== "colors";
+    			add_location(option5, file$a, 54, 6, 1837);
+    			option6.__value = "caps";
+    			option6.value = option6.__value;
+    			add_location(option6, file$a, 55, 6, 1931);
+    			if (/*optionRenderer*/ ctx[2] === void 0) add_render_callback(() => /*select1_change_handler*/ ctx[5].call(select1));
+    			add_location(select1, file$a, 52, 4, 1752);
+    			attr_dev(button, "class", "btn btn-primary");
+    			attr_dev(button, "type", "submit");
+    			add_location(button, file$a, 58, 4, 1988);
+    			attr_dev(form, "action", "");
+    			add_location(form, file$a, 44, 2, 1417);
+    			add_location(div, file$a, 43, 0, 1386);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, div, anchor);
+    			append_dev(div, form);
+    			append_dev(form, t0);
+    			append_dev(form, select0);
+    			append_dev(select0, option0);
+    			append_dev(select0, option1);
+    			append_dev(select0, option2);
+    			append_dev(select0, option3);
+    			select_option(select0, /*optionList*/ ctx[1]);
+    			append_dev(form, t5);
+    			append_dev(form, select1);
+    			append_dev(select1, option4);
+    			append_dev(select1, option5);
+    			append_dev(option5, t7);
+    			append_dev(select1, option6);
+    			select_option(select1, /*optionRenderer*/ ctx[2]);
+    			append_dev(form, t9);
+    			append_dev(form, button);
+    			/*div_binding*/ ctx[6](div);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(select0, "change", /*select0_change_handler*/ ctx[4]),
+    					listen_dev(select1, "change", /*select1_change_handler*/ ctx[5]),
+    					listen_dev(form, "submit", prevent_default(/*onSubmit*/ ctx[3]), false, true, false)
+    				];
+
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*optionList*/ 2) {
+    				select_option(select0, /*optionList*/ ctx[1]);
+    			}
+
+    			if (dirty & /*optionList*/ 2 && option5_disabled_value !== (option5_disabled_value = /*optionList*/ ctx[1] !== "colors")) {
+    				prop_dev(option5, "disabled", option5_disabled_value);
+    			}
+
+    			if (dirty & /*optionRenderer*/ 4) {
+    				select_option(select1, /*optionRenderer*/ ctx[2]);
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(div);
+    			/*div_binding*/ ctx[6](null);
+    			mounted = false;
+    			run_all(dispose);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$d.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$d($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("_08_custom_element", slots, []);
+    	let container;
+    	let optionList;
+    	let optionRenderer;
+    	let list = [];
+    	config.clearable = true;
+    	window.customElements.define("el-svelecte", SvelecteElement);
+    	addFormatter("dotted", item => `<span style="background-color:${item.hex}" class="color"></span> ${item.text}`);
+    	addFormatter("caps", item => item.text.toUpperCase());
+
+    	function onSubmit() {
+    		/** here the svelecte is defined */
+    		const el = document.createElement("el-svelecte");
+
+    		el.options = dataset[optionList]();
+    		el.renderer = optionRenderer;
+
+    		/** that's all! */
+    		container.insertBefore(el, container.lastElementChild);
+
+    		const rmBtn = document.createElement("button");
+    		rmBtn.className = "btn float-right ml-2";
+    		rmBtn.style = "z-index: 100; position: relative";
+    		rmBtn.textContent = "Remove select";
+
+    		rmBtn.onclick = () => {
+    			container.removeChild(el);
+    			container.removeChild(rmBtn);
+    		};
+
+    		container.insertBefore(rmBtn, container.lastElementChild);
+    		container.insertBefore(el, container.lastElementChild);
+    		$$invalidate(1, optionList = "");
+    		$$invalidate(2, optionRenderer = "");
+    	}
+
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_08_custom_element> was created with unknown prop '${key}'`);
+    	});
+
+    	function select0_change_handler() {
+    		optionList = select_value(this);
+    		$$invalidate(1, optionList);
+    	}
+
+    	function select1_change_handler() {
+    		optionRenderer = select_value(this);
+    		($$invalidate(2, optionRenderer), $$invalidate(1, optionList));
+    	}
+
+    	function div_binding($$value) {
+    		binding_callbacks[$$value ? "unshift" : "push"](() => {
+    			container = $$value;
+    			$$invalidate(0, container);
+    		});
+    	}
+
+    	$$self.$capture_state = () => ({
+    		SvelecteElement,
+    		addFormatter,
+    		config,
+    		dataset,
+    		container,
+    		optionList,
+    		optionRenderer,
+    		list,
+    		onSubmit
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("container" in $$props) $$invalidate(0, container = $$props.container);
+    		if ("optionList" in $$props) $$invalidate(1, optionList = $$props.optionList);
+    		if ("optionRenderer" in $$props) $$invalidate(2, optionRenderer = $$props.optionRenderer);
+    		if ("list" in $$props) list = $$props.list;
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	$$self.$$.update = () => {
+    		if ($$self.$$.dirty & /*optionList, optionRenderer*/ 6) {
+    			 {
+    				if (optionList !== "colors" && optionRenderer === "dotted") {
+    					$$invalidate(2, optionRenderer = "");
+    				}
+    			}
+    		}
+    	};
+
+    	return [
+    		container,
+    		optionList,
+    		optionRenderer,
+    		onSubmit,
+    		select0_change_handler,
+    		select1_change_handler,
+    		div_binding
+    	];
+    }
+
+    class _08_custom_element extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$d, create_fragment$d, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_08_custom_element",
+    			options,
+    			id: create_fragment$d.name
+    		});
+    	}
+    }
+
+    /* docs\src\examples\09-custom-dependent.svelte generated by Svelte v3.25.0 */
+    const file$b = "docs\\src\\examples\\09-custom-dependent.svelte";
+
+    // (25:2) {#if payload}
+    function create_if_block$4(ctx) {
+    	let pre;
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			pre = element("pre");
+    			t = text(/*payload*/ ctx[0]);
+    			add_location(pre, file$b, 25, 4, 821);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, pre, anchor);
+    			append_dev(pre, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*payload*/ 1) set_data_dev(t, /*payload*/ ctx[0]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(pre);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block$4.name,
+    		type: "if",
+    		source: "(25:2) {#if payload}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment$e(ctx) {
+    	let form;
+    	let el_svelecte0;
+    	let el_svelecte0_options_value;
+    	let t0;
+    	let el_svelecte1;
+    	let t1;
+    	let button;
+    	let t3;
+    	let mounted;
+    	let dispose;
+    	let if_block = /*payload*/ ctx[0] && create_if_block$4(ctx);
+
+    	const block = {
+    		c: function create() {
+    			form = element("form");
+    			el_svelecte0 = element("el-svelecte");
+    			t0 = space();
+    			el_svelecte1 = element("el-svelecte");
+    			t1 = space();
+    			button = element("button");
+    			button.textContent = "Send form";
+    			t3 = space();
+    			if (if_block) if_block.c();
+    			set_custom_element_data(el_svelecte0, "name", "parent_value");
+    			set_custom_element_data(el_svelecte0, "options", el_svelecte0_options_value = `[{"value":"posts","text":"Posts"},{"value":"users","text":"Users"},{"value":"comments","text":"Comments"}]`);
+    			set_custom_element_data(el_svelecte0, "id", "is-parent");
+    			set_custom_element_data(el_svelecte0, "required", "");
+    			add_location(el_svelecte0, file$b, 15, 2, 380);
+    			set_custom_element_data(el_svelecte1, "name", "child_value");
+    			set_custom_element_data(el_svelecte1, "parent", "is-parent");
+    			set_custom_element_data(el_svelecte1, "required", "");
+    			set_custom_element_data(el_svelecte1, "fetch", "https://jsonplaceholder.typicode.com/[parent]");
+    			add_location(el_svelecte1, file$b, 20, 2, 593);
+    			attr_dev(button, "type", "submit");
+    			attr_dev(button, "class", "btn btn-success");
+    			add_location(button, file$b, 23, 2, 734);
+    			attr_dev(form, "action", "");
+    			add_location(form, file$b, 13, 0, 322);
+    		},
+    		l: function claim(nodes) {
+    			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, form, anchor);
+    			append_dev(form, el_svelecte0);
+    			append_dev(form, t0);
+    			append_dev(form, el_svelecte1);
+    			append_dev(form, t1);
+    			append_dev(form, button);
+    			append_dev(form, t3);
+    			if (if_block) if_block.m(form, null);
+
+    			if (!mounted) {
+    				dispose = listen_dev(form, "submit", prevent_default(/*onSubmit*/ ctx[1]), false, true, false);
+    				mounted = true;
+    			}
+    		},
+    		p: function update(ctx, [dirty]) {
+    			if (/*payload*/ ctx[0]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block$4(ctx);
+    					if_block.c();
+    					if_block.m(form, null);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
+    			}
+    		},
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(form);
+    			if (if_block) if_block.d();
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_fragment$e.name,
+    		type: "component",
+    		source: "",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function instance$e($$self, $$props, $$invalidate) {
+    	let { $$slots: slots = {}, $$scope } = $$props;
+    	validate_slots("_09_custom_dependent", slots, []);
+    	let payload = null;
+
+    	function onSubmit(e) {
+    		const object = {};
+    		const formData = new FormData(e.target);
+    		formData.forEach((value, key) => object[key] = value);
+    		$$invalidate(0, payload = JSON.stringify(object, null, 2));
+    	}
+
+    	const writable_props = [];
+
+    	Object.keys($$props).forEach(key => {
+    		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== "$$") console.warn(`<_09_custom_dependent> was created with unknown prop '${key}'`);
+    	});
+
+    	$$self.$capture_state = () => ({
+    		element,
+    		prevent_default,
+    		payload,
+    		onSubmit
+    	});
+
+    	$$self.$inject_state = $$props => {
+    		if ("payload" in $$props) $$invalidate(0, payload = $$props.payload);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [payload, onSubmit];
+    }
+
+    class _09_custom_dependent extends SvelteComponentDev {
+    	constructor(options) {
+    		super(options);
+    		init(this, options, instance$e, create_fragment$e, safe_not_equal, {});
+
+    		dispatch_dev("SvelteRegisterComponent", {
+    			component: this,
+    			tagName: "_09_custom_dependent",
+    			options,
+    			id: create_fragment$e.name
+    		});
+    	}
+    }
+
+    [_01_basic, _02_basicPlain, _03_groups, _04_item_rendering, _05_slot, _06_fetch, _07_playground, _08_custom_element, _09_custom_dependent]
+      .forEach(
+        (component, index) => new component({
+          target: document.getElementById(`example-${index +1}`),
+        })
+      );
+
+    // setTimeout(() => {
+    // 	window.el = document.querySelector('el-svelecte');
+    // 	el.renderer = 'dotted';
+    // 	el.options = dataset.colors();
+    // }, 200);
+
+    // export default app;
+
+    /** FETCH example sources */
+    const promises = [];
+    document.querySelectorAll('pre[data-src]')
+      .forEach(codeBlock => promises.push(
+        fetch(`src/examples/${codeBlock.dataset.src}.svelte`)
+          .then(resp => resp.text())
+          .then(html => {
+            const codeEl = document.createElement('code');
+            codeEl.className = 'svelte';
+            codeEl.innerText = html.replaceAll(/(<\/?script>)/g, '<!-- $1 -->');        codeBlock.appendChild(codeEl);
+          })
+      ));
+    Promise.all(promises).then(() => hljs.highlightAll());
+
+}());
+//# sourceMappingURL=docs.js.map

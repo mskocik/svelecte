@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en" class="auto-scaling-disabled">
+
+<head>
+  <!-- Meta tags -->
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Favicon and title -->
+  <link rel='icon' type='image/png' href='static/favicon.png'>
+  <link rel="stylesheet" href="static/spectre.css">
+  <link rel='stylesheet' href='static/global.css'>
+  <link rel='stylesheet' href='assets/docs.css'>
+
+  <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@10.7.2/styles/atom-one-light.min.css">
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@10.7.2/highlight.min.js"></script>
+  <script src="https://unpkg.com/highlightjs-svelte/dist/svelte.min.js"></script>
+
+  <style>
+    el-svelecte {
+      display: block;
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    el-svelecte select {
+      opacity: 0;
+    }
+
+    .color {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      margin-left: 3px;
+      box-shadow: 0 0 4px #ccc;
+      display: inline-block;
+    }
+  </style>
+  <title>Svelecte - select with autocomplete written in Svelte</title>
+</head>
+
+<body>
+  <div class="columns">
+    <div class="column col-2 col-xl-3 col-lg-3 hide-md">
+      <div class="nav-wrap">
+        <div class="nav-list">
+          <div class="docs-brand pt-2">
+            <h3 class="text-center mb-0">Svelecte</h3>
+          </div>
+          <div class="docs-nav p-2">
+            <ul class="menu mx-2">
+              <li class="menu-item">
+                <a href="#sub-intro">Getting started</a>
+              </li>
+              <li class="divider" data-content="Basic examples"></li>
+              <li class="menu-item"><a href="#sub-basic-example">Basic example</a></li>
+              <li class="menu-item"><a href="#sub-opt-groups">Option groups</a></li>
+              <li class="menu-item"><a href="#sub-item-rendering">Custom item rendering</a></li>
+              <li class="menu-item"><a href="#sub-icon-slot">Icon slot</a></li>
+              <li class="menu-item"><a href="#sub-remote-data">Remote datasource</a></li>
+              <li class="divider" data-content="Advanced examples"></li>
+              <li class="menu-item"><a href="#sub-playground">Playground</a></li>
+              <li class="menu-item"><a href="#sub-custom-component">Custom component</a></li>
+              <li class="divider" data-content="Configuration"></li>
+              <li class="menu-item"><a href="#sub-options">Options</a></li>
+              <li class="menu-item"><a href="#sub-api">API</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="column col-10 col-xl-8 col-lg-9 col-md-12">
+      <div class="container">
+
+        <div class="columns">
+          <div class="column col-lg-6 col-md-12">
+            <h1>Svelecte</h1>
+            <p>
+              Svelecte provide basically every (hopefully) common functionality, you would expect from
+              autocomplete/select
+              component. It's main inspiration was selectize.js
+            </p>
+
+            <h3 id="intro">Getting started</h3>
+
+            <p>Svelecte can be used in your Svelte app or used as a standalone <a
+                href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements"
+                target="_blank">custom element</a>.</p>
+
+            <h5>Install from npm</h5>
+
+            <pre class="code" data-lang="CLI"><code>npm install svelecte --save</code></pre>
+          </div>
+          <div class="column col-lg-6 col-md-12"></div>
+        </div>
+
+        <!-- basic -->
+        <div class="section container">
+          <div class="columns">
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <h4 id="sub-basic-example">Basic Usage</h4>
+              <div id="example-1" class="example-wrap"></div>
+
+              <details class="mt-2">
+                <summary class="label label-rounded c-hand">Related properties:</summary>
+                <div class="mt-2">
+                  <dl>
+                    <dt><span class="label">options:</span> <code>array</code></dt>
+                    <dd>Array of items. Svelecte support plain or object array as <code>options</code> property. By
+                      default
+                      it converts plain string items to object with <code>value</code> and <code>label</code>
+                      properties.</dd>
+                  </dl>
+                  <dl>
+                    <dt><span class="label">valueField:</span> <code>string|null</code></dt>
+                    <dd>
+                      Specify which property is used as value. This value is returned as <code>value</code>. If not
+                      specified, property will be resolved automatically.
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt><span class="label">labelField:</span> <code>string|null</code></dt>
+                    <dd>
+                      Specify which property should be shown. If not specified, property will be resolved automatically.
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt><span class="label">multiple:</span> <code>bool</code></dt>
+                    <dd>
+                      Toggle multiselection. Check <a href="#sub-playground">playground</a> example.
+                    </dd>
+                  </dl>
+                </div>
+              </details>
+
+              <details>
+                <summary class="label label-rounded c-hand">Exposed selection properties:</summary>
+                <div class="mt-2">
+                  Selection is <b>always</b> an array, when <code>multiple</code> is set to <code>true</code>.
+                  <dl>
+                    <dt><span class="label">bind:selection:</span> &rarr; <code>array|object|null</code></dt>
+                    <dd>Return selected object / array of objects</dd>
+                  </dl>
+                  <dl>
+                    <dt><span class="label">bind:value:</span> &rarr; <code>array|mixed|null</code></dt>
+                    <dd>Returns only <code>valueField</code> property / array like in normal selects.
+                  </dl>
+                </div>
+              </details>
+
+            </div>
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <details>
+                <summary class="label label-rounded c-hand">Show code</summary>
+                <pre data-src="01-basic"></pre>
+              </details>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <p>Example of plain array options and variable <code>value</code> output:</p>
+              <div id="example-2" class="example-wrap"></div>
+
+              <details class="mt-2">
+                <summary class="label label-rounded c-hand">Related properties:</summary>
+                <div class="mt-2">
+                  <dl>
+                    <dt><span class="label">labelAsValue:</span> <code>bool</code></dt>
+                    <dd>
+                      For plain array options you can also specify if you are interested in <code>value</code> or
+                      <code>label</code> property
+                      by setting <code>labelAsValue</code> property to true.
+                    </dd>
+                  </dl>
+                </div>
+              </details>
+            </div>
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <details>
+                <summary class="label label-rounded c-hand">Show code</summary>
+                <pre data-src="02-basicPlain"></pre>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- groups -->
+        <div class="section">
+          <div class="columns">
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <h4 id="sub-opt-groups">Option groups</h4>
+              <div id="example-3" class="example-wrap"></div>
+              <p class="mt-2">Optgroups are defined as objects with <code>label</code> and <code>options</code>
+                properties.
+                Optgroup labels are customizable by styling <code>.optgroup-header</code> class.
+              </p>
+            </div>
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <details>
+                <summary class="label label-rounded c-hand">Show code</summary>
+                <pre data-src="03-groups"></pre>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- rendering -->
+        <div class="section">
+          <div class="columns">
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <h4 id="sub-item-rendering">Custom item rendering</h4>
+              <div id="example-4" class="example-wrap"></div>
+
+              <p class="mt-2">You can define custom renderer function, which takes current option and return HTML
+                string.
+                Your renderer can display selected items differently due second function argument.
+              </p>
+              <details class="mt-2">
+                <summary class="label label-rounded c-hand">Related properties:</summary>
+                <div class="mt-2">
+                  <dl>
+                    <dt>
+                      <span class="label">renderer:</span>
+                      <code>string | fn(item : object|string, isSelected: bool) -> string</code>
+                    </dt>
+                    <dd>
+                      If <code>string</code> is passed, context renderer with given name is being used. You can add new
+                      renderers
+                      through context function <code>addFormatter(name: string, formatFn: function)</code>.
+                      <code>formatFn</code> function can expect
+                      arguments specified above.
+
+                      <p class="mt-2">By default <code>labelField</code> is used to render visible text.</p>
+                    </dd>
+                  </dl>
+                </div>
+              </details>
+            </div>
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <details>
+                <summary class="label label-rounded c-hand">Show code</summary>
+                <pre data-src="04-item-rendering"></pre>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- slot -->
+        <div class="section">
+          <div class="columns">
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <h4 id="sub-icon-slot">Icon slot</h4>
+              <div id="example-5" class="example-wrap"></div>
+              <p class="mt-2">You can provide icon by defining <code>icon</code> slot content</p>
+            </div>
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <details>
+                <summary class="label label-rounded c-hand">Show code</summary>
+                <pre data-src="05-slot"></pre>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- fetch -->
+        <div class="section">
+          <div class="columns">
+            <div class="column col-lg-12 col-xl-6 col-6">
+
+              <h4 id="sub-fetch">Remote datasource</h4>
+
+              <div id="example-6" class="example-wrap"></div>
+              <details class="mt-2">
+
+                <summary class="label label-rounded c-hand">Related properties:</summary>
+                <div class="mt-2">
+
+                  <dl>
+                    <dt><span class="label">fetch:</span> <code>string|null</code></dt>
+                    <dd>string specifying remote endpoint, ie: <code>https://example.com/url?search=[query]</code></dd>
+                  </dl>
+                  <dl>
+                    <dt><span class="label">fetchMode:</span> <code>string</code></dt>
+                    <dd>
+                      <code class="col-offset-1">init</code> - remote dataset is fetched immediately upon
+                      setting, searching is conducted only among available items. Fetch fallbacks to <code>init</code>
+                      also
+                      when <code>fetch</code> is string and <code>[query]</code> placeholder is not specified.<br>
+                      <code>auto</code> - remote search query is triggered when typing, but <b>it expects</b>
+                      <code>[query]</code> placeholder in <code>fetch</code> property. This is default value.
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt><span class="label">fetchCallback:</span> <code>?fn(jsonResponse: object): array</code></dt>
+                    <dd>
+                      Response transform function. It contains JSON-ized response.
+                      If not specified, one of following properties are tried in given order: <code>data</code>,
+                      <code>items</code>,
+                      <code>options</code> or response JSON itself as a fallback.
+                    </dd>
+                  </dl>
+                </div>
+              </details>
+            </div>
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <details>
+                <summary class="label label-rounded c-hand">Show code</summary>
+                <pre data-src="06-fetch"></pre>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <hr>
+
+        <!-- playground app -->
+        <div class="section">
+          <div id="example-7"></div>
+        </div>
+
+        <!-- custom element -->
+        <div class="section">
+          <h2>Use Svelecte as custom element (CE)</h2>
+          
+          <div class="columns">
+            <div class="column col-lg-12 col-xl-12 col-6">
+
+              <p>When including Svelecte in your app, you can import what you need...</p>
+              
+              <pre class="code" data-lang="CLI"><code>import { SvelecteElement, addFormatter, config } from 'svelecte/src/component.js';</code></pre>
+              
+              <p>... or download the latest version manually from <a class="btn btn-primary"
+                  href="https://github.com/mskocik/svelecte/releases/latest">GitHub</a></p>
+              
+              <pre class="code" data-lang="html"><code class="html">&lt;link rel="stylesheet" href="https://unpkg.com/svelecte/dist/svelecte.css"&gt;
+    &lt;script src="https://unpkg.com/svelecte/dist/svelecte.min.js"&gt;/script&gt;</code></pre>
+
+              <p class="mt-2">Standalone version offer same properties as module version:</p>
+
+              <pre class="code" data-lang="javascript"><code class="javascript">const { SvelecteElement, addFormatter, config } = window.Svelecte;</code></pre>
+              
+              <h4>Setup component</h4>
+
+              <p class="mt-2">Manual custom element is required. Also when using CE version, you can define additional
+                renderer functions by calling <code>addFormatter</code> function (check <a href="#sub-item-rendering">Custom 
+                item rendering</a> section) or update global config.
+              </p>
+              
+              <pre class="code" data-lang="javascript"><code class="javascript">window.customElements.define('el-svelecte', SvelecteElement);
+
+  // add additional renderers
+  addFormatter('caps', item => item.text.toUpperCase());
+
+  // additionally change global config defaults
+  config.clearable = true;</code></pre>
+            </div>
+          </div>
+
+            <div class="section">
+              <div class="columns">
+                <div class="column col-lg-12 col-xl-6 col-6">
+              
+                  <h4 id="sub-item-rendering">Basic example with custom elements</h4>
+                  <div id="example-8" class="example-wrap"></div>
+                  <p class="mt-2">Simple example that enables you to insert multiple <code>el-svelecte</code> DOM elements.
+                    <br>
+                    Check <code>onSubmit</code> function in example code.
+                  </p>
+                </div>
+                <div class="column col-lg-12 col-xl-6 col-6">
+                  <details>
+                    <summary class="label label-rounded c-hand">Show code</summary>
+                    <pre data-src="08-custom-element"></pre>
+                  </details>
+                </div>
+              </div>
+            </div>
+
+            <div class="section">
+              <div class="columns offscroll">
+                <div class="column col-lg-12 col-xl-6 col-6">
+              
+                  <h4>Wired (dependent) selects </h4>
+                  <div id="example-9" class="example-wrap"></div>
+                  
+                  <p>Quite common scenario when one select (child) depends on another (parent) and when parent is selected,
+                    you need to fetchdata child dataset. Svelecte support this use-case directly</p>
+
+                  <details class="mt-2">
+
+                    <summary class="label label-rounded c-hand">Related DOM attributes:</summary>
+                    <div class="mt-2">
+    
+                      <dl>
+                        <dt><span class="label">parent:</span> <code>string</code></dt>
+                        <dd>DOM <code>id</code> property of parent select. This attribute should be defined on <em>child</em> svelecte element.
+                          <br>
+                          Note that child is disabled automatically when parent has no selection.
+                        </dd>
+                      </dl>
+                    </div>
+                  </details>
+                </div>
+                <div class="column col-lg-12 col-xl-6 col-6">
+                  <details>
+                    <summary class="label label-rounded c-hand">Show code</summary>
+                    <pre data-src="09-custom-dependent"></pre>
+                  </details>
+                </div>
+              </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src='assets/docs.js' defer></script>
+</body>
+
+</html>
