@@ -50,10 +50,6 @@ export function debounce(fn, delay) {
 	};
 };
 
-/**
- * highlight-related code from selectize itself. We pass raw html through @html svelte tag
- * base from https://github.com/selectize/selectize.js/blob/master/src/contrib/highlight.js & edited
- */
 const itemHtml = document.createElement('div');
 itemHtml.className = 'sv-item-content';
 
@@ -61,28 +57,32 @@ export function highlightSearch(item, isSelected, $inputValue, formatter) {
   itemHtml.innerHTML = formatter ? formatter(item, isSelected) : item;
   if ($inputValue == '' || item.isSelected) return itemHtml.outerHTML;
 
-  const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
+  // const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
+  const pattern = asciifold($inputValue);
+  pattern.split(' ').filter(e => e).forEach(pat => {
+    highlight(itemHtml, pat);
+  });
   
-  highlight(itemHtml, regex);
-
   return itemHtml.outerHTML;
 }
 
+/**
+ * highlight function code from selectize itself. We pass raw html through @html svelte tag
+ * base from https://github.com/selectize/selectize.js/blob/master/src/contrib/highlight.js & edited
+ */
 const highlight = function(node, regex) {
   let skip = 0;
   // Wrap matching part of text node with highlighting <span>, e.g.
-  // Soccer  ->  <span class="highlight">Soc</span>cer  for regex = /soc/i
+  // Soccer  ->  <span class="highlight">Soc</span>cer for pattern 'soc'
   if (node.nodeType === 3) {
     const folded = asciifold(node.data);
-    const pos = folded.search(regex);
-    // var pos = node.data.search(regex);
-    if (pos >= 0 && node.data.length > 0) {
-      const match = folded.match(regex);
-      // var match = node.data.match(regex);
+    let pos = folded.indexOf(regex);
+    pos -= (folded.substr(0, pos).toUpperCase().length - folded.substr(0, pos).length);
+    if (pos >= 0 ) {
       const spannode = document.createElement('span');
       spannode.className = 'highlight';
       const middlebit = node.splitText(pos);
-      const endbit = middlebit.splitText(match[0].length);
+      const endbit = middlebit.splitText(regex.length);
       const middleclone = middlebit.cloneNode(true);
       spannode.appendChild(middleclone);
       middlebit.parentNode.replaceChild(spannode, middlebit);
@@ -102,8 +102,9 @@ const highlight = function(node, regex) {
 /**
  * Automatic setter for 'valueField' or 'labelField' when they are not set
  */
-export function fieldInit(type, options) {
+export function fieldInit(type, options, config) {
   const isValue = type === 'value';
+  if (config.isOptionArray) return isValue ? 'value' : 'label';
   let val = isValue  ? 'value' : 'text';              // selectize style defaults
   if (options && options.length) {
     const firstItem = options[0].options ? options[0].options[0] : options[0];

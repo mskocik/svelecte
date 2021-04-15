@@ -55,7 +55,6 @@ vlHeight | number | `null` | Height of virtual list dropdown (if not specified, 
 vlItemSize | number | `null` | Height of one row (if not specified, computed automatically)
 searchField | string\|array | `null` | Specify item property that will be used to search by (if not specified all props except `value` prop will be used)
 sortField | string | `null` | Specify sort property. If not specified, first after `value` field will be used
-sortRemote | bool | `true` | sort items (by relevancy) when results are fetched from remote
 class | string | `svelecte-control` | default css class
 style | string | null | inline style
 

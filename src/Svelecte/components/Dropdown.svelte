@@ -126,7 +126,7 @@
     dropdownStateSubscription = hasDropdownOpened.subscribe(val => {
       tick().then(() => positionDropdown(val));
       // bind/unbind scroll listener
-      document[val ? 'addEventListener' : 'removeEventListener']('scroll', () => positionDropdown(val));
+      document[val ? 'addEventListener' : 'removeEventListener']('scroll', () => positionDropdown(val), { passive: true });
     });
     isMounted = true;
   });

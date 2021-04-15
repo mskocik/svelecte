@@ -28,7 +28,6 @@
   export let options = [];
   export let valueField = defaults.valueField;
   export let labelField = defaults.labelField;
-  export let required = false;
   export let placeholder = 'Select';
   export let searchable = defaults.searchable;
   export let disabled = defaults.disabled;
@@ -42,6 +41,7 @@
   export let collapseSelection = defaults.collapseSelection;
   // form and CE
   export let name = null;
+  export let required = false;
   export let anchor = null;
   // creating 
   export let creatable = defaults.creatable;
@@ -58,7 +58,6 @@
   // sifter related
   export let searchField = null;
   export let sortField = null;
-  export let sortRemote = defaults.sortRemoteResults;
   // styling
   let className = 'svelecte-control';
   export { className as class};
@@ -66,6 +65,7 @@
   // API: public
   export let selection = undefined;
   export let value = undefined;
+  export let labelAsValue = false;
   export const getSelection = onlyValues => {
     if (!selection) return multiple ? [] : null;
     return multiple 
@@ -83,19 +83,30 @@
  
   const dispatch = createEventDispatcher();
 
+  const itemConfig = {
+    optionsWithGroups: false,
+    isOptionArray: options && options.length && typeof options[0] !== 'object',
+    optionProps: [],
+    valueField: valueField,
+    labelField: labelField,
+    labelAsValue: labelAsValue,
+  };
+
   let isInitialized = false;
   let refDropdown;
   let refControl;
   let ignoreHover = false;
   let dropdownActiveIndex = null;
   let fetchUnsubscribe = null;
-  let currentValueField = valueField;
-  let currentLabelField = labelField;
+  let currentValueField = valueField || fieldInit('value', options, itemConfig);
+  let currentLabelField = labelField || fieldInit('label', options, itemConfig);
+
+
+  itemConfig.valueField = currentValueField;
+  itemConfig.labelField = currentLabelField;
   
   /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
-    currentValueField = valueField || fieldInit('value', options);
-    currentLabelField = labelField || fieldInit('label', options);
 
   /** ************************************ Context definition */
   const inputValue = writable('');
@@ -172,11 +183,11 @@
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
   let selectedOptions = new Set();
   let alreadyCreated = [];
-  $: flatItems = flatList(options);
-  $: maxReached = max && selectedOptions.length === max 
-  $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, selectedOptions.length);
+  $: flatItems = flatList(options, itemConfig);
+  $: maxReached = max && selectedOptions.size === max 
+  $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, searchField, sortField, itemConfig);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
-  $: listIndex = indexList(availableItems, creatable && $inputValue);
+  $: listIndex = indexList(availableItems, creatable && $inputValue, itemConfig);
   $: {
     if (dropdownActiveIndex === null) {
       dropdownActiveIndex = listIndex.first;
@@ -187,14 +198,22 @@
   $: listMessage = maxReached ? config.i18n.max(max) : config.i18n.empty;
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
+    const _selectionArray = Array.from(selectedOptions)
+      .map(opt => {
+        const obj = {};
+        itemConfig.optionProps.forEach(prop => obj[prop] = opt[prop]);
+        return obj;
+      });
     const _unifiedSelection = multiple 
-      ? Array.from(selectedOptions)
-      : selectedOptions.size ? [...selectedOptions][0] : null;
+      ? _selectionArray
+      : (_selectionArray.length ? _selectionArray[0] : null);
+    const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
+
     value = multiple 
-      ? Array.from(selectedOptions).map(opt => opt[currentValueField])
-      : selectedOptions.size ? [...selectedOptions][0][currentValueField] : null;
+      ? _unifiedSelection.map(opt => opt[valueProp])
+      : selectedOptions.size ? _unifiedSelection[valueProp] : null;
     prevSelection = _unifiedSelection;
-    selection = _unifiedSelection;
+    selection = prevSelection;
     // Custom-element related
     if (anchor) {
       anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce((res, item) => {
@@ -211,13 +230,14 @@
   let prevOptions = options;
   $: {
     if (isInitialized && prevOptions !== options) {
-      const ivalue = fieldInit('value', options || null);
-      const ilabel = fieldInit('label', options || null);
-      if (!valueField && currentValueField !== ivalue) currentValueField = ivalue;
-      if (!labelField && currentLabelField !== ilabel) currentLabelField = ilabel;
-      // NOTE: this event should not be emitted
-      // if (options.some(opt => opt.isSelected)) emitChangeEvent();
+      const ivalue = fieldInit('value', options || null, itemConfig);
+      const ilabel = fieldInit('label', options || null, itemConfig);
+      if (!valueField && currentValueField !== ivalue) itemConfig.valueField = currentValueField = ivalue;
+      if (!labelField && currentLabelField !== ilabel) itemConfig.labelField = currentLabelField = ilabel;
     }
+  }
+  $: {
+    itemConfig.labelAsValue = labelAsValue;
   }
 
   /**
@@ -293,7 +313,7 @@
    */
   function onSelect(event, opt) {
     opt = opt || event.detail;
-    if (disabled || opt.isDisabled) return;
+    if (disabled || opt.isDisabled || opt.$isGroupHeader) return;
     
     selectOption(opt);
     $inputValue = '';
@@ -347,8 +367,9 @@
     }
     const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey ? 'Tab' : 'No-tab';
     switch (event.key) {
-      case 'PageDown':
       case 'End':
+        if ($inputValue.length !== 0) return;
+      case 'PageDown':
         dropdownActiveIndex = listIndex.first;
       case 'ArrowUp': 
         if (!$hasDropdownOpened) {
@@ -360,8 +381,9 @@
         tick().then(refDropdown.scrollIntoView);
         ignoreHover = true;
         break;
-      case 'PageUp':
       case 'Home':
+        if ($inputValue.length !== 0) return;
+      case 'PageUp':
         dropdownActiveIndex = listIndex.last;
       case 'ArrowDown': 
         if (!$hasDropdownOpened) {
@@ -384,8 +406,6 @@
         $inputValue = '';
         break;
       case Tab:
-        $hasDropdownOpened = false;
-        event.preventDefault();
       case 'Enter':
         if (!$hasDropdownOpened) return;
         let activeDropdownItem = availableItems[dropdownActiveIndex];
@@ -427,8 +447,12 @@
     if (creatable) {
       event.preventDefault();
       const rx = new RegExp('([^' + delimiter + '\\n]+)', 'g');
-      const pasted = event.clipboardData.getData('text/plain');
-      pasted.match(rx).forEach(opt => onSelect(null, opt.trim()));
+      const pasted = event.clipboardData.getData('text/plain').replaceAll('/', '\/');
+      const matches = pasted.match(rx);
+      if (matches.length === 1 && pasted.indexOf(',') === -1) {
+        $inputValue = matches.pop().trim();
+      }
+      matches.forEach(opt  => onSelect(null, opt.trim()));
     }
     // do nothing otherwise
   }
@@ -442,7 +466,8 @@
     // if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
     // if (dropdownActiveIndex < 0) dropdownActiveIndex = listIndexMap.first;
     if (creatable) {
-      alreadyCreated = flatItems.map(opt => opt[currentValueField]).filter(opt => opt);
+      const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
+      alreadyCreated = flatItems.map(opt => opt[valueProp]).filter(opt => opt);
     }
     dropdownActiveIndex = listIndex.first;
     if (prevSelection && !multiple) {

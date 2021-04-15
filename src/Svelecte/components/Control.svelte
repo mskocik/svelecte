@@ -175,10 +175,10 @@
   border-top-color: transparent;
   content: "";
   display: block;
-  height: 16px;
-  width: 16px;
-  left: calc(50% - (1em / 2));
-  top: calc(50% - (1em / 2));
+  height: 20px;
+  width: 20px;
+  left: calc(50% - 10px);
+  top: calc(50% - 10px);
   position: absolute !important;
   box-sizing: border-box;
 }
