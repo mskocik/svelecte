@@ -2,6 +2,8 @@
   import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
   /**
 	 * Fixed version of svelte-tiny-virtual-list, because of unresolved issue #5 in main repo
+   * author: Skayo <https://github.com/Skayo>
+   * original repo: https://github.com/Skayo/svelte-tiny-virtual-list
 	 */
   import VirtualList from './../dependency/VirtualList.svelte';
   import { isOutOfViewport} from './../lib/utils.js';
@@ -68,8 +70,9 @@
     if (virtualList && isMounted && vl_autoMode) {
       if (hasEmptyList) dropdownIndex = null;
       vl_itemSize = 0;
-      tick().then(virtualListDmensionsResolver);
+      tick().then(virtualListDimensionsResolver);
     }
+    console.log('>>v', virtualList);
   }
 
   function positionDropdown(val) {
@@ -83,7 +86,7 @@
     }
   }
 
-  function virtualListDmensionsResolver() {
+  function virtualListDimensionsResolver() {
     if (!refVirtualList) return;
     const pixelGetter = (el, prop) => {
       const styles = window.getComputedStyle(el);
@@ -104,17 +107,23 @@
     // get item size (hacky style)
     scrollContainer.style = 'opacity: 0; display: block';
     const firstItem = refVirtualList.$$.ctx[0].firstElementChild.firstElementChild;
-    firstItem.style = '';
-    const firstSize = firstItem.getBoundingClientRect().height;
-    const secondItem = refVirtualList.$$.ctx[0].firstElementChild.firstElementChild.nextElementSibling;
-    secondItem.style = '';
-    const secondSize = secondItem.getBoundingClientRect().height;
-    if (firstSize !== secondSize) {
-      const groupHeaderSize = items[0].$isGroupHeader ? firstSize : secondSize;
-      const regularItemSize = items[0].$isGroupHeader ? secondSize : firstSize;
-      vl_itemSize = items.map(opt => opt.$isGroupHeader ? groupHeaderSize : regularItemSize);
-    } else {
-      vl_itemSize = firstSize;
+    if (firstItem) {
+
+      firstItem.style = '';
+      const firstSize = firstItem.getBoundingClientRect().height;
+      const secondItem = refVirtualList.$$.ctx[0].firstElementChild.firstElementChild.nextElementSibling;
+      let secondSize;
+      if (secondItem) {
+        secondItem.style = '';
+        secondSize = secondItem.getBoundingClientRect().height;
+      }
+      if (firstSize !== secondSize) {
+        const groupHeaderSize = items[0].$isGroupHeader ? firstSize : secondSize;
+        const regularItemSize = items[0].$isGroupHeader ? secondSize : firstSize;
+        vl_itemSize = items.map(opt => opt.$isGroupHeader ? groupHeaderSize : regularItemSize);
+      } else {
+        vl_itemSize = firstSize;
+      }
     }
     scrollContainer.style = '';
   }
@@ -148,7 +157,7 @@
         scrollToAlignment="auto"
         scrollToIndex={items.length && isMounted ? dropdownIndex :  null}
       >
-        <div slot="item" let:index let:style {style} class:sv-dd-item-active={index === dropdownIndex}>
+        <div slot="item" let:index let:style {style} class:sv-dd-item-active={index == dropdownIndex}>
           <Item formatter={renderer}
             index={listIndex.map[index]}
             isDisabled={items[index].isDisabled}

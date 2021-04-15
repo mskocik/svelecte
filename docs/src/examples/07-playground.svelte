@@ -123,7 +123,7 @@
 
 <div class="columns">
   <div class="column col-xl-12 col-5">
-    <h4 id="sub-playground">Complex playground</h4>
+    <h4>&bull; Complex playground &bull;</h4>
     
     <div class="form-row example-wrap" class:flexible-svelecte={isFlexWidth}>
       <Svelecte {...settings} bind:selection={myValue} name="select" bind:this={cmp}>
@@ -133,6 +133,12 @@
 
       <p class="mt-2">Complete playground with almost options available. Try for example <button on:click={onPresetCollapsible}>collapsible multiselection</button></p>
     </div>
+
+    <p class="mt-2">
+      ⚠ When searching through items, AND is used as logical operator when space is entered. If you would like
+      to use OR, you have to start your search query by "<code>|| </code>" prefix. The space on 3rd position 
+      is also very important here.
+    </p>
   </div>
   <div class="column col-xl-12 col-7">
     <fieldset>
@@ -264,6 +270,7 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     padding: 0.5rem;
+    background-color: #ffecec;
   }
   fieldset fieldset {
     margin: 0 .5rem .5rem;

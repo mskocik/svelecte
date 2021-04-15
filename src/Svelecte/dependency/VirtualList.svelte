@@ -1,3 +1,7 @@
+<!--
+	Direct copy from https://github.com/Skayo/svelte-tiny-virtual-list due to pending issue #5
+-->
+
 <script context="module">
 	/**
 	 * the third argument for event bundler

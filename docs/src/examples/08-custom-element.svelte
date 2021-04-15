@@ -28,7 +28,7 @@
     container.insertBefore(el, container.lastElementChild);
     const rmBtn = document.createElement('button');
     rmBtn.className = 'btn float-right ml-2';
-    rmBtn.style = 'z-index: 100; position: relative';
+    rmBtn.style = 'z-index: 1; position: relative';
     rmBtn.textContent = 'Remove select';
     rmBtn.onclick = () => {
       container.removeChild(el);
@@ -51,11 +51,11 @@
       <option value="countryGroups">Groups</option>
     </select>
     <select bind:value={optionRenderer}>
-      <option value="">Default</option>
+      <option value="">Default renderer</option>
       <option value="dotted" disabled={optionList !== 'colors'}>Dotted (color only)</option>
-      <option value="caps">Caps</option>
+      <option value="caps">Caps (all letters uppercase)</option>
     </select>
 
-    <button class="btn btn-primary" type="submit">Add Svelecte</button>
+    <button class="btn" type="submit">Add Svelecte</button>
   </form>
 </div>

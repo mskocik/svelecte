@@ -53,20 +53,23 @@
           <div class="docs-nav p-2">
             <ul class="menu mx-2">
               <li class="menu-item">
-                <a href="#sub-intro">Getting started</a>
+                <a href="#intro">Getting started</a>
               </li>
               <li class="divider" data-content="Basic examples"></li>
-              <li class="menu-item"><a href="#sub-basic-example">Basic example</a></li>
-              <li class="menu-item"><a href="#sub-opt-groups">Option groups</a></li>
-              <li class="menu-item"><a href="#sub-item-rendering">Custom item rendering</a></li>
-              <li class="menu-item"><a href="#sub-icon-slot">Icon slot</a></li>
-              <li class="menu-item"><a href="#sub-remote-data">Remote datasource</a></li>
+              <li class="menu-item"><a href="#basic-example">Basic example</a></li>
+              <li class="menu-item"><a href="#groups">Option groups</a></li>
+              <li class="menu-item"><a href="#item-rendering">Custom item rendering</a></li>
+              <li class="menu-item"><a href="#slot">Icon slot</a></li>
+              <li class="menu-item"><a href="#fetch">Remote datasource</a></li>
               <li class="divider" data-content="Advanced examples"></li>
-              <li class="menu-item"><a href="#sub-playground">Playground</a></li>
-              <li class="menu-item"><a href="#sub-custom-component">Custom component</a></li>
+              <li class="menu-item"><a href="#playground">Playground</a></li>
+              <li class="menu-item"><a href="#custom-element">Custom component</a></li>
               <li class="divider" data-content="Configuration"></li>
-              <li class="menu-item"><a href="#sub-options">Options</a></li>
-              <li class="menu-item"><a href="#sub-api">API</a></li>
+              <li class="menu-item"><a href="#options">Options</a></li>
+              <li class="menu-item"><a href="#events">Events</a></li>
+              <li class="menu-item"><a href="#api">API</a></li>
+              <li class="divider" data-content="Links"></li>
+              <li class="menu-item"><a href="https://github.com/mskocik/svelecte">GitHub</a></li>
             </ul>
           </div>
         </div>
@@ -75,15 +78,17 @@
 
 
     <div class="column col-10 col-xl-8 col-lg-9 col-md-12">
-      <div class="container">
+      <div class="container mt-2">
 
         <div class="columns">
           <div class="column col-lg-6 col-md-12">
-            <h1>Svelecte</h1>
+            <div class="mt-2 text-center">
+              <img src="static/svelecte.png" alt="">
+            </div>
             <p>
               Svelecte provide basically every (hopefully) common functionality, you would expect from
-              autocomplete/select
-              component. It's main inspiration was selectize.js
+              autocomplete/select/multiselect
+              component. It's main inspiration was <a href="https://github.com/selectize/selectize.js">selectize.js</a>.
             </p>
 
             <h3 id="intro">Getting started</h3>
@@ -103,7 +108,7 @@
         <div class="section container">
           <div class="columns">
             <div class="column col-lg-12 col-xl-6 col-6">
-              <h4 id="sub-basic-example">Basic Usage</h4>
+              <h4 id="basic-example">&bull; Basic Usage &bull;</h4>
               <div id="example-1" class="example-wrap"></div>
 
               <details class="mt-2">
@@ -127,6 +132,12 @@
                     <dt><span class="label">labelField:</span> <code>string|null</code></dt>
                     <dd>
                       Specify which property should be shown. If not specified, property will be resolved automatically.
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt><span class="label">name:</span> <code>string</code></dt>
+                    <dd>
+                      When defined, corresponding <code>&lt;select&gt;</code> is created. So it can be used in forms automatically.
                     </dd>
                   </dl>
                   <dl>
@@ -190,10 +201,10 @@
         </div>
 
         <!-- groups -->
-        <div class="section">
+        <div class="section" id="groups">
           <div class="columns">
             <div class="column col-lg-12 col-xl-6 col-6">
-              <h4 id="sub-opt-groups">Option groups</h4>
+              <h4>&bull; Option groups &bull;</h4>
               <div id="example-3" class="example-wrap"></div>
               <p class="mt-2">Optgroups are defined as objects with <code>label</code> and <code>options</code>
                 properties.
@@ -210,10 +221,10 @@
         </div>
 
         <!-- rendering -->
-        <div class="section">
+        <div class="section" id="item-rendering">
           <div class="columns">
             <div class="column col-lg-12 col-xl-6 col-6">
-              <h4 id="sub-item-rendering">Custom item rendering</h4>
+              <h4>&bull; Custom item rendering &bull;</h4>
               <div id="example-4" class="example-wrap"></div>
 
               <p class="mt-2">You can define custom renderer function, which takes current option and return HTML
@@ -251,10 +262,10 @@
         </div>
 
         <!-- slot -->
-        <div class="section">
+        <div class="section" id="slot">
           <div class="columns">
             <div class="column col-lg-12 col-xl-6 col-6">
-              <h4 id="sub-icon-slot">Icon slot</h4>
+              <h4>&bull; Icon slot &bull;</h4>
               <div id="example-5" class="example-wrap"></div>
               <p class="mt-2">You can provide icon by defining <code>icon</code> slot content</p>
             </div>
@@ -268,11 +279,11 @@
         </div>
 
         <!-- fetch -->
-        <div class="section">
+        <div class="section" id="fetch">
           <div class="columns">
             <div class="column col-lg-12 col-xl-6 col-6">
 
-              <h4 id="sub-fetch">Remote datasource</h4>
+              <h4>&bull; Remote datasource &bull;</h4>
 
               <div id="example-6" class="example-wrap"></div>
               <details class="mt-2">
@@ -319,38 +330,41 @@
         <hr>
 
         <!-- playground app -->
-        <div class="section">
+        <div class="section" id="playground">
           <div id="example-7"></div>
         </div>
 
         <!-- custom element -->
-        <div class="section">
+        <div class="section" id="custom-element">
           <h2>Use Svelecte as custom element (CE)</h2>
-          
+
           <div class="columns">
             <div class="column col-lg-12 col-xl-12 col-6">
 
               <p>When including Svelecte in your app, you can import what you need...</p>
-              
-              <pre class="code" data-lang="CLI"><code>import { SvelecteElement, addFormatter, config } from 'svelecte/src/component.js';</code></pre>
-              
-              <p>... or download the latest version manually from <a class="btn btn-primary"
-                  href="https://github.com/mskocik/svelecte/releases/latest">GitHub</a></p>
-              
+
+              <pre class="code"
+                data-lang="CLI"><code>import { SvelecteElement, addFormatter, config } from 'svelecte/src/component.js';</code></pre>
+
+              <p>... or download the latest version manually from
+                <a href="https://github.com/mskocik/svelecte/releases/latest">GitHub</a>.</p>
+
               <pre class="code" data-lang="html"><code class="html">&lt;link rel="stylesheet" href="https://unpkg.com/svelecte/dist/svelecte.css"&gt;
     &lt;script src="https://unpkg.com/svelecte/dist/svelecte.min.js"&gt;/script&gt;</code></pre>
 
               <p class="mt-2">Standalone version offer same properties as module version:</p>
 
-              <pre class="code" data-lang="javascript"><code class="javascript">const { SvelecteElement, addFormatter, config } = window.Svelecte;</code></pre>
-              
-              <h4>Setup component</h4>
+              <pre class="code"
+                data-lang="javascript"><code class="javascript">const { SvelecteElement, addFormatter, config } = window.Svelecte;</code></pre>
+
+              <h4>&bull;Setup component &bull;</h4>
 
               <p class="mt-2">Manual custom element is required. Also when using CE version, you can define additional
-                renderer functions by calling <code>addFormatter</code> function (check <a href="#sub-item-rendering">Custom 
-                item rendering</a> section) or update global config.
+                renderer functions by calling <code>addFormatter</code> function (check <a
+                  href="#item-rendering">Custom
+                  item rendering</a> section) or update global config.
               </p>
-              
+
               <pre class="code" data-lang="javascript"><code class="javascript">window.customElements.define('el-svelecte', SvelecteElement);
 
   // add additional renderers
@@ -359,65 +373,374 @@
   // additionally change global config defaults
   config.clearable = true;</code></pre>
             </div>
+            <div class="column col-lg-12 col-xl-12 col-6">
+              <h6 class="label label-rounded label-primary px-2">Component reactive API</h6>
+
+              <p>By reactive API I mean properties that dynamically changes Svelecte inner logic. Not all attributes are
+                reactive. For example <code>parent</code> prop is not reactive and is not even accessible programmatically.
+                <br>
+                Reactive API for custom element is accessible programmatically or directly through element's attributes. Almost
+                all <a href="#options">Option</a> props are mirrored.
+                <br>
+              </p>
+              
+              <div class="mt-2">List of reactive properties follows:</div>
+
+              <pre class="code" data-lang="javascript"><code class="javascript">
+const OPTION_LIST = [
+  'options', 'fetch', 'name', 'required', 'value',
+  'multiple','disabled', 'max', 'creatable', 'delimiter',
+  'placeholder', 'renderer', 'searchable', 'clearable', 'fetch', 'value-field', 'label-field',
+  'anchor', 'virtual-list'
+];</code></pre>
+            </div>
           </div>
 
-            <div class="section">
-              <div class="columns">
-                <div class="column col-lg-12 col-xl-6 col-6">
-              
-                  <h4 id="sub-item-rendering">Basic example with custom elements</h4>
-                  <div id="example-8" class="example-wrap"></div>
-                  <p class="mt-2">Simple example that enables you to insert multiple <code>el-svelecte</code> DOM elements.
-                    <br>
-                    Check <code>onSubmit</code> function in example code.
-                  </p>
-                </div>
-                <div class="column col-lg-12 col-xl-6 col-6">
-                  <details>
-                    <summary class="label label-rounded c-hand">Show code</summary>
-                    <pre data-src="08-custom-element"></pre>
-                  </details>
-                </div>
+          <div class="section">
+            <div class="columns">
+              <div class="column col-lg-12 col-xl-6 col-6">
+
+                <h4>&bull; Basic example with custom elements &bull;</h4>
+                <div id="example-8" class="example-wrap"></div>
+                <p class="mt-2">Simple example that enables you to insert multiple <code>el-svelecte</code> DOM
+                  elements.
+                  <br>
+                  Check <code>onSubmit</code> function in example code.
+                </p>
+              </div>
+              <div class="column col-lg-12 col-xl-6 col-6">
+                <details>
+                  <summary class="label label-rounded c-hand">Show code</summary>
+                  <pre data-src="08-custom-element"></pre>
+                </details>
               </div>
             </div>
+          </div>
 
-            <div class="section">
-              <div class="columns offscroll">
-                <div class="column col-lg-12 col-xl-6 col-6">
-              
-                  <h4>Wired (dependent) selects </h4>
-                  <div id="example-9" class="example-wrap"></div>
-                  
-                  <p>Quite common scenario when one select (child) depends on another (parent) and when parent is selected,
-                    you need to fetchdata child dataset. Svelecte support this use-case directly</p>
+          <div class="section">
+            <div class="columns">
+              <div class="column col-lg-12 col-xl-6 col-6">
 
-                  <details class="mt-2">
+                <h4>&bull; Wired (dependent) selects &bull;</h4>
+                <div id="example-9" class="example-wrap"></div>
 
-                    <summary class="label label-rounded c-hand">Related DOM attributes:</summary>
-                    <div class="mt-2">
-    
-                      <dl>
-                        <dt><span class="label">parent:</span> <code>string</code></dt>
-                        <dd>DOM <code>id</code> property of parent select. This attribute should be defined on <em>child</em> svelecte element.
-                          <br>
-                          Note that child is disabled automatically when parent has no selection.
-                        </dd>
-                      </dl>
-                    </div>
-                  </details>
-                </div>
-                <div class="column col-lg-12 col-xl-6 col-6">
-                  <details>
-                    <summary class="label label-rounded c-hand">Show code</summary>
-                    <pre data-src="09-custom-dependent"></pre>
-                  </details>
-                </div>
+                <p>Quite common scenario when one select (child) depends on another (parent) and when parent is
+                  selected,
+                  you need to fetchdata child dataset. Svelecte support this use-case directly</p>
+
+                <details class="mt-2">
+
+                  <summary class="label label-rounded c-hand">Related DOM attributes:</summary>
+                  <div class="mt-2">
+
+                    <dl>
+                      <dt><span class="label">parent:</span> <code>string</code></dt>
+                      <dd>DOM <code>id</code> property of parent select. This attribute should be defined on
+                        <em>child</em> svelecte element.
+                        <br>
+                        Note that child is disabled automatically when parent has no selection.
+                      </dd>
+                    </dl>
+                  </div>
+                </details>
+              </div>
+              <div class="column col-lg-12 col-xl-6 col-6">
+                <details>
+                  <summary class="label label-rounded c-hand">Show code</summary>
+                  <pre data-src="09-custom-dependent"></pre>
+                </details>
               </div>
             </div>
+          </div>
 
+        </div>
+
+        <hr>
+
+        <div class="section mt-2 offscroll">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <td class="td-section">
+                  <h4 id="options">Options</h4>
+                </td>
+              </tr>
+            </thead>
+            <thead>
+              <tr>
+                <th>Property</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>options</td>
+                <td>array</td>
+                <td><code>[]</code></td>
+                <td>Data array</td>
+              </tr>
+              <tr>
+                <td>valueField</td>
+                <td>string</td>
+                <td><code>null</code></td>
+                <td>Property to be used as value (if not specified, will be selected automatically)</td>
+              </tr>
+              <tr>
+                <td>labelField</td>
+                <td>string</td>
+                <td><code>null</code></td>
+                <td>Property shown in dropdown (if not specified, will be selected automatically)</td>
+              </tr>
+              <tr>
+                <td>required</td>
+                <td>bool</td>
+                <td><code>false</code></td>
+                <td>make sense only when <code>name</code> is defined</td>
+              </tr>
+              <tr>
+                <td>placeholder</td>
+                <td>string</td>
+                <td><code>'Select'</code></td>
+                <td>Input placeholder</td>
+              </tr>
+              <tr>
+                <td>searchable</td>
+                <td>bool</td>
+                <td><code>true</code></td>
+                <td>Allow search among items by typing</td>
+              </tr>
+              <tr>
+                <td>disabled</td>
+                <td>bool</td>
+                <td><code>false</code></td>
+                <td>Disable component</td>
+              </tr>
+              <tr>
+                <td>renderer</td>
+                <td>string|function</td>
+                <td><code>null</code></td>
+                <td>dropdown and selection renderer function. More info in item rendering section</td>
+              </tr>
+              <tr>
+                <td>selectOnTab</td>
+                <td>bool</td>
+                <td><code>false</code></td>
+                <td>Allow selecting currently active item by <kbd>Tab</kbd> key</td>
+              </tr>
+              <tr>
+                <td>clearable</td>
+                <td>bool</td>
+                <td><code>false</code></td>
+                <td>Display ✖ icon to clear whole selection</td>
+              </tr>
+              <tr>
+                <td>multiple</td>
+                <td>bool</td>
+                <td><code>false</code></td>
+                <td>allow multiselection. Will be set automatically to <code>true</code>, if <code>name</code> property
+                  ends with <code>[]</code>, like <code>tags[]</code></td>
+              </tr>
+              <tr>
+                <td>max</td>
+                <td>number</td>
+                <td><code>0</code></td>
+                <td>Maximum allowed items selected, applicable only for multiselect</td>
+              </tr>
+              <tr>
+                <td>collapseSelection</td>
+                <td>bool</td>
+                <td><code>false</code></td>
+                <td>collapse selection when <code>multiple</code> and not focused</td>
+              </tr>
+              <tr>
+                <td>name</td>
+                <td>string</td>
+                <td><code>null</code></td>
+                <td>create <code>&lt;select&gt;</code>, usable for normal forms.</td>
+              </tr>
+              <tr>
+                <td>anchor</td>
+                <td>string</td>
+                <td><code>null</code></td>
+                <td>existing select (for CE)</td>
+              </tr>
+              <tr>
+                <td>creatable</td>
+                <td>bool</td>
+                <td><code>false</code></td>
+                <td>Allow creating new item(s)</td>
+              </tr>
+              <tr>
+                <td>creatablePrefix</td>
+                <td>string</td>
+                <td><code>'*'</code></td>
+                <td>Prefix marking new item</td>
+              </tr>
+              <tr>
+                <td>delimiter</td>
+                <td>string</td>
+                <td><code>','</code></td>
+                <td>split inserted text when pasting to create multiple items</td>
+              </tr>
+              <tr>
+                <td>fetch</td>
+                <td>string|function</td>
+                <td><code>null</code></td>
+                <td>Check "remote datasource" section for more details</td>
+              </tr>
+              <tr>
+                <td>fetch</td>
+                <td>string</td>
+                <td><code>'auto'</code></td>
+                <td>When set to <code>init</code> options are fetched only when mounted, when searching it search in
+                  downloaded dataset</td>
+              </tr>
+              <tr>
+                <td>fetchCallback</td>
+                <td>function</td>
+                <td><code>null</code></td>
+                <td>optional fetch callback</td>
+              </tr>
+              <tr>
+                <td>virtualList</td>
+                <td>bool</td>
+                <td><code>false</code></td>
+                <td>Whether use virtual list for dropdown items (useful for large datasets)</td>
+              </tr>
+              <tr>
+                <td>vlHeight</td>
+                <td>number</td>
+                <td><code>null</code></td>
+                <td>Height of virtual list dropdown (if not specified, computed automatically)</td>
+              </tr>
+              <tr>
+                <td>vlItemSize</td>
+                <td>number</td>
+                <td><code>null</code></td>
+                <td>Height of one row (if not specified, computed automatically)</td>
+              </tr>
+              <tr>
+                <td>searchField</td>
+                <td>string|array</td>
+                <td><code>null</code></td>
+                <td>Specify item property that will be used to search by (if not specified all props except
+                  <code>value</code> prop will be used)
+                </td>
+              </tr>
+              <tr>
+                <td>sortField</td>
+                <td>string</td>
+                <td><code>null</code></td>
+                <td>Specify sort property. If not specified, first after <code>value</code> field will be used</td>
+              </tr>
+              <tr>
+                <td>class</td>
+                <td>string</td>
+                <td><code>'svelecte-control'</code></td>
+                <td>default css class</td>
+              </tr>
+              <tr>
+                <td>style</td>
+                <td>string</td>
+                <td>null</td>
+                <td>inline style</td>
+              </tr>
+            </tbody>
+            <tbody>
+              <tr>
+                <td colspan="4" class="td-section">
+                  <h4 id="events">Events</h4>
+                </td>
+              </tr>
+            </tbody>
+            <thead>
+              <tr>
+                <th colspan="2">Event</th>
+                <th>arguments</th>
+                <th>description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="2">fetch</td>
+                <td>options</td>
+                <td>newly fetched remote options</td>
+              </tr>
+              <tr>
+                <td colspan="2">change</td>
+                <td>selection</td>
+                <td>selected objects * if <code>anchor</code> is defined, <code>change</code> event is called also on it
+                </td>
+              </tr>
+            </tbody>
+
+            <tbody>
+              <tr>
+                <td colspan="4" class="td-section">
+                  <h4 id="api">API</h4>
+                </td>
+              </tr>
+            </tbody>
+
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>type</th>
+                <th>arguments</th>
+                <th>description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>selection</td>
+                <td>property</td>
+                <td>-</td>
+                <td>setter/getter - selected value(s) as objects, for binding. For usage in Svelte</td>
+              </tr>
+              <tr>
+                <td>focus</td>
+                <td>function</td>
+                <td>-</td>
+                <td>focus input</td>
+              </tr>
+              <tr>
+                <td>getSelection</td>
+                <td>function</td>
+                <td>bool</td>
+                <td>return selection, if <code>true</code> is passed, only values are returns, whole objects otherwise
+                </td>
+              </tr>
+              <tr>
+                <td>setSelection</td>
+                <td>function</td>
+                <td>array</td>
+                <td>set selection programmatically</td>
+              </tr>
+              <tr>
+                <td>config</td>
+                <td>property</td>
+                <td>-</td>
+                <td><strong>context property</strong>: global common config for all instances, you can override most
+                  properties here and also some additional, mainly i18n</td>
+              </tr>
+              <tr>
+                <td>addFormatter</td>
+                <td>function</td>
+                <td><strong>context function</strong>: with signature <code>(name, formatFn)</code> you can add
+                  additional item renderers (formatters)</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="text-center mt-2">
+            Made with <a href="https://svelte.dev">Svelte</a> ❤
+          </div>
         </div>
       </div>
     </div>
+  </div>
   </div>
 
   <script src='assets/docs.js' defer></script>

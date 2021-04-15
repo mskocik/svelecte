@@ -106,3 +106,20 @@ hr {
 	padding: 1rem;
 	margin-bottom: 1rem;
 }
+
+table {
+	/* border: 1px solid #ccc; */
+	border-collapse: collapse;
+}
+
+th, td {
+	border: 1px solid #ccc;
+}
+td.td-section {
+	border: 0;
+	background-color: white;
+	padding: 1rem 0 0;
+}
+summary:hover {
+	background-color: #ff612d46;
+}

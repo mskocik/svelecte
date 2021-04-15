@@ -1,5 +1,7 @@
 # Svelecte
 
+![](docs/static/svelecte.png)
+
 Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as custom element (CE), which behaves very similar to standard `<select>` element.
 
 ## 📃 Features
@@ -33,7 +35,7 @@ options   | array  | `[]`    | Data array
 valueField | string | `null` | Property to be used as value (if not specified, will be selected automatically)
 labelField | string | `null` | Property shown in dropdown (if not specified, will be selected automatically)
 required  | bool   | `false` | make sense only when `name` is defined
-placeholder | string | `Select | Input placeholder
+placeholder | string | `'Select'` | Input placeholder
 searchable | bool | `true` | Allow search among items by typing
 disabled  | bool   | `false` | Disable component
 renderer   | string\|function | `null` | dropdown and selection renderer function. More info in item rendering section
@@ -45,17 +47,17 @@ collapseSelection | bool | `false` | collapse selection when `multiple` and not 
 name      | string | `null`  | create `<select>`, usable for normal forms.
 anchor    | string | `null`  | existing select (for CE)
 creatable | bool   | `false` | Allow creating new item(s)
-creatablePrefix | string | `*` | Prefix marking new item
-delimiter | string | `,` | split inserted text when pasting to create multiple items
+creatablePrefix | string | `'*'` | Prefix marking new item
+delimiter | string | `','` | split inserted text when pasting to create multiple items
 fetch | string\|function | `null` | Check "remote datasource" section for more details
-fetch | string | `auto` | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
+fetch | string | `'auto'` | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
 fetchCallback | function | `null` | optional fetch callback
 virtualList | bool | `false` | Whether use virtual list for dropdown items (useful for large datasets)
 vlHeight | number | `null` | Height of virtual list dropdown (if not specified, computed automatically)
 vlItemSize | number | `null` | Height of one row (if not specified, computed automatically)
 searchField | string\|array | `null` | Specify item property that will be used to search by (if not specified all props except `value` prop will be used)
-sortField | string | `null` | Specify sort property. If not specified, first after `value` field will be used
-class | string | `svelecte-control` | default css class
+sortField | string | `null` | Specify sort property. If not specified, `labelField` will be used 
+class | string | `'svelecte-control'` | default css class
 style | string | null | inline style
 
 ### Emitted events:
@@ -79,11 +81,11 @@ addFormatter  | function | **context function**: with signature `(name, formatFn
 
 ## 🙏 Thanks to 
 
-- [selectize.js](https://github.com/selectize/selectize.js)
-- [sifter](https://github.com/brianreavis/sifter.js)
-- [svelte-select](https://github.com/rob-balfre/svelte-select) 
-- [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list)
+- [selectize.js](https://github.com/selectize/selectize.js) - inspiration
+- [sifter](https://github.com/brianreavis/sifter.js) - search engine
+- [svelte-select](https://github.com/rob-balfre/svelte-select) - inspiration & how-to, including some code borrowing 😊
+- [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list) virtual list capability
 
 ## License
 
-[MIT License](https://github.com/Skayo/svelte-tiny-virtual-list/blob/master/LICENSE)
+[MIT License](https://github.com/mskocik/svelecte/blob/master/LICENSE)

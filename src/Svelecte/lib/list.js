@@ -72,7 +72,7 @@ export function filterList(options, inputValue, excludeSelected, sifterSearchFie
     sifter.getSortFunction = () => null;
   }
   let conjunction = 'and';
-  if (inputValue.startsWith('||')) {
+  if (inputValue.startsWith('|| ')) {
     conjunction = 'or';
     inputValue = inputValue.substr(2);
   }

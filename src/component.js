@@ -3,8 +3,8 @@ import Svelecte, { addFormatter, config } from './Svelecte/Svelecte.svelte';
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required', 'value',
   'multiple','disabled', 'max', 'creatable', 'delimiter',
-  'placeholder', 'renderer', 'searchable', 'clearable', 'fetch', 'valueField', 'labelField',
-  'anchor'
+  'placeholder', 'renderer', 'searchable', 'clearable', 'fetch', 'value-field', 'label-field',
+  'anchor', 'virtual-list'
 ];
 
 function formatValue(name, value) {
@@ -32,6 +32,7 @@ function formatValue(name, value) {
     case 'clearable':
       return value != 'false';
     case 'required':
+    case 'virtual-list':
     case 'multiple':
     case 'creatable':
     case 'selectOnTab':
@@ -44,6 +45,15 @@ function formatValue(name, value) {
       return value ? document.getElementById(value) : null;
   }
   return value;
+}
+
+function formatProp(name) {
+  switch (name) {
+    case 'virtual-list': return 'virtualList';
+    case 'value-field': return 'valueField';
+    case 'label-field': return 'labelField';
+  }
+  return name;
 }
 
 export { addFormatter, config };
@@ -188,10 +198,10 @@ export const SvelecteElement = class extends HTMLElement {
       },
       'valueField': {
         get() {
-          return this.getAttribute('valueField') || '';
+          return this.getAttribute('value-field') || '';
         },
         set(value) {
-          this.setAttribute('valueField', value);
+          this.setAttribute('value-field', value);
         }
       },
       'labelField': {
@@ -201,7 +211,19 @@ export const SvelecteElement = class extends HTMLElement {
         set(value) {
           this.setAttribute('labelField', value);
         }
-      }
+      },
+      'virtualList': {
+        get() {
+          return this.hasAttribute('virtual-list');
+        },
+        set(value) {
+          if (!value && value !== '') {
+            this.removeAttribute('virtual-list');
+          } else {
+            this.setAttribute('virtual-list', '');
+          }
+        }
+      },
     });
   }
 
@@ -215,9 +237,10 @@ export const SvelecteElement = class extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (this.svelecte && oldValue !== newValue) {
+      console.log('Q', formatProp(name), newValue,formatValue(name, newValue), 'z');
       name === 'value'
         ? this.svelecte.setSelection(formatValue(name, newValue))
-        : this.svelecte.$set({ [name]: formatValue(name, newValue) });
+        : this.svelecte.$set({ [formatProp(name)]: formatValue(name, newValue) });
     }
   }
 
