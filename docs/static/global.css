@@ -7,12 +7,11 @@ html, body {
 body {
 	color: #333;
 	margin: 0;
-	padding: 8px;
 	box-sizing: border-box;
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
-a {
+/* a {
 	color: rgb(0,100,200);
 	text-decoration: none;
 }
@@ -27,7 +26,7 @@ a:visited {
 
 label {
 	display: block;
-}
+} */
 
 input, button, select, textarea {
 	font-family: inherit;
@@ -60,4 +59,25 @@ button:not(:disabled):active {
 
 button:focus {
 	border-color: #666;
+}
+/* .docs-content > .container {
+	margin: 1rem;
+} */
+
+details {
+	margin-bottom: 1rem;
+}
+
+dd {
+	margin-left: 1rem !important;
+}
+
+.section {
+	margin-top: 2rem;
+}
+
+.nav-wrap {
+	background-color: rgb(238, 238, 238);
+	height: 100%;
+	box-shadow: 2px 0 5px #ccc;
 }

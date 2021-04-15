@@ -1,12 +1,21 @@
 
 import Svelecte from '../src/svelecte.js';
 import { SvelecteElement, addFormatter } from './../src/component.js';
-import Playground from './Playground.svelte';
+import BasicExample from './examples/01-basic.svelte';
+import BasicExampleExt from './examples/02-basicPlain.svelte';
+import Groups from './examples/03-groups.svelte';
+import ItemRender from './examples/04-item-rendering.svelte';
+import Slot from './examples/05-slot.svelte';
+import Fetch from './examples/06-fetch.svelte';
+import Playground from './examples/07-playground.svelte';
 import { dataset } from './data.js';
 
-const app = new Playground({
-	target: document.getElementById('app')
-});
+[BasicExample, BasicExampleExt, Groups, ItemRender, Slot, Fetch, Playground]
+	.forEach(
+		(component, index) => new component({
+			target: document.getElementById(`example-${index +1}`),
+		})
+	);
 
 // window.customElements.define('el-svelecte', SvelecteElement);
 // addFormatter('dotted', item => `<span style="background-color:${item.hex}" class="color"></span> ${item.text}`);
