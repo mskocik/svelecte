@@ -1,11 +1,9 @@
 <script>
-	import Svelecte from './../../src/Svelecte.js';
-  import { dataset } from './../data.js';
+  import Svelecte from '../../../src/svelecte.js';
+  import { dataset } from '../data.js';
 
-  // plain text array
-  let options = dataset
-                  .countries()
-                  .map(opt => opt.text);
+  /** plain text array */
+  let options = dataset.countries().map(opt => opt.text);
 
   let labelAsValue = false;
 

@@ -1,5 +1,5 @@
 <script>
-	import Svelecte from './../../src/Svelecte.js';
+  import Svelecte from '../../../src/svelecte.js';
 </script>
 
 <Svelecte

@@ -28,7 +28,7 @@ function serve() {
 }
 
 const app = {
-  input: "docs-src/docs.js",
+  input: "docs/src/docs.js",
   output: {
     sourcemap: true,
     format: "iife",
@@ -56,7 +56,7 @@ const app = {
 		
 		!production && serve(),
 
-		!production && livereload('docs'),
+		!production && livereload('docs/**'),
 
     // If we're building for production (npm run build
     // instead of npm run dev), minify

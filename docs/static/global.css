@@ -67,6 +67,10 @@ button:focus {
 details {
 	margin-bottom: 1rem;
 }
+details > div {
+	border-left: 2px solid rgb(255, 174, 149);
+	padding-left: 0.5rem;
+}
 
 dd {
 	margin-left: 1rem !important;
@@ -80,4 +84,25 @@ dd {
 	background-color: rgb(238, 238, 238);
 	height: 100%;
 	box-shadow: 2px 0 5px #ccc;
+}
+.nav-wrap > .nav-list {
+	position: sticky;
+	top: 0;
+}
+pre {
+	overflow: auto;
+}
+
+hr {
+	height: 1px;
+	background-color: #ccc;
+	border: 0;
+}
+.offscroll {
+	margin-bottom: 20rem;
+}
+.example-wrap {
+	border: 2px dashed #ccc;
+	padding: 1rem;
+	margin-bottom: 1rem;
 }

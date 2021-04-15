@@ -6073,7 +6073,7 @@ function create_each_block$3(ctx) {
 			option.__value = option_value_value = /*opt*/ ctx[77][/*currentValueField*/ ctx[18]];
 			option.value = option.__value;
 			option.selected = true;
-			add_location(option, file$5, 502, 4, 17311);
+			add_location(option, file$5, 502, 4, 17320);
 		},
 		m: function mount(target, anchor) {
 			insert_dev(target, option, anchor);
@@ -7642,7 +7642,8 @@ const SvelecteElement = class extends HTMLElement {
           return this.hasAttribute('required');
         },
         set(value) {
-          if (!value) {
+          console.log('>S', value);
+          if (!value && value !== '') {
             this.removeAttribute('required');
           } else {
             this.setAttribute('required', '');
@@ -7726,6 +7727,7 @@ const SvelecteElement = class extends HTMLElement {
     let props = {};
     for (const attr of OPTION_LIST) {
       if (this.hasAttribute(attr)) {
+        console.log(attr);
         props[attr] = formatValue(attr, this.getAttribute(attr));
       }
     }
@@ -7745,6 +7747,7 @@ const SvelecteElement = class extends HTMLElement {
         }
         !this.parent.disabled && this.removeAttribute('disabled');
         if (this.hasAttribute('fetch')) {
+          this.svelecte.clearByParent(true);
           const fetchUrl = this.getAttribute('fetch').replace('[parent]', e.target.value);
           this.svelecte.$set({ fetch: fetchUrl, disabled: false });
         }
