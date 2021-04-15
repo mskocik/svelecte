@@ -2,7 +2,7 @@
   "name": "svelecte",
   "module": "dist/svelecte.mjs",
   "svelte": "src/Svelecte/Svelecte.svelte",
-  "version": "0.5.10",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",
@@ -25,5 +25,9 @@
     "url": "https://github.com/mskocik/svelecte"
   },
   "homepage": "https://mskocik.github.io/svelecte/",
-  "dependencies": {}
+  "keywords": [
+    "svelte",
+    "autocomplete",
+    "select"
+  ]
 }
