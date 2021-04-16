@@ -47,7 +47,10 @@
     style, searchField
   } = config;
   let settings = {
-    searchable: true
+    searchable: true,
+    placeholder: 'Pick some option variant 👉',
+    options: [],
+    disabled: true
   };
   let optionsList = [
     { value: 'opts', text: '🎨 Colors'},
@@ -61,7 +64,18 @@
   $: {
     remoteValue = dataSrc ? dataSrc.value : null;
   }
+
+  let prevRemoteValue = remoteValue;
   $: {
+    console.log('s', remoteValue);
+    if (prevRemoteValue !== remoteValue) {
+      myValue = multiple ? [] : null;
+      setRemote();
+      prevRemoteValue = remoteValue;
+    }
+  }
+
+  function setRemote() {
     searchField = null;
     if (remoteValue === 'opts') {
       settings = {

@@ -72,7 +72,6 @@
       vl_itemSize = 0;
       tick().then(virtualListDimensionsResolver);
     }
-    console.log('>>v', virtualList);
   }
 
   function positionDropdown(val) {

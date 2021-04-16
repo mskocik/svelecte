@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@highlightjs/cdn-assets@10.7.2/styles/atom-one-light.min.css">
   <script src="https://unpkg.com/@highlightjs/cdn-assets@10.7.2/highlight.min.js"></script>
   <script src="https://unpkg.com/highlightjs-svelte/dist/svelte.min.js"></script>
+  <script src="https://unpkg.com/vue@2.5.17"></script>
 
   <style>
     el-svelecte {
@@ -463,6 +464,28 @@ const OPTION_LIST = [
                 <details>
                   <summary class="label label-rounded c-hand">Show code</summary>
                   <pre data-src="09-custom-dependent"></pre>
+                </details>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="columns">
+              <div class="column col-lg-12 col-xl-6 col-6">
+
+                <h4>&bull; Use with Vue.js &bull;</h4>
+                <div id="example-10"></div>
+
+                <p>It is very easy to use Svelecte with Vue.js. You only need to add Svelecte element to
+                  <code>ignoredElements</code> for Vue 2 or handle in in <code>isCustomElement</code> in Vue 3.<br>
+                  The only thing you need to handle is listening to <code>change</code> as you would with native inputs.
+                </p>
+
+              </div>
+              <div class="column col-lg-12 col-xl-6 col-6">
+                <details>
+                  <summary class="label label-rounded c-hand">Show code</summary>
+                  <pre data-src="10-vue"></pre>
                 </details>
               </div>
             </div>

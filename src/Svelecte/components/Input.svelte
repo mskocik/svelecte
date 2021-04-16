@@ -51,6 +51,7 @@
   on:keydown={onKeyDown}
   on:keyup={onKeyUp}
   on:paste
+  on:change|stopPropagation
 >
 <div class="shadow-text" bind:clientWidth={shadowWidth}>{shadowText}</div>
 <!--</div>-->

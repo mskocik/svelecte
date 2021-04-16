@@ -1,5 +1,5 @@
 import Svelecte, { addFormatter, config } from './Svelecte/Svelecte.svelte';
-import { SvelecteElement } from './component';
+import SvelecteElement from './component';
 
 export default Svelecte;
 

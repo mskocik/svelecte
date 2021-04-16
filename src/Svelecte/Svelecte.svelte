@@ -209,8 +209,6 @@
       : (_selectionArray.length ? _selectionArray[0] : null);
     const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
 
-    dispatch('change', _unifiedSelection);
-
     value = multiple 
       ? _unifiedSelection.map(opt => opt[valueProp])
       : selectedOptions.size ? _unifiedSelection[valueProp] : null;
@@ -257,7 +255,9 @@
   function _selectByValues(values) {
     if (!Array.isArray(values)) values = [values];
     if (values && values.length && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
-    clearSelection();
+    if (!isInitialized) {
+      tick().then(() => _selectByValues(values)); return;
+    }
     const newAddition = [];
     values.forEach(val => {
       availableItems.some(opt => {
@@ -327,6 +327,7 @@
           : listIndex.next(dropdownActiveIndex - 1, true);
       })
     }
+    emitChangeEvent();
   }
 
   function onDeselect(event, opt) {
@@ -341,6 +342,7 @@
     tick().then(() => {
         dropdownActiveIndex = listIndex.next(dropdownActiveIndex - 1); 
       })
+    emitChangeEvent();
   }
 
   /**

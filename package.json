@@ -2,7 +2,7 @@
   "name": "svelecte",
   "module": "dist/svelecte.mjs",
   "svelte": "src/Svelecte/Svelecte.svelte",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "scripts": {
     "build": "rollup -c",

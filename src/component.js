@@ -60,7 +60,7 @@ function formatProp(name) {
  * Connect Custom Component attributes to Svelte Component properties
  * @param {string} name Name of the Custom Component
  */
-export const SvelecteElement = class extends HTMLElement {
+export default class extends HTMLElement {
   constructor() {
     super();
     this.svelecte = undefined;
@@ -71,12 +71,16 @@ export const SvelecteElement = class extends HTMLElement {
     Object.defineProperties(this, {
       'selection': {
         get() {
-          return this.svelecte.getSelection();
+          return this.svelecte
+            ? this.svelecte.getSelection()
+            : null;
         }
       },
       'value': {
         get() {
-          return this.svelecte.getSelection(true);
+          return this.svelecte
+            ? this.svelecte.getSelection(true)
+            : null;
         },
         set(value) {
           this.setAttribute('value', Array.isArray(value) ? value.join(',') : value);
@@ -235,7 +239,6 @@ export const SvelecteElement = class extends HTMLElement {
 
   attributeChangedCallback(name, oldValue, newValue) {
     if (this.svelecte && oldValue !== newValue) {
-      console.log('Q', formatProp(name), newValue,formatValue(name, newValue), 'z');
       name === 'value'
         ? this.svelecte.setSelection(formatValue(name, newValue))
         : this.svelecte.$set({ [formatProp(name)]: formatValue(name, newValue) });
