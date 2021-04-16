@@ -27,7 +27,7 @@ function serve() {
 	};
 }
 
-const app = {
+const docs = {
   input: "docs/src/docs.js",
   output: {
     sourcemap: true,
@@ -37,10 +37,7 @@ const app = {
   },
   plugins: [
     svelte({
-      // enable run-time checks when not in production
       dev: !production,
-      // we'll extract any component CSS out into
-      // a separate file — better for performance
       css: css => {
         css.write("docs.css", false);
       }
@@ -58,24 +55,19 @@ const app = {
 
 		!production && livereload('docs/**'),
 
-    // If we're building for production (npm run build
-    // instead of npm run dev), minify
     production && terser()
   ]
 };
 
-const component = {
-  input: 'src/component.js',
-  output: [{
-      sourcemap: false,
-      format: 'iife',
-      name: 'Svelecte',
-      file: 'dist/svelecte.js'
-    }, {
+const module = {
+  input: 'src/svelecte.js',
+  output: [
+    {
       sourcemap: false,
       format: 'es',
       file: 'dist/svelecte.mjs'
-  }],
+    }
+  ],
   plugins: [
     svelte({
       dev: !production,
@@ -85,9 +77,29 @@ const component = {
     }),
     resolve(),
     commonjs(),
+  ]
+}
+
+const component = {
+  input: 'src/component.js',
+  output: [
+    {
+      sourcemap: false,
+      format: 'iife',
+      name: 'Svelecte',
+      file: 'dist/svelecte.js'
+    }
+  ],
+  plugins: [
+    svelte({
+      dev: !production,
+      css: false
+    }),
+    resolve(),
+    commonjs(),
 
     production && terser()
   ]
 };
 
-export default [app, component];
+export default [docs, module, component];

@@ -1,4 +1,4 @@
-import Svelecte, { addFormatter, config } from './Svelecte/Svelecte.svelte';
+import Svelecte, { addFormatter, config } from './svelecte';
 
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required', 'value',

@@ -6,15 +6,16 @@ Flexible autocomplete/select component written in Svelte. Massively inspired by 
 
 ## 📃 Features
 
-
 - searchable
-- multiselect
-    - limit max selected items
+- multiselect with limit of max selected items
 - allow simple array or complex objects as items
 - custom item renderer (formatter)
 - allow creating new items
 - remote data fetch
 - virtual list support
+- usable as custom element
+- i18n support
+
 
 ## 🔧 Installation
 

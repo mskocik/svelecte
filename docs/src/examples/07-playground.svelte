@@ -1,11 +1,30 @@
 <script>
-  import Svelecte from '../../../src/svelecte.js';
-  import config from '../../../src/Svelecte/settings.js';
+  import Svelecte, { addFormatter, config } from '../../../src/svelecte.js';
   import { dataset } from '../data.js';
 
-  let remoteValue = 'opts';
   let myValue = null;
-  let classSelection = 'svelecte-control'
+  let dataSrc = null;
+  let classSelection = 'svelecte-control';
+  let availableRenderers = {
+    opts: [
+      'caps',         // defined in example 09
+      'dotted',       // defined in example 09
+      'color-blocks'  // defined in example 04
+    ],
+    countries: [
+      'caps',
+    ],
+    groups: [
+      'caps',
+    ],
+    colors: [
+      'caps',         // defined in example 09
+      'dotted',       // defined in example 09
+      'color-blocks'  // defined in example 04
+    ],
+    json: []          // no additional renderers
+  };
+
 
   const remotes = {
     colors: 'https://my-json-server.typicode.com/mskocik/svelecte-db/colors?value_like=[query]',
@@ -25,14 +44,25 @@
     multiple, max, collapseSelection,
     placeholder, searchable, clearable, selectOnTab,
     disabled, creatable, creatablePrefix, delimiter, virtualList,
-    style
+    style, searchField
   } = config;
   let settings = {
     searchable: true
   };
-  $: slot = slots[remoteValue];
-
+  let optionsList = [
+    { value: 'opts', text: '🎨 Colors'},
+    { value: 'countries', text: '🌍 Countries'},
+    { value: 'groups', text: '🔠 Country (groups)'},
+    { value: 'colors', text: '⚡ Colors <small class="label label-primary">API</small>'},
+    { value: 'json', text: '🙋 Users <small class="label label-primary">API</small>'}
+  ]
+  $: slot = slots[remoteValue] || '🚫';
+  let remoteValue = null;
   $: {
+    remoteValue = dataSrc ? dataSrc.value : null;
+  }
+  $: {
+    searchField = null;
     if (remoteValue === 'opts') {
       settings = {
         multiple, max, collapseSelection,
@@ -43,6 +73,12 @@
         options: dataset.colors(),
         fetch: null,
         placeholder: 'Pick your color'
+      }
+    } else if (!remoteValue) {
+      settings = {
+        placeholder: 'Pick some option variant 👉',
+        options: [],
+        disabled: true
       }
     } else if (remoteValue === 'countries') {
       settings = {
@@ -72,11 +108,12 @@
         searchable, clearable, selectOnTab,
         disabled, creatable, creatablePrefix, delimiter, virtualList,
         style,
+        searchField: remoteValue === 'json' ? ['name', 'email'] : null,
         class: classSelection,
         fetch: remotes[remoteValue],
         fetchCallback: remoteValue === 'json' ? fetchCallback : null,
         placeholder: remoteValue === 'json' ? 'Select from prefetched list' : 'Search for color',
-        renderer: remoteValue === 'json' ? fetchRenderer : null,
+        renderer: remoteValue === 'json' ? 'avatar' : null,
         options: []
       }
     }
@@ -101,24 +138,31 @@
 
   function fetchRenderer(item, isSelected) {
     return isSelected
-      ? `<figure class="avatar avatar-sm" data-initial="${item.name.split(' ').map(w => w[0]).slice(0,2).join('')}" style="background-color: #5755d9;"></figure>
+      ? `<figure class="avatar avatar-sm" data-initial="${item.name.split(' ').map(w => w[0]).slice(0,2).join('')}" style="background-color: #2ed020;"></figure>
           ${item.name}`
-      : `${item.name}, ${item.street}`
+      : `<div class="avatar-item">
+        <figure class="avatar avatar-bg" data-initial="${item.name.split(' ').map(w => w[0]).slice(0,2).join('')}" style="background-color: #aaa;"></figure>
+        <div class="ml-2">
+          ${item.name}<br><small>${item.email}</small>
+        </div>
+      </div>`
   }
 
   function onPresetCollapsible() {
     multiple = true;
     collapseSelection = true;
     isFlexWidth = true;
-    remoteValue = 'countries';
+    dataSrc = optionsList[1];
     const countries = dataset.countries();
     setTimeout(() => {
       cmp.setSelection([countries[2], countries[7]]);
     });
     setTimeout(() => {
       document.querySelector('#example-7 input').focus();
-    }, 500);
+    }, 300);
   }
+
+  addFormatter('avatar', fetchRenderer);
 </script>
 
 <div class="columns">
@@ -144,27 +188,37 @@
     <fieldset>
       <legend>Customize</legend>
       <div class="columns">
-        <fieldset class="col">
-          <legend>Options</legend>
-          <select on:change={e => { cmp.clearByParent(); remoteValue = e.target.value }} on:blur>
-            <option value="opts">🎨 colors</option>
-            <option value="countries">🌍 countries</option>
-            <option value="groups">🔠 country groups</option>
-            <option value="colors">💬 [API]: Colors</option>
-            <option value="json">💬 [API]: User list</option>
-          </select>
-          <p>
-            Options prefixed with<br>
-            <code>[API]</code>are demonstrate<br>
-            AJAX fetching.</p>
-        </fieldset>
+        <div class="col">
+
+          <fieldset>
+            <legend>Options</legend>
+            <Svelecte options={optionsList} bind:selection={dataSrc} style="width: 195px" on:change={() => {myValue = multiple ? [] : null}}></Svelecte>
+            <p class="mb-0">
+              Options with <small class="label label-primary">API</small> label<br>
+              to demonstrate AJAX fetch.</p>
+          </fieldset>
+
+          <fieldset>
+            <legend>Rendering</legend>
+            <select on:change={e => s('renderer', e.target.value)} on:blur disabled={!remoteValue || !availableRenderers[remoteValue].length}>
+              <option value="">Default</option>
+              {#each availableRenderers[remoteValue] || [] as item, i}
+              <option value={item}>{item}</option>
+              {/each}
+            </select>
+          </fieldset>
+        </div>
 
         <fieldset>
           <legend>Control</legend>
           <label><input type="checkbox" on:change={e => s('disabled', e.target.checked)} bind:checked={disabled}> Disabled</label><br>
           <label><input type="checkbox" on:change={e => s('creatable', e.target.checked)}  bind:checked={creatable}> Creatable</label>
-          <input class="input-sm input-short" placeholder="Item prefix" on:input={e => s('creatablePrefix', e.target.value)} disabled={!settings.creatable}  bind:value={creatablePrefix}>
-          <input class="input-sm input-short" placeholder="Delimiter" on:input={e => s('delimiter', e.target.value)} disabled={!settings.creatable}  bind:value={delimiter}><br>
+          <span class="tooltip" data-tooltip="prefix that is shown
+when creating new items">
+            <input class="input-sm input-short" placeholder="Item prefix" on:input={e => s('creatablePrefix', e.target.value)} disabled={!settings.creatable}  bind:value={creatablePrefix}></span>
+          <span class="tooltip" data-tooltip="Delimiter character for new items
+(when pasting etc.)">
+            <input class="input-sm input-short" placeholder="Delimiter" on:input={e => s('delimiter', e.target.value)} disabled={!settings.creatable}  bind:value={delimiter}></span><br>
           <label><input type="checkbox" on:change={e => s('virtualList', e.target.checked)} bind:checked={virtualList}> Use virtual list</label><br>
           <button class="btn mt-2" on:click={() => { myValue = settings.multiple ? [] : null } }>Clear selection</button>
         </fieldset>
@@ -172,9 +226,9 @@
         <fieldset>
           <legend>Multiple</legend>
           <label><input type="checkbox" on:change={e => s('multiple', e.target.checked)}  bind:checked={multiple}> Multiple</label>
-          <input class="input-sm" type="number" placeholder="limit" disabled={!settings.multiple} on:input={e => s('max', parseInt(e.target.value))} min="0" bind:value={max}>
+          <span class="tooltip" data-tooltip="Limit selection count"><input class="input-sm" type="number" placeholder="limit" disabled={!settings.multiple} on:input={e => s('max', parseInt(e.target.value))} min="0" bind:value={max}></span>
           <br>
-          <label><input type="checkbox" on:change={e => s('collapseSelection', e.target.checked) } disabled={!settings.multiple} bind:checked={collapseSelection}> Collapse selection</label>
+          <label class="tooltip" data-tooltip="Show only selection sum string"><input type="checkbox" on:change={e => s('collapseSelection', e.target.checked) } disabled={!settings.multiple} bind:checked={collapseSelection}> Collapse selection</label>
           
         </fieldset>
         
@@ -302,5 +356,16 @@
   }
   .input-short {
     width: 100px;
+  }
+  :global(.avatar-item) {
+    display: flex;
+    align-items: center;
+  }
+  :global(.avatar-bg) {
+    height: 2rem;
+    width: 2rem;
+  }
+  :global(.sv-control) {
+    background-color: white;
   }
 </style>

@@ -68,6 +68,7 @@
               <li class="menu-item"><a href="#options">Options</a></li>
               <li class="menu-item"><a href="#events">Events</a></li>
               <li class="menu-item"><a href="#api">API</a></li>
+              <li class="menu-item"><a href="#i18n">Localization</a></li>
               <li class="divider" data-content="Links"></li>
               <li class="menu-item"><a href="https://github.com/mskocik/svelecte">GitHub</a></li>
             </ul>
@@ -90,6 +91,20 @@
               autocomplete/select/multiselect
               component. It's main inspiration was <a href="https://github.com/selectize/selectize.js">selectize.js</a>.
             </p>
+
+            <span class="label label-rounded">Features</span>
+
+            <ul>
+              <li class="mt-0">searchable</li>
+              <li class="mt-0">multiselect with limit of max selected items</li>
+              <li class="mt-0">allow simple array or complex objects as items</li>
+              <li class="mt-0">custom item renderer (formatter)</li>
+              <li class="mt-0">allow creating new items</li>
+              <li class="mt-0">remote data fetch</li>
+              <li class="mt-0">virtual list support</li>
+              <li class="mt-0">usable as custom element</li>
+              <li class="mt-0">i18n support</li>
+            </ul>
 
             <h3 id="intro">Getting started</h3>
 
@@ -734,8 +749,50 @@ const OPTION_LIST = [
               </tr>
             </tbody>
           </table>
+
+          <div class="section" id="i18n">
+            <h4>Localization</h4>
+
+            <p>Localization can be set by overriding default values from config.</p>
+
+<pre class="code"><code class="javascript">/** default values */
+{
+  /** rest omitted for brevity */
+  i18n: {
+    empty: 'No options',
+    nomatch: 'No matching options',    
+    max: num => `Maximum items ${num} selected`,
+    fetchBefore: 'Type to search',
+    fetchEmpty: 'No data related to your search',
+    collapsedSelection: count => `${count} selected`
+  },
+  collapseSelectionFn: function(selectionCount, selection) {
+    return settings.i18n.collapsedSelection(selectionCount);
+  }
+}
+</code></pre>
+
+<p class="mt-2">So in your code import <code>config</code> and update according to your needs. Don't forget that 
+  <code>max</code> and <code>collapsedSelection</code> are functions.
+</p>
+
+<pre class="code"><code class="javascript">/** your code */
+import { config } from 'svelecte';
+
+config.i18n = {
+  /** here replace all keys.*/
+}
+
+/** for standalone custom-element */
+
+Svelecte.config.i18n = {
+  /** here replace all keys.*/
+}
+</code></pre>
+          </div>
+
           <div class="text-center mt-2">
-            Made with <a href="https://svelte.dev">Svelte</a> ❤
+            Made with <a href="https://svelte.dev">Svelte</a> ❤ by Martin Skocik
           </div>
         </div>
       </div>

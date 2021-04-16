@@ -1,3 +1,5 @@
-import Svelecte from './Svelecte/Svelecte.svelte';
+import Svelecte, {addFormatter, config} from './Svelecte/Svelecte.svelte';
 
 export default Svelecte;
+
+export { addFormatter, config }

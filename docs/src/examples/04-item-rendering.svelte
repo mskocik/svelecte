@@ -1,5 +1,5 @@
 <script>
-  import Svelecte from '../../../src/svelecte.js';
+  import Svelecte, {addFormatter} from '../../../src/svelecte.js';
   import { dataset } from '../data.js';
 
   let options = dataset.colors();
@@ -13,6 +13,8 @@
     return `<span class="color-item" style="background-color: ${item.hex};">
       </span>${item.text}`;
   }
+
+  addFormatter('color-blocks', colorRenderer);
 </script>
 
-<Svelecte {options} renderer={colorRenderer} placeholder="Select color"></Svelecte>
+<Svelecte {options} renderer="color-blocks" placeholder="Select color"></Svelecte>

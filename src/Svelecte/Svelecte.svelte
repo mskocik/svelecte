@@ -63,8 +63,8 @@
   export { className as class};
   export let style = null;
   // API: public
-  export let selection = undefined;
-  export let value = undefined;
+  export let selection = null;
+  export let value = null;
   export let labelAsValue = false;
   export const getSelection = onlyValues => {
     if (!selection) return multiple ? [] : null;
@@ -209,6 +209,8 @@
       : (_selectionArray.length ? _selectionArray[0] : null);
     const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
 
+    dispatch('change', _unifiedSelection);
+
     value = multiple 
       ? _unifiedSelection.map(opt => opt[valueProp])
       : selectedOptions.size ? _unifiedSelection[valueProp] : null;
@@ -303,7 +305,6 @@
     flatItems = flatItems;
   }
 
-
   function clearSelection() {
     selectedOptions.forEach(deselectOption);
   }
@@ -326,7 +327,6 @@
           : listIndex.next(dropdownActiveIndex - 1, true);
       })
     }
-    emitChangeEvent();
   }
 
   function onDeselect(event, opt) {
@@ -338,7 +338,6 @@
       selectedOptions.forEach(deselectOption);
     }
     tick().then(refControl.focusControl);
-    emitChangeEvent();
     tick().then(() => {
         dropdownActiveIndex = listIndex.next(dropdownActiveIndex - 1); 
       })

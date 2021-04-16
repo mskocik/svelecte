@@ -19,14 +19,6 @@ import { dataset } from './data.js';
     })
   );
 
-// setTimeout(() => {
-// 	window.el = document.querySelector('el-svelecte');
-// 	el.renderer = 'dotted';
-// 	el.options = dataset.colors();
-// }, 200);
-
-// export default app;
-
 /** FETCH example sources */
 const promises = [];
 document.querySelectorAll('pre[data-src]')
