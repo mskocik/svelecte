@@ -48,11 +48,12 @@
     <div class="column col-2 col-xl-3 col-lg-3 hide-md">
       <div class="nav-wrap">
         <div class="nav-list">
-          <div class="docs-brand pt-2">
-            <h3 class="text-center mb-0">Svelecte</h3>
-          </div>
-          <div class="docs-nav p-2">
-            <ul class="menu mx-2">
+          <a href="https://github.com/mskocik/svelecte" title="Link to GitHub repository" target="_blank" class="docs-brand text-center mb-0 d-flex pt-2" style="justify-content: center;align-items:center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+            <h4 class="ml-2 mb-0"><b>S</b><span class="velecte">velecte</span></h4>
+          </a>
+          <div class="docs-nav px-2 pt-0">
+            <ul class="menu mx-1">
               <li class="menu-item">
                 <a href="#intro">Getting started</a>
               </li>
@@ -66,7 +67,7 @@
               <li class="menu-item"><a href="#playground">Playground</a></li>
               <li class="menu-item"><a href="#custom-element">Custom component</a>
                 <ul class="menu py-0" style="box-shadow: none; border-left: 2px solid #fcd9cd">
-                  <li class="menu-item my-0"><a href="#custom-element-basic">Basic example</a></li>
+                  <li class="menu-item my-0"><a href="#custom-element-setup">Setup</a></li>
                   <li class="menu-item my-0"><a href="#dependent-selects">Dependent selects</a></li>
                   <li class="menu-item my-0"><a href="#with-vue"> With Vue.js</a></li>
                 </ul>
@@ -76,8 +77,6 @@
               <li class="menu-item"><a href="#events">Events</a></li>
               <li class="menu-item"><a href="#api">API</a></li>
               <li class="menu-item"><a href="#i18n">Localization</a></li>
-              <li class="divider" data-content="Links"></li>
-              <li class="menu-item"><a href="https://github.com/mskocik/svelecte">GitHub</a></li>
             </ul>
           </div>
         </div>
@@ -366,7 +365,9 @@
               <p>When including Svelecte in your app, you can import what you need...</p>
 
               <pre class="code"
-                data-lang="CLI"><code>import { SvelecteElement, addFormatter, config } from 'svelecte/src/component.js';</code></pre>
+                data-lang="CLI"><code>import SvelecteElement from 'svelecte/src/component.js';
+import { addFormatter, config } from 'svelecte';
+</code></pre>
 
               <p>... or download the latest version manually from
                 <a href="https://github.com/mskocik/svelecte/releases/latest">GitHub</a>.</p>
@@ -379,7 +380,7 @@
               <pre class="code"
                 data-lang="javascript"><code class="javascript">const { SvelecteElement, addFormatter, config } = window.Svelecte;</code></pre>
 
-              <h4>&bull; Setup component &bull;</h4>
+              <h4 id="custom-element-setup">&bull; Setup component &bull;</h4>
 
               <p class="mt-2">Manual custom element is required. Also when using CE version, you can define additional
                 renderer functions by calling <code>addFormatter</code> function (check <a

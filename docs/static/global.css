@@ -68,7 +68,7 @@ details {
 	margin-bottom: 1rem;
 }
 details > div {
-	border-left: 2px solid rgb(255, 174, 149);
+	border-left: 2px solid #ffae95;
 	padding-left: 0.5rem;
 }
 
@@ -121,6 +121,26 @@ summary:hover {
 	background-color: #ff612d46;
 }
 .footer {
-	margin: 2rem;
+	margin: 1.5rem 0 2rem;
 	text-align: center;
+}
+.menu {
+	min-width: auto;
+	/* background-color: rgb(241, 241, 241); */
+}
+/* .divider[data-content]:after {
+	color: #ff3e00;
+	display: block;
+} */
+.docs-brand {
+	padding-bottom: 0.5rem;
+}
+.docs-brand:hover {
+	background-color: #333;
+}
+.docs-brand:hover svg {
+	fill: #ff3e00;
+}
+.docs-brand:hover .velecte {
+	color: white;
 }
