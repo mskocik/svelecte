@@ -98,9 +98,6 @@ hr {
 	background-color: #ccc;
 	border: 0;
 }
-.offscroll {
-	margin-bottom: 20rem;
-}
 .example-wrap {
 	border: 2px dashed #ccc;
 	padding: 1rem;
@@ -122,4 +119,8 @@ td.td-section {
 }
 summary:hover {
 	background-color: #ff612d46;
+}
+.footer {
+	margin: 2rem;
+	text-align: center;
 }

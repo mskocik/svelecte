@@ -23,6 +23,7 @@
     const el = document.createElement('el-svelecte');
     el.options = dataset[optionList]();
     el.renderer = optionRenderer;
+    el.onchange = e => e.detail && alert(e.detail.value);
     /** that's all! */
 
     container.insertBefore(el, container.lastElementChild);
