@@ -1,4 +1,4 @@
-import Svelecte, { addFormatter, config } from './svelecte';
+import Svelecte from './svelecte';
 
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required', 'value',
@@ -55,8 +55,6 @@ function formatProp(name) {
   }
   return name;
 }
-
-export { addFormatter, config };
 
 /**
  * Connect Custom Component attributes to Svelte Component properties
