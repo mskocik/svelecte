@@ -1,6 +1,4 @@
 <script>
-  import { element, prevent_default } from "svelte/internal";
-
   let payload = null;
 
   function onSubmit(e) {

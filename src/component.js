@@ -1,4 +1,4 @@
-import Svelecte from './svelecte';
+import Svelecte from './Svelecte/Svelecte.svelte';
 
 const OPTION_LIST = [
   'options', 'fetch', 'name', 'required', 'value',

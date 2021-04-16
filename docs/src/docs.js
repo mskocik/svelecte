@@ -1,6 +1,5 @@
 
-import Svelecte from '../../src/svelecte.js';
-import { SvelecteElement, addFormatter } from '../../src/component.js';
+import Svelecte, { SvelecteElement, addFormatter } from '../../src/svelecte.js';
 import BasicExample from './examples/01-basic.svelte';
 import BasicExampleExt from './examples/02-basicPlain.svelte';
 import Groups from './examples/03-groups.svelte';

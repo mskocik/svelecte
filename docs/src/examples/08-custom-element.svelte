@@ -1,5 +1,5 @@
 <script>
-  import {SvelecteElement, addFormatter, config } from './../../../src/component.js';
+  import {SvelecteElement, addFormatter, config } from './../../../src/svelecte.js';
   import { dataset } from '../data.js';
 
   let container;
