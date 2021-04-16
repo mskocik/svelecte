@@ -23,7 +23,7 @@ Flexible autocomplete/select component written in Svelte. Massively inspired by 
 npm install svelecte --save
 ```
 
-Playground with detailed documentation can be found at [here](https://mskocik.github.io/svelecte/).
+👉 Examples with detailed documentation can be found at [https://mskocik.github.io/svelecte/](https://mskocik.github.io/svelecte/).
 
 ## ⚙ Configuration & API
 
