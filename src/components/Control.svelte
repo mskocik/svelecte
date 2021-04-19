@@ -14,7 +14,7 @@
   export let inputValue;
   export let hasFocus;
   export let hasDropdownOpened;
-  export let selectedOptions;
+  export let selectedOptions;           // passed as array
   export let isFetchingData;
 
 
