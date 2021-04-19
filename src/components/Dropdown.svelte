@@ -5,7 +5,7 @@
    * author: Skayo <https://github.com/Skayo>
    * original repo: https://github.com/Skayo/svelte-tiny-virtual-list
 	 */
-  import VirtualList from './../dependency/VirtualList.svelte';
+  import VirtualList from '../components-virtual-list/VirtualList.svelte';
   import { isOutOfViewport} from './../lib/utils.js';
   import Item from './Item.svelte';
 
@@ -169,7 +169,7 @@
       </VirtualList>
     {:else}
       {#each items as opt, i}
-        <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] === dropdownIndex}>
+        <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] == dropdownIndex}>
           <Item formatter={renderer}
             index={listIndex.map[i]}
             isDisabled={opt.isDisabled}
