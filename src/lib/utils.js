@@ -50,13 +50,20 @@ export function debounce(fn, delay) {
 	};
 };
 
-const itemHtml = document.createElement('div');
-itemHtml.className = 'sv-item-content';
+let itemHtml;
 
 export function highlightSearch(item, isSelected, $inputValue, formatter) {
-  itemHtml.innerHTML = formatter ? formatter(item, isSelected) : item;
-  if ($inputValue == '' || item.isSelected) return itemHtml.outerHTML;
+  const itemHtmlText = '<div class="sv-item-content">'
+    + (formatter ? formatter(item, isSelected) : item)
+    + '</div>';
+  if ($inputValue == '' || item.isSelected) return itemHtmlText;
 
+  if (!itemHtml) {
+    const div = document.createElement('div');
+    div.innerHTML = itemHtmlText;
+    itemHtml = div.firstChild;
+  }
+  
   // const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
   const pattern = asciifold($inputValue);
   pattern.split(' ').filter(e => e).forEach(pat => {

@@ -66,6 +66,9 @@
   export let selection = null;
   export let value = null;
   export let labelAsValue = false;
+  export const focus = event => {
+    refControl.focusControl(event);
+  };
   export const getSelection = onlyValues => {
     if (!selection) return multiple ? [] : null;
     return multiple 

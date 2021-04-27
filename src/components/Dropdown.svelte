@@ -127,7 +127,7 @@
     scrollContainer.style = '';
   }
 
-  let dropdownStateSubscription; 
+  let dropdownStateSubscription = () => {};
   /** ************************************ lifecycle */
   onMount(() => {
     /** ************************************ flawless UX related tweak */
