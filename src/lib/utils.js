@@ -51,11 +51,13 @@ export function debounce(fn, delay) {
 };
 
 export function highlightSearch(item, isSelected, $inputValue, formatter) {
-  const itemHtml = document.createElement('div');
-  itemHtml.className = 'sv-item-content';
-  itemHtml.innerHTML = formatter ? formatter(item, isSelected) : item;
-  if ($inputValue == '' || item.isSelected) return itemHtml.outerHTML;
+  const itemHtmlText = '<div class="sv-item-content">'
+    + (formatter ? formatter(item, isSelected) : item)
+    + '</div>';
+  if ($inputValue == '' || item.isSelected) return itemHtmlText;
 
+  const itemHtml = makeElement(itemHtmlText);
+  
   // const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
   const pattern = asciifold($inputValue);
   pattern.split(' ').filter(e => e).forEach(pat => {
@@ -63,6 +65,12 @@ export function highlightSearch(item, isSelected, $inputValue, formatter) {
   });
   
   return itemHtml.outerHTML;
+}
+
+function makeElement(html) {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+  return div.firstChild;
 }
 
 /**
