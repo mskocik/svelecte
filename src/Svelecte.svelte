@@ -96,6 +96,7 @@
   };
 
   let isInitialized = false;
+  let initialValue = value;
   let refDropdown;
   let refControl;
   let ignoreHover = false;
@@ -169,8 +170,6 @@
   }
 
   /** ************************************ component logic */
-
-  value && _selectByValues(value);   // init values if passed
 
   let prevSelection = selection;
 
@@ -258,9 +257,6 @@
   function _selectByValues(values) {
     if (!Array.isArray(values)) values = [values];
     if (values && values.length && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
-    if (!isInitialized) {
-      tick().then(() => _selectByValues(values)); return;
-    }
     const newAddition = [];
     values.forEach(val => {
       availableItems.some(opt => {
@@ -465,6 +461,7 @@
 
   onMount(() => {
     isInitialized = true;
+    if (initialValue) _selectByValues(initialValue);
     // Lazy calling of scrollIntoView function, which is required
     // TODO: resolve, probably already fixed
     // if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
