@@ -60,7 +60,7 @@ export function highlightSearch(item, isSelected, $inputValue, formatter) {
 
   if (!itemHtml) {
     const div = document.createElement('div');
-    div.innerHTML = html;
+    div.innerHTML = itemHtmlText;
     itemHtml = div.firstChild;
   }
   
