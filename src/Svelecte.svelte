@@ -197,7 +197,12 @@
       dropdownActiveIndex = listIndex.last;
     }
   }
-  $: listMessage = maxReached ? config.i18n.max(max) : config.i18n.empty;
+  $: listMessage = maxReached 
+    ? config.i18n.max(max)
+    : ($inputValue.length && availableItems.length === 0
+      ? config.i18n.nomatch 
+      : config.i18n.empty
+    );
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
     const _selectionArray = Array.from(selectedOptions)
