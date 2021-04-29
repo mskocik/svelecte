@@ -46,23 +46,22 @@ function getFilterProps(object) {
 }
 
 export function filterList(options, inputValue, excludeSelected, sifterSearchField, sifterSortField, config) {
-  if (!inputValue) {
-    if (excludeSelected) {
-      options = options
-        .filter(opt => !opt.isSelected)
-        .filter((opt, idx, self) => {
-          if (opt.$isGroupHeader &&
-            (
-              (self[idx + 1] && self[idx + 1].$isGroupHeader) 
-            || self.length <= 1
-            || self.length - 1 === idx
-            )
-          ) return false;
-          return true;
-        })
-    }
-    return options;
+  if (excludeSelected) {
+    options = options
+      .filter(opt => !opt.isSelected)
+      .filter((opt, idx, self) => {
+        if (opt.$isGroupHeader &&
+          (
+            (self[idx + 1] && self[idx + 1].$isGroupHeader) 
+          || self.length <= 1
+          || self.length - 1 === idx
+          )
+        ) return false;
+        return true;
+      })
   }
+  if (!inputValue) return options;
+
   const sifter = new Sifter(options);
   /**
    * Sifter is used for searching to provide rich filter functionality.
