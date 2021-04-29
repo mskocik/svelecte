@@ -53,16 +53,17 @@ export function debounce(fn, delay) {
 let itemHtml;
 
 export function highlightSearch(item, isSelected, $inputValue, formatter) {
-  const itemHtmlText = '<div class="sv-item-content">'
-    + (formatter ? formatter(item, isSelected) : item)
-    + '</div>';
-  if ($inputValue == '' || item.isSelected) return itemHtmlText;
+  const itemHtmlText = formatter ? formatter(item, isSelected) : item;
+  
+  if ($inputValue == '' || item.isSelected) {
+    return '<div class="sv-item-content">' + itemHtmlText + '</div>';
+  }
 
   if (!itemHtml) {
-    const div = document.createElement('div');
-    div.innerHTML = itemHtmlText;
-    itemHtml = div.firstChild;
+    itemHtml = document.createElement('div');
+    itemHtml.className = 'sv-item-content';
   }
+  itemHtml.innerHTML = itemHtmlText;
   
   // const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
   const pattern = asciifold($inputValue);
