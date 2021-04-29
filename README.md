@@ -15,6 +15,7 @@ Flexible autocomplete/select component written in Svelte. Massively inspired by 
 - virtual list support
 - usable as custom element
 - i18n support
+- SSR support
 
 
 ## 🔧 Installation
