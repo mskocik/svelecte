@@ -108,6 +108,7 @@
 
   itemConfig.valueField = currentValueField;
   itemConfig.labelField = currentLabelField;
+  itemConfig.optionProps = [currentValueField, currentLabelField];
   
   /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
@@ -285,8 +286,8 @@
       if (alreadyCreated.includes(opt)) return;
       alreadyCreated.push(opt);
       opt = {
-        [currentLabelField]: `${creatablePrefix}${opt}`,
         [currentValueField]: encodeURIComponent(opt),
+        [currentLabelField]: `${creatablePrefix}${opt}`,
         isSelected: true,
         _created: true,
       };
