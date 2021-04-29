@@ -80,7 +80,7 @@ focus         | function | -         | focus input
 getSelection  | function | bool      | return selection, if `true` is passed, only values are returns, whole objects otherwise 
 setSelection  | function | array     | set selection programmatically
 config        | property | -         | **context property**: global common config for all instances, you can override most properties here and also some additional, mainly i18n
-addFormatter  | function | **context function**: with signature `(name, formatFn)` you can add additional item renderers (formatters)
+addFormatter  | function | -         | **context function**: with signature `(name, formatFn)` you can add additional item renderers (formatters)
 <!-- clearByParent | bool | internal for CE  -->
 
 ## 🙏 Thanks to 
