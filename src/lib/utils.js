@@ -2,6 +2,7 @@ import { asciifold } from './sifter';
 
 // source: https://github.com/rob-balfre/svelte-select/blob/master/src/utils/isOutOfViewport.js
 export function isOutOfViewport(elem) {
+  if (!elem) return false;
   const bounding = elem.getBoundingClientRect();
   const out = {};
 
