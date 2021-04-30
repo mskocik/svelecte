@@ -339,7 +339,6 @@
 
   function onDeselect(event, opt) {
     if (disabled) return;
-    event.preventDefault();
     opt = opt || event.detail;
     if (opt) {
       deselectOption(opt);
