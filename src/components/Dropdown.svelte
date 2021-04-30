@@ -4,6 +4,8 @@
   import { isOutOfViewport} from './../lib/utils.js';
   import Item from './Item.svelte';
 
+  export let lazyDropdown;
+  
   export let creatable;
   export let maxReached = false;
   export let dropdownIndex = 0;
@@ -42,6 +44,7 @@
   let scrollContainer;
   let isMounted = false;
   let hasEmptyList = false;
+  let renderDropdown = !lazyDropdown;
   $: currentListLength = items.length; 
 
   let vl_height = vlHeight;
@@ -62,7 +65,7 @@
       : true
     );
     // required when changing item list 'on-the-fly' for VL
-    if (virtualList && isMounted && vl_autoMode) {
+    if (virtualList && vl_autoMode && isMounted && renderDropdown) {
       if (hasEmptyList) dropdownIndex = null;
       vl_itemSize = 0;
       tick().then(virtualListDimensionsResolver);
@@ -70,7 +73,7 @@
   }
 
   function positionDropdown(val) {
-    if (!scrollContainer) return;
+    if (!scrollContainer && !renderDropdown) return;
     const outVp = isOutOfViewport(scrollContainer);
     if (outVp.bottom && !outVp.top) {
       scrollContainer.style.bottom = (scrollContainer.parentElement.clientHeight + 1) + 'px';
@@ -127,6 +130,7 @@
   onMount(() => {
     /** ************************************ flawless UX related tweak */
     dropdownStateSubscription = hasDropdownOpened.subscribe(val => {
+      if (!renderDropdown && val) renderDropdown = true;
       tick().then(() => positionDropdown(val));
       // bind/unbind scroll listener
       document[val ? 'addEventListener' : 'removeEventListener']('scroll', () => positionDropdown(val), { passive: true });
@@ -136,6 +140,7 @@
   onDestroy(() => dropdownStateSubscription());
 </script>
 
+{#if isMounted && renderDropdown}
 <div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened} tabindex="-1" 
   bind:this={scrollContainer}
   on:mousedown|preventDefault
@@ -193,6 +198,7 @@
   {/if}
   </div>
 </div>
+{/if}
 
 <style>
 .sv-dropdown {

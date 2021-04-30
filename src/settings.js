@@ -18,6 +18,8 @@ const settings = {
   creatable: false,
   creatablePrefix: '*',
   delimiter: ',',
+  // performance
+  lazyDropdown: true,
   // virtual list
   virtualList: false,
   vlItemSize: null,

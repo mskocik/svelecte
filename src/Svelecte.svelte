@@ -51,6 +51,8 @@
   export let fetch = null;
   export let fetchMode = 'auto';
   export let fetchCallback = null;
+  // performance
+  export let lazyDropdown = defaults.lazyDropdown;
   // virtual list
   export let virtualList = defaults.virtualList;
   export let vlHeight = defaults.vlHeight;
@@ -72,8 +74,8 @@
   export const getSelection = onlyValues => {
     if (!selection) return multiple ? [] : null;
     return multiple 
-      ? selection.map(opt => onlyValues ? opt[currentValueField] : Object.assign({}, opt))
-      : (onlyValues ? selection[currentValueField] : Object.assign({}, selection));
+      ? (onlyValues ? value : selection.map(opt => Object.assign({}, opt)))
+      : (onlyValues ? value : Object.assign({}, selection));
   };
   export const setSelection = selection => _selectByValues(selection);
   // API: internal for CE
@@ -496,7 +498,7 @@
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>
   <Dropdown bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached} {alreadyCreated}
-    virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize}
+    virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize} {lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
     {inputValue} {hasDropdownOpened} {listMessage}

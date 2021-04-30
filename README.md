@@ -33,36 +33,37 @@ npm install svelecte --save
 ### Exposed properties:
 
 
-Property  | Type   | Default | Description
-----------|--------|---------|------------
-options   | array  | `[]`    | Data array
-valueField | string | `null` | Property to be used as value (if not specified, will be selected automatically)
-labelField | string | `null` | Property shown in dropdown (if not specified, will be selected automatically)
-required  | bool   | `false` | make sense only when `name` is defined
-placeholder | string | `'Select'` | Input placeholder
-searchable | bool | `true` | Allow search among items by typing
-disabled  | bool   | `false` | Disable component
-renderer   | string\|function | `null` | dropdown and selection renderer function. More info in item rendering section
-selectOnTab | bool | `false` | Allow selecting currently active item by <kbd>Tab</kbd> key
-clearable | bool | `false` | Display ✖ icon to clear whole selection
-multiple  | bool   | `false` | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
-max        | number | `0` | Maximum allowed items selected, applicable only for multiselect
-collapseSelection | bool | `false` | collapse selection when `multiple` and not focused
-name      | string | `null`  | create `<select>`, usable for normal forms.
-anchor    | string | `null`  | existing select (for CE)
-creatable | bool   | `false` | Allow creating new item(s)
-creatablePrefix | string | `'*'` | Prefix marking new item
-delimiter | string | `','` | split inserted text when pasting to create multiple items
-fetch | string\|function | `null` | Check "remote datasource" section for more details
-fetch | string | `'auto'` | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
-fetchCallback | function | `null` | optional fetch callback
-virtualList | bool | `false` | Whether use virtual list for dropdown items (useful for large datasets)
-vlHeight | number | `null` | Height of virtual list dropdown (if not specified, computed automatically)
-vlItemSize | number | `null` | Height of one row (if not specified, computed automatically)
-searchField | string\|array | `null` | Specify item property that will be used to search by (if not specified all props except `value` prop will be used)
-sortField | string | `null` | Specify sort property. If not specified, `labelField` will be used 
-class | string | `'svelecte-control'` | default css class
-style | string | null | inline style
+Property          | Type             | Default    | Description
+------------------|------------------|------------|------------
+options           | array            | `[]`       | Data array
+valueField        | string           | `null`     | Property to be used as value (if not specified, will be selected automatically)
+labelField        | string           | `null`     | Property shown in dropdown (if not specified, will be selected automatically)
+required          | bool             | `false`    | make sense only when `name` is defined
+placeholder       | string           | `'Select'` | Input placeholder
+searchable        | bool             | `true`     | Allow search among items by typing
+disabled          | bool             | `false`    | Disable component
+renderer          | string\|function | `null`     | dropdown and selection renderer function. More info in item rendering section
+selectOnTab       | bool             | `false`    | Allow selecting currently active item by <kbd>Tab</kbd> key
+clearable         | bool             | `false`    | Display ✖ icon to clear whole selection
+multiple          | bool             | `false`    | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
+max               | number           | `0`        | Maximum allowed items selected, applicable only for multiselect
+collapseSelection | bool             | `false`    | collapse selection when `multiple` and not focused
+name              | string           | `null`     | create `<select>`, usable for normal forms.
+anchor            | string           | `null`     | existing select (for CE)
+creatable         | bool             | `false`    | Allow creating new item(s)
+creatablePrefix   | string           | `'*'`      | Prefix marking new item
+delimiter         | string           | `','`      | split inserted text when pasting to create multiple items
+fetch             | string\|function | `null`     | Check "remote datasource" section for more details
+fetch             | string           | `'auto'`   | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
+fetchCallback     | function         | `null`     | optional fetch callback
+lazyDropdown      | bool             | `true`     | render dropdown after first focus, not by default
+virtualList       | bool             | `false`    | Whether use virtual list for dropdown items (useful for large datasets)
+vlHeight          | number           | `null`     | Height of virtual list dropdown (if not specified, computed automatically)
+vlItemSize        | number           | `null`     | Height of one row (if not specified, computed automatically)
+searchField       | string\|array    | `null`     | Specify item property that will be used to search by (if not specified all props except `value` prop will be used)
+sortField         | string           | `null`     | Specify sort property. If not specified, `labelField` will be used 
+class             | string           | `'svelecte-control'` | default css class
+style             | string           | null       | inline style
 
 ### Emitted events:
 
