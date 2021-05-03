@@ -162,7 +162,6 @@
         xhr.abort();
       };
       if (!value) {
-        listMessage = config.i18n.fetchBefore;
         return;
       }
       isFetchingData = true;
@@ -207,7 +206,9 @@
     ? config.i18n.max(max)
     : ($inputValue.length && availableItems.length === 0
       ? config.i18n.nomatch 
-      : config.i18n.empty
+      : fetch
+        ? config.i18n.fetchBefore
+        : config.i18n.empty
     );
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
