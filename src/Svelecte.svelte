@@ -60,6 +60,7 @@
   // sifter related
   export let searchField = null;
   export let sortField = null;
+  export let disableFilter = false;
   // styling
   let className = 'svelecte-control';
   export { className as class};
@@ -190,7 +191,9 @@
   let alreadyCreated = [];
   $: flatItems = flatList(options, itemConfig);
   $: maxReached = max && selectedOptions.size === max 
-  $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, searchField, sortField, itemConfig);
+  $: availableItems = maxReached
+    ? []
+    : filterList(flatItems, disableFilter ? null : $inputValue, multiple, searchField, sortField, itemConfig);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
   $: listIndex = indexList(availableItems, creatable && $inputValue, itemConfig);
   $: {
