@@ -33,6 +33,7 @@
   export let disabled = defaults.disabled;
   // UI, UX
   export let renderer = null;
+  export let disableHighlight = false;
   export let clearable = defaults.clearable;
   export let selectOnTab = defaults.selectOnTab;
   export let resetOnBlur = defaults.resetOnBlur;
@@ -506,7 +507,7 @@
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>
-  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {creatable} {maxReached} {alreadyCreated}
+  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {disableHighlight} {creatable} {maxReached} {alreadyCreated}
     virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize} {lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}

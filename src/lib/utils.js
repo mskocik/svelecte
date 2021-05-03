@@ -53,8 +53,8 @@ export function debounce(fn, delay) {
 
 let itemHtml;
 
-export function highlightSearch(item, isSelected, $inputValue, formatter) {
-  const itemHtmlText = formatter ? formatter(item, isSelected) : item;
+export function highlightSearch(item, isSelected, $inputValue, formatter, disableHighlight) {
+  const itemHtmlText = formatter ? formatter(item, isSelected, $inputValue) : item;
   
   if ($inputValue == '' || item.isSelected) {
     return '<div class="sv-item-content">' + itemHtmlText + '</div>';
@@ -65,12 +65,14 @@ export function highlightSearch(item, isSelected, $inputValue, formatter) {
     itemHtml.className = 'sv-item-content';
   }
   itemHtml.innerHTML = itemHtmlText;
-  
-  // const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
-  const pattern = asciifold($inputValue);
-  pattern.split(' ').filter(e => e).forEach(pat => {
-    highlight(itemHtml, pat);
-  });
+
+  if (!disableHighlight) {
+    // const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
+    const pattern = asciifold($inputValue);
+    pattern.split(' ').filter(e => e).forEach(pat => {
+      highlight(itemHtml, pat);
+    });
+  }
   
   return itemHtml.outerHTML;
 }
