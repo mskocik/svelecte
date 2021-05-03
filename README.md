@@ -62,7 +62,7 @@ vlHeight          | number           | `null`     | Height of virtual list dropd
 vlItemSize        | number           | `null`     | Height of one row (if not specified, computed automatically)
 searchField       | string\|array    | `null`     | Specify item property that will be used to search by (if not specified all props except `value` prop will be used)
 sortField         | string           | `null`     | Specify sort property. If not specified, `labelField` will be used 
-disableSifter     | bool             | `false`    | Disable option sifting and accept all fetched options.
+disableSifter     | bool             | `false`    | Disable option sifting and accept all fetched options
 class             | string           | `'svelecte-control'` | default css class
 style             | string           | null       | inline style
 
