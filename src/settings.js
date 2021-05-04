@@ -8,6 +8,7 @@ const settings = {
   // ui
   clearable: false,
   selectOnTab: false,
+  resetOnBlur: true,
   // multi
   multiple: false,
   max: 0,

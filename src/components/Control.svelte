@@ -9,6 +9,7 @@
   export let disabled;
   export let placeholder;
   export let multiple;
+  export let resetOnBlur;
   export let collapseSelection;
   /** internal props */
   export let inputValue;
@@ -49,7 +50,7 @@
   function onBlur() {
     $hasFocus = false;
     $hasDropdownOpened = false;
-    $inputValue = ''; // reset
+    if (resetOnBlur) $inputValue = ''; // reset
     setTimeout(() => {
       doCollapse = true;
     }, 100);

@@ -44,6 +44,7 @@ searchable        | bool             | `true`     | Allow search among items by 
 disabled          | bool             | `false`    | Disable component
 renderer          | string\|function | `null`     | dropdown and selection renderer function. More info in item rendering section
 selectOnTab       | bool             | `false`    | Allow selecting currently active item by <kbd>Tab</kbd> key
+resetOnBlur       | bool             | `true`     | Control if input value should be cleared on blur
 clearable         | bool             | `false`    | Display ✖ icon to clear whole selection
 multiple          | bool             | `false`    | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
 max               | number           | `0`        | Maximum allowed items selected, applicable only for multiselect
@@ -56,6 +57,7 @@ delimiter         | string           | `','`      | split inserted text when pas
 fetch             | string\|function | `null`     | Check "remote datasource" section for more details
 fetchMode         | string           | `'auto'`   | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
 fetchCallback     | function         | `null`     | optional fetch callback
+fetchResetOnBlur  | bool             | `true`     | reset previous search results on empty input, related to `resetOnBlur`
 lazyDropdown      | bool             | `true`     | render dropdown after first focus, not by default
 virtualList       | bool             | `false`    | Whether use virtual list for dropdown items (useful for large datasets)
 vlHeight          | number           | `null`     | Height of virtual list dropdown (if not specified, computed automatically)

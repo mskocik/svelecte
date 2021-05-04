@@ -35,6 +35,7 @@
   export let renderer = null;
   export let clearable = defaults.clearable;
   export let selectOnTab = defaults.selectOnTab;
+  export let resetOnBlur = defaults.resetOnBlur;
   // multiple
   export let multiple = defaults.multiple;
   export let max = defaults.max;
@@ -51,6 +52,7 @@
   export let fetch = null;
   export let fetchMode = 'auto';
   export let fetchCallback = null;
+  export let fetchResetOnBlur = true;
   // performance
   export let lazyDropdown = defaults.lazyDropdown;
   // virtual list
@@ -162,6 +164,9 @@
         xhr.abort();
       };
       if (!value) {
+        if (fetchResetOnBlur) {
+          options = [];
+        }
         return;
       }
       isFetchingData = true;
@@ -493,7 +498,7 @@
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
-    {disabled} {clearable} {searchable} {placeholder} {multiple} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
+    {disabled} {clearable} {searchable} {placeholder} {multiple} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={Array.from(selectedOptions)} {isFetchingData}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
