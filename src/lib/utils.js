@@ -56,7 +56,7 @@ let itemHtml;
 export function highlightSearch(item, isSelected, $inputValue, formatter, disableHighlight) {
   const itemHtmlText = formatter ? formatter(item, isSelected, $inputValue) : item;
   
-  if ($inputValue == '' || item.isSelected) {
+  if ($inputValue == '' || item.isSelected || disableHighlight) {
     return '<div class="sv-item-content">' + itemHtmlText + '</div>';
   }
 
@@ -66,13 +66,11 @@ export function highlightSearch(item, isSelected, $inputValue, formatter, disabl
   }
   itemHtml.innerHTML = itemHtmlText;
 
-  if (!disableHighlight) {
-    // const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
-    const pattern = asciifold($inputValue);
-    pattern.split(' ').filter(e => e).forEach(pat => {
-      highlight(itemHtml, pat);
-    });
-  }
+  // const regex = new RegExp(`(${asciifold($inputValue)})`, 'ig');
+  const pattern = asciifold($inputValue);
+  pattern.split(' ').filter(e => e).forEach(pat => {
+    highlight(itemHtml, pat);
+  });
   
   return itemHtml.outerHTML;
 }
