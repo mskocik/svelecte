@@ -54,7 +54,7 @@ creatable         | bool             | `false`    | Allow creating new item(s)
 creatablePrefix   | string           | `'*'`      | Prefix marking new item
 delimiter         | string           | `','`      | split inserted text when pasting to create multiple items
 fetch             | string\|function | `null`     | Check "remote datasource" section for more details
-fetch             | string           | `'auto'`   | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
+fetchMode         | string           | `'auto'`   | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
 fetchCallback     | function         | `null`     | optional fetch callback
 lazyDropdown      | bool             | `true`     | render dropdown after first focus, not by default
 virtualList       | bool             | `false`    | Whether use virtual list for dropdown items (useful for large datasets)
@@ -62,6 +62,7 @@ vlHeight          | number           | `null`     | Height of virtual list dropd
 vlItemSize        | number           | `null`     | Height of one row (if not specified, computed automatically)
 searchField       | string\|array    | `null`     | Specify item property that will be used to search by (if not specified all props except `value` prop will be used)
 sortField         | string           | `null`     | Specify sort property. If not specified, `labelField` will be used 
+disableSifter     | bool             | `false`    | Disable Sifter filtering & sorting. Can be useful in combination with `fetch`, when no further filtering or sorting may be undesired
 class             | string           | `'svelecte-control'` | default css class
 style             | string           | null       | inline style
 

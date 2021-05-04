@@ -60,6 +60,7 @@
   // sifter related
   export let searchField = null;
   export let sortField = null;
+  export let disableSifter = false;
   // styling
   let className = 'svelecte-control';
   export { className as class};
@@ -161,7 +162,6 @@
         xhr.abort();
       };
       if (!value) {
-        listMessage = config.i18n.fetchBefore;
         return;
       }
       isFetchingData = true;
@@ -190,7 +190,9 @@
   let alreadyCreated = [];
   $: flatItems = flatList(options, itemConfig);
   $: maxReached = max && selectedOptions.size === max 
-  $: availableItems = maxReached ? [] : filterList(flatItems, $inputValue, multiple, searchField, sortField, itemConfig);
+  $: availableItems = maxReached
+    ? []
+    : filterList(flatItems, disableSifter ? null : $inputValue, multiple, searchField, sortField, itemConfig);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
   $: listIndex = indexList(availableItems, creatable && $inputValue, itemConfig);
   $: {
@@ -204,7 +206,9 @@
     ? config.i18n.max(max)
     : ($inputValue.length && availableItems.length === 0
       ? config.i18n.nomatch 
-      : config.i18n.empty
+      : fetch
+        ? config.i18n.fetchBefore
+        : config.i18n.empty
     );
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {

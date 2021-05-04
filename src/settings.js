@@ -24,8 +24,6 @@ const settings = {
   virtualList: false,
   vlItemSize: null,
   vlHeight: null,
-  // sifter
-  sortRemoteResults: true,
   // i18n
   i18n: {
     empty: 'No options',
