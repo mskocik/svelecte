@@ -355,9 +355,6 @@
       selectedOptions.forEach(deselectOption);
     }
     tick().then(refControl.focusControl);
-    tick().then(() => {
-        dropdownActiveIndex = listIndex.next(dropdownActiveIndex - 1); 
-      })
     emitChangeEvent();
   }
 
