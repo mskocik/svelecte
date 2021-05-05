@@ -10,6 +10,7 @@
   export let maxReached = false;
   export let dropdownIndex = 0;
   export let renderer;
+  export let disableHighlight;
   export let items= [];
   export let alreadyCreated;
   export let virtualList;
@@ -162,6 +163,7 @@
             isDisabled={items[index].isDisabled}
             item={items[index]}
             inputValue={$inputValue}
+            {disableHighlight}
             on:hover
             on:select>
           </Item>
@@ -175,6 +177,7 @@
             isDisabled={opt.isDisabled}
             item={opt}
             inputValue={$inputValue}
+            {disableHighlight}
             on:hover
             on:select>
           </Item>
