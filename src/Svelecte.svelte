@@ -237,7 +237,7 @@
   }
   let prevOptions = options;
   $: {
-    if (isInitialized && prevOptions !== options) {
+    if (isInitialized && prevOptions !== options && options.length) {
       const ivalue = fieldInit('value', options || null, itemConfig);
       const ilabel = fieldInit('label', options || null, itemConfig);
       if (!valueField && currentValueField !== ivalue) itemConfig.valueField = currentValueField = ivalue;
