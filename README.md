@@ -16,6 +16,7 @@ Flexible autocomplete/select component written in Svelte. Massively inspired by 
 - usable as custom element
 - i18n support
 - SSR support
+- lazy dropdown rendering
 
 
 ## 🔧 Installation
