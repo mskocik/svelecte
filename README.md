@@ -50,7 +50,6 @@ multiple          | bool             | `false`    | allow multiselection. Will b
 max               | number           | `0`        | Maximum allowed items selected, applicable only for multiselect
 collapseSelection | bool             | `false`    | collapse selection when `multiple` and not focused
 name              | string           | `null`     | create `<select>`, usable for normal forms.
-anchor            | string           | `null`     | existing select (for CE)
 creatable         | bool             | `false`    | Allow creating new item(s)
 creatablePrefix   | string           | `'*'`      | Prefix marking new item
 delimiter         | string           | `','`      | split inserted text when pasting to create multiple items
@@ -67,7 +66,8 @@ sortField         | string           | `null`     | Specify sort property. If no
 disableSifter     | bool             | `false`    | Disable Sifter filtering & sorting. Can be useful in combination with `fetch`, when further filtering or sorting may be undesired
 disableHighlight  | bool             | `false`    | Disable highlighting of input value in results. Can be useful with a `renderer` function that includes additional text or does its own highlighting
 class             | string           | `'svelecte-control'` | default css class
-style             | string           | null       | inline style
+style             | string           | `null`     | inline style
+hasAnchor         | bool             | `null`     | `internal`: when passing also existing select (for CE)
 
 ### Emitted events:
 

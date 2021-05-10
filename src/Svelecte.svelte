@@ -44,7 +44,7 @@
   // form and CE
   export let name = null;
   export let required = false;
-  export let anchor = null;
+  export let hasAnchor = false;
   // creating 
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;
@@ -234,18 +234,6 @@
       : selectedOptions.size ? _unifiedSelection[valueProp] : null;
     prevSelection = _unifiedSelection;
     selection = prevSelection;
-    // Custom-element related
-    if (anchor) {
-      anchor.innerHTML = (Array.isArray(value) ? value : [value]).reduce((res, item) => {
-        if (!item) {
-          res = '<option value="" selected=""></option>';
-          return res;
-        };
-        res+= `<option value="${item}" selected>${item}</option>`;
-        return res;
-      }, '');
-      anchor.dispatchEvent(new Event('change'));
-    }
   }
   let prevOptions = options;
   $: {
@@ -477,10 +465,6 @@
   onMount(() => {
     isInitialized = true;
     if (initialValue) _selectByValues(initialValue);
-    // Lazy calling of scrollIntoView function, which is required
-    // TODO: resolve, probably already fixed
-    // if (val <= dropdownActiveIndex) dropdownActiveIndex = val;
-    // if (dropdownActiveIndex < 0) dropdownActiveIndex = listIndexMap.first;
     if (creatable) {
       const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
       alreadyCreated = flatItems.map(opt => opt[valueProp]).filter(opt => opt);
@@ -490,7 +474,6 @@
       dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevSelection[currentValueField]);
       tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
     }
-    if (anchor) anchor.classList.add('anchored-select');
   });
 </script>
 
@@ -513,19 +496,18 @@
     on:hover={onHover}
     let:item={item}
   ></Dropdown>
-  {#if name && !anchor}
+  {#if name && !hasAnchor}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
     {#each Array.from(selectedOptions) as opt}
     <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
   </select>
-  {/if}
+  {/if} 
 </div>
 
 <style>
 .svelecte { position: relative; flex: 1 1 auto; }
 .svelecte.is-disabled { pointer-events: none; }
 .icon-slot { display: flex; }
-.is-hidden,
-:global(.anchored-select) { opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px}
+.is-hidden { opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px}
 </style>
