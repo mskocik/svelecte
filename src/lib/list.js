@@ -39,7 +39,7 @@ function updateOptionProps(options, config) {
   })
 }
 
-function getFilterProps(object) {
+export function getFilterProps(object) {
   if (object.options) object = object.options[0];
   const exclude = ['isSelected', 'isDisabled' ,'selected', 'disabled', '$isGroupHeader', '$isGroupItem'];
   return Object.keys(object).filter(prop => !exclude.includes(prop));

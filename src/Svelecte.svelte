@@ -20,7 +20,7 @@
   import { createEventDispatcher, tick, onMount } from 'svelte';
   import { writable } from 'svelte/store';
   import { fetchRemote } from './lib/utils.js';
-  import { flatList, filterList, indexList } from './lib/list.js';
+  import { flatList, filterList, indexList, getFilterProps } from './lib/list.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
 
@@ -111,10 +111,11 @@
   let currentValueField = valueField || fieldInit('value', options, itemConfig);
   let currentLabelField = labelField || fieldInit('label', options, itemConfig);
 
-
   itemConfig.valueField = currentValueField;
   itemConfig.labelField = currentLabelField;
-  itemConfig.optionProps = [currentValueField, currentLabelField];
+  itemConfig.optionProps = selection
+    ? getFilterProps(multiple ? selection.slice(0,1).shift() : selection) 
+    : [currentValueField, currentLabelField];
   
   /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
@@ -165,7 +166,7 @@
         xhr.abort();
       };
       if (!value) {
-        if (fetchResetOnBlur) {
+        if (isInitialized && fetchResetOnBlur) {
           options = [];
         }
         return;
@@ -192,7 +193,7 @@
     }
   }
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
-  let selectedOptions = new Set();
+  let selectedOptions = new Set(selection ? (Array.isArray(selection) ? selection : [selection]) : []);
   let alreadyCreated = [];
   $: flatItems = flatList(options, itemConfig);
   $: maxReached = max && selectedOptions.size === max 
@@ -472,7 +473,6 @@
     dropdownActiveIndex = listIndex.first;
     if (prevSelection && !multiple) {
       dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevSelection[currentValueField]);
-      tick().then(() => refDropdown && refDropdown.scrollIntoView({}));
     }
   });
 </script>
