@@ -123,6 +123,7 @@ export function indexList(options, includeCreateRow, config)  {
       if (this.hasCreateRow && curr === this.last) return this.last;
       if (val === '') return this.next(curr);
       if (val === undefined) {
+        if (!this.map.length) return 0;   // ref #26
         if (curr > this.map.length) curr = this.first - 1;
         return prevOnUndefined === true ? this.prev(curr) : this.next(curr);
       }

@@ -211,7 +211,7 @@
     }
   }
   $: listMessage = maxReached 
-    ? config.i18n.max(max)
+    ? config.i18n.max(max) 
     : ($inputValue.length && availableItems.length === 0
       ? config.i18n.nomatch 
       : fetch
@@ -387,7 +387,9 @@
         ignoreHover = true;
         break;
       case 'Home':
-        if ($inputValue.length !== 0) return;
+        if ($inputValue.length !== 0 
+          || ($inputValue.length === 0 && availableItems.length === 0)  // ref #26
+        ) return;
       case 'PageUp':
         dropdownActiveIndex = listIndex.last;
       case 'ArrowDown': 
