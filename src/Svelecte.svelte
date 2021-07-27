@@ -16,6 +16,7 @@
   export const config = defaults;
 </script>
 
+<!-- svelte-ignore unused-export-let module-script-reactive-declaration -->
 <script>
   import { createEventDispatcher, tick, onMount } from 'svelte';
   import { writable } from 'svelte/store';
