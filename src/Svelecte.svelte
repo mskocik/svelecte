@@ -82,7 +82,10 @@
       ? (onlyValues ? value : selection.map(opt => Object.assign({}, opt)))
       : (onlyValues ? value : Object.assign({}, selection));
   };
-  export const setSelection = selection => _selectByValues(selection);
+  export const setSelection = (selection, triggerChangeEvent) => {
+    _selectByValues(selection);
+    triggerChangeEvent && emitChangeEvent();
+  }
   // API: internal for CE
   export const clearByParent = doDisable => { 
     clearSelection();
