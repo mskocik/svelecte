@@ -53,7 +53,7 @@
   // remote
   export let fetch = null;
   export let fetchMode = 'auto';
-  export let fetchCallback = null;
+  export let fetchCallback = defaults.fetchCallback;
   export let fetchResetOnBlur = true;
   // performance
   export let lazyDropdown = defaults.lazyDropdown;

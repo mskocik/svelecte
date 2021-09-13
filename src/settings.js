@@ -19,6 +19,8 @@ const settings = {
   creatable: false,
   creatablePrefix: '*',
   delimiter: ',',
+  // remote
+  fetchCallback: null,
   // performance
   lazyDropdown: true,
   // virtual list
