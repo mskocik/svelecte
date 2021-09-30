@@ -263,6 +263,13 @@
   }
 
   /**
+   * Dispatch createoption event when user creates a new entry (with 'creatable' feature)
+   */
+  function emitCreateEvent(createdOpt) {
+      dispatch('createoption', createdOpt)
+  }
+
+  /**
    * Internal helper for passed value array. Should be used for CE
    */
   function _selectByValues(values) {
@@ -297,6 +304,7 @@
         _created: true,
       };
       options = [...options, opt];
+      emitCreateEvent(opt);
     }
     opt.isSelected = true;
     if (!multiple) selectedOptions.clear();
@@ -500,6 +508,7 @@
     {inputValue} {hasDropdownOpened} {listMessage}
     on:select={onSelect}
     on:hover={onHover}
+    on:createoption
     let:item={item}
   ></Dropdown>
   {#if name && !hasAnchor}
