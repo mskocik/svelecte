@@ -46,7 +46,7 @@
   export let name = null;
   export let required = false;
   export let hasAnchor = false;
-  // creating 
+  // creating
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;
   export let delimiter = defaults.delimiter;
@@ -78,7 +78,7 @@
   };
   export const getSelection = onlyValues => {
     if (!selection) return multiple ? [] : null;
-    return multiple 
+    return multiple
       ? (onlyValues ? value : selection.map(opt => Object.assign({}, opt)))
       : (onlyValues ? value : Object.assign({}, selection));
   };
@@ -87,13 +87,13 @@
     triggerChangeEvent && emitChangeEvent();
   }
   // API: internal for CE
-  export const clearByParent = doDisable => { 
+  export const clearByParent = doDisable => {
     clearSelection();
     emitChangeEvent();
     if (doDisable) disabled = true;
     fetch = null;
   }
- 
+
   const dispatch = createEventDispatcher();
 
   const itemConfig = {
@@ -118,9 +118,9 @@
   itemConfig.valueField = currentValueField;
   itemConfig.labelField = currentLabelField;
   itemConfig.optionProps = selection
-    ? getFilterProps(multiple ? selection.slice(0,1).shift() : selection) 
+    ? getFilterProps(multiple ? selection.slice(0,1).shift() : selection)
     : [currentValueField, currentLabelField];
-  
+
   /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
 
@@ -130,7 +130,7 @@
   const hasDropdownOpened = writable(false);
 
   let isFetchingData = false;
-  
+
   /** ************************************ remote source */
   // $: initFetchOnly = fetchMode === 'init' || (typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
   $: createFetch(fetch);
@@ -139,7 +139,7 @@
     if (fetchUnsubscribe) {
       fetchUnsubscribe();
       fetchUnsubscribe = null;
-    } 
+    }
     if (!fetch) return null;
 
     const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
@@ -166,7 +166,7 @@
     }
 
     fetchUnsubscribe = inputValue.subscribe(value => {
-      if (xhr && xhr.readyState !== 4) {  // cancel previously run 
+      if (xhr && xhr.readyState !== 4) {  // cancel previously run
         xhr.abort();
       };
       if (!value) {
@@ -200,7 +200,7 @@
   let selectedOptions = new Set(selection ? (Array.isArray(selection) ? selection : [selection]) : []);
   let alreadyCreated = [];
   $: flatItems = flatList(options, itemConfig);
-  $: maxReached = max && selectedOptions.size === max 
+  $: maxReached = max && selectedOptions.size === max
   $: availableItems = maxReached
     ? []
     : filterList(flatItems, disableSifter ? null : $inputValue, multiple, searchField, sortField, itemConfig);
@@ -213,10 +213,10 @@
       dropdownActiveIndex = listIndex.last;
     }
   }
-  $: listMessage = maxReached 
-    ? config.i18n.max(max) 
+  $: listMessage = maxReached
+    ? config.i18n.max(max)
     : ($inputValue.length && availableItems.length === 0
-      ? config.i18n.nomatch 
+      ? config.i18n.nomatch
       : fetch
         ? config.i18n.fetchBefore
         : config.i18n.empty
@@ -229,12 +229,12 @@
         itemConfig.optionProps.forEach(prop => obj[prop] = opt[prop]);
         return obj;
       });
-    const _unifiedSelection = multiple 
+    const _unifiedSelection = multiple
       ? _selectionArray
       : (_selectionArray.length ? _selectionArray[0] : null);
     const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
 
-    value = multiple 
+    value = multiple
       ? _unifiedSelection.map(opt => opt[valueProp])
       : selectedOptions.size ? _unifiedSelection[valueProp] : null;
     prevSelection = _unifiedSelection;
@@ -255,7 +255,7 @@
 
   /**
    * Dispatch change event on add options/remove selected items
-   */  
+   */
   function emitChangeEvent() {
     tick().then(() => {
       dispatch('change', selection)
@@ -264,7 +264,7 @@
 
   /**
    * Internal helper for passed value array. Should be used for CE
-   */ 
+   */
   function _selectByValues(values) {
     if (!Array.isArray(values)) values = [values];
     if (values && values.length && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
@@ -286,7 +286,7 @@
    */
   function selectOption(opt) {
     if (maxReached) return;
-    
+
     if (typeof opt === 'string') {
       if (alreadyCreated.includes(opt)) return;
       alreadyCreated.push(opt);
@@ -325,7 +325,7 @@
   function onSelect(event, opt) {
     opt = opt || event.detail;
     if (disabled || opt.isDisabled || opt.$isGroupHeader) return;
-    
+
     selectOption(opt);
     $inputValue = '';
     if (!multiple) {
@@ -379,7 +379,7 @@
         if ($inputValue.length !== 0) return;
       case 'PageDown':
         dropdownActiveIndex = listIndex.first;
-      case 'ArrowUp': 
+      case 'ArrowUp':
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
           return;
@@ -390,12 +390,12 @@
         ignoreHover = true;
         break;
       case 'Home':
-        if ($inputValue.length !== 0 
+        if ($inputValue.length !== 0
           || ($inputValue.length === 0 && availableItems.length === 0)  // ref #26
         ) return;
       case 'PageUp':
         dropdownActiveIndex = listIndex.last;
-      case 'ArrowDown': 
+      case 'ArrowDown':
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
           return;
@@ -420,7 +420,7 @@
         if (!$hasDropdownOpened) return;
         let activeDropdownItem = availableItems[dropdownActiveIndex];
         if (creatable && $inputValue) {
-          activeDropdownItem = !activeDropdownItem || event.ctrlKey 
+          activeDropdownItem = !activeDropdownItem || event.ctrlKey
             ? $inputValue
             : activeDropdownItem
         }
@@ -498,7 +498,7 @@
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
     {inputValue} {hasDropdownOpened} {listMessage}
-    on:select={onSelect} 
+    on:select={onSelect}
     on:hover={onHover}
     let:item={item}
   ></Dropdown>
@@ -508,7 +508,7 @@
     <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
   </select>
-  {/if} 
+  {/if}
 </div>
 
 <style>
