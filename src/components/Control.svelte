@@ -178,7 +178,7 @@
   display: block;
   height: 20px;
   width: 20px;
-  left: calc(50% - 10px);
+  right: 8px;
   top: calc(50% - 10px);
   position: absolute !important;
   box-sizing: border-box;
