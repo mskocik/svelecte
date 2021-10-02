@@ -75,7 +75,7 @@ hasAnchor         | bool             | `null`     | `internal`: when passing als
 Event        | arguments | description
 -------------|-----------|-------------
 fetch        | options   | newly fetched remote options
-change       | selection | selected objects * if `anchor` is defined, `change` event is called also on it
+change       | selection | selected objects. If `anchor` property is defined, `change` event is called also on it
 createoption | option    | newly created option object
 
 ### Public API:
