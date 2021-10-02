@@ -72,11 +72,11 @@ hasAnchor         | bool             | `null`     | `internal`: when passing als
 
 ### Emitted events:
 
-Event | arguments | description
-------|-----------|-------------
-fetch | options   | newly fetched remote options
-change| selection | selected objects * if `anchor` is defined, `change` event is called also on it
-createoption | option | newly created option object
+Event        | arguments | description
+-------------|-----------|-------------
+fetch        | options   | newly fetched remote options
+change       | selection | selected objects * if `anchor` is defined, `change` event is called also on it
+createoption | option    | newly created option object
 
 ### Public API:
 
