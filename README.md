@@ -63,7 +63,7 @@ virtualList       | bool             | `false`    | Whether use virtual list for
 vlHeight          | number           | `null`     | Height of virtual list dropdown (if not specified, computed automatically)
 vlItemSize        | number           | `null`     | Height of one row (if not specified, computed automatically)
 searchField       | string\|array    | `null`     | Specify item property that will be used to search by (if not specified all props except `value` prop will be used)
-sortField         | string           | `null`     | Specify sort property. If not specified, `labelField` will be used 
+sortField         | string           | `null`     | Specify sort property. If not specified, `labelField` will be used
 disableSifter     | bool             | `false`    | Disable Sifter filtering & sorting. Can be useful in combination with `fetch`, when further filtering or sorting may be undesired
 disableHighlight  | bool             | `false`    | Disable highlighting of input value in results. Can be useful with a `renderer` function that includes additional text or does its own highlighting
 class             | string           | `'svelecte-control'` | default css class
@@ -76,6 +76,7 @@ Event | arguments | description
 ------|-----------|-------------
 fetch | options   | newly fetched remote options
 change| selection | selected objects * if `anchor` is defined, `change` event is called also on it
+createoption | option | newly created option object
 
 ### Public API:
 
@@ -83,13 +84,13 @@ Name          | type     | arguments | description
 --------------|----------|-----------|-------------
 selection     | property | -         | setter/getter - selected value(s) as objects, for binding. For usage in Svelte
 focus         | function | -         | focus input
-getSelection  | function | bool      | return selection, if `true` is passed, only values are returns, whole objects otherwise 
+getSelection  | function | bool      | return selection, if `true` is passed, only values are returns, whole objects otherwise
 setSelection  | function | array     | set selection programmatically
 config        | property | -         | **context property**: global common config for all instances, you can override most properties here and also some additional, mainly i18n
 addFormatter  | function | -         | **context function**: with signature `(name, formatFn)` you can add additional item renderers (formatters)
 <!-- clearByParent | bool | internal for CE  -->
 
-## 🙏 Thanks to 
+## 🙏 Thanks to
 
 - [selectize.js](https://github.com/selectize/selectize.js) - inspiration
 - [sifter](https://github.com/brianreavis/sifter.js) - search engine
