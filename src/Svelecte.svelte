@@ -90,8 +90,10 @@
   export const clearByParent = doDisable => {
     clearSelection();
     emitChangeEvent();
-    if (doDisable) disabled = true;
-    fetch = null;
+    if (doDisable) {
+      disabled = true;
+      fetch = null;
+    }
   }
 
   const dispatch = createEventDispatcher();
