@@ -119,7 +119,7 @@
 
   itemConfig.valueField = currentValueField;
   itemConfig.labelField = currentLabelField;
-  itemConfig.optionProps = selection
+  itemConfig.optionProps = selection && (multiple && Array.isArray(selection) ? selection.length > 0 : true)
     ? getFilterProps(multiple ? selection.slice(0,1).shift() : selection)
     : [currentValueField, currentLabelField];
 
