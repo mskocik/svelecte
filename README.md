@@ -4,6 +4,8 @@
 
 Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as [custom element](https://github.com/mskocik/svelecte-element) (CE). Usable in forms, behaves very similar to standard `<select>` element.
 
+See the latest changes on the [Releases](https://github.com/mskocik/svelecte/releases) page.
+
 ## 📃 Features 
 
 - searchable
