@@ -21,6 +21,7 @@
   export let listIndex;
   export let hasDropdownOpened;
   export let listMessage;
+  export let disabledField;
 
   export function scrollIntoView(params) {
     if (virtualList) return;
@@ -160,7 +161,7 @@
         <div slot="item" let:index let:style {style} class:sv-dd-item-active={index == dropdownIndex}>
           <Item formatter={renderer}
             index={listIndex.map[index]}
-            isDisabled={items[index].isDisabled}
+            isDisabled={items[index][disabledField]}
             item={items[index]}
             inputValue={$inputValue}
             {disableHighlight}
@@ -174,7 +175,7 @@
         <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] == dropdownIndex}>
           <Item formatter={renderer}
             index={listIndex.map[i]}
-            isDisabled={opt.isDisabled}
+            isDisabled={opt[disabledField]}
             item={opt}
             inputValue={$inputValue}
             {disableHighlight}

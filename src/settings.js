@@ -5,6 +5,7 @@ const settings = {
   placeholder: 'Select',
   searchable: true,
   disabled: false,
+  disabledField: '$disabled',
   // ui
   clearable: false,
   selectOnTab: false,

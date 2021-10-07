@@ -32,6 +32,7 @@
   export let placeholder = 'Select';
   export let searchable = defaults.searchable;
   export let disabled = defaults.disabled;
+  export let disabledField = defaults.disabledField;
   // UI, UX
   export let renderer = null;
   export let disableHighlight = false;
@@ -305,7 +306,7 @@
       opt = {
         [currentValueField]: encodeURIComponent(opt),
         [currentLabelField]: `${creatablePrefix}${opt}`,
-        _created: true,
+        '$created': true,
       };
       options = [...options, opt];
       emitCreateEvent(opt);
@@ -344,7 +345,7 @@
    */
   function onSelect(event, opt) {
     opt = opt || event.detail;
-    if (disabled || opt.isDisabled || opt.$isGroupHeader) return;
+    if (disabled || opt[disabledField] || opt.$isGroupHeader) return;
 
     selectOption(opt);
     $inputValue = '';
@@ -456,7 +457,6 @@
           event.preventDefault();
         }
         break;
-      // FUTURE: handle 'PageDown' & 'PageUp'
       case 'Backspace':
       case 'Delete':
         if ($inputValue === '' && selectedOptions.length) {
@@ -517,7 +517,7 @@
     virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize} {lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
-    {inputValue} {hasDropdownOpened} {listMessage}
+    {inputValue} {hasDropdownOpened} {listMessage} {disabledField}
     on:select={onSelect}
     on:hover={onHover}
     on:createoption
