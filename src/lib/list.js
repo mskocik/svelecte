@@ -48,7 +48,7 @@ export function getFilterProps(object) {
 export function filterList(options, inputValue, excludeSelected, sifterSearchField, sifterSortField, config) {
   if (excludeSelected) {
     options = options
-      .filter(opt => !opt.isSelected)
+      .filter(opt => !excludeSelected.has(opt[config.valueField]))
       .filter((opt, idx, self) => {
         if (opt.$isGroupHeader &&
           (
