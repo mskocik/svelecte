@@ -19,6 +19,8 @@ const settings = {
   // create
   creatable: false,
   creatablePrefix: '*',
+  keepCreated: true,
+  allowEditing: false,
   delimiter: ',',
   // remote
   fetchCallback: null,

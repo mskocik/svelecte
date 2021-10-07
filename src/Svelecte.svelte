@@ -50,6 +50,8 @@
   // creating
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;
+  export let allowEditing = defaults.allowEditing;
+  export let keepCreated = defaults.keepCreated;
   export let delimiter = defaults.delimiter;
   // remote
   export let fetch = null;
@@ -308,7 +310,7 @@
         [currentLabelField]: `${creatablePrefix}${opt}`,
         '$created': true,
       };
-      options = [...options, opt];
+      if (keepCreated) options = [...options, opt];
       emitCreateEvent(opt);
     }
     if (multiple) {
@@ -327,6 +329,15 @@
    * Remove option/all options from selection pool
    */
   function deselectOption(opt) {
+    if (opt.$created && backspacePressed && allowEditing) {
+      alreadyCreated.splice(alreadyCreated.findIndex(o => o[currentValueField] === opt[currentValueField]), 1);
+      alreadyCreated = alreadyCreated;
+      if (keepCreated) {
+        options.splice(options.findIndex(o => o === opt), 1);
+        options = options;
+      }
+      $inputValue = opt[currentLabelField].replace(creatablePrefix, '');
+    }
     const id = opt[currentValueField];
     selectedKeys.delete(id);
     selectedOptions.splice(selectedOptions.findIndex(o => o[currentValueField] == id), 1);
@@ -383,6 +394,9 @@
     }
     dropdownActiveIndex = event.detail;
   }
+
+  /** keyboard related props */
+  let backspacePressed = false;
 
   /**
    * Keyboard navigation
@@ -458,10 +472,13 @@
         }
         break;
       case 'Backspace':
+        backspacePressed = true;
       case 'Delete':
         if ($inputValue === '' && selectedOptions.length) {
           event.ctrlKey ? onDeselect({ /** no detail prop */}) : onDeselect(null, selectedOptions[selectedOptions.length - 1]);
+          event.preventDefault();
         }
+        backspacePressed = false;
       default:
         if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !isFetchingData) {
           $hasDropdownOpened = true;
