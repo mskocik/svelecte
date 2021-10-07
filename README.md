@@ -1,22 +1,22 @@
-# Svelecte
+# Svelecte [![NPM version](http://img.shields.io/npm/v/svelecte.svg?style=flat)](https://www.npmjs.org/package/svelecte)
 
 ![svelecte](https://mskocik.github.io/svelecte-docs/static/svelecte.png)
 
 Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as [custom element](https://github.com/mskocik/svelecte-element) (CE). Usable in forms, behaves very similar to standard `<select>` element.
 
-## 📃 Features
+## 📃 Features 
 
 - searchable
 - multiselect with limit of max selected items
 - allow simple array or complex objects as items
 - custom item renderer (formatter)
-- allow creating new items
+- allow creating new items (and possibly edit them)
 - remote data fetch
 - virtual list support
-- usable as custom element
 - i18n support
 - SSR support
 - lazy dropdown rendering
+- usable as custom element (as a separate package)
 
 
 ## 🔧 Installation
@@ -39,6 +39,7 @@ Property          | Type             | Default    | Description
 options           | array            | `[]`       | Data array
 valueField        | string           | `null`     | Property to be used as value (if not specified, will be selected automatically)
 labelField        | string           | `null`     | Property shown in dropdown (if not specified, will be selected automatically)
+disabledField     | string           | `$disabled`| Property to check, whether given options should be disabled and unselectable
 required          | bool             | `false`    | make sense only when `name` is defined
 placeholder       | string           | `'Select'` | Input placeholder
 searchable        | bool             | `true`     | Allow search among items by typing
@@ -53,6 +54,8 @@ collapseSelection | bool             | `false`    | collapse selection when `mul
 name              | string           | `null`     | create `<select>`, usable for normal forms.
 creatable         | bool             | `false`    | Allow creating new item(s)
 creatablePrefix   | string           | `'*'`      | Prefix marking new item
+allowEditing      | bool             | `false`    | When pressing `Backspace` switch to edit mode instead of removing newly created item
+keepCreated       | bool             | `true`     | Switch whether to add newly created option to option list or not
 delimiter         | string           | `','`      | split inserted text when pasting to create multiple items
 fetch             | string\|function | `null`     | Check "remote datasource" section for more details
 fetchMode         | string           | `'auto'`   | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
