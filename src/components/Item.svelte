@@ -18,7 +18,7 @@
 <div class="optgroup-header" on:mousedown|preventDefault><b>{item.label}</b></div>
 {:else}
 <div class="sv-item"
-  title={item._created ? 'Created item' : ''}
+  title={item.$created ? 'Created item' : ''}
   class:is-disabled={isDisabled}
   use:itemActions={{item, index}}
   on:select

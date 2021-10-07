@@ -5,6 +5,7 @@ const settings = {
   placeholder: 'Select',
   searchable: true,
   disabled: false,
+  disabledField: '$disabled',
   // ui
   clearable: false,
   selectOnTab: false,
@@ -18,6 +19,8 @@ const settings = {
   // create
   creatable: false,
   creatablePrefix: '*',
+  keepCreated: true,
+  allowEditing: false,
   delimiter: ',',
   // remote
   fetchCallback: null,

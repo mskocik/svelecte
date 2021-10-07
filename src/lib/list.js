@@ -41,14 +41,14 @@ function updateOptionProps(options, config) {
 
 export function getFilterProps(object) {
   if (object.options) object = object.options[0];
-  const exclude = ['isSelected', 'isDisabled' ,'selected', 'disabled', '$isGroupHeader', '$isGroupItem'];
+  const exclude = ['$disabled', '$isGroupHeader', '$isGroupItem'];
   return Object.keys(object).filter(prop => !exclude.includes(prop));
 }
 
 export function filterList(options, inputValue, excludeSelected, sifterSearchField, sifterSortField, config) {
   if (excludeSelected) {
     options = options
-      .filter(opt => !opt.isSelected)
+      .filter(opt => !excludeSelected.has(opt[config.valueField]))
       .filter((opt, idx, self) => {
         if (opt.$isGroupHeader &&
           (

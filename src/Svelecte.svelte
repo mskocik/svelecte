@@ -32,6 +32,7 @@
   export let placeholder = 'Select';
   export let searchable = defaults.searchable;
   export let disabled = defaults.disabled;
+  export let disabledField = defaults.disabledField;
   // UI, UX
   export let renderer = null;
   export let disableHighlight = false;
@@ -49,6 +50,8 @@
   // creating
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;
+  export let allowEditing = defaults.allowEditing;
+  export let keepCreated = defaults.keepCreated;
   export let delimiter = defaults.delimiter;
   // remote
   export let fetch = null;
@@ -199,13 +202,14 @@
     }
   }
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
-  let selectedOptions = new Set(selection ? (Array.isArray(selection) ? selection : [selection]) : []);
+  let selectedOptions = selection ? (Array.isArray(selection) ? selection : [selection]) : [];
+  let selectedKeys = selectedOptions.reduce((set, opt) => { set.add(opt[currentValueField]); return set; }, new Set());
   let alreadyCreated = [];
   $: flatItems = flatList(options, itemConfig);
-  $: maxReached = max && selectedOptions.size === max
+  $: maxReached = max && selectedOptions.length === max
   $: availableItems = maxReached
     ? []
-    : filterList(flatItems, disableSifter ? null : $inputValue, multiple, searchField, sortField, itemConfig);
+    : filterList(flatItems, disableSifter ? null : $inputValue, multiple ? selectedKeys : false, searchField, sortField, itemConfig);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
   $: listIndex = indexList(availableItems, creatable && $inputValue, itemConfig);
   $: {
@@ -225,7 +229,7 @@
     );
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
-    const _selectionArray = Array.from(selectedOptions)
+    const _selectionArray = selectedOptions
       .map(opt => {
         const obj = {};
         itemConfig.optionProps.forEach(prop => obj[prop] = opt[prop]);
@@ -238,7 +242,7 @@
 
     value = multiple
       ? _unifiedSelection.map(opt => opt[valueProp])
-      : selectedOptions.size ? _unifiedSelection[valueProp] : null;
+      : selectedOptions.length ? _unifiedSelection[valueProp] : null;
     prevSelection = _unifiedSelection;
     selection = prevSelection;
   }
@@ -290,11 +294,13 @@
     newAddition.forEach(selectOption);
   }
 
-  /**
+  /** 
    * Add given option to selection pool
+   * Check if not already selected or max item selection reached
    */
-  function selectOption(opt) {
-    if (maxReached) return;
+  function selectOption(opt) { 
+    if (multiple && maxReached) return;
+    if (selectedKeys.has(opt[currentValueField])) return;
 
     if (typeof opt === 'string') {
       if (alreadyCreated.includes(opt)) return;
@@ -302,16 +308,20 @@
       opt = {
         [currentValueField]: encodeURIComponent(opt),
         [currentLabelField]: `${creatablePrefix}${opt}`,
-        isSelected: true,
-        _created: true,
+        '$created': true,
       };
-      options = [...options, opt];
+      if (keepCreated) options = [...options, opt];
       emitCreateEvent(opt);
     }
-    opt.isSelected = true;
-    if (!multiple) selectedOptions.clear();
-    !selectedOptions.has(opt) && selectedOptions.add(opt);
-    selectedOptions = selectedOptions;
+    if (multiple) {
+      selectedOptions.push(opt);
+      selectedOptions = selectedOptions;
+      selectedKeys.add(opt[currentValueField]);
+    } else {
+      selectedOptions = [opt];
+      selectedKeys.clear();
+      selectedKeys.add(opt[currentValueField]);
+    } 
     flatItems = flatItems;
   }
 
@@ -319,14 +329,26 @@
    * Remove option/all options from selection pool
    */
   function deselectOption(opt) {
-    selectedOptions.delete(opt);
-    opt.isSelected = false;
+    if (opt.$created && backspacePressed && allowEditing) {
+      alreadyCreated.splice(alreadyCreated.findIndex(o => o[currentValueField] === opt[currentValueField]), 1);
+      alreadyCreated = alreadyCreated;
+      if (keepCreated) {
+        options.splice(options.findIndex(o => o === opt), 1);
+        options = options;
+      }
+      $inputValue = opt[currentLabelField].replace(creatablePrefix, '');
+    }
+    const id = opt[currentValueField];
+    selectedKeys.delete(id);
+    selectedOptions.splice(selectedOptions.findIndex(o => o[currentValueField] == id), 1);
     selectedOptions = selectedOptions;
     flatItems = flatItems;
   }
 
   function clearSelection() {
-    selectedOptions.forEach(deselectOption);
+    selectedKeys.clear();
+    selectedOptions = [];
+    flatItems = flatItems;
   }
 
   /**
@@ -334,7 +356,7 @@
    */
   function onSelect(event, opt) {
     opt = opt || event.detail;
-    if (disabled || opt.isDisabled || opt.$isGroupHeader) return;
+    if (disabled || opt[disabledField] || opt.$isGroupHeader) return;
 
     selectOption(opt);
     $inputValue = '';
@@ -356,7 +378,7 @@
     if (opt) {
       deselectOption(opt);
     } else {  // apply for 'x' when clearable:true || ctrl+backspace || ctrl+delete
-      selectedOptions.forEach(deselectOption);
+      clearSelection();
     }
     tick().then(refControl.focusControl);
     emitChangeEvent();
@@ -372,6 +394,9 @@
     }
     dropdownActiveIndex = event.detail;
   }
+
+  /** keyboard related props */
+  let backspacePressed = false;
 
   /**
    * Keyboard navigation
@@ -446,17 +471,19 @@
           event.preventDefault();
         }
         break;
-      // FUTURE: handle 'PageDown' & 'PageUp'
       case 'Backspace':
+        backspacePressed = true;
       case 'Delete':
-        if ($inputValue === '' && selectedOptions.size) {
-          event.ctrlKey ? onDeselect({ /** no detail prop */}) : onDeselect(null, [...selectedOptions].pop());
+        if ($inputValue === '' && selectedOptions.length) {
+          event.ctrlKey ? onDeselect({ /** no detail prop */}) : onDeselect(null, selectedOptions[selectedOptions.length - 1]);
+          event.preventDefault();
         }
+        backspacePressed = false;
       default:
         if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !isFetchingData) {
           $hasDropdownOpened = true;
         }
-        if (!multiple && selectedOptions.size && event.key !== 'Tab') event.preventDefault();
+        if (!multiple && selectedOptions.length && event.key !== 'Tab') event.preventDefault();
     }
   }
 
@@ -496,7 +523,7 @@
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
-    inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={Array.from(selectedOptions)} {isFetchingData}
+    inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
     on:paste={onPaste}
@@ -507,7 +534,7 @@
     virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize} {lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
-    {inputValue} {hasDropdownOpened} {listMessage}
+    {inputValue} {hasDropdownOpened} {listMessage} {disabledField}
     on:select={onSelect}
     on:hover={onHover}
     on:createoption
@@ -515,7 +542,7 @@
   ></Dropdown>
   {#if name && !hasAnchor}
   <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
-    {#each Array.from(selectedOptions) as opt}
+    {#each selectedOptions as opt}
     <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
   </select>
