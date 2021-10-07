@@ -2,7 +2,7 @@
   "name": "svelecte",
   "module": "dist/svelecte.mjs",
   "svelte": "src/Svelecte.svelte",
-  "version": "1.4.1",
+  "version": "2.0.0",
   "license": "MIT",
   "description": "Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as custom element (CE)",
   "scripts": {
@@ -20,7 +20,7 @@
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
     "sirv-cli": "^1.0.12",
-    "svelte": "^3.40.3"
+    "svelte": "^3.43.0"
   },
   "repository": {
     "type": "git",
