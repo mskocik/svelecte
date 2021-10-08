@@ -105,12 +105,12 @@
       - pixelGetter(scrollContainer, 'paddingBottom');
     // get item size (hacky style)
     scrollContainer.style = 'opacity: 0; display: block';
-    const firstItem = refVirtualList.$$.ctx[0].firstElementChild.firstElementChild;
+    const firstItem = refVirtualList.$$.ctx[1].firstElementChild.firstElementChild;
     if (firstItem) {
 
       firstItem.style = '';
       const firstSize = firstItem.getBoundingClientRect().height;
-      const secondItem = refVirtualList.$$.ctx[0].firstElementChild.firstElementChild.nextElementSibling;
+      const secondItem = refVirtualList.$$.ctx[1].firstElementChild.firstElementChild.nextElementSibling;
       let secondSize;
       if (secondItem) {
         secondItem.style = '';
