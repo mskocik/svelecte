@@ -258,7 +258,6 @@ class SvelecteElement extends HTMLElement {
         });
         return;
       }
-      console.log('prop', name, oldValue, newValue);
       this.svelecte.$set({ [formatProp(name)]: formatValue(name, newValue) });
     }
   } 
