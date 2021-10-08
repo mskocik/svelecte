@@ -25,28 +25,28 @@
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
 
+  // form and CE
+  export let name = 'svelecte';
+  export let required = false;
+  export let hasAnchor = false;
+  export let disabled = defaults.disabled;
   // basic
   export let options = [];
   export let valueField = defaults.valueField;
   export let labelField = defaults.labelField;
-  export let placeholder = 'Select';
-  export let searchable = defaults.searchable;
-  export let disabled = defaults.disabled;
   export let disabledField = defaults.disabledField;
+  export let placeholder = 'Select';
   // UI, UX
+  export let searchable = defaults.searchable;
+  export let clearable = defaults.clearable;
   export let renderer = null;
   export let disableHighlight = false;
-  export let clearable = defaults.clearable;
   export let selectOnTab = defaults.selectOnTab;
   export let resetOnBlur = defaults.resetOnBlur;
   // multiple
   export let multiple = defaults.multiple;
   export let max = defaults.max;
   export let collapseSelection = defaults.collapseSelection;
-  // form and CE
-  export let name = null;
-  export let required = false;
-  export let hasAnchor = false;
   // creating
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;

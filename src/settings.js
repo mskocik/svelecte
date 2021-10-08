@@ -1,21 +1,21 @@
 const settings = {
+  // html
+  disabled: false,
+  // basic
   valueField: null,
   labelField: null,
-  required: false,
-  placeholder: 'Select',
-  searchable: true,
-  disabled: false,
   disabledField: '$disabled',
+  placeholder: 'Select',
   // ui
+  searchable: true,
   clearable: false,
   selectOnTab: false,
   resetOnBlur: true,
+  fetchResetOnBlur: true,
   // multi
   multiple: false,
   max: 0,
   collapseSelection: false, // enable collapsible multiple selection
-  // html
-  name: null, // if name is defined, <select> element is created as well
   // create
   creatable: false,
   creatablePrefix: '*',
