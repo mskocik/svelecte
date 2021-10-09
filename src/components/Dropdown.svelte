@@ -192,7 +192,7 @@
       class:active={currentListLength === dropdownIndex}
       class:is-disabled={alreadyCreated.includes($inputValue)}
     >
-      <span>{createLabel($inputValue)}</span>
+      {@html createLabel($inputValue)}
       {#if currentListLength !== dropdownIndex}
       <span class="shortcut"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
       {/if}
