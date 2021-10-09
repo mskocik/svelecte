@@ -44,6 +44,7 @@ function formatValue(name, value) {
       }) : '';
     case 'renderer':
       return value || 'default';
+    case 'required':
     case 'searchable':
     case 'clearable':
     case 'disable-highlight':
