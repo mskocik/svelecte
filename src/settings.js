@@ -37,7 +37,8 @@ const settings = {
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to search',
     fetchEmpty: 'No data related to your search',
-    collapsedSelection: count => `${count} selected`
+    collapsedSelection: count => `${count} selected`,
+    createRowLabel: value => `Create '${value}'`
   },
   collapseSelectionFn: function(selectionCount, selection) {
     return settings.i18n.collapsedSelection(selectionCount);

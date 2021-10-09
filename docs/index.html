@@ -932,7 +932,8 @@ const OPTION_LIST = [
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to search',
     fetchEmpty: 'No data related to your search',
-    collapsedSelection: count => `${count} selected`
+    collapsedSelection: count => `${count} selected`,
+    createRowLabel: value => `Create '${value}'`
   },
   collapseSelectionFn: function(selectionCount, selection) {
     return settings.i18n.collapsedSelection(selectionCount);
@@ -967,8 +968,10 @@ Svelecte.config.i18n = {
     </div>
   </div>
   </div>
-
-  <script src='build/app.js' defer></script>
+  <script id="load-app" defer></script>
+  <script>
+    document.getElementById('load-app').src = 'build/app.js?v=' + Date.now()
+  </script>
 </body>
 
 </html>

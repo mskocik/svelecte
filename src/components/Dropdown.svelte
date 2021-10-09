@@ -22,6 +22,7 @@
   export let hasDropdownOpened;
   export let listMessage;
   export let disabledField;
+  export let createLabel;
 
   export function scrollIntoView(params) {
     if (virtualList) return;
@@ -191,7 +192,7 @@
       class:active={currentListLength === dropdownIndex}
       class:is-disabled={alreadyCreated.includes($inputValue)}
     >
-      <span>Create '{$inputValue}'</span>
+      <span>{createLabel($inputValue)}</span>
       {#if currentListLength !== dropdownIndex}
       <span class="shortcut"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
       {/if}

@@ -534,7 +534,7 @@
     virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize} {lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
-    {inputValue} {hasDropdownOpened} {listMessage} {disabledField}
+    {inputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={defaults.i18n.createRowLabel}
     on:select={onSelect}
     on:hover={onHover}
     on:createoption
