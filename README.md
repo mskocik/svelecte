@@ -42,7 +42,7 @@ const list = [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2'}, ...];
 
 ## 👀 Examples
 
-👉 Examples with more detailed documentation can be found at [https://mskocik.github.io/svelecte-docs/](https://mskocik.github.io/svelecte-docs/).
+👉 Examples with more detailed documentation can be found at [https://mskocik.github.io/svelecte/](https://mskocik.github.io/svelecte/).
 
 ## 🛠 Configuration & API
 
