@@ -39,6 +39,9 @@
       box-shadow: 0 0 4px #ccc;
       display: inline-block;
     }
+    .shortcut kbd {
+      color: black;
+    }
   </style>
   <title>Svelecte - select with autocomplete written in Svelte</title>
 </head>
@@ -124,6 +127,8 @@
             <p>Svelecte can be used in your Svelte app or used as a standalone <a href="#custom-element">custom element</a>. MDN link about <a
                 href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements"
                 target="_blank">custom elements</a>.</p>
+
+            <p>Check <a href="#playground">playground example</a> for all options</p>
 
             <h5>Install from npm</h5>
 
@@ -398,16 +403,16 @@
           <div class="columns">
             <div class="column col-lg-12 col-xl-12 col-6">
 
-              <p>When including Svelecte in your app, you can import what you need...</p>
+              <p>When including Svelecte in your app, you can import what parts do <em>you need</em>...</p>
 
               <pre class="code"
-                data-lang="CLI"><code>import { registerSvelecte, addFormatter, config } from 'svelecte-element';
+                data-lang="CLI"><code>import { registerSvelecte, addFormatter, config } from 'svelecte/component';
 </code></pre>
 
               <p>... or download the latest version manually from
-                <a href="https://github.com/mskocik/svelecte-element/releases/latest">GitHub</a>.</p>
+                <a href="https://github.com/mskocik/svelecte/releases/latest">GitHub</a>.</p>
 
-              <pre class="code" data-lang="html"><code class="html">&lt;link rel="stylesheet" href="https://unpkg.com/svelecte-element/dist/svelecte-element.css"&gt;
+              <pre class="code" data-lang="html"><code class="html">&lt;link rel="stylesheet" href="https://unpkg.com/svelecte-element/dist/svelecte.css"&gt;
 &lt;script src="https://unpkg.com/svelecte/dist/svelecte-element.js"&gt;/script&gt;</code></pre>
 
               <p class="mt-2">Standalone version offer same properties as module version:</p>
@@ -835,25 +840,25 @@ const OPTION_LIST = [
             <thead>
               <tr>
                 <th colspan="2">Event</th>
-                <th>arguments</th>
+                <th>parameter</th>
                 <th>description</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td colspan="2">fetch</td>
-                <td>options</td>
+                <td><code>array</code></td>
                 <td>newly fetched remote options</td>
               </tr>
               <tr>
                 <td colspan="2">change</td>
-                <td>selection</td>
-                <td>selected objects * if <code>anchor</code> is defined, <code>change</code> event is called also on it
+                <td><code>object|array|null</code></td>
+                <td>selected objects. If <code>anchor</code> &lt;select&gt; is defined, <code>change</code> event is called also on it
                 </td>
               </tr>
               <tr>
                 <td colspan="2">createoption</td>
-                <td>option</td>
+                <td><code>object</code></td>
                 <td>newly created option object
                 </td>
               </tr>
