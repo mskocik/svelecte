@@ -1,6 +1,6 @@
 # Svelecte [![NPM version](http://img.shields.io/npm/v/svelecte.svg?style=flat)](https://www.npmjs.org/package/svelecte)
 
-![svelecte](https://mskocik.github.io/svelecte-docs/static/svelecte.png)
+![svelecte](https://mskocik.github.io/svelecte/static/svelecte.png)
 
 Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as [custom element](https://github.com/mskocik/svelecte-element) (CE). Usable in forms, behaves very similar to standard `<select>` element.
 
