@@ -18,7 +18,8 @@ See the latest changes on the [Releases](https://github.com/mskocik/svelecte/rel
 - i18n support
 - SSR support
 - lazy dropdown rendering
-- usable as custom element (as a separate package)
+- usable as custom element
+- stylable
 
 
 ## 🔧 Installation
@@ -27,9 +28,21 @@ See the latest changes on the [Releases](https://github.com/mskocik/svelecte/rel
 npm install svelecte --save
 ```
 
+## Minimalistic example
+
+```html
+<script>
+import Svelecte from 'svelecte';
+
+const list = [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2'}, ...];
+</script>
+
+<Svelecte options={list}></Svelecte>
+```
+
 ## 👀 Examples
 
-👉 Examples with detailed documentation can be found at [https://mskocik.github.io/svelecte-docs/](https://mskocik.github.io/svelecte-docs/).
+👉 Examples with more detailed documentation can be found at [https://mskocik.github.io/svelecte-docs/](https://mskocik.github.io/svelecte-docs/).
 
 ## 🛠 Configuration & API
 
