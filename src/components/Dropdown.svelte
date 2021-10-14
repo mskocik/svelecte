@@ -71,7 +71,8 @@
     if (virtualList && vl_autoMode && isMounted && renderDropdown) {
       if (hasEmptyList) dropdownIndex = null;
       vl_itemSize = 0;
-      tick().then(virtualListDimensionsResolver);
+      tick().then(virtualListDimensionsResolver)
+        .then(positionDropdown);
     }
   }
 
