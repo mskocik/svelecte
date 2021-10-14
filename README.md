@@ -87,6 +87,7 @@ disableHighlight  | bool             | `false`    | Disable highlighting of inpu
 class             | string           | `'svelecte-control'` | default css class
 style             | string           | `null`     | inline style
 hasAnchor         | bool             | `null`     | `internal`: when passing also existing select (for CE)
+i18n              | object           | `null`     | I18n object overriding default settings
 
 ### Emitted events:
 
@@ -107,6 +108,51 @@ setSelection  | function | array     | set selection programmatically
 config        | property | -         | **context property**: global common config for all instances, you can override most properties here and also some additional, mainly i18n
 addFormatter  | function | -         | **context function**: with signature `(name, formatFn)` you can add additional item renderers (formatters)
 <!-- clearByParent | bool | internal for CE  -->
+
+### I18n
+
+This is default value of `i18n` property: 
+```js
+// config.i18n defaults:
+{
+  i18n: {
+    empty: 'No options',
+    nomatch: 'No matching options',    
+    max: num => `Maximum items ${num} selected`,
+    fetchBefore: 'Type to search',
+    fetchEmpty: 'No data related to your search',
+    collapsedSelection: count => `${count} selected`,
+    createRowLabel: value => `Create '${value}'`
+  },
+  collapseSelectionFn: function(selectionCount, selection) {
+    return settings.i18n.collapsedSelection(selectionCount);
+  }
+}
+```
+
+You can override whole object or only items you are interested in. You can override it globally or on component level:
+
+```js
+// global override
+import Svelecte, { config } from 'svelecte';
+
+config.i18n = {
+    empty: '🚫',
+    nomatch: '✋',
+    max: num => '🙄',
+    fetchBefore: '💻',
+    fetchEmpty: '🚮',
+    collapsedSelection: () => '🗃',
+    createRowLabel: value => `📝 ${value}`
+}
+
+// local override (component-level)
+const myI18n = {
+    empty: `Empty list, can't you see?`
+}
+
+<Svelecte i18n={myI18n}></Svelecte>
+```
 
 ## 🙏 Thanks to
 

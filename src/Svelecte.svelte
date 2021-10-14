@@ -72,6 +72,8 @@
   let className = 'svelecte-control';
   export { className as class};
   export let style = null;
+  // i18n override
+  export let i18n = null;
   // API: public
   export let selection = null;
   export let value = null;
@@ -158,7 +160,7 @@
         .finally(() => {
           isFetchingData = false;
           $hasFocus && hasDropdownOpened.set(true);
-          listMessage = config.i18n.fetchEmpty;
+          listMessage = _i18n.fetchEmpty;
           tick().then(() => dispatch('fetch', options));
         })
     }, 500);
@@ -191,6 +193,13 @@
   /** ************************************ component logic */
 
   let prevSelection = selection;
+  let _i18n = config.i18n;
+
+  $: {
+    if (i18n && typeof i18n === 'object') {
+      _i18n = Object.assign({}, config.i18n, i18n);
+    }
+  }
 
   $: {
     if (prevSelection !== selection) {
@@ -220,12 +229,12 @@
     }
   }
   $: listMessage = maxReached
-    ? config.i18n.max(max)
+    ? _i18n.max(max)
     : ($inputValue.length && availableItems.length === 0
-      ? config.i18n.nomatch
+      ? _i18n.nomatch
       : fetch
-        ? config.i18n.fetchBefore
-        : config.i18n.empty
+        ? _i18n.fetchBefore
+        : _i18n.empty
     );
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
@@ -534,7 +543,7 @@
     virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize} {lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
-    {inputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={defaults.i18n.createRowLabel}
+    {inputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
     on:select={onSelect}
     on:hover={onHover}
     on:createoption

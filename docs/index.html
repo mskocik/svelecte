@@ -828,6 +828,11 @@ const OPTION_LIST = [
                 <td>string</td>
                 <td><code>null</code></td>
                 <td>Inline style</td>
+              </tr><tr>
+                <td>i18n</td>
+                <td>object</td>
+                <td><code>null</code></td>
+                <td>Overriding object for <a href="#i18n">i18n properties</a></td>
               </tr>
             </tbody>
             <tbody>
@@ -926,7 +931,7 @@ const OPTION_LIST = [
           <div class="section" id="i18n">
             <h4>Localization</h4>
 
-            <p>Localization can be set by overriding default values from config.</p>
+            <p>Localization can be overridden globally and on component level.</p>
 
 <pre class="code"><code class="javascript">/** default values */
 {
@@ -946,22 +951,44 @@ const OPTION_LIST = [
 }
 </code></pre>
 
-<p class="mt-2">So in your code import <code>config</code> and update according to your needs. Don't forget that 
-  <code>max</code> and <code>collapsedSelection</code> are functions.
+<p class="mt-2">For <em>global</em> override, import <code>config</code> and update according to your needs. Don't forget that 
+  <code>max</code>, <code>collapsedSelection</code> and <code>createRowLabel</code> are functions. You can also override only
+  specific keys if you need to.
+  <br>
 </p>
 
-<pre class="code"><code class="javascript">/** your code */
-import { config } from 'svelecte';
+<p class="toast toast-warning">
+  <b>NOTE:</b> Local I18n override is not supported for custom-element. In that case you need to access <code>svelecte</code>
+  property and use component API (<code>$set</code> method) to update it programmatically.
+</p>
 
+
+<pre class="code"><code class="javascript">import Svelecte, { config } from 'svelecte';
+
+// global override
 config.i18n = {
   /** here replace all keys.*/
 }
+// local override (component-level)
+const myI18n = {
+    empty: `Empty list, can't you see?`
+}
 
-/** for standalone custom-element */
+&lt;Svelecte i18n={myI18n}&gt;&lt;/Svelecte&gt;
 
-Svelecte.config.i18n = {
+</code></pre>
+
+Exampe for custom element:
+
+<pre class="code"><code class="javascript">Svelecte.config.i18n = {
   /** here replace all keys.*/
 }
+// local override
+document.querySelector('el-svelecte').svelecte.$set({
+  i18n: {
+    // props to be overridden
+  }
+})
 </code></pre>
           </div>
 
