@@ -189,7 +189,7 @@
     {/if}
   {/if}
   {#if $inputValue && creatable && !maxReached}
-    <div class="creatable-row" on:click={dispatch('select', $inputValue)}
+    <div class="creatable-row" on:click={dispatch('select', $inputValue)} on:mouseenter={dispatch('hover', listIndex.last)}
       class:active={currentListLength === dropdownIndex}
       class:is-disabled={alreadyCreated.includes($inputValue)}
     >
