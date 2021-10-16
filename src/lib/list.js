@@ -1,5 +1,20 @@
 import Sifter from './sifter';
 
+export function initSelection(initialValue, prevSelection, valueField) {
+  if (initialValue && !prevSelection) {
+    const _initialValue = Array.isArray(initialValue) ? initialValue : [initialValue];
+    return this/** options */.reduce((res, val) => {
+      if (_initialValue.includes(val[valueField])) res.push(val);
+      return res;
+    }, []);
+  }
+  return prevSelection
+    ? (Array.isArray(prevSelection) 
+      ? prevSelection
+      : [prevSelection]
+    )
+    : [];
+}
 
 export function flatList(options, config) {
   const flatOpts = options.reduce((res, opt, i) => {

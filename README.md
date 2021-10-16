@@ -101,7 +101,6 @@ createoption | option    | newly created option object
 
 Name          | type     | arguments | description
 --------------|----------|-----------|-------------
-selection     | property | -         | setter/getter - selected value(s) as objects, for binding. For usage in Svelte
 focus         | function | -         | focus input
 getSelection  | function | bool      | return selection, if `true` is passed, only values are returns, whole objects otherwise
 setSelection  | function | array     | set selection programmatically

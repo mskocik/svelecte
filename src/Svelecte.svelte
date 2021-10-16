@@ -21,7 +21,7 @@
   import { createEventDispatcher, tick, onMount } from 'svelte';
   import { writable } from 'svelte/store';
   import { fetchRemote } from './lib/utils.js';
-  import { flatList, filterList, indexList, getFilterProps } from './lib/list.js';
+  import { initSelection, flatList, filterList, indexList, getFilterProps } from './lib/list.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
 
@@ -113,7 +113,6 @@
   };
 
   let isInitialized = false;
-  let initialValue = value;
   let refDropdown;
   let refControl;
   let ignoreHover = false;
@@ -211,7 +210,7 @@
     }
   }
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
-  let selectedOptions = selection ? (Array.isArray(selection) ? selection : [selection]) : [];
+  let selectedOptions = initSelection.call(options, value, prevSelection, currentValueField);
   let selectedKeys = selectedOptions.reduce((set, opt) => { set.add(opt[currentValueField]); return set; }, new Set());
   let alreadyCreated = [];
   $: flatItems = flatList(options, itemConfig);
@@ -517,7 +516,6 @@
 
   onMount(() => {
     isInitialized = true;
-    if (initialValue) _selectByValues(initialValue);
     if (creatable) {
       const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
       alreadyCreated = flatItems.map(opt => opt[valueProp]).filter(opt => opt);
