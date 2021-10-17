@@ -30,6 +30,7 @@
   }]
   
   let selectionWork = [initialOptions[0]];
+  let minQueryValue = 2;
 </script>
 
 <Svelecte
@@ -37,6 +38,7 @@
   {resetOnBlur}
   {fetchResetOnBlur}
   bind:selection={selectionWork}
+  minQuery={minQueryValue}
   multiple
   placeholder="Start typing ('re' for example)"
   fetch="https://jsonplaceholder.typicode.com/users/?email_like=[query]"
@@ -44,6 +46,7 @@
 <div>
   <b>Selected:</b>
   <span class="float-right">
+    Min. query length:<input type="number" min="1" step="1" bind:value={minQueryValue} class="small-input">
     <label for="rob" class="mr-2">
       <input type="checkbox" name="" id="rob" bind:checked={resetOnBlur}> Reset on blur
     </label>
@@ -51,5 +54,12 @@
       <input type="checkbox" name="" id="frob" bind:checked={fetchResetOnBlur}> Reset search results on empty input
     </label>
   </span>
-  <pre class="mt-1">{ JSON.stringify(selectionWork) }</pre>
+  <pre class="mt-2">{ JSON.stringify(selectionWork) }</pre>
 </div>
+
+<style>
+  .small-input {
+    width: 50px;
+    height: 20px;
+  }
+</style>

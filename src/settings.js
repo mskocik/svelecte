@@ -24,6 +24,7 @@ const settings = {
   delimiter: ',',
   // remote
   fetchCallback: null,
+  minQuery: 1,
   // performance
   lazyDropdown: true,
   // virtual list
@@ -36,6 +37,7 @@ const settings = {
     nomatch: 'No matching options',    
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to search',
+    fetchQuery: minQuery => `Type ${minQuery > 1 ? `at least ${minQuery} characters ` : '' }to search`,
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`

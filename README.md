@@ -56,7 +56,7 @@ valueField        | string           | `null`     | Property to be used as value
 labelField        | string           | `null`     | Property shown in dropdown (if not specified, will be selected automatically)
 disabledField     | string           | `$disabled`| Property to check, whether given options should be disabled and unselectable
 required          | bool             | `false`    | make sense only when `name` is defined
-placeholder       | string           | `'Select'` | Input placeholder
+placeholder       | string           | `Select`   | Input placeholder
 searchable        | bool             | `true`     | Allow search among items by typing
 disabled          | bool             | `false`    | Disable component
 renderer          | string\|function | `null`     | dropdown and selection renderer function. More info in item rendering section
@@ -68,14 +68,15 @@ max               | number           | `0`        | Maximum allowed items select
 collapseSelection | bool             | `false`    | collapse selection when `multiple` and not focused
 name              | string           | `null`     | create `<select>`, usable for normal forms.
 creatable         | bool             | `false`    | Allow creating new item(s)
-creatablePrefix   | string           | `'*'`      | Prefix marking new item
+creatablePrefix   | string           | `*`        | Prefix marking new item
 allowEditing      | bool             | `false`    | When pressing `Backspace` switch to edit mode instead of removing newly created item
 keepCreated       | bool             | `true`     | Switch whether to add newly created option to option list or not
-delimiter         | string           | `','`      | split inserted text when pasting to create multiple items
+delimiter         | string           | `,`        | split inserted text when pasting to create multiple items
 fetch             | string\|function | `null`     | Check "remote datasource" section for more details
-fetchMode         | string           | `'auto'`   | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
+fetchMode         | string           | `auto`     | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
 fetchCallback     | function         | `null`     | optional fetch callback
 fetchResetOnBlur  | bool             | `true`     | reset previous search results on empty input, related to `resetOnBlur`
+minQuery          | number           | `1`        | Minimal amount of characters required to perform remote request. Usable with `fetch` property
 lazyDropdown      | bool             | `true`     | render dropdown after first focus, not by default
 virtualList       | bool             | `false`    | Whether use virtual list for dropdown items (useful for large datasets)
 vlHeight          | number           | `null`     | Height of virtual list dropdown (if not specified, computed automatically)
@@ -84,7 +85,7 @@ searchField       | string\|array    | `null`     | Specify item property that w
 sortField         | string           | `null`     | Specify sort property. If not specified, `labelField` will be used
 disableSifter     | bool             | `false`    | Disable Sifter filtering & sorting. Can be useful in combination with `fetch`, when further filtering or sorting may be undesired
 disableHighlight  | bool             | `false`    | Disable highlighting of input value in results. Can be useful with a `renderer` function that includes additional text or does its own highlighting
-class             | string           | `'svelecte-control'` | default css class
+class             | string           | `svelecte-control` | default css class
 style             | string           | `null`     | inline style
 hasAnchor         | bool             | `null`     | `internal`: when passing also existing select (for CE)
 i18n              | object           | `null`     | I18n object overriding default settings
@@ -119,6 +120,7 @@ This is default value of `i18n` property:
     nomatch: 'No matching options',    
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to search',
+    fetchQuery: minQuery => `Type ${minQuery > 1 ? `at least ${minQuery} characters ` : '' }to search`,
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`
@@ -140,6 +142,7 @@ config.i18n = {
     nomatch: '✋',
     max: num => '🙄',
     fetchBefore: '💻',
+    fetchQuery: minQuery => '🧮',
     fetchEmpty: '🚮',
     collapsedSelection: () => '🗃',
     createRowLabel: value => `📝 ${value}`

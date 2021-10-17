@@ -58,6 +58,7 @@
   export let fetchMode = 'auto';
   export let fetchCallback = defaults.fetchCallback;
   export let fetchResetOnBlur = true;
+  export let minQuery = defaults.minQuery;
   // performance
   export let lazyDropdown = defaults.lazyDropdown;
   // virtual list
@@ -181,6 +182,7 @@
         }
         return;
       }
+      if (value && value.length < minQuery) return;
       isFetchingData = true;
       hasDropdownOpened.set(false);
       debouncedFetch(value);
@@ -229,11 +231,15 @@
   }
   $: listMessage = maxReached
     ? _i18n.max(max)
-    : ($inputValue.length && availableItems.length === 0
+    : ($inputValue.length && availableItems.length === 0 && minQuery <= 1
       ? _i18n.nomatch
-      : fetch
-        ? _i18n.fetchBefore
+      : (fetch
+        ? (minQuery <= 1 
+          ? _i18n.fetchBefore
+          : _i18n.fetchQuery(minQuery)
+        )
         : _i18n.empty
+      )
     );
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {

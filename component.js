@@ -15,7 +15,7 @@ const OPTION_LIST = [
   // creating
   'creatable', 'creatablePrefix', 'allow-editing', 'keepCreated', 'delimiter',
   // remote
-  'fetch', 'fetch-reset-on-blur',
+  'fetch', 'fetch-reset-on-blur', 'min-query',
   // perf & virtual list
   'lazy-dropdown', 'virtual-list', 'vl-height', 'vl-item-size',
   // sifter
@@ -63,6 +63,8 @@ function formatValue(name, value) {
       return value !== null && value !== 'false';
     case 'max':
       return isNaN(parseInt(value)) ? 0 : parseInt(value);
+    case 'min-query':
+      return isNaN(parseInt(value)) ? config.minQuery : parseInt(value);
   }
   return value;
 }
@@ -188,6 +190,20 @@ class SvelecteElement extends HTMLElement {
             value = 0;
           }
           this.setAttribute('max', value);
+        }
+      },
+      'minQuery': {
+        get() {
+          return this.getAttribute('min-query') || config.minQuery;
+        },
+        set(value) {
+          try {
+            value = parseInt(value);
+            if (value < 1) value = 1;
+          } catch (e) {
+            value = config.minQuery;
+          }
+          this.setAttribute('min-query', value);
         }
       },
       'renderer': {

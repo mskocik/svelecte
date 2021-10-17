@@ -370,6 +370,13 @@
                       Reset previous search results on empty input.
                     </dd>
                   </dl>
+                  
+                  <dl>
+                    <dt><span class="label">minQuery:</span> <code>number</code></dt>
+                    <dd>
+                      Force minimal length of input text to trigger remote request.
+                    </dd>
+                  </dl>
                   <dl>
                     <dt><span class="label">disableSifter:</span> <code>bool</code></dt>
                     <dd>
@@ -772,6 +779,11 @@ const OPTION_LIST = [
                 <td>Reset previous search results on empty input, related to <code>resetOnBlur</code></td>
               </tr>
               <tr>
+                  <td>minQuery</td>
+                  <td>number</td>
+                  <td><code>1</code></td>
+                  <td>Minimal amount of characters required to perform remote request. Valid only in combination with <code>fetch</code> defined</td>
+              </tr>
               <tr>
                 <td>disableSifter</td>
                 <td>bool</td>
@@ -887,12 +899,6 @@ const OPTION_LIST = [
             </thead>
             <tbody>
               <tr>
-                <td>selection</td>
-                <td>property</td>
-                <td>-</td>
-                <td>setter/getter - selected value(s) as objects, for binding. For usage in Svelte</td>
-              </tr>
-              <tr>
                 <td>focus</td>
                 <td>function</td>
                 <td>-</td>
@@ -957,12 +963,6 @@ const OPTION_LIST = [
   <br>
 </p>
 
-<p class="toast toast-warning">
-  <b>NOTE:</b> Local I18n override is not supported for custom-element. In that case you need to access <code>svelecte</code>
-  property and use component API (<code>$set</code> method) to update it programmatically.
-</p>
-
-
 <pre class="code"><code class="javascript">import Svelecte, { config } from 'svelecte';
 
 // global override
@@ -978,7 +978,7 @@ const myI18n = {
 
 </code></pre>
 
-Exampe for custom element:
+Example for custom element:
 
 <pre class="code"><code class="javascript">Svelecte.config.i18n = {
   /** here replace all keys.*/
@@ -991,6 +991,12 @@ document.querySelector('el-svelecte').svelecte.$set({
 })
 </code></pre>
           </div>
+
+<span class="toast toast-warning">
+  <b>NOTE:</b> Local I18n override is not supported for custom-element. In that case you need to access <code>svelecte</code>
+  property and use component API (<code>$set</code> method) to update it programmatically.
+</span>
+          
 
           <div class="footer">
             Made with <a href="https://svelte.dev">Svelte</a> ❤ by <a href="https://github.com/mskocik">Martin Skocik</a>
