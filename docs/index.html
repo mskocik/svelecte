@@ -474,7 +474,7 @@ const OPTION_LIST = [
   // creating
   'creatable', 'creatablePrefix', 'allow-editing', 'keepCreated', 'delimiter',
   // remote
-  'fetch', 'fetch-reset-on-blur',
+  'fetch', 'fetch-reset-on-blur', 'min-query',
   // perf & virtual list
   'lazy-dropdown', 'virtual-list', 'vl-height', 'vl-item-size',
   // sifter
@@ -947,6 +947,7 @@ const OPTION_LIST = [
     nomatch: 'No matching options',    
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to search',
+    fetchQuery: minQuery => `Type ${minQuery > 1 ? `at least ${minQuery} characters ` : '' }to search`,
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`
