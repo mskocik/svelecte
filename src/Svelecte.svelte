@@ -2,7 +2,6 @@
   import defaults from './settings.js';
   import { debounce, xhr, fieldInit, iOS } from './lib/utils.js'; // shared across instances
 
-  const isIOS = iOS();
   const formatterList = {
     default: function(item) { return item[this.label]; }
   };
@@ -122,6 +121,7 @@
   let fetchUnsubscribe = null;
   let currentValueField = valueField || fieldInit('value', options, itemConfig);
   let currentLabelField = labelField || fieldInit('label', options, itemConfig);
+  let isIOS = false;
 
   itemConfig.valueField = currentValueField;
   itemConfig.labelField = currentLabelField;
@@ -532,6 +532,7 @@
     if (prevSelection && !multiple) {
       dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevSelection[currentValueField]);
     }
+    isIOS = iOS();
   });
 </script>
 
