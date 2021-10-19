@@ -1,7 +1,8 @@
 <script context="module">
   import defaults from './settings.js';
-  import { debounce, xhr, fieldInit } from './lib/utils.js'; // shared across instances
+  import { debounce, xhr, fieldInit, iOS } from './lib/utils.js'; // shared across instances
 
+  const isIOS = iOS();
   const formatterList = {
     default: function(item) { return item[this.label]; }
   };
@@ -423,6 +424,7 @@
       return;
     }
     const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey ? 'Tab' : 'No-tab';
+    const ctrlKey = isIOS ? event.metaKey : event.ctrlKey;
     switch (event.key) {
       case 'End':
         if ($inputValue.length !== 0) return;
@@ -469,7 +471,7 @@
         if (!$hasDropdownOpened) return;
         let activeDropdownItem = availableItems[dropdownActiveIndex];
         if (creatable && $inputValue) {
-          activeDropdownItem = !activeDropdownItem || event.ctrlKey
+          activeDropdownItem = !activeDropdownItem || ctrlKey
             ? $inputValue
             : activeDropdownItem
         }
@@ -489,12 +491,12 @@
         backspacePressed = true;
       case 'Delete':
         if ($inputValue === '' && selectedOptions.length) {
-          event.ctrlKey ? onDeselect({ /** no detail prop */}) : onDeselect(null, selectedOptions[selectedOptions.length - 1]);
+          ctrlKey ? onDeselect({ /** no detail prop */}) : onDeselect(null, selectedOptions[selectedOptions.length - 1]);
           event.preventDefault();
         }
         backspacePressed = false;
       default:
-        if (!event.ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !isFetchingData) {
+        if (!ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !isFetchingData) {
           $hasDropdownOpened = true;
         }
         if (!multiple && selectedOptions.length && event.key !== 'Tab') event.preventDefault();
@@ -548,6 +550,7 @@
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
     {inputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
+    metaKey={isIOS ? '⌘' : 'Ctrl'}
     on:select={onSelect}
     on:hover={onHover}
     on:createoption

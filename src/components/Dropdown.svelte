@@ -23,6 +23,7 @@
   export let listMessage;
   export let disabledField;
   export let createLabel;
+  export let metaKey;
 
   export function scrollIntoView(params) {
     if (virtualList) return;
@@ -195,7 +196,7 @@
     >
       {@html createLabel($inputValue)}
       {#if currentListLength !== dropdownIndex}
-      <span class="shortcut"><kbd>Ctrl</kbd>+<kbd>Enter</kbd></span>
+      <span class="shortcut"><kbd>{metaKey}</kbd>+<kbd>Enter</kbd></span>
       {/if}
     </div>
   {/if}
@@ -262,6 +263,8 @@
     padding: 0px 6px;
     margin: -1px 0;
     background-color: white;
+    line-height: 1.6;
+    height: 22px;
 }
 
 .empty-list-row {
