@@ -319,7 +319,7 @@
 
     if (typeof opt === 'string') {
       if (alreadyCreated.includes(opt)) return;
-      alreadyCreated.push(opt);
+      !fetch && alreadyCreated.push(opt);
       opt = {
         [currentValueField]: encodeURIComponent(opt),
         [currentLabelField]: `${creatablePrefix}${opt}`,
