@@ -184,7 +184,7 @@
     dataSrc = optionsList[1];
     const countries = dataset.countries();
     setTimeout(() => {
-      cmp.setSelection([countries[2], countries[7]]);
+      myValue = [countries[2], countries[7]];
     });
     setTimeout(() => {
       document.querySelector('#example-7 input').focus();
@@ -212,7 +212,7 @@
     <h4>&bull; Complex playground &bull;</h4>
     
     <div class="form-row example-wrap" class:flexible-svelecte={isFlexWidth}>
-      <Svelecte {...settings} bind:selection={myValue} name="select" bind:this={cmp}>
+      <Svelecte {...settings} bind:value={myValue} name="select" bind:this={cmp} valueAsObject>
         <b slot="icon">{slot}</b>
       </Svelecte>
       Current value: {JSON.stringify(myValue)}
@@ -247,7 +247,7 @@
           </fieldset>
           <fieldset>
             <legend>Options</legend>
-            <Svelecte options={optionsList} bind:selection={dataSrc} style="width: 195px" on:change={() => {myValue = multiple ? [] : null}}></Svelecte>
+            <Svelecte options={optionsList} bind:readSelection={dataSrc} style="width: 195px" on:change={() => {myValue = multiple ? [] : null}}></Svelecte>
             <p class="mb-0">
               Options with <small class="label label-primary">API</small> label<br>
               to demonstrate AJAX fetch.</p>

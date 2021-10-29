@@ -37,7 +37,8 @@
   options={initialOptions}
   {resetOnBlur}
   {fetchResetOnBlur}
-  bind:selection={selectionWork}
+  bind:value={selectionWork}
+  valueAsObject
   minQuery={minQueryValue}
   multiple
   placeholder="Start typing ('re' for example)"
