@@ -43,6 +43,7 @@
   export let disableHighlight = false;
   export let selectOnTab = defaults.selectOnTab;
   export let resetOnBlur = defaults.resetOnBlur;
+  export let dndzone = () => ({ noop: true, update: () => {}, destroy: () => {}});
   // multiple
   export let multiple = defaults.multiple;
   export let max = defaults.max;
@@ -538,6 +539,10 @@
     // do nothing otherwise
   }
 
+  function onDndEvent(e) {
+    selectedOptions = e.detail.items;
+  }
+
   /** ************************************ component lifecycle related */
 
   onMount(() => {
@@ -558,9 +563,12 @@
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
+    {dndzone} {currentValueField}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
     on:paste={onPaste}
+    on:consider={onDndEvent}
+    on:finalize={onDndEvent}
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>

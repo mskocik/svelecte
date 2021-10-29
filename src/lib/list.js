@@ -8,7 +8,7 @@ export function initSelection(initialValue, valueAsObject, valueField) {
       return res;
     }, []);
   }
-  return valueAsObject 
+  return valueAsObject && initialValue
     ? (Array.isArray(initialValue) ? initialValue : [initialValue])
     : [];
 }

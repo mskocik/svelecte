@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from 'svelte';
+  import { flip } from 'svelte/animate';
   import Input from './Input.svelte';
   import Item from './Item.svelte';
 
@@ -17,6 +18,10 @@
   export let hasDropdownOpened;
   export let selectedOptions;           // passed as array
   export let isFetchingData;
+  export let dndzone;
+  export let currentValueField;
+
+  const flipDurationMs = 100;
 
 
   export function focusControl(event) {
@@ -64,14 +69,16 @@
 >
   <slot name="icon"></slot>
   <!-- selection & input -->
-  <div class="sv-content sv-input-row" class:has-multiSelection={multiple}>
+  <div class="sv-content sv-input-row" class:has-multiSelection={multiple} use:dndzone={{items:selectedOptions,flipDurationMs, morphDisabled: true }} on:consider on:finalize>
     {#if selectedOptions.length }
       {#if multiple && collapseSelection && doCollapse}
         { collapseSelection(selectedOptions.length, selectedOptions) }
       {:else}
-      {#each selectedOptions as opt}
-      <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple} inputValue={$inputValue}></Item>
-      {/each}
+        {#each selectedOptions as opt (opt[currentValueField])}
+        <div animate:flip={{duration: flipDurationMs }}>
+          <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple} inputValue={$inputValue}></Item>
+        </div>
+        {/each}
       {/if}
     {/if}
     <!-- input -->
