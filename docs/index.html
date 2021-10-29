@@ -120,6 +120,9 @@
               <li class="mt-0">usable as custom element</li>
               <li class="mt-0">i18n support</li>
               <li class="mt-0">SSR support</li>
+              <li class="mt-0">lazy dropdown rendering</li>
+              <li class="mt-0">stylable</li>
+              <li class="mt-0">reordable multi selection  with addition of <code>svelte-dnd-action</code>. See <a href="https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0" target="_blank">example</a>.</li>
             </ul>
 
             <h3 id="intro">Getting started</h3>
@@ -185,14 +188,15 @@
               <details>
                 <summary class="label label-rounded c-hand">Exposed selection properties:</summary>
                 <div class="mt-2">
-                  Selection is <b>always</b> an array, when <code>multiple</code> is set to <code>true</code>.
-                  <dl>
-                    <dt><span class="label">bind:selection:</span> &rarr; <code>array|object|null</code></dt>
-                    <dd>Return selected object / array of objects</dd>
-                  </dl>
                   <dl>
                     <dt><span class="label">bind:value:</span> &rarr; <code>array|mixed|null</code></dt>
-                    <dd>Returns only <code>valueField</code> property / array like in normal selects.
+                    <dd>It returns <code>valueField</code> property / array like in normal selects or object / object array 
+                      depending whether <code>valueAsObject</code> property is set.
+                  </dl>
+                  Selection is <b>always</b> an array, when <code>multiple</code> is set to <code>true</code>.
+                  <dl>
+                    <dt><span class="label">bind:readSelection:</span> &rarr; <code>array|object|null</code></dt>
+                    <dd>Is readonly property. Return selected object / array of objects</dd>
                   </dl>
                 </div>
               </details>
@@ -845,6 +849,11 @@ const OPTION_LIST = [
                 <td>object</td>
                 <td><code>null</code></td>
                 <td>Overriding object for <a href="#i18n">i18n properties</a></td>
+              </tr><tr>
+                <td>dndzone</td>
+                <td>function</td>
+                <td><code>empty function</code></td>
+                <td>If you pass <code>dndzone</code> from <code>svelte-dnd-action</code>, reordering of selected items will be possible. See <a href="https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0">example REPL</a> how to set it up.</td>
               </tr>
             </tbody>
             <tbody>

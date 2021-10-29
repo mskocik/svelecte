@@ -20,6 +20,7 @@ See the latest changes on the [Releases](https://github.com/mskocik/svelecte/rel
 - lazy dropdown rendering
 - usable as custom element
 - stylable
+- reordable multi selection  with addition of `svelte-dnd-action` ([example](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0))
 
 
 ## 🔧 Installation
@@ -35,10 +36,31 @@ npm install svelecte --save
 import Svelecte from 'svelecte';
 
 const list = [{ id: 1, name: 'Item 1' }, { id: 2, name: 'Item 2'}, ...];
+let myValue = null;
 </script>
 
-<Svelecte options={list}></Svelecte>
+<Svelecte options={list} bind:value={myValue}></Svelecte>
 ```
+
+<details>
+<summary><strong>💭 Note about <code>value</code> and <code>readSelection</strong></code> property</summary>
+<div>
+Since v3.0 inner logic behind these properties has changed. Now `value` property reflects inner selection. By default it
+returns `valueField` property (if not defined, Svelecte tries to guess which property is representing value). This also means
+that if you want to set new value, you need to assign to it correct value. Let's take the example above:
+
+```
+myValue = 2;
+```
+This would select item with `id` property `2`.
+
+Sometimes you want to work strictly with objects, like `myValue = {id: 2, name: 'Item 2'}`. You can set property `valueAsObject` which tells Svelecte to handle `value` property as object or array of object (if `multiple` is also set).
+
+Property `readSelection` _always_ returns selected object or object array no matter if `valueAsObject` is set or not.
+</div>
+</details>
+
+---
 
 ## 👀 Examples
 
@@ -89,6 +111,7 @@ class             | string           | `svelecte-control` | default css class
 style             | string           | `null`     | inline style
 hasAnchor         | bool             | `null`     | `internal`: when passing also existing select (for CE)
 i18n              | object           | `null`     | I18n object overriding default settings
+dndzone           | function         | empty      | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [example REPL](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)
 
 ### Emitted events:
 

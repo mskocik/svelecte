@@ -12,7 +12,7 @@
 </script>
 
 <Svelecte {options} {labelAsValue}
-  bind:selection={selection}
+  bind:readSelection={selection}
   bind:value={value}
   placeholder="Select country"
 ></Svelecte>
@@ -24,7 +24,7 @@
 </div>
 
 <div>
-  Current <code>selection</code> value: <b>{JSON.stringify(selection) }</b>
+  Current <code>readSelection</code> value: <b>{JSON.stringify(selection) }</b>
   <br>
   Current <code>value</code> value: <b>{value}</b>
 </div>
