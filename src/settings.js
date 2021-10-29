@@ -6,6 +6,7 @@ const settings = {
   labelField: null,
   disabledField: '$disabled',
   placeholder: 'Select',
+  valueAsObject: false,
   // ui
   searchable: true,
   clearable: false,

@@ -76,17 +76,19 @@
   // i18n override
   export let i18n = null;
   // API: public
-  export let selection = null;
+  export let readSelection = null;
   export let value = null;
   export let labelAsValue = false;
+  export let valueAsObject = defaults.valueAsObject;
   export const focus = event => {
     refControl.focusControl(event);
   };
   export const getSelection = onlyValues => {
-    if (!selection) return multiple ? [] : null;
-    return multiple
-      ? (onlyValues ? value : selection.map(opt => Object.assign({}, opt)))
-      : (onlyValues ? value : Object.assign({}, selection));
+    if (!selectedOptions.length) return multiple ? [] : null;
+    const _selection = selectedOptions.map(opt => onlyValues
+      ? opt[labelAsValue ? currentLabelField : currentValueField] 
+      : Object.assign({}, opt));
+    return multiple ? _selection : _selection[0];
   };
   export const setSelection = (selection, triggerChangeEvent) => {
     _selectByValues(selection);
@@ -125,8 +127,8 @@
 
   itemConfig.valueField = currentValueField;
   itemConfig.labelField = currentLabelField;
-  itemConfig.optionProps = selection && (multiple && Array.isArray(selection) ? selection.length > 0 : true)
-    ? getFilterProps(multiple ? selection.slice(0,1).shift() : selection)
+  itemConfig.optionProps = readSelection && (multiple && Array.isArray(readSelection) ? readSelection.length > 0 : true)
+    ? getFilterProps(multiple ? readSelection.slice(0,1).shift() : readSelection)
     : [currentValueField, currentLabelField];
 
   /** ************************************ automatic init */
@@ -194,7 +196,7 @@
 
   /** ************************************ component logic */
 
-  let prevSelection = selection;
+  let prevValue = value;
   let _i18n = config.i18n;
 
   $: {
@@ -204,16 +206,26 @@
   }
 
   $: {
-    if (prevSelection !== selection) {
+    if (prevValue !== value) {
       clearSelection();
-      if (selection) {
-        Array.isArray(selection) ? selection.forEach(selectOption) : selectOption(selection);
+      if (value) {
+        let _selection;
+        if (!valueAsObject) {
+          const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
+          _selection = Array.isArray(value)
+            ? value.map(val => options.find(item => item[valueProp] === val))
+            : options.find(item => item[valueProp] === value)
+        } else {
+          _selection = value;
+        }
+        Array.isArray(_selection) ? _selection.forEach(selectOption) : selectOption(_selection);
+        readSelection = _selection;
       }
-      prevSelection = selection;
+      prevValue = value;
     }
   }
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
-  let selectedOptions = initSelection.call(options, value, prevSelection, currentValueField);
+  let selectedOptions = initSelection.call(options, value, valueAsObject, currentValueField);
   let selectedKeys = selectedOptions.reduce((set, opt) => { set.add(opt[currentValueField]); return set; }, new Set());
   let alreadyCreated = [];
   $: flatItems = flatList(options, itemConfig);
@@ -244,6 +256,7 @@
     );
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
+    console.log('options change ');
     const _selectionArray = selectedOptions
       .map(opt => {
         const obj = {};
@@ -255,11 +268,15 @@
       : (_selectionArray.length ? _selectionArray[0] : null);
     const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
 
-    value = multiple
-      ? _unifiedSelection.map(opt => opt[valueProp])
-      : selectedOptions.length ? _unifiedSelection[valueProp] : null;
-    prevSelection = _unifiedSelection;
-    selection = prevSelection;
+    if (!valueAsObject) {
+      prevValue = multiple
+        ? _unifiedSelection.map(opt => opt[valueProp])
+        : selectedOptions.length ? _unifiedSelection[valueProp] : null;
+    } else {
+      prevValue = _unifiedSelection;
+    }
+    value = prevValue;
+    readSelection = _unifiedSelection;
   }
   let prevOptions = options;
   $: {
@@ -279,7 +296,7 @@
    */
   function emitChangeEvent() {
     tick().then(() => {
-      dispatch('change', selection)
+      dispatch('change', readSelection)
     });
   }
 
@@ -336,6 +353,7 @@
       selectedOptions = [opt];
       selectedKeys.clear();
       selectedKeys.add(opt[currentValueField]);
+      dropdownActiveIndex = options.indexOf(opt); 
     } 
     flatItems = flatItems;
   }
@@ -529,8 +547,8 @@
       alreadyCreated = flatItems.map(opt => opt[valueProp]).filter(opt => opt);
     }
     dropdownActiveIndex = listIndex.first;
-    if (prevSelection && !multiple) {
-      dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevSelection[currentValueField]);
+    if (prevValue && !multiple) {
+      dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevValue[currentValueField]);
     }
     isIOS = iOS();
   });
