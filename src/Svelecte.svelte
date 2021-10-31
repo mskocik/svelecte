@@ -257,7 +257,6 @@
     );
   $: itemRenderer = typeof renderer === 'function' ? renderer : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: {
-    console.log('options change ');
     const _selectionArray = selectedOptions
       .map(opt => {
         const obj = {};
