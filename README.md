@@ -74,6 +74,7 @@ Property `readSelection` _always_ returns selected object or object array no mat
 Property          | Type             | Default    | Description
 ------------------|------------------|------------|------------
 options           | array            | `[]`       | Data array
+valueAsObject     | bool             | `false`    | Switch whether Svelecte should expects from and return to `bind:value` objects or primitive value (usually string, number)
 valueField        | string           | `null`     | Property to be used as value (if not specified, will be selected automatically)
 labelField        | string           | `null`     | Property shown in dropdown (if not specified, will be selected automatically)
 disabledField     | string           | `$disabled`| Property to check, whether given options should be disabled and unselectable
@@ -142,8 +143,10 @@ This is default value of `i18n` property:
     empty: 'No options',
     nomatch: 'No matching options',    
     max: num => `Maximum items ${num} selected`,
-    fetchBefore: 'Type to search',
-    fetchQuery: minQuery => `Type ${minQuery > 1 ? `at least ${minQuery} characters ` : '' }to search`,
+    fetchBefore: 'Type to start searching',
+    fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength 
+      ? `at least ${minQuery - inputLength} characters `
+      : '' }to start searching`,
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`
@@ -165,7 +168,7 @@ config.i18n = {
     nomatch: '✋',
     max: num => '🙄',
     fetchBefore: '💻',
-    fetchQuery: minQuery => '🧮',
+    fetchQuery: (minQuery, inputLength) => '🧮',
     fetchEmpty: '🚮',
     collapsedSelection: () => '🗃',
     createRowLabel: value => `📝 ${value}`
