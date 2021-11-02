@@ -28,8 +28,9 @@ const component = {
   output: [
     {
       sourcemap: false,
-      format: 'es',
-      file: 'dist/svelecte-element.mjs'
+      format: 'iife',
+      name: 'Svelecte',
+      file: 'dist/svelecte-element.js'
     }
   ],
   plugins: [
