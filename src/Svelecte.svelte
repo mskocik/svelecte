@@ -250,7 +250,7 @@
       : (fetch
         ? (minQuery <= 1 
           ? _i18n.fetchBefore
-          : _i18n.fetchQuery(minQuery)
+          : _i18n.fetchQuery(minQuery, $inputValue.length)
         )
         : _i18n.empty
       )
@@ -500,7 +500,7 @@
         event.preventDefault(); // prevent form submit
         break;
       case ' ':
-        if (!$hasDropdownOpened) {
+        if (!fetch && !$hasDropdownOpened) {
           $hasDropdownOpened = true;
           event.preventDefault();
         }

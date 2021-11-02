@@ -37,8 +37,10 @@ const settings = {
     empty: 'No options',
     nomatch: 'No matching options',    
     max: num => `Maximum items ${num} selected`,
-    fetchBefore: 'Type to search',
-    fetchQuery: minQuery => `Type ${minQuery > 1 ? `at least ${minQuery} characters ` : '' }to search`,
+    fetchBefore: 'Type to start searching',
+    fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength 
+      ? `at least ${minQuery - inputLength} characters `
+      : '' }to start searching`,
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`
