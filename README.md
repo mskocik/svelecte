@@ -20,7 +20,8 @@ See the latest changes on the [Releases](https://github.com/mskocik/svelecte/rel
 - lazy dropdown rendering
 - usable as custom element
 - stylable
-- reordable multi selection  with addition of `svelte-dnd-action` ([example](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0))
+- reordable multi selection  with addition of `svelte-dnd-action` ([example](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)) 
+- usable with `svelte-use-form`  ([example](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1))
 
 
 ## 🔧 Installation
