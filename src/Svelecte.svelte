@@ -43,7 +43,8 @@
   export let disableHighlight = false;
   export let selectOnTab = defaults.selectOnTab;
   export let resetOnBlur = defaults.resetOnBlur;
-  export let dndzone = () => ({ noop: true, update: () => {}, destroy: () => {}});
+  export let dndzone = () => ({ noop: true, destroy: () => {}});
+  export let validatorAction = null;
   // multiple
   export let multiple = defaults.multiple;
   export let max = defaults.max;
@@ -125,6 +126,9 @@
   let currentValueField = valueField || fieldInit('value', options, itemConfig);
   let currentLabelField = labelField || fieldInit('label', options, itemConfig);
   let isIOS = false;
+  let refSelectAction = validatorAction ? validatorAction.shift() : () => ({ destroy: () => {}});
+  let refSelectActionParams = validatorAction || [];
+  let refSelectElement = null;
 
   itemConfig.valueField = currentValueField;
   itemConfig.labelField = currentLabelField;
@@ -297,6 +301,7 @@
   function emitChangeEvent() {
     tick().then(() => {
       dispatch('change', readSelection)
+      refSelectAction && refSelectElement.dispatchEvent(new Event('input'));
     });
   }
 
@@ -583,7 +588,7 @@
     let:item={item}
   ></Dropdown>
   {#if name && !hasAnchor}
-  <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled}>
+  <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled} use:refSelectAction={refSelectActionParams} bind:this={refSelectElement}>
     {#each selectedOptions as opt}
     <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
