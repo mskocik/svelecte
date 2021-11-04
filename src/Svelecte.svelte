@@ -573,6 +573,7 @@
     on:paste={onPaste}
     on:consider={onDndEvent}
     on:finalize={onDndEvent}
+    on:blur
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>

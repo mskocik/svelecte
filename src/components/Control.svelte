@@ -59,6 +59,7 @@
     setTimeout(() => {
       doCollapse = true;
     }, 100);
+    dispatch('blur');
   }
 
 </script>
