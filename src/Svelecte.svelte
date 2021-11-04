@@ -8,7 +8,9 @@
   // provide ability to add additional renderers
   export function addFormatter(name, formatFn) {
     if (name instanceof Object) {
-      formatterList = Object.assign(formatterList, name);
+      for (let prop in name) {
+        formatterList[prop] = name[prop];
+      }
     } else {
       formatterList[name] = formatFn
     }

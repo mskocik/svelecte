@@ -13,8 +13,12 @@
     return `<span class="color-item" style="background-color: ${item.hex};">
       </span>${item.text}`;
   }
-
-  addFormatter('color-blocks', colorRenderer);
+  // add custom renderer
+  addFormatter('color-blocks', colorRenderer)
+  // alternatively you can use object syntax
+  addFormatter({
+    'color-blocks': colorRenderer
+  });
 </script>
 
 <Svelecte {options} renderer="color-blocks" placeholder="Select color"></Svelecte>
