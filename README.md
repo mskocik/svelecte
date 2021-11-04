@@ -123,6 +123,7 @@ Event        | arguments | description
 fetch        | options   | newly fetched remote options
 change       | selection | selected objects. If `anchor` property is defined, `change` event is called also on it
 createoption | option    | newly created option object
+blur         | -         | blur event
 
 ### Public API:
 
