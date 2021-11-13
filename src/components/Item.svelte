@@ -71,24 +71,6 @@
 :global(.sv-dd-item-active > .sv-item .sv-item-content) {
   color: var(--sv-item-active-color, var(--sv-item-color));
 }
-:global(.sv-item-btn) {
-  display: none;
-  position: relative;
-  align-items: center;
-  align-self: stretch;
-  padding-left: 4px;
-  padding-right: 4px;
-  box-sizing: border-box;
-  border-radius: 2px;
-  border-width: 0;
-  margin: 0;
-  cursor: pointer;
-  background-color: var(--sv-item-btn-bg, var(--sv-item-selected-bg));
-}
-.sv-item-btn > svg {
-  fill: var(--sv-item-btn-icon, var(--sv-icon-color));
-}
-:global(.sv-item-btn:hover) { background-color: var(--sv-item-btn-bg-hover); }
 :global(.highlight) {
   background-color: var(--sv-highlight-bg);
   color: var(--sv-highlight-color, var(--sv-color));
