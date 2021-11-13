@@ -50,9 +50,6 @@
 :global(.sv-dropdown-content .sv-item) {
   padding: 3px 3px 3px 6px;
 }
-:global(.sv-dd-item-active > .sv-item) {
-  background-color: var(--sv-item-active);
-}
 :global(.sv-item) {
   display: flex;
   min-width: 0px;
@@ -63,13 +60,19 @@
 :global(.sv-item.is-disabled) { opacity: 0.5; cursor: not-allowed; }
 
 :global(.sv-item-content) {
-  color: var(--sv-item-color);
+  color: var(--sv-item-color, var(--sv-color));
   text-overflow: ellipsis;
   white-space: nowrap;
   box-sizing: border-box;
   border-radius: 2px;
   overflow: hidden;
   width: 100%;
+}
+:global(.sv-dd-item-active > .sv-item) {
+  background-color: var(--sv-item-active-bg);
+}
+:global(.sv-dd-item-active > .sv-item .sv-item-content) {
+  color: var(--sv-item-active-color, var(--sv-item-color));
 }
 :global(.sv-item-btn) {
   display: none;
@@ -83,8 +86,14 @@
   border-width: 0;
   margin: 0;
   cursor: pointer;
-
+  background-color: var(--sv-item-btn-bg, var(--sv-item-selected-bg));
+}
+.sv-item-btn > svg {
+  fill: var(--sv-item-btn-icon, var(--sv-icon-color));
 }
 :global(.sv-item-btn:hover) { background-color: var(--sv-item-btn-bg-hover); }
-:global(.highlight) { background-color: var(--sv-text-highlight); }
+:global(.highlight) {
+  background-color: var(--sv-highlight-bg);
+  color: var(--sv-highlight-color, var(--sv-color));
+}
 </style>

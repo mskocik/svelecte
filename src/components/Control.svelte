@@ -170,7 +170,7 @@
 .indicator-container:hover { color: var(--sv-icon-hover) }
 .indicator-separator {
   align-self: stretch;
-  background-color: var(--sv-border);
+  background-color: var(--sv-border-color);
   margin-bottom: 8px;
   margin-top: 8px;
   width: 1px;

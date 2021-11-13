@@ -602,12 +602,15 @@
 <style>
   .svelecte-control {
     --sv-bg: #fff;
+    --sv-color: #000;
     --sv-min-height: 38px;
-    --sv-border: 1px solid #ccc;
+    --sv-border-color: #ccc;
+    --sv-border: 1px solid var(--sv-border-color);
     --sv-active-border: 1px solid #555;
     --sv-active-outline: none;
     --sv-disabled-bg: #f2f2f2;
     --sv-disabled-border-color: #e6e6e6;
+    --sv-placeholder-color: #ccccc6;
     --sv-icon-color: #ccc;
     --sv-icon-hover: #999;
     --sv-loader-border: 3px solid #dbdbdb;
@@ -615,11 +618,15 @@
     --sv-dropdown-height: 250px;
     --sv-item-selected-bg: #efefef;
     --sv-item-color: #333333;
-    --sv-item-active: #F2F5F8;
+    --sv-item-active-color: var(--sv-item-color);
+    --sv-item-active-bg: #F2F5F8;
+    --sv-item-btn-bg: var(--sv-item-selected-bg);
     --sv-item-btn-bg-hover: #ddd;
-    --sv-text-highlight: yellow;
+    --sv-item-btn-icon: var(--sv-item-color);
+    --sv-highlight-bg: yellow;
+    --sv-highlight-color: var(--sv-item-color);
   }
-  .svelecte { position: relative; flex: 1 1 auto; }
+  .svelecte { position: relative; flex: 1 1 auto; color: var(--sv-color);}
   .svelecte.is-disabled { pointer-events: none; }
   .icon-slot { display: flex; }
   .is-hidden { opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px}
