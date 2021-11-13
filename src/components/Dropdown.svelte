@@ -159,7 +159,7 @@
           itemCount={items.length}
           itemSize={vl_itemSize}
           scrollToAlignment="auto"
-          scrollToIndex={items.length && isMounted ? dropdownIndex :  null}
+          scrollToIndex={dropdownIndex ? parseInt(dropdownIndex) : null}
         >
           <div slot="item" let:index let:style {style} class:sv-dd-item-active={index == dropdownIndex}>
             <Item formatter={renderer}
