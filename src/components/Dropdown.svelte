@@ -81,7 +81,7 @@
     if (!scrollContainer && !renderDropdown) return;
     const outVp = isOutOfViewport(scrollContainer);
     if (outVp.bottom && !outVp.top) {
-      scrollContainer.style.bottom = (scrollContainer.parentElement.clientHeight + 1) + 'px';
+      scrollContainer.style.bottom = (scrollContainer.parentElement.parentElement.clientHeight + 1) + 'px';
       // FUTURE: debounce ....
     } else if (!val || outVp.top) {
       scrollContainer.style.bottom = '';
@@ -97,7 +97,7 @@
       if (unit !== 'px') {
         const el = unit === 'rem'
           ? document.documentElement
-          : scrollContainer.parentElement;
+          : scrollContainer.parentElement.parentElement;
         const multipler = parseFloat(window.getComputedStyle(el).fontSize.match(/\d+/).shift());
         value = multipler * value; 
       }
@@ -147,9 +147,9 @@
 
 {#if isMounted && renderDropdown}
 <div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened} tabindex="-1" 
-  bind:this={scrollContainer}
   on:mousedown|preventDefault
 >
+<div class="sv-dropdown-scroll" class:is-empty={!items.length}  bind:this={scrollContainer}>
   <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
   {#if items.length}
     {#if virtualList}
@@ -189,21 +189,24 @@
       {/each}
     {/if}
   {/if}
-  {#if $inputValue && creatable && !maxReached}
-    <div class="creatable-row" on:click={dispatch('select', $inputValue)} on:mouseenter={dispatch('hover', listIndex.last)}
-      class:active={currentListLength === dropdownIndex}
-      class:is-disabled={alreadyCreated.includes($inputValue)}
-    >
-      {@html createLabel($inputValue)}
-      {#if currentListLength !== dropdownIndex}
-      <span class="shortcut"><kbd>{metaKey}</kbd>+<kbd>Enter</kbd></span>
-      {/if}
-    </div>
-  {/if}
   {#if hasEmptyList || maxReached}
     <div class="empty-list-row">{listMessage}</div>
   {/if}
   </div>
+</div> <!-- scroll container end -->
+{#if $inputValue && creatable && !maxReached}
+  <div class="creatable-row-wrap">
+    <div class="creatable-row" on:click={dispatch('select', $inputValue)} on:mouseenter={dispatch('hover', listIndex.last)}
+      class:active={currentListLength === dropdownIndex}
+      class:is-disabled={alreadyCreated.includes($inputValue)}
+    >
+    {@html createLabel($inputValue)}
+    {#if currentListLength !== dropdownIndex}
+      <span class="shortcut"><kbd>{metaKey}</kbd>+<kbd>Enter</kbd></span>
+    {/if}
+    </div>
+  </div>
+{/if}
 </div>
 {/if}
 
@@ -213,10 +216,7 @@
   position: absolute;
   background-color: white;
   width: 100%;
-  min-height: 40px;
-  padding: 4px;
   display: none;
-  max-height: 250px;
   overflow-y: auto;
   overflow-x: hidden;
   border: 1px solid rgba(0,0,0,0.15);
@@ -227,9 +227,27 @@
 .sv-dropdown.is-virtual {
   overflow-y: hidden;
 }
+.sv-dropdown-scroll {
+  /* min-height: 40px; */
+  padding: 4px;
+  box-sizing: border-box;
+  max-height: 250px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  
+}
+.sv-dropdown-scroll.is-empty {
+  padding: 0;
+}
 .sv-dropdown[aria-expanded="true"] { display: block; }
 .sv-dropdown-content.max-reached { opacity: 0.75; cursor: not-allowed; }
 
+.sv-dropdown-scroll:not(.is-empty) + .creatable-row-wrap {
+  border-top: 1px solid #efefef;
+}
+.creatable-row-wrap {
+  padding: 4px;
+}
 .creatable-row {
   box-sizing: border-box;
   display: flex;
@@ -276,7 +294,7 @@
   box-sizing: border-box;
   border-radius: 2px;
   overflow: hidden;
-  padding: 3px 3px 3px 6px;
+  padding: 7px 7px 7px 10px;
   text-align: left;
 }
 </style>
