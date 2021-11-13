@@ -450,11 +450,16 @@
     }
     const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey ? 'Tab' : 'No-tab';
     const ctrlKey = isIOS ? event.metaKey : event.ctrlKey;
+    let isPageEvent = ['PageUp', 'PageDown'].includes(event.key);
     switch (event.key) {
       case 'End':
         if ($inputValue.length !== 0) return;
-      case 'PageDown':
         dropdownActiveIndex = listIndex.first;
+      case 'PageDown':
+        if (isPageEvent) {
+          const [wrap, item] = refDropdown.getDimensions();
+          dropdownActiveIndex = Math.ceil((item * dropdownActiveIndex + wrap) / item);
+        }
       case 'ArrowUp':
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
@@ -469,8 +474,12 @@
         if ($inputValue.length !== 0
           || ($inputValue.length === 0 && availableItems.length === 0)  // ref #26
         ) return;
-      case 'PageUp':
         dropdownActiveIndex = listIndex.last;
+      case 'PageUp':
+        if (isPageEvent) {
+          const [wrap, item] = refDropdown.getDimensions();
+          dropdownActiveIndex = Math.floor((item * dropdownActiveIndex - wrap) / item);
+        }
       case 'ArrowDown':
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;

@@ -42,6 +42,19 @@
     }
   }
 
+  export function getDimensions() {
+    if (virtualList) {
+      return [
+        scrollContainer.offsetHeight,
+        vl_itemSize
+      ];
+    }
+    return [
+      scrollContainer.offsetHeight,
+      container.firstElementChild.offsetHeight
+    ];
+  }
+
   const dispatch = createEventDispatcher();
 
   let container;
