@@ -214,24 +214,24 @@
 .sv-dropdown {
   box-sizing: border-box;
   position: absolute;
-  background-color: white;
+  background-color: var(--sv-bg);
   width: 100%;
   display: none;
   overflow-y: auto;
   overflow-x: hidden;
   border: 1px solid rgba(0,0,0,0.15);
   border-radius: .25rem;
-  box-shadow: 0 6px 12px rgba(0,0,0,0.175);
+  box-shadow: var(--sv-dropdown-shadow);
   z-index: 2;
 }
-.sv-dropdown.is-virtual {
+.sv-dropdown.is-virtual .sv-dropdown-scroll {
   overflow-y: hidden;
 }
 .sv-dropdown-scroll {
   /* min-height: 40px; */
   padding: 4px;
   box-sizing: border-box;
-  max-height: 250px;
+  max-height: var(--sv-dropdown-height);
   overflow-y: auto;
   overflow-x: hidden;
   

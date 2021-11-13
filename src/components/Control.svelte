@@ -114,12 +114,19 @@
 </div>
 
 <style>
-/** global default styles for wrapper div (*/
-:global(.svelecte-control) .sv-control             { border: 1px solid #ccc; border-radius: 4px; min-height: 38px; }
-:global(.svelecte-control) .sv-control.is-active   { border: 1px solid #555; }
+.sv-control { 
+  background-color: var(--sv-bg);
+  border: var(--sv-border);
+  border-radius: 4px;
+  min-height: var(--sv-min-height);
+}
+.sv-control.is-active {
+  border: var(--sv-active-border);
+  outline: var(--sv-active-outline);
+}
 .sv-control.is-disabled {
-  background-color: rgb(242, 242, 242);
-  border-color: rgb(230, 230, 230);
+  background-color: var(--sv-disabled-bg);
+  border-color: var(--sv-disabled-border);
   cursor: default;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -154,16 +161,16 @@
   box-sizing: border-box;
 }
 .indicator-container {
-  color: rgb(204, 204, 204);
+  color: var(--sv-icon-color);
   display: flex;
   padding: 8px;
   transition: color 150ms ease 0s;
   box-sizing: border-box;
 }
-.indicator-container:hover { color: rgb(153, 153, 153); }
+.indicator-container:hover { color: var(--sv-icon-hover) }
 .indicator-separator {
   align-self: stretch;
-  background-color: rgb(204, 204, 204);
+  background-color: var(--sv-border);
   margin-bottom: 8px;
   margin-top: 8px;
   width: 1px;
@@ -178,7 +185,7 @@
 }
 .is-loading:after {
   animation: spinAround .5s infinite linear;
-  border: 3px solid #dbdbdb;
+  border: var(--sv-loader-border);
   border-radius: 290486px;
   border-right-color: transparent;
   border-top-color: transparent;
