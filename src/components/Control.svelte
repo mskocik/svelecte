@@ -2,7 +2,6 @@
   import { createEventDispatcher } from 'svelte';
   import { flip } from 'svelte/animate';
   import Input from './Input.svelte';
-  import Item from './Item.svelte';
 
   export let clearable;
   export let searchable;
@@ -20,6 +19,7 @@
   export let isFetchingData;
   export let dndzone;
   export let currentValueField;
+  export let itemComponent;
 
   const flipDurationMs = 100;
 
@@ -77,7 +77,7 @@
       {:else}
         {#each selectedOptions as opt (opt[currentValueField])}
         <div animate:flip={{duration: flipDurationMs }}>
-          <Item formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple} inputValue={$inputValue}></Item>
+          <svelte:component this={itemComponent} formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple} inputValue={$inputValue}/>
         </div>
         {/each}
       {/if}

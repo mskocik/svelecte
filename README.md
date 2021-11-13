@@ -84,6 +84,8 @@ placeholder       | string           | `Select`   | Input placeholder
 searchable        | bool             | `true`     | Allow search among items by typing
 disabled          | bool             | `false`    | Disable component
 renderer          | string\|function | `null`     | dropdown and selection renderer function. More info in item rendering section
+controlItem       | Component        | `Item`     | Item component when item is selected. See [Custom Items](#custom-items) section for more details.
+dropdownItem      | Component        | `Item`     | Item component in dropdown. See [Custom Items](#custom-items) section for more details.
 selectOnTab       | bool             | `false`    | Allow selecting currently active item by <kbd>Tab</kbd> key
 resetOnBlur       | bool             | `true`     | Control if input value should be cleared on blur
 clearable         | bool             | `false`    | Display ✖ icon to clear whole selection
@@ -115,6 +117,54 @@ hasAnchor         | bool             | `null`     | `internal`: when passing als
 i18n              | object           | `null`     | I18n object overriding default settings
 dndzone           | function         | empty      | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [example REPL](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)
 validatorAction   | array            | `null`     | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`. See the [example REPL](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1)
+
+
+### Custom items
+
+If `renderer` property is not enough for you or you prefer Component syntax to HTML strings, you can use your own Components. Keep in mind that default `Item` component handles styling,
+highlighting when searching etc.
+
+To make it easier to use your own Components, there are available actions, highlighting function and close button icon for you to use.
+
+Your custom component could use like this:
+
+```js
+// MyComponent.svelte
+<script>
+  import { itemActions, highlightSearch, CloseButton } from 'svelecte/item';
+
+  // these properties can be used
+  export let inputValue;
+  export let index = -1;
+  export let item = {};
+  export let isSelected = false;
+  export let isDisabled = false;
+  export let isMultiple = false;
+</script>
+
+<!-- you need to use itemActions and pass given events -->
+<div class="sv-item" use:itemActions={{item, index}}
+  on:select
+  on:deselect
+  on:hover
+>
+  <!-- 
+    Here you can define what you want to the user. Default <Item> component has inner div
+    with class .sv-item-content, which provide some basic styling (padding)
+  -->
+
+  <!--
+    if you are implementing controlItem component (for selected items),
+    you can utilize also CloseButton components, which has default behaviour and styling incorporated
+  -->
+  {#if isSelected && isMultiple}
+    <CloseButton/>
+  {/if}
+</div>
+
+<!-- and somewhere in your app -->
+<Svelecte controlItem={MyComponent} dropdownItem={MyComponent} {...otherProps} />
+```
 
 ### Emitted events:
 

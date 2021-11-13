@@ -2,7 +2,6 @@
   import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
   import { isOutOfViewport} from './../lib/utils.js';
-  import Item from './Item.svelte';
 
   export let lazyDropdown;
   
@@ -24,6 +23,7 @@
   export let disabledField;
   export let createLabel;
   export let metaKey;
+  export let itemComponent;
 
   export function scrollIntoView(params) {
     if (virtualList) return;
@@ -175,29 +175,27 @@
           scrollToIndex={dropdownIndex ? parseInt(dropdownIndex) : null}
         >
           <div slot="item" let:index let:style {style} class:sv-dd-item-active={index == dropdownIndex}>
-            <Item formatter={renderer}
+            <svelte:component this={itemComponent} formatter={renderer}
               index={listIndex.map[index]}
               isDisabled={items[index][disabledField]}
               item={items[index]}
               inputValue={$inputValue}
               {disableHighlight}
               on:hover
-              on:select>
-            </Item>
+              on:select/>
           </div>
         </VirtualList>
       {:else}
         {#each items as opt, i}
           <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] == dropdownIndex}>
-            <Item formatter={renderer}
+            <svelte:component this={itemComponent} formatter={renderer}
               index={listIndex.map[i]}
               isDisabled={opt[disabledField]}
               item={opt}
               inputValue={$inputValue}
               {disableHighlight}
               on:hover
-              on:select>
-            </Item>
+              on:select/>
           </div>
         {/each}
       {/if}

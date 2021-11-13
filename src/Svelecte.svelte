@@ -26,6 +26,7 @@
   import { initSelection, flatList, filterList, indexList, getFilterProps } from './lib/list.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
+  import Item from './components/Item.svelte';
 
   // form and CE
   export let name = 'svelecte';
@@ -47,6 +48,8 @@
   export let resetOnBlur = defaults.resetOnBlur;
   export let dndzone = () => ({ noop: true, destroy: () => {}});
   export let validatorAction = null;
+  export let dropdownItem = Item;
+  export let controlItem = Item;
   // multiple
   export let multiple = defaults.multiple;
   export let max = defaults.max;
@@ -579,6 +582,7 @@
     {disabled} {clearable} {searchable} {placeholder} {multiple} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
     {dndzone} {currentValueField}
+    itemComponent={controlItem}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
     on:paste={onPaste}
@@ -594,6 +598,7 @@
     items={availableItems} {listIndex}
     {inputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
     metaKey={isIOS ? '⌘' : 'Ctrl'}
+    itemComponent={dropdownItem}
     on:select={onSelect}
     on:hover={onHover}
     on:createoption
