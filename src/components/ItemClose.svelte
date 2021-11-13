@@ -4,7 +4,6 @@
 
 <style>
   .sv-item-btn {
-    display: none;
     position: relative;
     align-items: center;
     align-self: stretch;

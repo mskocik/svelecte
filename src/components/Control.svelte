@@ -126,7 +126,7 @@
 }
 .sv-control.is-disabled {
   background-color: var(--sv-disabled-bg);
-  border-color: var(--sv-disabled-border);
+  border-color: var(--sv-disabled-border-color);
   cursor: default;
   flex-wrap: wrap;
   justify-content: space-between;

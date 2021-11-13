@@ -40,9 +40,6 @@
   background-color: var(--sv-item-selected-bg);
   margin: 2px 4px 2px 0;
 }
-:global(.has-multiSelection .sv-item-btn)  {
-  display: flex;
-}
 :global(.has-multiSelection .sv-item-content),
 :global(.sv-dropdown-content .sv-item) {
   padding: 3px 3px 3px 6px;
