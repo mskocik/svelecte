@@ -149,64 +149,64 @@
 <div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened} tabindex="-1" 
   on:mousedown|preventDefault
 >
-<div class="sv-dropdown-scroll" class:is-empty={!items.length}  bind:this={scrollContainer}>
-  <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
-  {#if items.length}
-    {#if virtualList}
-      <VirtualList bind:this={refVirtualList}
-        width="100%"
-        height={vl_listHeight}
-        itemCount={items.length}
-        itemSize={vl_itemSize}
-        scrollToAlignment="auto"
-        scrollToIndex={items.length && isMounted ? dropdownIndex :  null}
-      >
-        <div slot="item" let:index let:style {style} class:sv-dd-item-active={index == dropdownIndex}>
-          <Item formatter={renderer}
-            index={listIndex.map[index]}
-            isDisabled={items[index][disabledField]}
-            item={items[index]}
-            inputValue={$inputValue}
-            {disableHighlight}
-            on:hover
-            on:select>
-          </Item>
-        </div>
-      </VirtualList>
-    {:else}
-      {#each items as opt, i}
-        <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] == dropdownIndex}>
-          <Item formatter={renderer}
-            index={listIndex.map[i]}
-            isDisabled={opt[disabledField]}
-            item={opt}
-            inputValue={$inputValue}
-            {disableHighlight}
-            on:hover
-            on:select>
-          </Item>
-        </div>
-      {/each}
+  <div class="sv-dropdown-scroll" class:is-empty={!items.length}  bind:this={scrollContainer}>
+    <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
+    {#if items.length}
+      {#if virtualList}
+        <VirtualList bind:this={refVirtualList}
+          width="100%"
+          height={vl_listHeight}
+          itemCount={items.length}
+          itemSize={vl_itemSize}
+          scrollToAlignment="auto"
+          scrollToIndex={items.length && isMounted ? dropdownIndex :  null}
+        >
+          <div slot="item" let:index let:style {style} class:sv-dd-item-active={index == dropdownIndex}>
+            <Item formatter={renderer}
+              index={listIndex.map[index]}
+              isDisabled={items[index][disabledField]}
+              item={items[index]}
+              inputValue={$inputValue}
+              {disableHighlight}
+              on:hover
+              on:select>
+            </Item>
+          </div>
+        </VirtualList>
+      {:else}
+        {#each items as opt, i}
+          <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] == dropdownIndex}>
+            <Item formatter={renderer}
+              index={listIndex.map[i]}
+              isDisabled={opt[disabledField]}
+              item={opt}
+              inputValue={$inputValue}
+              {disableHighlight}
+              on:hover
+              on:select>
+            </Item>
+          </div>
+        {/each}
+      {/if}
     {/if}
-  {/if}
-  {#if hasEmptyList || maxReached}
-    <div class="empty-list-row">{listMessage}</div>
-  {/if}
-  </div>
-</div> <!-- scroll container end -->
-{#if $inputValue && creatable && !maxReached}
-  <div class="creatable-row-wrap">
-    <div class="creatable-row" on:click={dispatch('select', $inputValue)} on:mouseenter={dispatch('hover', listIndex.last)}
-      class:active={currentListLength === dropdownIndex}
-      class:is-disabled={alreadyCreated.includes($inputValue)}
-    >
-    {@html createLabel($inputValue)}
-    {#if currentListLength !== dropdownIndex}
-      <span class="shortcut"><kbd>{metaKey}</kbd>+<kbd>Enter</kbd></span>
+    {#if hasEmptyList || maxReached}
+      <div class="empty-list-row">{listMessage}</div>
     {/if}
     </div>
-  </div>
-{/if}
+  </div> <!-- scroll container end -->
+  {#if $inputValue && creatable && !maxReached}
+    <div class="creatable-row-wrap">
+      <div class="creatable-row" on:click={dispatch('select', $inputValue)} on:mouseenter={dispatch('hover', listIndex.last)}
+        class:active={currentListLength === dropdownIndex}
+        class:is-disabled={alreadyCreated.includes($inputValue)}
+      >
+      {@html createLabel($inputValue)}
+      {#if currentListLength !== dropdownIndex}
+        <span class="shortcut"><kbd>{metaKey}</kbd>+<kbd>Enter</kbd></span>
+      {/if}
+      </div>
+    </div>
+  {/if}
 </div>
 {/if}
 
