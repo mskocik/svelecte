@@ -120,7 +120,7 @@
       - pixelGetter(scrollContainer, 'paddingTop')
       - pixelGetter(scrollContainer, 'paddingBottom');
     // get item size (hacky style)
-    scrollContainer.style = 'opacity: 0; display: block';
+    scrollContainer.parentElement.style = 'opacity: 0; display: block';
     const firstItem = refVirtualList.$$.ctx[1].firstElementChild.firstElementChild;
     if (firstItem) {
 
@@ -140,7 +140,7 @@
         vl_itemSize = firstSize;
       }
     }
-    scrollContainer.style = '';
+    scrollContainer.parentElement.style = '';
   }
 
   let dropdownStateSubscription = () => {};
