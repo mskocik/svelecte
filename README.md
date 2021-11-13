@@ -126,45 +126,9 @@ highlighting when searching etc.
 
 To make it easier to use your own Components, there are available actions, highlighting function and close button icon for you to use.
 
-Your custom component could use like this:
+The simplest example can be found in this [REPL](https://svelte.dev/repl/627c83c2666f452185baa8947f5588bb?version=3.44.1).
 
-```js
-// MyComponent.svelte
-<script>
-  import { itemActions, highlightSearch, CloseButton } from 'svelecte/item';
-
-  // these properties can be used
-  export let inputValue;
-  export let index = -1;
-  export let item = {};
-  export let isSelected = false;
-  export let isDisabled = false;
-  export let isMultiple = false;
-</script>
-
-<!-- you need to use itemActions and pass given events -->
-<div class="sv-item" use:itemActions={{item, index}}
-  on:select
-  on:deselect
-  on:hover
->
-  <!-- 
-    Here you can define what you want to the user. Default <Item> component has inner div
-    with class .sv-item-content, which provide some basic styling (padding)
-  -->
-
-  <!--
-    if you are implementing controlItem component (for selected items),
-    you can utilize also CloseButton components, which has default behaviour and styling incorporated
-  -->
-  {#if isSelected && isMultiple}
-    <CloseButton/>
-  {/if}
-</div>
-
-<!-- and somewhere in your app -->
-<Svelecte controlItem={MyComponent} dropdownItem={MyComponent} {...otherProps} />
-```
+---
 
 ### Emitted events:
 
