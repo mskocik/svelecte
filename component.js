@@ -13,7 +13,7 @@ const OPTION_LIST = [
   // multiple
   'multiple', 'max', 'collapse-selection',
   // creating
-  'creatable', 'creatablePrefix', 'allow-editing', 'keepCreated', 'delimiter',
+  'creatable', 'creatable-prefix', 'allow-editing', 'keepCreated', 'delimiter',
   // remote
   'fetch', 'fetch-reset-on-blur', 'min-query',
   // perf & virtual list
@@ -204,6 +204,14 @@ class SvelecteElement extends HTMLElement {
             value = config.minQuery;
           }
           this.setAttribute('min-query', value);
+        }
+      },
+      'creatablePrefix': {
+        get() {
+          return this.getAttribute('creatable-prefix') || config.creatablePrefix
+        },
+        set(value) {
+          this.setAttribute('creatable-prefix', value);
         }
       },
       'renderer': {
