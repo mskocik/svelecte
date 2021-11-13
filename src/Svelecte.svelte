@@ -580,7 +580,7 @@
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
   </Control>
   <Dropdown bind:this={refDropdown} renderer={itemRenderer} {disableHighlight} {creatable} {maxReached} {alreadyCreated}
-    virtualList={creatable ? false : virtualList} {vlHeight} {vlItemSize} {lazyDropdown}
+    {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
     {inputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
