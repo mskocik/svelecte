@@ -122,7 +122,7 @@
               <li class="mt-0">SSR support</li>
               <li class="mt-0">lazy dropdown rendering</li>
               <li class="mt-0">stylable</li>
-              <li class="mt-0">reordable multi selection  with addition of <code>svelte-dnd-action</code>. See <a href="https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0" target="_blank">example</a>.</li>
+              <li class="mt-0">reordable multi selection  with addition of <code>svelte-dnd-action</code>. See <a href="https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0" target="repl">example</a>.</li>
             </ul>
 
             <h3 id="intro">Getting started</h3>
@@ -298,6 +298,20 @@
                   </dl>
                 </div>
               </details>
+
+              <p class="mt-2">
+                If <code>renderer</code> property is not enough for you or you prefer Component syntax to HTML strings,
+                you can use your own Components. Keep in mind that default highlighting when searching, but the rest of features 
+                like styling should be inherited if you use proper css classes (the same as <code>Item</code> component).
+              </p>
+              <p class="mt-2">
+                To make it easier to use your own Components, there are available actions, highlighting function and 
+                close button icon for you to use.
+              </p>
+              <p class="mt-2">
+                The simplest example can be found in this 
+                <a href="https://svelte.dev/repl/627c83c2666f452185baa8947f5588bb?version=3.44.1" target="repl">REPL</a>.
+              </p>
             </div>
             <div class="column col-lg-12 col-xl-6 col-6">
               <details>
@@ -871,12 +885,12 @@ const OPTION_LIST = [
                 <td>dndzone</td>
                 <td>function</td>
                 <td><code>empty function</code></td>
-                <td>If you pass <code>dndzone</code> from <code>svelte-dnd-action</code>, reordering of selected items will be possible. See <a href="https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0">example REPL</a> how to set it up.</td>
+                <td>If you pass <code>dndzone</code> from <code>svelte-dnd-action</code>, reordering of selected items will be possible. See <a href="https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0" target="repl">example REPL</a> how to set it up.</td>
               </tr><tr>
                 <td>validatorAction</td>
                 <td>array</td>
                 <td><code>null</code></td>
-                <td>Designed to be used with <code>svelte-use-form</code>. Pass <code>validators</code> function as a <b>first</b> item, and validators as the rest. See <a href="https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1">example REPL</a>.</td>
+                <td>Designed to be used with <code>svelte-use-form</code>. Pass <code>validators</code> function as a <b>first</b> item, and validators as the rest. See <a href="https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1" target="repl">example REPL</a>.</td>
               </tr>
             </tbody>
             <tbody>

@@ -121,8 +121,8 @@ validatorAction   | array            | `null`     | Bind validator action for in
 
 ### Custom items
 
-If `renderer` property is not enough for you or you prefer Component syntax to HTML strings, you can use your own Components. Keep in mind that default `Item` component handles styling,
-highlighting when searching etc.
+If `renderer` property is not enough for you or you prefer Component syntax to HTML strings, you can use your own Components. Keep in mind that default `Item` component handles highlighting when searching, but the rest of features 
+like styling should be inherited if you use proper css classes (the same as `Item` component)..
 
 To make it easier to use your own Components, there are available actions, highlighting function and close button icon for you to use.
 
