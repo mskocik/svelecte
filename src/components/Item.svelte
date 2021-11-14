@@ -36,40 +36,4 @@
   padding: 3px 3px 3px 6px;
   font-weight: bold;
 }
-:global(.has-multiSelection .sv-item) {
-  background-color: var(--sv-item-selected-bg);
-  margin: 2px 4px 2px 0;
-}
-:global(.has-multiSelection .sv-item-content),
-:global(.sv-dropdown-content .sv-item) {
-  padding: 3px 3px 3px 6px;
-}
-:global(.sv-item) {
-  display: flex;
-  min-width: 0px;
-  box-sizing: border-box;
-  border-radius: 2px;
-  cursor: default;
-}
-:global(.sv-item.is-disabled) { opacity: 0.5; cursor: not-allowed; }
-
-:global(.sv-item-content) {
-  color: var(--sv-item-color, var(--sv-color));
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  box-sizing: border-box;
-  border-radius: 2px;
-  overflow: hidden;
-  width: 100%;
-}
-:global(.sv-dd-item-active > .sv-item) {
-  background-color: var(--sv-item-active-bg);
-}
-:global(.sv-dd-item-active > .sv-item .sv-item-content) {
-  color: var(--sv-item-active-color, var(--sv-item-color));
-}
-:global(.highlight) {
-  background-color: var(--sv-highlight-bg);
-  color: var(--sv-highlight-color, var(--sv-color));
-}
 </style>

@@ -270,7 +270,7 @@
 .creatable-row:hover,
 .creatable-row:active,
 .creatable-row.active {
-    background-color: var(--sv-item-active);
+  background-color: var(--sv-item-active-bg);
 }
 .creatable-row.active.is-disabled {
   opacity: 0.5;
