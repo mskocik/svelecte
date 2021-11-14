@@ -13,11 +13,16 @@
     });
     payload = JSON.stringify(object, null, 2);
   }
+
+  function resetPayload(e) {
+    payload = null;
+  }
 </script>
 
 
 <form action="" on:submit|preventDefault={onSubmit}>
   <el-svelecte name="selection"
+    on:change={resetPayload}
     multiple
     required
     placeholder="Search for color"
