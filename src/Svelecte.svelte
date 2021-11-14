@@ -452,7 +452,7 @@
       return;
     }
     const Tab = selectOnTab && $hasDropdownOpened && !event.shiftKey ? 'Tab' : 'No-tab';
-    const ctrlKey = isIOS ? event.metaKey : event.ctrlKey;
+    let ctrlKey = isIOS ? event.metaKey : event.ctrlKey;
     let isPageEvent = ['PageUp', 'PageDown'].includes(event.key);
     switch (event.key) {
       case 'End':
@@ -506,15 +506,20 @@
       case Tab:
       case 'Enter':
         if (!$hasDropdownOpened) return;
-        let activeDropdownItem = availableItems[dropdownActiveIndex];
+        let activeDropdownItem = !ctrlKey ? availableItems[dropdownActiveIndex] : null;
         if (creatable && $inputValue) {
           activeDropdownItem = !activeDropdownItem || ctrlKey
             ? $inputValue
             : activeDropdownItem
+          ctrlKey = false;
         }
-        activeDropdownItem && onSelect(null, activeDropdownItem);
+        !ctrlKey && activeDropdownItem && onSelect(null, activeDropdownItem);
         if (availableItems.length <= dropdownActiveIndex) {
           dropdownActiveIndex = currentListLength > 0 ? currentListLength : listIndex.first;
+        }
+        if (!activeDropdownItem && selectedOptions.length) {
+          $hasDropdownOpened = false;
+          return;
         }
         event.preventDefault(); // prevent form submit
         break;
