@@ -223,8 +223,8 @@
         if (!valueAsObject) {
           const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
           _selection = Array.isArray(value)
-            ? value.map(val => options.find(item => item[valueProp] === val))
-            : options.find(item => item[valueProp] === value)
+            ? value.map(val => options.find(item => item[valueProp] == val))
+            : options.find(item => item[valueProp] == value)
         } else {
           _selection = value;
         }
@@ -621,7 +621,7 @@
 <style>
   .svelecte-control {
     --sv-bg: #fff;
-    --sv-color: #000;
+    --sv-color: inherit;
     --sv-min-height: 38px;
     --sv-border-color: #ccc;
     --sv-border: 1px solid var(--sv-border-color);
