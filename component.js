@@ -40,7 +40,7 @@ function formatValue(name, value) {
     case 'value':
       return value ? value.split(',').map(item => {
         const _v = parseInt(item);
-        return isNaN(_v) ? item : _v;
+        return isNaN(_v) ? (item !== 'null' ? item : null) : _v;
       }) : '';
     case 'renderer':
       return value || 'default';
@@ -90,9 +90,18 @@ class SvelecteElement extends HTMLElement {
     this.svelecte = undefined;
     this.anchorSelect = null;
     this._fetchOpts = null;
+    this._selfSetValue = false;
 
     /** ************************************ public API */
     const baseProps = {
+      'name': {
+        get() {
+          this.getAttribute('name');
+        },
+        set(value) {
+          this.setAttribute('name', value);
+        }
+      },
       'selection': {
         get() {
           return this.svelecte
@@ -167,7 +176,7 @@ class SvelecteElement extends HTMLElement {
             : config.lazyDropdown;
         },
         set() {
-          console.log('⚠ this setter has no effect after component has been created')
+          console.warn('⚠ this setter has no effect after component has been created')
         }
       },
       'placeholder': {
@@ -268,7 +277,12 @@ class SvelecteElement extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (this.svelecte && oldValue !== newValue) {
       if (name === 'value') {
-        newValue ? this.svelecte.setSelection(formatValue(name, newValue), volatileEmitChange) : this.svelecte.clearByParent(this.parent ? true : false);
+        if (!this._selfSetValue) {
+          newValue
+            ? this.svelecte.setSelection(formatValue(name, newValue), volatileEmitChange)
+            : this.svelecte.clearByParent(this.parent ? true : false);
+        }
+        this._selfSetValue = false;
         volatileEmitChange = false;
         this.anchorSelect && setTimeout(() => {
           const value = this.svelecte.getSelection(true);
@@ -342,7 +356,11 @@ class SvelecteElement extends HTMLElement {
     // event listeners
     this.svelecte.$on('change', e => {
       const value = this.svelecte.getSelection(true);
-      this.setAttribute('value', Array.isArray(value) ? value.join(',') : value);
+      this._selfSetValue = true;
+      this.value = value;
+      setTimeout(() => {
+        this._selfSetValue = false;
+      }, 100);
       this.dispatchEvent(e);
       // Custom-element related
       if (this.anchorSelect) {
