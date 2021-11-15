@@ -98,7 +98,7 @@
     return multiple ? _selection : _selection[0];
   };
   export const setSelection = (selection, triggerChangeEvent) => {
-    _selectByValues(selection);
+    handleValueUpdate(selection);
     triggerChangeEvent && emitChangeEvent();
   }
   // API: internal for CE
@@ -215,25 +215,8 @@
     }
   }
 
-  $: {
-    if (prevValue !== value) {
-      clearSelection();
-      if (value) {
-        let _selection;
-        if (!valueAsObject) {
-          const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
-          _selection = Array.isArray(value)
-            ? value.map(val => options.find(item => item[valueProp] == val))
-            : options.find(item => item[valueProp] == value)
-        } else {
-          _selection = value;
-        }
-        Array.isArray(_selection) ? _selection.forEach(selectOption) : selectOption(_selection);
-        readSelection = _selection;
-      }
-      prevValue = value;
-    }
-  }
+  $: prevValue !== value && handleValueUpdate(value);
+
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
   let selectedOptions = initSelection.call(options, value, valueAsObject, currentValueField);
   let selectedKeys = selectedOptions.reduce((set, opt) => { set.add(opt[currentValueField]); return set; }, new Set());
@@ -318,30 +301,44 @@
   }
 
   /**
-   * Internal helper for passed value array. Should be used for CE
+   * update inner selection, when 'value' property is changed
    */
-  function _selectByValues(values) {
-    if (!Array.isArray(values)) values = [values];
-    if (values && values.length && values[0] instanceof Object) values = values.map(opt => opt[currentValueField]);
-    const newAddition = [];
-    values.forEach(val => {
-      availableItems.some(opt => {
-        if (val == (opt[currentValueField])) {
-          newAddition.push(opt);
-          return true;
-        }
-        return false;
-      });
-    });
-    newAddition.forEach(selectOption);
+  function handleValueUpdate(passedVal) {
+    clearSelection();
+    if (passedVal) {
+      let _selection = Array.isArray(passedVal) ? passedVal : [passedVal];
+      if (!valueAsObject) {
+        const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
+        _selection = _selection.reduce((res, val) => {
+          const opt = options.find(item => item[valueProp] == val);
+          opt && res.push(opt);
+          return res;
+        }, []);
+      }
+      let success = _selection.every(selectOption) && (multiple
+        ? passedVal.length === _selection.length
+        : _selection.length > 0
+      );
+      if (!success) {
+        // this is run only when invalid 'value' is provided, like out of option array
+        console.warn('[Svelecte]: provided "value" property is invalid', passedVal);
+        value = null;
+        readSelection = null;
+        return;
+      }
+      readSelection = Array.isArray(passedVal) ? _selection : _selection.shift();
+    }
+    prevValue = passedVal;
   }
 
   /** 
    * Add given option to selection pool
    * Check if not already selected or max item selection reached
+   * 
+   * @returns bool
    */
   function selectOption(opt) { 
-    if (multiple && maxReached) return;
+    if (!opt || (multiple && maxReached)) return false;
     if (selectedKeys.has(opt[currentValueField])) return;
 
     if (typeof opt === 'string') {
@@ -366,6 +363,7 @@
       dropdownActiveIndex = options.indexOf(opt); 
     } 
     flatItems = flatItems;
+    return true;
   }
 
   /**
