@@ -20,3 +20,5 @@
 
 <div>Current <code>readSelection</code> value: <b>{JSON.stringify(selection) }</b></div>
 <div>Current <code>value</code> value: <b>{value}</b></div>
+
+<button on:click={() => { value = '123123123' }}>Break it</button>

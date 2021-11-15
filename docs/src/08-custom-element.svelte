@@ -1,4 +1,6 @@
 <script>
+import { onMount } from 'svelte';
+
   import { addFormatter, config, registerSvelecte } from './../../component.js';
   import { dataset } from './data.js';
 
@@ -46,8 +48,60 @@
     optionList = '';
     optionRenderer = '';
   }
+
+  let breakable;
+
+  function onEmitSet() {
+    breakable.emitChange.value = [4];
+  }
+
+  
+  function onSet() {
+    breakable.value = [2];
+  }
+
+  function onBreak() {
+    breakable.value = [51];
+  }
+  onMount(() => {
+    window.el = breakable;
+  })
 </script>
 
+<el-svelecte
+  bind:this={breakable}
+  multiple
+  on:change={() => console.log(Date.now())}
+  options={JSON.stringify([
+    {
+      id: 1,
+      name: 'User #1'
+    },
+    {
+      id: 2,
+      name: 'User #2'
+    },
+    {
+      id: 3,
+      name: 'User #3'
+    },
+    {
+      id: 4,
+      name: 'User #4'
+    },
+    {
+      id: 5,
+      name: 'User #5'
+    },
+    {
+      id: 6,
+      name: 'User #6'
+    },
+  ])}
+></el-svelecte>
+<button on:click={onBreak}>Break it!</button>
+<button on:click={onEmitSet}>Fix it!</button>
+<button on:click={onSet}>Fix it! (no Event)</button>
 <div bind:this={container}>
   <form action="" on:submit|preventDefault={onSubmit}>
     Create new
