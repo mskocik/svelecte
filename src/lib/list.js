@@ -4,6 +4,16 @@ export function initSelection(initialValue, valueAsObject, valueField) {
   if (initialValue && !valueAsObject) {
     const _initialValue = Array.isArray(initialValue) ? initialValue : [initialValue];
     return this/** options */.reduce((res, val) => {
+      if (val.options) {  // handle groups
+        const selected = val.options.reduce((res, groupVal) => {
+          if (_initialValue.includes(groupVal[valueField])) res.push(groupVal);
+          return res;
+        }, []);
+        if (selected.length) {
+          res.push(...selected);
+          return res;
+        }
+      }
       if (_initialValue.includes(val[valueField])) res.push(val);
       return res;
     }, []);

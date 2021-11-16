@@ -310,7 +310,7 @@
       if (!valueAsObject) {
         const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
         _selection = _selection.reduce((res, val) => {
-          const opt = options.find(item => item[valueProp] == val);
+          const opt = flatItems.find(item => item[valueProp] == val);
           opt && res.push(opt);
           return res;
         }, []);
