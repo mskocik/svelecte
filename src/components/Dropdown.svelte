@@ -174,7 +174,12 @@
           scrollToAlignment="auto"
           scrollToIndex={dropdownIndex ? parseInt(dropdownIndex) : null}
         >
-          <div slot="item" let:index let:style {style} class:sv-dd-item-active={index == dropdownIndex}>
+          <div slot="item" let:index let:style {style}
+            class="sv-dd-item"
+            class:sv-dd-item-active={index == dropdownIndex}
+            class:sv-group-item={items[index].$isGroupItem}
+            class:sv-group-header={items[index].$isGroupHeader}
+          >
             <svelte:component this={itemComponent} formatter={renderer}
               index={listIndex.map[index]}
               isDisabled={items[index][disabledField]}
@@ -187,7 +192,12 @@
         </VirtualList>
       {:else}
         {#each items as opt, i}
-          <div data-pos={listIndex.map[i]} class:sv-dd-item-active={listIndex.map[i] == dropdownIndex}>
+          <div data-pos={listIndex.map[i]}
+            class="sv-dd-item"
+            class:sv-dd-item-active={listIndex.map[i] == dropdownIndex}
+            class:sv-group-item={opt.$isGroupItem}
+            class:sv-group-header={opt.$isGroupHeader}
+          >
             <svelte:component this={itemComponent} formatter={renderer}
               index={listIndex.map[i]}
               isDisabled={opt[disabledField]}
