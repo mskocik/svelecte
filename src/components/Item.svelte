@@ -26,7 +26,10 @@
   on:deselect
   on:hover
 >
-  {@html highlightSearch(item, isSelected, inputValue, formatter, disableHighlight)}
+  {@html (isSelected 
+    ? `<div class="sv-item-content">${formatter(item, isSelected, inputValue)}</div>`
+    : highlightSearch(item, isSelected, inputValue, formatter, disableHighlight))
+  }
   {#if isSelected && isMultiple}<ItemClose/>{/if}
 </div>
 {/if}
