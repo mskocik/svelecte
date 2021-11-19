@@ -145,3 +145,7 @@ export function iOS() {
   // iPad on iOS 13 detection
   || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
 }
+
+export function defaultCreateFilter(val) {
+  return val.trim().split(' ').filter(ch => ch).join(' ');
+}

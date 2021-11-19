@@ -790,6 +790,15 @@ const OPTION_LIST = [
                 <td>Split inserted text when pasting to create multiple items</td>
               </tr>
               <tr>
+                <td>createFilter</td>
+                <td>function</td>
+                <td><code>null</code></td>
+                <td>Function, that transform input string to custom value. It can serve as a filter, if value is valid or not.
+                    If you want to dismiss entered value, function should return <code>''</code> (empty string). By default
+                    all input string is trimmed and all multiple spaces are removed.
+                </td>
+              </tr>
+              <tr>
                 <td>fetch</td>
                 <td>string|function</td>
                 <td><code>null</code></td>

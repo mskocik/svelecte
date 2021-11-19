@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher, onDestroy, onMount, tick } from 'svelte';
   import VirtualList from 'svelte-tiny-virtual-list';
-  import { isOutOfViewport} from './../lib/utils.js';
+  import { isOutOfViewport } from './../lib/utils.js';
 
   export let lazyDropdown;
   
@@ -16,7 +16,7 @@
   export let vlItemSize;
   export let vlHeight;
   /** internal props */
-  export let inputValue;
+  export let inputValue;  // value only, not store
   export let listIndex;
   export let hasDropdownOpened;
   export let listMessage;
@@ -78,7 +78,7 @@
 
   $: {
     hasEmptyList = items.length < 1 && (creatable 
-      ? !$inputValue
+      ? !inputValue
       : true
     );
     // required when changing item list 'on-the-fly' for VL
@@ -184,7 +184,7 @@
               index={listIndex.map[index]}
               isDisabled={items[index][disabledField]}
               item={items[index]}
-              inputValue={$inputValue}
+              {inputValue}
               {disableHighlight}
               on:hover
               on:select/>
@@ -202,7 +202,7 @@
               index={listIndex.map[i]}
               isDisabled={opt[disabledField]}
               item={opt}
-              inputValue={$inputValue}
+              {inputValue}
               {disableHighlight}
               on:hover
               on:select/>
@@ -215,14 +215,14 @@
     {/if}
     </div>
   </div> <!-- scroll container end -->
-  {#if $inputValue && creatable && !maxReached}
+  {#if inputValue && creatable && !maxReached}
     <div class="creatable-row-wrap">
-      <div class="creatable-row" on:click={dispatch('select', $inputValue)} on:mouseenter={dispatch('hover', listIndex.last)}
-        class:active={currentListLength === dropdownIndex}
-        class:is-disabled={alreadyCreated.includes($inputValue)}
+      <div class="creatable-row" on:click={dispatch('select', inputValue)} on:mouseenter={dispatch('hover', listIndex.last)}
+        class:active={currentListLength == dropdownIndex}
+        class:is-disabled={alreadyCreated.includes(inputValue)}
       >
-      {@html createLabel($inputValue)}
-      {#if currentListLength !== dropdownIndex}
+      {@html createLabel(inputValue)}
+      {#if currentListLength != dropdownIndex}
         <span class="shortcut"><kbd>{metaKey}</kbd>+<kbd>Enter</kbd></span>
       {/if}
       </div>

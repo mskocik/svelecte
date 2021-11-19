@@ -22,7 +22,7 @@
 <script>
   import { createEventDispatcher, tick, onMount } from 'svelte';
   import { writable } from 'svelte/store';
-  import { fetchRemote } from './lib/utils.js';
+  import { fetchRemote, defaultCreateFilter } from './lib/utils.js';
   import { initSelection, flatList, filterList, indexList, getFilterProps } from './lib/list.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
@@ -60,6 +60,7 @@
   export let allowEditing = defaults.allowEditing;
   export let keepCreated = defaults.keepCreated;
   export let delimiter = defaults.delimiter;
+  export let createFilter = null;
   // remote
   export let fetch = null;
   export let fetchMode = 'auto';
@@ -143,6 +144,7 @@
 
   /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
+  if (!createFilter) createFilter = defaultCreateFilter;
 
   /** ************************************ Context definition */
   const inputValue = writable('');
@@ -220,7 +222,7 @@
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
   let selectedOptions = initSelection.call(options, value, valueAsObject, currentValueField);
   let selectedKeys = selectedOptions.reduce((set, opt) => { set.add(opt[currentValueField]); return set; }, new Set());
-  let alreadyCreated = [];
+  let alreadyCreated = [''];
   $: flatItems = flatList(options, itemConfig);
   $: maxReached = max && selectedOptions.length === max
   $: availableItems = maxReached
@@ -342,6 +344,7 @@
     if (selectedKeys.has(opt[currentValueField])) return;
 
     if (typeof opt === 'string') {
+      opt = createFilter(opt);
       if (alreadyCreated.includes(opt)) return;
       !fetch && alreadyCreated.push(opt);
       opt = {
@@ -570,7 +573,7 @@
     isInitialized = true;
     if (creatable) {
       const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
-      alreadyCreated = flatItems.map(opt => opt[valueProp]).filter(opt => opt);
+      alreadyCreated = [''].concat(flatItems.map(opt => opt[valueProp]).filter(opt => opt));
     }
     dropdownActiveIndex = listIndex.first;
     if (prevValue && !multiple) {
@@ -599,7 +602,7 @@
     {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
-    {inputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
+    inputValue={createFilter($inputValue)} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
     metaKey={isIOS ? '⌘' : 'Ctrl'}
     itemComponent={dropdownItem}
     on:select={onSelect}
