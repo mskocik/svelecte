@@ -7,13 +7,14 @@
 
   let labelAsValue = false;
 
-  let selection = null;
-  let value = null;
+  let selection = [];
+  let value = ['Czechia', 'Germany'];
 </script>
 
 <Svelecte {options} {labelAsValue}
   bind:readSelection={selection}
   bind:value={value}
+  multiple
   placeholder="Select country"
 ></Svelecte>
 

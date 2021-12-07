@@ -1,9 +1,10 @@
 import Sifter from './sifter';
 
-export function initSelection(initialValue, valueAsObject, valueField) {
+export function initSelection(initialValue, valueAsObject, config) {
   if (initialValue && !valueAsObject) {
     const _initialValue = Array.isArray(initialValue) ? initialValue : [initialValue];
-    return this/** options */.reduce((res, val) => {
+    const valueField = config.labelAsValue ? config.labelField : config.valueField;
+    return this/** options */.reduce((res, val, i) => {
       if (val.options) {  // handle groups
         const selected = val.options.reduce((res, groupVal) => {
           if (_initialValue.includes(groupVal[valueField])) res.push(groupVal);
@@ -14,7 +15,16 @@ export function initSelection(initialValue, valueAsObject, valueField) {
           return res;
         }
       }
-      if (_initialValue.includes(val[valueField])) res.push(val);
+      if (_initialValue.includes(val[valueField] || val)) {
+        if (config.isOptionArray) {
+          // initial options are not transformed, therefore we need to create object from given option
+          val = {
+            [config.valueField]: i,
+            [config.labelField]: val
+          }
+        }
+        res.push(val);
+      };
       return res;
     }, []);
   }

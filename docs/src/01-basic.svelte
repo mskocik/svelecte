@@ -5,7 +5,7 @@
   let options = dataset.countries();
 
   let selection = null;
-  let value = null;
+  let value = 'cz';
 
   setTimeout(() => {
     value = 'de';
@@ -20,5 +20,3 @@
 
 <div>Current <code>readSelection</code> value: <b>{JSON.stringify(selection) }</b></div>
 <div>Current <code>value</code> value: <b>{value}</b></div>
-
-<button on:click={() => { value = '123123123' }}>Break it</button>
