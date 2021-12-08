@@ -152,10 +152,16 @@
   const hasDropdownOpened = writable(false);
 
   let isFetchingData = false;
+  let initFetchOnly = false;
 
   /** ************************************ remote source */
   // $: initFetchOnly = fetchMode === 'init' || (typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
   $: createFetch(fetch);
+  $: {
+    if (disabled) {
+      xhr && xhr.readyState !== 4 && xhr.abort();
+    }
+  }
 
   function createFetch(fetch) {
     if (fetchUnsubscribe) {
@@ -165,7 +171,7 @@
     if (!fetch) return null;
 
     const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
-    const initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
+    initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
     const debouncedFetch = debounce(query => {
       fetchSource(query, fetchCallback)
         .then(data => {
@@ -199,7 +205,7 @@
       }
       if (value && value.length < minQuery) return;
       isFetchingData = true;
-      hasDropdownOpened.set(false);
+      !initFetchOnly && hasDropdownOpened.set(false);
       debouncedFetch(value);
     });
 
@@ -243,7 +249,7 @@
       ? _i18n.nomatch
       : (fetch
         ? (minQuery <= 1 
-          ? _i18n.fetchBefore
+          ? (initFetchOnly ? _i18n.fetchInit : _i18n.fetchBefore)
           : _i18n.fetchQuery(minQuery, $inputValue.length)
         )
         : _i18n.empty

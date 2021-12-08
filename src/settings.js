@@ -41,6 +41,7 @@ const settings = {
     fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength 
       ? `at least ${minQuery - inputLength} characters `
       : '' }to start searching`,
+    fetchInit: 'Fetching data, please wait...',
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`
