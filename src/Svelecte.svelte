@@ -374,7 +374,7 @@
    */
   function deselectOption(opt) {
     if (opt.$created && backspacePressed && allowEditing) {
-      alreadyCreated.splice(alreadyCreated.findIndex(o => o[currentValueField] === opt[currentValueField]), 1);
+      alreadyCreated.splice(alreadyCreated.findIndex(o => o === opt[labelAsValue ? currentLabelField : currentValueField]), 1);
       alreadyCreated = alreadyCreated;
       if (keepCreated) {
         options.splice(options.findIndex(o => o === opt), 1);
