@@ -369,7 +369,7 @@
       selectedOptions = [opt];
       selectedKeys.clear();
       selectedKeys.add(opt[currentValueField]);
-      dropdownActiveIndex = options.indexOf(opt); 
+      dropdownActiveIndex = options.indexOf(opt);
     } 
     flatItems = flatItems;
     return true;
@@ -583,7 +583,9 @@
     }
     dropdownActiveIndex = listIndex.first;
     if (prevValue && !multiple) {
-      dropdownActiveIndex = flatItems.findIndex(opt => opt[currentValueField] === prevValue[currentValueField]);
+      const prop = labelAsValue ? currentLabelField : currentValueField;
+      const selectedProp = valueAsObject ? prevValue[prop] : prevValue;
+      dropdownActiveIndex = flatItems.findIndex(opt => opt[prop] === selectedProp);
     }
     isIOS = iOS();
   });

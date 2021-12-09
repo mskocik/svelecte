@@ -32,12 +32,13 @@
     const focusedRect = focusedEl.getBoundingClientRect();
     const menuRect = scrollContainer.getBoundingClientRect();
     const overScroll = focusedEl.offsetHeight / 3;
+    const centerOffset = params && params.center ? scrollContainer.offsetHeight / 2 : 0;
     switch (true) {
       case focusedEl.offsetTop < scrollContainer.scrollTop:
-        scrollContainer.scrollTop = focusedEl.offsetTop - overScroll;
+        scrollContainer.scrollTop = focusedEl.offsetTop - overScroll + centerOffset;
         break;
-      case focusedEl.offsetTop  + focusedRect.height > scrollContainer.scrollTop + menuRect.height:
-        scrollContainer.scrollTop = focusedEl.offsetTop  + focusedRect.height - scrollContainer.offsetHeight + overScroll;
+      case focusedEl.offsetTop + focusedRect.height > scrollContainer.scrollTop + menuRect.height:
+          scrollContainer.scrollTop = focusedEl.offsetTop + focusedRect.height - scrollContainer.offsetHeight + overScroll + centerOffset;
         break;
     }
   }
@@ -92,7 +93,7 @@
 
   function positionDropdown(val) {
     if (!scrollContainer && !renderDropdown) return;
-    const outVp = isOutOfViewport(scrollContainer);
+    const outVp = isOutOfViewport(scrollContainer.parentElement);
     if (outVp.bottom && !outVp.top) {
       scrollContainer.style.bottom = (scrollContainer.parentElement.parentElement.clientHeight + 1) + 'px';
       // FUTURE: debounce ....
@@ -149,7 +150,10 @@
     /** ************************************ flawless UX related tweak */
     dropdownStateSubscription = hasDropdownOpened.subscribe(val => {
       if (!renderDropdown && val) renderDropdown = true;
-      tick().then(() => positionDropdown(val));
+      tick().then(() => {
+        positionDropdown(val);
+        val && scrollIntoView({ center: true });
+      });
       // bind/unbind scroll listener
       document[val ? 'addEventListener' : 'removeEventListener']('scroll', () => positionDropdown(val), { passive: true });
     });
