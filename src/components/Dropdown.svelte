@@ -95,10 +95,10 @@
     if (!scrollContainer && !renderDropdown) return;
     const outVp = isOutOfViewport(scrollContainer.parentElement);
     if (outVp.bottom && !outVp.top) {
-      scrollContainer.style.bottom = (scrollContainer.parentElement.parentElement.clientHeight + 1) + 'px';
+      scrollContainer.parentElement.style.bottom = (scrollContainer.parentElement.parentElement.clientHeight + 1) + 'px';
       // FUTURE: debounce ....
     } else if (!val || outVp.top) {
-      scrollContainer.style.bottom = '';
+      scrollContainer.parentElement.style.bottom = '';
     }
   }
 
