@@ -471,11 +471,11 @@
           dropdownActiveIndex = Math.ceil((item * dropdownActiveIndex + wrap) / item);
         }
       case 'ArrowUp':
+        event.preventDefault();
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
           return;
         }
-        event.preventDefault();
         dropdownActiveIndex = listIndex.prev(dropdownActiveIndex);
         tick().then(refDropdown.scrollIntoView);
         ignoreHover = true;
@@ -491,11 +491,11 @@
           dropdownActiveIndex = Math.floor((item * dropdownActiveIndex - wrap) / item);
         }
       case 'ArrowDown':
+        event.preventDefault();
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
           return;
         }
-        event.preventDefault();
         dropdownActiveIndex = listIndex.next(dropdownActiveIndex);
         tick().then(refDropdown.scrollIntoView);
         ignoreHover = true;
