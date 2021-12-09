@@ -157,9 +157,12 @@
   /** ************************************ remote source */
   // $: initFetchOnly = fetchMode === 'init' || (typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
   $: createFetch(fetch);
-  $: {
-    if (disabled) {
-      xhr && xhr.readyState !== 4 && xhr.abort();
+  $: disabled && cancelXhr();
+
+  function cancelXhr() {
+    if (isFetchingData) {
+      xhr && ![0,4].includes(xhr.readyState) && xhr.abort();
+      isFetchingData = false;
     }
   }
 
@@ -173,11 +176,17 @@
     const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
     initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
     const debouncedFetch = debounce(query => {
+      if (query && !$inputValue.length) {
+        isFetchingData = false;
+        return;
+      }
       fetchSource(query, fetchCallback)
         .then(data => {
           options = data;
         })
-        .catch(() => options = [])
+        .catch(() => {
+          options = []
+        })
         .finally(() => {
           isFetchingData = false;
           $hasFocus && hasDropdownOpened.set(true);
@@ -194,9 +203,7 @@
     }
 
     fetchUnsubscribe = inputValue.subscribe(value => {
-      if (xhr && xhr.readyState !== 4) {  // cancel previously run
-        xhr.abort();
-      };
+      cancelXhr(); // cancel previous run
       if (!value) {
         if (isInitialized && fetchResetOnBlur) {
           options = [];
@@ -204,8 +211,8 @@
         return;
       }
       if (value && value.length < minQuery) return;
-      isFetchingData = true;
       !initFetchOnly && hasDropdownOpened.set(false);
+      isFetchingData = true;
       debouncedFetch(value);
     });
 
@@ -508,6 +515,7 @@
         if (!$inputValue) {
           $hasDropdownOpened = false;
         }
+        cancelXhr();
         $inputValue = '';
         break;
       case Tab:
