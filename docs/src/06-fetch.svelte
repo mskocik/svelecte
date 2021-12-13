@@ -4,7 +4,11 @@
   let resetOnBlur = true;
   let fetchResetOnBlur = true;
 
-  let initialOptions = [
+  /**
+   * NOTE: We do not define initial value for `options` property. Initial options are created from `value` property.
+   * To make this conversion automatic, `valueAsObject` must be set to `true`
+   */ 
+  let selectionWork = [
     {
     "id": 10,
     "name": "Clementina DuBuque",
@@ -29,12 +33,10 @@
     }
   }]
   
-  let selectionWork = [initialOptions[0]];
   let minQueryValue = 2;
 </script>
 
 <Svelecte
-  options={initialOptions}
   {resetOnBlur}
   {fetchResetOnBlur}
   bind:value={selectionWork}

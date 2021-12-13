@@ -123,6 +123,9 @@
     labelAsValue: labelAsValue,
   };
 
+  if (fetch && value && (!options || (options && options.length === 0))) {
+    options = Array.isArray(value) ? value : [value];
+  }
   let isInitialized = false;
   let refDropdown;
   let refControl;
@@ -138,8 +141,8 @@
 
   itemConfig.valueField = currentValueField;
   itemConfig.labelField = currentLabelField;
-  itemConfig.optionProps = readSelection && (multiple && Array.isArray(readSelection) ? readSelection.length > 0 : true)
-    ? getFilterProps(multiple ? readSelection.slice(0,1).shift() : readSelection)
+  itemConfig.optionProps = value && valueAsObject && (multiple && Array.isArray(value) ? value.length > 0 : true)
+    ? getFilterProps(multiple ? value.slice(0,1).shift() : value)
     : [currentValueField, currentLabelField];
 
   /** ************************************ automatic init */
@@ -198,6 +201,7 @@
     if (initFetchOnly) {
       if (typeof fetch === 'string' && fetch.indexOf('[parent]') !== -1) return null;
       isFetchingData = true;
+      options = [];
       debouncedFetch(null);
       return null;
     }
