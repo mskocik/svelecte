@@ -16,7 +16,6 @@
     }
   };
   export const config = defaults;
-  let counter = 0
 </script>
 
 <!-- svelte-ignore module-script-reactive-declaration -->
@@ -31,7 +30,7 @@
 
   // form and CE
   export let name = 'svelecte';
-  export let inputId = `sv-inp-${counter++}`;
+  export let inputId = null;
   export let required = false;
   export let hasAnchor = false;
   export let disabled = defaults.disabled;
