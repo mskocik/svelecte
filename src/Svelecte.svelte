@@ -16,6 +16,7 @@
     }
   };
   export const config = defaults;
+  let counter = 0
 </script>
 
 <!-- svelte-ignore module-script-reactive-declaration -->
@@ -30,6 +31,7 @@
 
   // form and CE
   export let name = 'svelecte';
+  export let id = `svelecte-input-${counter++}`;
   export let required = false;
   export let hasAnchor = false;
   export let disabled = defaults.disabled;
@@ -605,7 +607,7 @@
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
-    {disabled} {clearable} {searchable} {placeholder} {multiple} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
+    {disabled} {clearable} {searchable} {placeholder} {multiple} {id} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
     {dndzone} {currentValueField}
     itemComponent={controlItem}

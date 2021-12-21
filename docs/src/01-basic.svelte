@@ -12,7 +12,9 @@
   }, 4000);
 </script>
 
+<label for="country">Select a country</label>
 <Svelecte {options} 
+  id="country"
   bind:readSelection={selection}
   bind:value={value}
   placeholder="Select country"

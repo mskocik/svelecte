@@ -11,6 +11,7 @@
   export let multiple;
   export let resetOnBlur;
   export let collapseSelection;
+  export let id;
   /** internal props */
   export let inputValue;
   export let hasFocus;
@@ -83,7 +84,7 @@
       {/if}
     {/if}
     <!-- input -->
-    <Input {disabled} {searchable} {placeholder} {multiple}
+    <Input {disabled} {searchable} {placeholder} {multiple} {id}
       {inputValue} {hasDropdownOpened} {selectedOptions}
       bind:this={refInput}
       on:focus={onFocus}
