@@ -44,7 +44,7 @@
 <input type="text" class="inputBox"
   disabled={disabled}
   readonly={!searchable}
-  {inputId}
+  id={inputId}
   style={inputStyle} placeholder={placeholderText}
   bind:this={inputRef} 
   bind:value={$inputValue} 
