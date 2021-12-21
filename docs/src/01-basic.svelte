@@ -14,7 +14,7 @@
 
 <label for="country">Select a country</label>
 <Svelecte {options} 
-  id="country"
+  inputId="country"
   bind:readSelection={selection}
   bind:value={value}
   placeholder="Select country"

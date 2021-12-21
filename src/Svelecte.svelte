@@ -31,7 +31,7 @@
 
   // form and CE
   export let name = 'svelecte';
-  export let id = `svelecte-input-${counter++}`;
+  export let inputId = `sv-inp-${counter++}`;
   export let required = false;
   export let hasAnchor = false;
   export let disabled = defaults.disabled;
@@ -607,7 +607,7 @@
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
-    {disabled} {clearable} {searchable} {placeholder} {multiple} {id} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
+    {disabled} {clearable} {searchable} {placeholder} {multiple} {inputId} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
     {dndzone} {currentValueField}
     itemComponent={controlItem}

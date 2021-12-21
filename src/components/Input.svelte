@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
 
   export const focus = () => inputRef.focus();
-  export let id;
+  export let inputId;
   export let placeholder;
   export let searchable;
   export let disabled;
@@ -44,7 +44,7 @@
 <input type="text" class="inputBox"
   disabled={disabled}
   readonly={!searchable}
-  {id}
+  {inputId}
   style={inputStyle} placeholder={placeholderText}
   bind:this={inputRef} 
   bind:value={$inputValue} 
