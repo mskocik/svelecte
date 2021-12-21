@@ -93,7 +93,7 @@ multiple          | bool             | `false`    | allow multiselection. Will b
 max               | number           | `0`        | Maximum allowed items selected, applicable only for multiselect
 collapseSelection | bool             | `false`    | collapse selection when `multiple` and not focused
 name              | string           | `null`     | create `<select>`, usable for normal forms.
-inputId           | string           | `sv-inp-x` | allow targeting input using a html label.
+inputId           | string           | `null`     | allow targeting input using a html label.
 creatable         | bool             | `false`    | Allow creating new item(s)
 creatablePrefix   | string           | `*`        | Prefix marking new item
 allowEditing      | bool             | `false`    | When pressing `Backspace` switch to edit mode instead of removing newly created item
