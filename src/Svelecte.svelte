@@ -604,7 +604,7 @@
   });
 </script>
 
-<div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
+<div class={`svelecte ${className}`} class:is-disabled={disabled} {style} role="combobox">
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} {inputId} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn : null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
