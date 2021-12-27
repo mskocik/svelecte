@@ -145,6 +145,7 @@
   }
 
   let dropdownStateSubscription = () => {};
+  let onScrollHandler = null;
   /** ************************************ lifecycle */
   onMount(() => {
     /** ************************************ flawless UX related tweak */
@@ -154,8 +155,9 @@
         positionDropdown(val);
         val && scrollIntoView({ center: true });
       });
+      if (!onScrollHandler) onScrollHandler = () => positionDropdown(val);
       // bind/unbind scroll listener
-      document[val ? 'addEventListener' : 'removeEventListener']('scroll', () => positionDropdown(val), { passive: true });
+      document[val ? 'addEventListener' : 'removeEventListener']('scroll', onScrollHandler, { passive: true });
     });
     isMounted = true;
   });
