@@ -39,8 +39,8 @@ export function fetchRemote(url) {
   }
 }
 
-let timeout;
 export function debounce(fn, delay) {
+  let timeout;
 	return function() {
 		const self = this;
 		const args = arguments;
