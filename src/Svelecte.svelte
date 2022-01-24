@@ -132,7 +132,6 @@
   let refControl;
   let ignoreHover = false;
   let dropdownActiveIndex = null;
-  let fetchUnsubscribe = null;
   let currentValueField = valueField || fieldInit('value', options, itemConfig);
   let currentLabelField = labelField || fieldInit('label', options, itemConfig);
   let isIOS = false;
@@ -159,15 +158,16 @@
   let initFetchOnly = false;
 
   /** ************************************ remote source */
-  // $: initFetchOnly = fetchMode === 'init' || (typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
+  let fetchUnsubscribe = null;
   $: createFetch(fetch);
-  $: disabled && cancelXhr();
+  $: disabled && cancelXhr() && hasDropdownOpened.set(false);
 
   function cancelXhr() {
     if (isFetchingData) {
       xhr && ![0,4].includes(xhr.readyState) && xhr.abort();
       isFetchingData = false;
     }
+    return true;
   }
 
   function createFetch(fetch) {
