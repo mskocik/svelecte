@@ -32,8 +32,13 @@ export function fetchRemote(url) {
       xhr.onreadystatechange = function() {
         if (this.readyState === 4) {
           if (this.status === 200) {
-            const resp = JSON.parse(this.response);
-            resolve(cb ? cb(resp) : resp.data || resp.items || resp.options || resp);
+            try {
+              const resp = JSON.parse(this.response);
+              resolve(cb ? cb(resp) : (resp.data || resp.items || resp.options || resp));
+            } catch (e) {
+              console.warn('[Svelecte]:Fetch - error handling fetch response', e);
+              reject();
+            }
           } else {
             reject();
           }

@@ -186,6 +186,10 @@
       }
       fetchSource(query, fetchCallback)
         .then(data => {
+          if (!Array.isArray(data)) {
+            console.warn('[Svelecte]:Fetch - array expected, invalid property provided:', data);
+            data = [];
+          }
           options = data;
         })
         .catch(() => {
