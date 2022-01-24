@@ -25,10 +25,10 @@ export function fetchRemote(url) {
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
       xhr.send();
       
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            const resp = JSON.parse(xhr.response);
+      xhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            const resp = JSON.parse(this.response);
             resolve(cb ? cb(resp) : resp.data || resp.items || resp.options || resp);
           } else {
             reject();
