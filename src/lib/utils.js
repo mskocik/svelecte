@@ -3,13 +3,17 @@ import { asciifold } from './sifter';
 // source: https://github.com/rob-balfre/svelte-select/blob/master/src/utils/isOutOfViewport.js
 export function isOutOfViewport(elem) {
   if (!elem) return false;
+  const parentBounding = elem
+    .parentElement  // dropdown container
+    .parentElement  // component container
+      .getBoundingClientRect();
   const bounding = elem.getBoundingClientRect();
   const out = {};
 
-  out.top = bounding.top < 0 || bounding.top - bounding.height < 0;
-  out.left = bounding.left < 0;
-  out.bottom = bounding.bottom > (window.innerHeight || document.documentElement.clientHeight);
-  out.right = bounding.right > (window.innerWidth || document.documentElement.clientWidth);
+  out.top = parentBounding.top < 0;
+  out.left = parentBounding.left < 0;
+  out.bottom = parentBounding.bottom + bounding.height > (window.innerHeight || document.documentElement.clientHeight); 
+  out.right = parentBounding.right > (window.innerWidth || document.documentElement.clientWidth);
   out.any = out.top || out.left || out.bottom || out.right;
 
   return out;

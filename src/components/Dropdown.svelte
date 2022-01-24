@@ -93,7 +93,7 @@
 
   function positionDropdown(val) {
     if (!scrollContainer && !renderDropdown) return;
-    const outVp = isOutOfViewport(scrollContainer.parentElement);
+    const outVp = isOutOfViewport(scrollContainer);
     if (outVp.bottom && !outVp.top) {
       scrollContainer.parentElement.style.bottom = (scrollContainer.parentElement.parentElement.clientHeight + 1) + 'px';
       // FUTURE: debounce ....
