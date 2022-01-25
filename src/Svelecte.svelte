@@ -113,6 +113,7 @@
     }
   }
 
+  const __id = `sv-select-${Math.random()}`.replace('.', '');
   const dispatch = createEventDispatcher();
 
   const itemConfig = {
@@ -605,6 +606,7 @@
       dropdownActiveIndex = flatItems.findIndex(opt => opt[prop] === selectedProp);
     }
     isIOS = iOS();
+    if (name && !hasAnchor) refSelectElement = document.getElementById(`#${__id}`);
   });
 </script>
 
@@ -636,7 +638,7 @@
     let:item={item}
   ></Dropdown>
   {#if name && !hasAnchor}
-  <select name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled} use:refSelectAction={refSelectActionParams} bind:this={refSelectElement}>
+  <select id={__id} name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled} use:refSelectAction={refSelectActionParams}>
     {#each selectedOptions as opt}
     <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
