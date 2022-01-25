@@ -3,7 +3,6 @@ import resolve from '@rollup/plugin-node-resolve';
 import css from 'rollup-plugin-css-only';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
-import pkg from './package.json';
 
 const isProduction = !process.env.ROLLUP_WATCH;
 
@@ -13,13 +12,7 @@ const module = {
     {
       sourcemap: false,
       format: 'es',
-      file: pkg.module
-    },
-    {
-      sourcemap: false,
-      format: 'umd',
-      file: pkg.main,
-      name: 'Svelecte'
+      file: 'dist/svelecte.mjs'
     }
   ],
   plugins: [
