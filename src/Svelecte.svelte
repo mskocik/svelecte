@@ -124,8 +124,8 @@
     labelField: labelField,
     labelAsValue: labelAsValue,
   };
-
-  if (fetch && value && (!options || (options && options.length === 0))) {
+  /* possibility to provide initial (selected) values in `fetch` mode **/
+  if (fetch && value && valueAsObject && (!options || (options && options.length === 0))) {
     options = Array.isArray(value) ? value : [value];
   }
   let isInitialized = false;
@@ -155,16 +155,16 @@
   const hasFocus = writable(false);
   const hasDropdownOpened = writable(false);
 
-  let isFetchingData = false;
-  let initFetchOnly = false;
-
   /** ************************************ remote source */
+  let isFetchingData = false;
+  let initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
+  let fetchInitValue = initFetchOnly ? value : null;
   let fetchUnsubscribe = null;
   $: createFetch(fetch);
   $: disabled && cancelXhr() && hasDropdownOpened.set(false);
 
   function cancelXhr() {
-    if (isFetchingData) {
+    if (isInitialized && isFetchingData) {
       xhr && ![0,4].includes(xhr.readyState) && xhr.abort();
       isFetchingData = false;
     }
@@ -179,6 +179,7 @@
     if (!fetch) return null;
 
     const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
+    // reinit this if `fetch` property changes
     initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
     const debouncedFetch = debounce(query => {
       if (query && !$inputValue.length) {
@@ -200,7 +201,10 @@
           isFetchingData = false;
           $hasFocus && hasDropdownOpened.set(true);
           listMessage = _i18n.fetchEmpty;
-          tick().then(() => dispatch('fetch', options));
+          tick().then(() => {
+            initFetchOnly && fetchInitValue && handleValueUpdate(fetchInitValue);
+            dispatch('fetch', options)
+          });
         })
     }, 500);
 
