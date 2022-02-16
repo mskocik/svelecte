@@ -610,7 +610,7 @@
       dropdownActiveIndex = flatItems.findIndex(opt => opt[prop] === selectedProp);
     }
     isIOS = iOS();
-    if (name && !hasAnchor) refSelectElement = document.getElementById(`#${__id}`);
+    if (name && !hasAnchor) refSelectElement = document.getElementById(__id);
   });
 </script>
 
