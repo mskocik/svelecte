@@ -1,36 +1,34 @@
 import Sifter from './sifter';
 
 export function initSelection(initialValue, valueAsObject, config) {
-  if (initialValue && !valueAsObject) {
-    const _initialValue = Array.isArray(initialValue) ? initialValue : [initialValue];
-    const valueField = config.labelAsValue ? config.labelField : config.valueField;
-    return this/** options */.reduce((res, val, i) => {
-      if (val.options) {  // handle groups
-        const selected = val.options.reduce((res, groupVal) => {
-          if (_initialValue.includes(groupVal[valueField])) res.push(groupVal);
-          return res;
-        }, []);
-        if (selected.length) {
-          res.push(...selected);
-          return res;
+  if (valueAsObject) return Array.isArray(initialValue) ? initialValue : [initialValue];
+
+  const _initialValue = Array.isArray(initialValue) ? initialValue : [initialValue];
+  const valueField = config.labelAsValue ? config.labelField : config.valueField;
+
+  return this/** options */.reduce((res, val, i) => {
+    if (val.options) {  // handle groups
+      const selected = val.options.reduce((res, groupVal) => {
+        if (_initialValue.includes(groupVal[valueField])) res.push(groupVal);
+        return res;
+      }, []);
+      if (selected.length) {
+        res.push(...selected);
+        return res;
+      }
+    }
+    if (_initialValue.includes(typeof val === 'object' ? val[valueField] : val)) {
+      if (config.isOptionArray) {
+        // initial options are not transformed, therefore we need to create object from given option
+        val = {
+          [config.valueField]: i,
+          [config.labelField]: val
         }
       }
-      if (_initialValue.includes(val[valueField] || val)) {
-        if (config.isOptionArray) {
-          // initial options are not transformed, therefore we need to create object from given option
-          val = {
-            [config.valueField]: i,
-            [config.labelField]: val
-          }
-        }
-        res.push(val);
-      };
-      return res;
-    }, []);
-  }
-  return valueAsObject && initialValue
-    ? (Array.isArray(initialValue) ? initialValue : [initialValue])
-    : [];
+      res.push(val);
+    };
+    return res;
+  }, []);
 }
 
 export function flatList(options, config) {

@@ -247,7 +247,7 @@
   $: prevValue !== value && handleValueUpdate(value);
 
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
-  let selectedOptions = initSelection.call(options, value, valueAsObject, itemConfig);
+  let selectedOptions = value !== null ? initSelection.call(options, value, valueAsObject, itemConfig) : [];
   let selectedKeys = selectedOptions.reduce((set, opt) => { set.add(opt[currentValueField]); return set; }, new Set());
   let alreadyCreated = [''];
   $: flatItems = flatList(options, itemConfig);
