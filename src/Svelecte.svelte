@@ -557,6 +557,7 @@
           $hasDropdownOpened = true;
           event.preventDefault();
         }
+        if (!multiple && selectedOptions.length) event.preventDefault();
         break;
       case 'Backspace':
         backspacePressed = true;
