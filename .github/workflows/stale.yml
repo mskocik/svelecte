@@ -26,3 +26,4 @@ jobs:
         days-before-close: 5        
         days-before-pr-close: -1
         exempt-all-assignees: true
+        exempt-issue-labels: documentation,enhancement,bug
