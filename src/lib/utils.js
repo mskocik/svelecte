@@ -155,6 +155,13 @@ export function iOS() {
   || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
 }
 
-export function defaultCreateFilter(val) {
-  return val.trim().split(' ').filter(ch => ch).join(' ');
+/**
+ * Formatter of newly created items. When `''` is returned, it means new option cannot be created.
+ * 
+ * @param {string} val 
+ * @param {array} options 
+ * @returns {string}
+ */
+export function defaultCreateFilter(val, options) {  
+  return (val || '').trim().split(' ').filter(ch => ch).join(' ');
 }

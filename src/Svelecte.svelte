@@ -311,6 +311,7 @@
   $: {
     itemConfig.labelAsValue = labelAsValue;
   }
+  $: dropdownInputValue = createFilter($inputValue, options);
 
   /**
    * Dispatch change event on add options/remove selected items
@@ -371,7 +372,7 @@
     if (selectedKeys.has(opt[currentValueField])) return;
 
     if (typeof opt === 'string') {
-      opt = createFilter(opt);
+      opt = createFilter(opt, options);
       if (alreadyCreated.includes(opt)) return;
       !fetch && alreadyCreated.push(opt);
       opt = {
@@ -634,7 +635,7 @@
     {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
-    inputValue={createFilter($inputValue)} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
+    inputValue={dropdownInputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
     metaKey={isIOS ? '⌘' : 'Ctrl'}
     itemComponent={dropdownItem}
     on:select={onSelect}
