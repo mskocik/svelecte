@@ -96,10 +96,10 @@ name              | string           | `null`     | create `<select>`, usable fo
 inputId           | string           | `null`     | allow targeting input using a html label.
 creatable         | bool             | `false`    | Allow creating new item(s)
 creatablePrefix   | string           | `*`        | Prefix marking new item
-allowEditing      | bool             | `false`    | When pressing `Backspace` switch to edit mode instead of removing newly created item
+allowEditing      | bool             | `false`    | When pressing `Backspace` switch to edit mode instead of removing newly created item. **NOTE** intended to be used with `creatable` property
 keepCreated       | bool             | `true`     | Switch whether to add newly created option to option list or not
 delimiter         | string           | `,`        | split inserted text when pasting to create multiple items
-createFilter      | function         | `null`     | Function, that transform input string to custom value. It can serve as a filter, if value is valid or not. If you want to dismiss entered value, function should return `''` (empty string). By default all input string is trimmed and all multiple spaces are removed
+createFilter      | function         | `null`     | Function, that transform input string to custom value. It can serve as a filter, if value is valid or not. If you want to dismiss entered value, function should return `''` (empty string). By default all input string is trimmed and all multiple spaces are removed. Function notation:<br>`createFilter(inputValue: string, dropdownOptions: array): string`
 fetch             | string\|function | `null`     | Check "remote datasource" section for more details
 fetchMode         | string           | `auto`     | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
 fetchCallback     | function         | `null`     | optional fetch callback

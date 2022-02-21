@@ -781,7 +781,7 @@ const OPTION_LIST = [
                 <td>allowEditing</td>
                 <td>bool</td>
                 <td><code>false</code></td>
-                <td>When pressing <code>Backspace</code> switch to edit mode instead of removing newly created item</td>
+                <td>When pressing <code>Backspace</code> switch to edit mode instead of removing newly created item. <b>NOTE:</b> intended to be used with <code>creatable</code> property.</td>
               </tr>
               <tr>
                 <td>keepCreated</td>
@@ -801,7 +801,9 @@ const OPTION_LIST = [
                 <td><code>null</code></td>
                 <td>Function, that transform input string to custom value. It can serve as a filter, if value is valid or not.
                     If you want to dismiss entered value, function should return <code>''</code> (empty string). By default
-                    all input string is trimmed and all multiple spaces are removed.
+                    all input string is trimmed and all multiple spaces are removed. Function notation:
+                    <br>
+                    <code>createFilter(inputValue: string, dropdownOptions: array): string</code>
                 </td>
               </tr>
               <tr>
