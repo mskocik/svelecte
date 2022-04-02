@@ -361,7 +361,6 @@ class SvelecteElement extends HTMLElement {
       setTimeout(() => {
         this._selfSetValue = false;
       }, 100);
-      this.dispatchEvent(e);
       // Custom-element related
       if (this.anchorSelect) {
         this.anchorSelect.innerHTML = (Array.isArray(value) ? (value.length ? value : [null]) : [value]).reduce((res, item) => {
@@ -374,6 +373,7 @@ class SvelecteElement extends HTMLElement {
         }, '');
         this.anchorSelect.dispatchEvent(new Event('change'));
       }
+      this.dispatchEvent(e);
     });
     this.svelecte.$on('fetch', e => {
       this._fetchOpts = e.detail;
