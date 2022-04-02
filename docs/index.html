@@ -807,6 +807,17 @@ const OPTION_LIST = [
                 </td>
               </tr>
               <tr>
+                <td>createTransform</td>
+                <td>function</td>
+                <td><code>null</code></td>
+                <td>Custom function transforming input string to option object. By default it just sets <code>value</code> as output from <code>createFilter</code>
+                    and <code>label</code> as output from <code>createFilter</code> prefixed with <code>creatablePrefix</code> property.
+                  Function notation:
+                    <br>
+                    <code>createTransform(inputValue: string, creatablePrefix: string, valueField: string, labelField: string): object</code>
+                </td>
+              </tr>
+              <tr>
                 <td>fetch</td>
                 <td>string|function</td>
                 <td><code>null</code></td>

@@ -100,6 +100,7 @@ allowEditing      | bool             | `false`    | When pressing `Backspace` sw
 keepCreated       | bool             | `true`     | Switch whether to add newly created option to option list or not
 delimiter         | string           | `,`        | split inserted text when pasting to create multiple items
 createFilter      | function         | `null`     | Function, that transform input string to custom value. It can serve as a filter, if value is valid or not. If you want to dismiss entered value, function should return `''` (empty string). By default all input string is trimmed and all multiple spaces are removed. Function notation:<br>`createFilter(inputValue: string, dropdownOptions: array): string`
+createTransform   | function         | `null`     | Custom function transforming input string to option object. Default returns object with `valueField` and `labelField` properties, where `labelField`'s value is input string prefixed with `creatablePrefix` property. Function notation:<br>`createTransform(inputValue: string, creatablePrefix: string, valueField: string, labelField: string): object`
 fetch             | string\|function | `null`     | Check "remote datasource" section for more details
 fetchMode         | string           | `auto`     | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
 fetchCallback     | function         | `null`     | optional fetch callback

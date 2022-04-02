@@ -165,3 +165,17 @@ export function iOS() {
 export function defaultCreateFilter(val, options) {  
   return (val || '').trim().split(' ').filter(ch => ch).join(' ');
 }
+
+/**
+ * Default create function
+ * 
+ * @param {string} inputValue 
+ * @param {string} creatablePrefix 
+ * @returns {object} newly created option
+ */
+export function defaultCreateTransform(inputValue, creatablePrefix, valueField, labelField) {
+  return {
+    [valueField]: inputValue,
+    [labelField]: creatablePrefix + inputValue,
+  }
+}

@@ -22,7 +22,7 @@
 <script>
   import { createEventDispatcher, tick, onMount } from 'svelte';
   import { writable } from 'svelte/store';
-  import { fetchRemote, defaultCreateFilter } from './lib/utils.js';
+  import { fetchRemote, defaultCreateFilter, defaultCreateTransform } from './lib/utils.js';
   import { initSelection, flatList, filterList, indexList, getFilterProps } from './lib/list.js';
   import Control from './components/Control.svelte';
   import Dropdown from './components/Dropdown.svelte';
@@ -62,6 +62,7 @@
   export let keepCreated = defaults.keepCreated;
   export let delimiter = defaults.delimiter;
   export let createFilter = null;
+  export let createTransform = null;
   // remote
   export let fetch = null;
   export let fetchMode = 'auto';
@@ -149,6 +150,7 @@
   /** ************************************ automatic init */
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
   if (!createFilter) createFilter = defaultCreateFilter;
+  $: if (!createTransform) createTransform = defaultCreateTransform;
 
   /** ************************************ Context definition */
   const inputValue = writable('');
@@ -375,11 +377,8 @@
       opt = createFilter(opt, options);
       if (alreadyCreated.includes(opt)) return;
       !fetch && alreadyCreated.push(opt);
-      opt = {
-        [currentValueField]: encodeURIComponent(opt),
-        [currentLabelField]: `${creatablePrefix}${opt}`,
-        '$created': true,
-      };
+      opt = createTransform(opt, creatablePrefix, currentValueField, currentLabelField);
+      opt.$created = true;  // internal setter
       if (keepCreated) options = [...options, opt];
       emitCreateEvent(opt);
     }
