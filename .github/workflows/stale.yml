@@ -23,7 +23,7 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         stale-issue-message: 'This issue is stale because it has been open 21 days with no activity. Remove stale label or comment or this will be closed in 3 days.'
         days-before-stale: 21
-        days-before-close: 5        
+        days-before-close: 3        
         days-before-pr-close: -1
         exempt-all-assignees: true
         exempt-issue-labels: documentation,enhancement,bug
