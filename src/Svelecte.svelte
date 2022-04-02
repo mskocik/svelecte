@@ -163,7 +163,7 @@
   let fetchInitValue = initFetchOnly ? value : null;
   let fetchUnsubscribe = null;
   $: createFetch(fetch);
-  $: disabled && cancelXhr() && hasDropdownOpened.set(false);
+  $: disabled && hasDropdownOpened.set(false);
 
   function cancelXhr() {
     if (isInitialized && isFetchingData) {
@@ -179,6 +179,7 @@
       fetchUnsubscribe = null;
     }
     if (!fetch) return null;
+    cancelXhr();
 
     const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
     // reinit this if `fetch` property changes
@@ -645,7 +646,7 @@
   {#if name && !hasAnchor}
   <select id={__id} name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled} use:refSelectAction={refSelectActionParams}>
     {#each selectedOptions as opt}
-    <option value={opt[currentValueField]} selected>{opt[currentLabelField]}</option>
+    <option value={opt[labelAsValue ? currentLabelField : currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
   </select>
   {/if}
