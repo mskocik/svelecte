@@ -12,7 +12,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "svelte-tiny-virtual-list": "^1.1.7"
+    "svelte-tiny-virtual-list": "^2.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-node-resolve": "^13.0.5",
