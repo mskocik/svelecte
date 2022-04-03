@@ -15,7 +15,7 @@ const OPTION_LIST = [
   // creating
   'creatable', 'creatable-prefix', 'allow-editing', 'keepCreated', 'delimiter',
   // remote
-  'fetch', 'fetch-reset-on-blur', 'min-query',
+  'fetch-reset-on-blur', 'min-query',
   // perf & virtual list
   'lazy-dropdown', 'virtual-list', 'vl-height', 'vl-item-size',
   // sifter
@@ -45,6 +45,7 @@ function formatValue(name, value) {
     case 'renderer':
       return value || 'default';
     case 'required':
+    case 'disabled':
     case 'searchable':
     case 'clearable':
     case 'disable-highlight':
@@ -236,9 +237,9 @@ class SvelecteElement extends HTMLElement {
         }
       }
     };
-    const boolProps = ['searchable','clearable','disable-highlight','select-on-tab','reset-on-blur',
+    const boolProps = ['searchable','clearable','disable-highlight', 'required', 'select-on-tab','reset-on-blur',
       'multiple','collapse-selection','creatable','allow-editing','keep-created','fetch-reset-on-blur',
-      'virtual-list','disable-sifter','label-as-value'
+      'virtual-list','disable-sifter','label-as-value', 'disabled'
     ].reduce((res, propName) => {
       const formatted = formatProp(propName);
       res[formatted] = {
@@ -253,7 +254,7 @@ class SvelecteElement extends HTMLElement {
               this.removeAttribute(propName);
             } else {
               // set directly to false, when config default is true
-              this.svelecte.$set({ [formatted]: value });
+              this.svelecte && this.svelecte.$set({ [formatted]: value });
             }
           } else {
             this.setAttribute(propName, value = true ? '' : value);
