@@ -15,7 +15,7 @@ const OPTION_LIST = [
   // creating
   'creatable', 'creatable-prefix', 'allow-editing', 'keepCreated', 'delimiter',
   // remote
-  'fetch-reset-on-blur', 'min-query',
+  'fetch', 'fetch-reset-on-blur', 'min-query',
   // perf & virtual list
   'lazy-dropdown', 'virtual-list', 'vl-height', 'vl-item-size',
   // sifter
