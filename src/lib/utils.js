@@ -126,6 +126,7 @@ export function fieldInit(type, options, config) {
   let val = isValue  ? 'value' : 'text';              // selectize style defaults
   if (options && options.length) {
     const firstItem = options[0].options ? options[0].options[0] : options[0];
+    if (!firstItem) return val;
     const autoAddItem = isValue ? 0 : 1;
     const guessList = isValue
       ? ['id', 'value', 'ID']
