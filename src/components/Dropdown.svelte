@@ -17,6 +17,7 @@
   export let vlHeight;
   /** internal props */
   export let inputValue;  // value only, not store
+  export let multiple;
   export let listIndex;
   export let hasDropdownOpened;
   export let listMessage;
@@ -178,7 +179,7 @@
           itemCount={items.length}
           itemSize={vl_itemSize}
           scrollToAlignment="auto"
-          scrollToIndex={dropdownIndex ? parseInt(dropdownIndex) : null}
+          scrollToIndex={!multiple && dropdownIndex ? parseInt(dropdownIndex) : null}
         >
           <div slot="item" let:index let:style {style}
             class="sv-dd-item"
