@@ -265,6 +265,8 @@
       dropdownActiveIndex = listIndex.first;
     } else if (dropdownActiveIndex > listIndex.last) {
       dropdownActiveIndex = listIndex.last;
+    } else if (dropdownActiveIndex < listIndex.first) {
+      dropdownActiveIndex = listIndex.first;
     }
   }
   $: listMessage = maxReached
