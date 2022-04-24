@@ -285,8 +285,7 @@
   $: {
     const _selectionArray = selectedOptions
       .map(opt => {
-        const obj = {};
-        itemConfig.optionProps.forEach(prop => obj[prop] = opt[prop]);
+        const { '$disabled': unused1,  '$isGroupItem': unused2, ...obj } = opt;
         return obj;
       });
     const _unifiedSelection = multiple
