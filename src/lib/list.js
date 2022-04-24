@@ -6,7 +6,7 @@ export function initSelection(initialValue, valueAsObject, config) {
   const _initialValue = Array.isArray(initialValue) ? initialValue : [initialValue];
   const valueField = config.labelAsValue ? config.labelField : config.valueField;
 
-  return this/** options */.reduce((res, val, i) => {
+  const initialSelection = this/** options */.reduce((res, val, i) => {
     if (val.options) {  // handle groups
       const selected = val.options.reduce((res, groupVal) => {
         if (_initialValue.includes(groupVal[valueField])) res.push(groupVal);
@@ -17,7 +17,7 @@ export function initSelection(initialValue, valueAsObject, config) {
         return res;
       }
     }
-    if (_initialValue.includes(typeof val === 'object' ? val[valueField] : val)) {
+    if (_initialValue.includes(typeof val === 'object' ? val[valueField] : (config.labelAsValue ? val : i))) {
       if (config.isOptionArray) {
         // initial options are not transformed, therefore we need to create object from given option
         val = {
@@ -29,6 +29,9 @@ export function initSelection(initialValue, valueAsObject, config) {
     };
     return res;
   }, []);
+
+  return initialSelection
+    .sort((a, b) => _initialValue.indexOf(a[valueField]) < _initialValue.indexOf(b[valueField]) ? -1 : 1)
 }
 
 export function flatList(options, config) {
