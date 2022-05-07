@@ -247,13 +247,12 @@
     }
   }
 
-  $: prevValue !== value && handleValueUpdate(value);
-
   /** - - - - - - - - - - STORE - - - - - - - - - - - - - -*/
   let selectedOptions = value !== null ? initSelection.call(options, value, valueAsObject, itemConfig) : [];
   let selectedKeys = selectedOptions.reduce((set, opt) => { set.add(opt[currentValueField]); return set; }, new Set());
   let alreadyCreated = [''];
   $: flatItems = flatList(options, itemConfig);
+  $: prevValue !== value && handleValueUpdate(value);
   $: maxReached = max && selectedOptions.length === max
   $: availableItems = maxReached
     ? []
