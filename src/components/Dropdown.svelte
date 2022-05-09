@@ -166,10 +166,10 @@
 </script>
 
 {#if isMounted && renderDropdown}
-<div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened} tabindex="-1" 
+<div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened}
   on:mousedown|preventDefault
 >
-  <div class="sv-dropdown-scroll" class:is-empty={!items.length}  bind:this={scrollContainer}>
+  <div class="sv-dropdown-scroll" class:is-empty={!items.length}  bind:this={scrollContainer} tabindex="-1" >
     <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
     {#if items.length}
       {#if virtualList}
