@@ -78,6 +78,8 @@ options           | array            | `[]`       | Data array
 valueAsObject     | bool             | `false`    | Switch whether Svelecte should expects from and return to `bind:value` objects or primitive value (usually string, number)
 valueField        | string           | `null`     | Property to be used as value (if not specified, will be selected automatically)
 labelField        | string           | `null`     | Property shown in dropdown (if not specified, will be selected automatically)
+groupLabelField   | string           | `label`    | Property to be used as optgroup label
+groupItemsField   | string           | `options`  | Property holding optgroup option list
 disabledField     | string           | `$disabled`| Property to check, whether given options should be disabled and unselectable
 required          | bool             | `false`    | make sense only when `name` is defined
 placeholder       | string           | `Select`   | Input placeholder
