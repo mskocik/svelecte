@@ -243,8 +243,28 @@
             <div class="column col-lg-12 col-xl-6 col-6">
               <h4>&bull; Option groups &bull;</h4>
               <div id="example-3" class="example-wrap"></div>
-              <p class="mt-2">Optgroups are defined as objects with <code>label</code> and <code>options</code>
-                properties.
+              <p class="mt-2">Optgroups are defined as objects with <u>label</u> and <u>options</u>
+                properties. These properties are customizable.
+              </p>
+              <details class="mt-2">
+                <summary class="label label-rounded c-hand">Related properties:</summary>
+                <div class="mt-2">
+                  <dl>
+                    <dt><span class="label">groupLabelField:</span> <code>string</code></dt>
+                    <dd>
+                      Which object property act as optgroup label.
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt><span class="label">groupItemsField:</span> <code>string</code></dt>
+                    <dd>
+                      Which object property act as optgroup list (containing real options).
+                    </dd>
+                  </dl>
+                </div>
+              </details>
+
+              <p>
                 Optgroup labels are customizable by styling <code>.optgroup-header</code> class.
               </p>
             </div>
@@ -661,6 +681,18 @@ const OPTION_LIST = [
                 <td>string</td>
                 <td><code>null</code></td>
                 <td>Property shown in dropdown (if not specified, will be selected automatically)</td>
+              </tr>
+              <tr>
+                <td>groupLabelField</td>
+                <td>string</td>
+                <td><code>label</code></td>
+                <td>Property defining optgroup header</td>
+              </tr>
+              <tr>
+                <td>groupItemsField</td>
+                <td>string</td>
+                <td><code>options</code></td>
+                <td>Property holding optgroup option list</td>
               </tr>
               <tr>
                 <td>disabledField</td>

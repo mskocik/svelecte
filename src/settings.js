@@ -4,6 +4,8 @@ const settings = {
   // basic
   valueField: null,
   labelField: null,
+  groupLabelField: 'label',
+  groupItemsField: 'options',
   disabledField: '$disabled',
   placeholder: 'Select',
   valueAsObject: false,

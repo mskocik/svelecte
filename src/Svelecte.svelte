@@ -38,6 +38,8 @@
   export let options = [];
   export let valueField = defaults.valueField;
   export let labelField = defaults.labelField;
+  export let groupLabelField = defaults.groupLabelField;
+  export let groupItemsField = defaults.groupItemsField;
   export let disabledField = defaults.disabledField;
   export let placeholder = 'Select';
   // UI, UX
@@ -125,6 +127,8 @@
     valueField: valueField,
     labelField: labelField,
     labelAsValue: labelAsValue,
+    optLabel: groupLabelField,
+    optItems: groupItemsField
   };
   /* possibility to provide initial (selected) values in `fetch` mode **/
   if (fetch && value && valueAsObject && (!options || (options && options.length === 0))) {

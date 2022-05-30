@@ -43,10 +43,10 @@ export function flatList(options, config) {
       });
       return res;
     }
-    if (opt.options && opt.options.length) {
+    if (opt[config.optItems] && opt[config.optItems].length) {
       config.optionsWithGroups = true;
-      res.push({ label: opt.label, $isGroupHeader: true });
-      res.push(...opt.options.map(_opt => {
+      res.push({ label: opt[config.optLabel], $isGroupHeader: true });
+      res.push(...opt[config.optItems].map(_opt => {
         _opt.$isGroupItem = true;
         return _opt;
       }));

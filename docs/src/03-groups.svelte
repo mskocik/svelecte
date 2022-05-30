@@ -3,8 +3,8 @@
 
   const options = [
     {
-      label: 'A',
-      options: [{
+      groupHeader: 'A',
+      items: [{
         value: 'al',
         text: 'Albania'
       },
@@ -26,8 +26,8 @@
       }]
     },
     {
-      label: 'B',
-      options: [{
+      groupHeader: 'B',
+      items: [{
         value: 'by',
         text: 'Belarus'
       },
@@ -45,8 +45,8 @@
       }]
     },
     {
-      label: 'C',
-      options: [{
+      groupHeader: 'C',
+      items: [{
         value: 'hr',
         text: 'Croatia'
       },
@@ -62,4 +62,4 @@
   ]
 </script>
 
-<Svelecte {options}></Svelecte>
+<Svelecte {options} groupLabelField="groupHeader" groupItemsField="items"></Svelecte>
