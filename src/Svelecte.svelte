@@ -47,6 +47,7 @@
   export let disableHighlight = false;
   export let selectOnTab = defaults.selectOnTab;
   export let resetOnBlur = defaults.resetOnBlur;
+  export let resetOnSelect = defaults.resetOnSelect;
   export let dndzone = () => ({ noop: true, destroy: () => {}});
   export let validatorAction = null;
   export let dropdownItem = Item;
@@ -431,7 +432,7 @@
     if (disabled || opt[disabledField] || opt.$isGroupHeader) return;
 
     selectOption(opt);
-    $inputValue = '';
+    if ((multiple && resetOnSelect) || !multiple) $inputValue = '';
     if (!multiple) {
       $hasDropdownOpened = false;
     } else {

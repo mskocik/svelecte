@@ -1376,6 +1376,8 @@ return Nette;
   <el-svelecte options={`[{"id":"posts","label":"Posts", "prop": "Posts"},{"id":"users","label":"Users", "prop": "Users"},{"id":"comments","label":"Comments", "prop": "Comment"}]`}
     style="margin-bottom: 0"
     lazy-dropdown="false"
+    multiple
+    reset-on-select="false"
   >
     <select id="anchored" name="demo" multiple on:change={e => console.log(e.target.selectedOptions)}
       data-nette-rules={netteRules}

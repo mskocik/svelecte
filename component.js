@@ -9,7 +9,7 @@ const OPTION_LIST = [
   // basic
   'value-field', 'label-field', 'disabled-field', 'placeholder',
   // UI, UX
-  'searchable', 'clearable', 'renderer', 'disable-highlight', 'select-on-tab', 'reset-on-blur',
+  'searchable', 'clearable', 'renderer', 'disable-highlight', 'select-on-tab', 'reset-on-blur', 'reset-on-select',
   // multiple
   'multiple', 'max', 'collapse-selection',
   // creating
@@ -51,6 +51,7 @@ function formatValue(name, value) {
     case 'disable-highlight':
     case 'select-on-tab':
     case 'reset-on-blur':
+    case 'reset-on-select':
     case 'multiple':
     case 'collapse-selection':
     case 'creatable':
@@ -237,7 +238,7 @@ class SvelecteElement extends HTMLElement {
         }
       }
     };
-    const boolProps = ['searchable','clearable','disable-highlight', 'required', 'select-on-tab','reset-on-blur',
+    const boolProps = ['searchable','clearable','disable-highlight', 'required', 'select-on-tab','reset-on-blur','reset-on-select',
       'multiple','collapse-selection','creatable','allow-editing','keep-created','fetch-reset-on-blur',
       'virtual-list','disable-sifter','label-as-value', 'disabled'
     ].reduce((res, propName) => {

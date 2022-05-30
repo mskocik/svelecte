@@ -12,6 +12,7 @@ const settings = {
   clearable: false,
   selectOnTab: false,
   resetOnBlur: true,
+  resetOnSelect: true,
   fetchResetOnBlur: true,
   // multi
   multiple: false,

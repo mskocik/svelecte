@@ -88,6 +88,7 @@ controlItem       | Component        | `Item`     | Item component when item is 
 dropdownItem      | Component        | `Item`     | Item component in dropdown. See [Custom Items](#custom-items) section for more details.
 selectOnTab       | bool             | `false`    | Allow selecting currently active item by <kbd>Tab</kbd> key
 resetOnBlur       | bool             | `true`     | Control if input value should be cleared on blur
+resetOnSelect     | bool             | `true`     | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple` 
 clearable         | bool             | `false`    | Display ✖ icon to clear whole selection
 multiple          | bool             | `false`    | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
 max               | number           | `0`        | Maximum allowed items selected, applicable only for multiselect
