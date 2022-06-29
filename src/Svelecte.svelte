@@ -186,6 +186,9 @@
     if (!fetch) return null;
     cancelXhr();
 
+    // update fetchInitValue when fetch is changed, but we are in 'init' mode, ref #113
+    if (initFetchOnly && prevValue) fetchInitValue = prevValue;
+
     const fetchSource = typeof fetch === 'string' ? fetchRemote(fetch) : fetch;
     // reinit this if `fetch` property changes
     initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
@@ -210,7 +213,10 @@
           $hasFocus && hasDropdownOpened.set(true);
           listMessage = _i18n.fetchEmpty;
           tick().then(() => {
-            initFetchOnly && fetchInitValue && handleValueUpdate(fetchInitValue);
+            if (initFetchOnly && fetchInitValue) {
+              handleValueUpdate(fetchInitValue);
+              fetchInitValue = null;
+            }
             dispatch('fetch', options)
           });
         })
