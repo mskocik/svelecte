@@ -366,8 +366,9 @@
       if (!success) {
         // this is run only when invalid 'value' is provided, like out of option array
         console.warn('[Svelecte]: provided "value" property is invalid', passedVal);
-        value = null;
-        readSelection = null;
+        value = multiple ? [] : null;
+        readSelection = value;
+        dispatch('invalidValue', passedVal);
         return;
       }
       readSelection = Array.isArray(passedVal) ? _selection : _selection.shift();
@@ -386,6 +387,7 @@
     if (selectedKeys.has(opt[currentValueField])) return;
 
     if (typeof opt === 'string') {
+      if (!creatable) return;
       opt = createFilter(opt, options);
       if (alreadyCreated.includes(opt)) return;
       !fetch && alreadyCreated.push(opt);
