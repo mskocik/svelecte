@@ -49,8 +49,9 @@ const settings = {
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`
   },
+  // bound to 'i18n'
   collapseSelectionFn: function(selectionCount, selection) {
-    return settings.i18n.collapsedSelection(selectionCount);
+    return this.collapsedSelection(selectionCount);
   }
 }
 
