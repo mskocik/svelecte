@@ -323,9 +323,10 @@ class SvelecteElement extends HTMLElement {
       if (!this.parent.value && this.svelecte) {
         return;
       };
-      if (this.parent.value) {
+      const parentValue = this.parent.value || this.parent.getAttribute('value'); // for 'fetch'ed parent, value is always null
+      if (parentValue) {
         props.disabled = false;
-        props.fetch = this.getAttribute('fetch').replace('[parent]', this.parent.value);
+        props.fetch = this.getAttribute('fetch').replace('[parent]', parentValue);
       } else {
         delete props['fetch'];
         props.disabled = true;
