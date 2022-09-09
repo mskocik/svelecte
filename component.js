@@ -319,6 +319,10 @@ class SvelecteElement extends HTMLElement {
       props.class = this.getAttribute('class');
     }
     if (this.hasAttribute('parent')) {
+      this.parent = document.getElementById(this.getAttribute('parent'));
+      if (!this.parent.value && this.svelecte) {
+        return;
+      };
       if (this.parent.value) {
         props.disabled = false;
         props.fetch = this.getAttribute('fetch').replace('[parent]', this.parent.value);
@@ -326,10 +330,6 @@ class SvelecteElement extends HTMLElement {
         delete props['fetch'];
         props.disabled = true;
       }
-      this.parent = document.getElementById(this.getAttribute('parent'));
-      if (!this.parent.value && this.svelecte) {
-        return;
-      };
       this.parentCallback = e => {
         if (!e.target.selection || (Array.isArray(e.target.selection) && !e.target.selection.length)) {
           this.svelecte.clearByParent(true);
