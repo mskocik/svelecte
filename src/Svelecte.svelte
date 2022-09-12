@@ -333,7 +333,10 @@
   function emitChangeEvent() {
     tick().then(() => {
       dispatch('change', readSelection);
-      refSelectElement && refSelectElement.dispatchEvent(new Event('input')); // required for svelte-use-form
+      if (refSelectElement) {
+        refSelectElement.dispatchEvent(new Event('input'));   // required for svelte-use-form
+        refSelectElement.dispatchEvent(new Event('change'));  // typically you expect change event to be fired
+      }
     });
   }
 
