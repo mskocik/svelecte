@@ -74,6 +74,7 @@ Property `readSelection` _always_ returns selected object or object array no mat
 
 Property          | Type             | Default    | Description
 ------------------|------------------|------------|------------
+name              | string           | `null`     | create internal `<select>` element which you can use `validatorAction` on. Without `name` defined, no `<select>` is created
 options           | array            | `[]`       | Data array
 valueAsObject     | bool             | `false`    | Switch whether Svelecte should expects from and return to `bind:value` objects or primitive value (usually string, number)
 valueField        | string           | `null`     | Property to be used as value (if not specified, will be selected automatically)
@@ -95,7 +96,6 @@ clearable         | bool             | `false`    | Display ✖ icon to clear wh
 multiple          | bool             | `false`    | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
 max               | number           | `0`        | Maximum allowed items selected, applicable only for multiselect
 collapseSelection | bool             | `false`    | collapse selection when `multiple` and not focused
-name              | string           | `null`     | create `<select>`, usable for normal forms.
 inputId           | string           | `null`     | allow targeting input using a html label.
 creatable         | bool             | `false`    | Allow creating new item(s)
 creatablePrefix   | string           | `*`        | Prefix marking new item
@@ -122,7 +122,7 @@ style             | string           | `null`     | inline style
 hasAnchor         | bool             | `null`     | `internal`: when passing also existing select (for CE)
 i18n              | object           | `null`     | I18n object overriding default settings
 dndzone           | function         | empty      | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [example REPL](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)
-validatorAction   | array            | `null`     | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`. See the [example REPL](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1)
+validatorAction   | array            | `null`     | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`. See the [example REPL](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1). For this to work, `name` property MUST be defined
 
 
 ### Custom items
