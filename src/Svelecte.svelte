@@ -609,7 +609,10 @@
     if (creatable) {
       event.preventDefault();
       const rx = new RegExp('([^' + delimiter + '\\n]+)', 'g');
-      const pasted = event.clipboardData.getData('text/plain').replaceAll('/', '\/').replaceAll('\t', ' ');
+      const pasted = event.clipboardData
+        .getData('text/plain')
+          .replace(/\//g, '\/')
+          .replace(/\t/g, ' ');
       const matches = pasted.match(rx);
       if (matches.length === 1 && pasted.indexOf(',') === -1) {
         $inputValue = matches.pop().trim();

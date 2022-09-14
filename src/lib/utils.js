@@ -164,7 +164,7 @@ export function iOS() {
  * @returns {string}
  */
 export function defaultCreateFilter(val, options) {  
-  return (val || '').replaceAll('\t', ' ').trim().split(' ').filter(ch => ch).join(' ');
+  return (val || '').replace(/\t/g, ' ').trim().split(' ').filter(ch => ch).join(' ');
 }
 
 /**
