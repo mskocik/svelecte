@@ -22,7 +22,6 @@
   $: shadowText = $inputValue || placeholderText;
   $: widthAddition = selectedOptions.length === 0 ? 19 : 12;
   $: inputStyle = `width: ${isSingleFilled ? 2 : shadowWidth + widthAddition}px`;
-  $: maxlength = selectedOptions.length ? '0' : null;
 
   let disableEventBubble = false;
 
@@ -47,7 +46,6 @@
   readonly={!searchable}
   id={inputId}
   style={inputStyle} placeholder={placeholderText}
-  {maxlength}
   bind:this={inputRef} 
   bind:value={$inputValue} 
   on:focus
