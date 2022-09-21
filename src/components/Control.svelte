@@ -21,6 +21,7 @@
   export let dndzone;
   export let currentValueField;
   export let itemComponent;
+  export let isAndroid;
 
   const flipDurationMs = 100;
 
@@ -86,6 +87,7 @@
     <!-- input -->
     <Input {disabled} {searchable} {placeholder} {multiple} {inputId}
       {inputValue} {hasDropdownOpened} {selectedOptions}
+      {isAndroid}
       bind:this={refInput}
       on:focus={onFocus}
       on:blur={onBlur}

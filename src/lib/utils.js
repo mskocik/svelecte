@@ -157,6 +157,15 @@ export function iOS() {
 }
 
 /**
+ * Detects if on android device
+ * 
+ * @returns {bool}
+ */
+export function android() {
+  return navigator.userAgent.toLowerCase().includes('android');
+}
+
+/**
  * Formatter of newly created items. When `''` is returned, it means new option cannot be created.
  * 
  * @param {string} val 

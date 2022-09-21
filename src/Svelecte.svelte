@@ -1,6 +1,6 @@
 <script context="module">
   import defaults from './settings.js';
-  import { debounce, xhr, fieldInit, iOS } from './lib/utils.js'; // shared across instances
+  import { debounce, xhr, fieldInit, iOS, android } from './lib/utils.js'; // shared across instances
 
   const formatterList = {
     default: function(item) { return item[this.label]; }
@@ -142,6 +142,7 @@
   let currentValueField = valueField || fieldInit('value', options, itemConfig);
   let currentLabelField = labelField || fieldInit('label', options, itemConfig);
   let isIOS = false;
+  let isAndroid = false;
   let refSelectAction = validatorAction ? validatorAction.shift() : () => ({ destroy: () => {}});
   let refSelectActionParams = validatorAction || [];
   let refSelectElement = null;
@@ -644,6 +645,7 @@
       dropdownActiveIndex = flatItems.findIndex(opt => opt[prop] === selectedProp);
     }
     isIOS = iOS();
+    isAndroid = android();
     if (name && !hasAnchor) refSelectElement = document.getElementById(__id);
   });
 </script>
@@ -652,7 +654,7 @@
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} {inputId} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
-    {dndzone} {currentValueField}
+    {dndzone} {currentValueField} {isAndroid}
     itemComponent={controlItem}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
