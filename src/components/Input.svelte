@@ -38,6 +38,14 @@
     }
     disableEventBubble = false;
   }
+
+  function onBeforeInput(e) {
+    if (selectedOptions.length === 1 && !multiple) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+    }
+  }
 </script>
 
 <!--<div class="inputRow"> -->
@@ -50,6 +58,7 @@
   bind:value={$inputValue} 
   on:focus
   on:blur
+  on:beforeinput={onBeforeInput}
   on:keydown={onKeyDown}
   on:keyup={onKeyUp}
   on:paste
