@@ -601,6 +601,7 @@
         if (!multiple && selectedOptions.length && event.key !== 'Tab') {
           event.preventDefault();
           event.stopPropagation();
+          $inputValue = '';
         }
     }
   }
