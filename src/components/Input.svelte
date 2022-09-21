@@ -39,11 +39,9 @@
     disableEventBubble = false;
   }
 
-  function onBeforeInput(e) {
+  function onInput(e) {
     if (selectedOptions.length === 1 && !multiple) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      e.stopPropagation();
+      $inputValue = '';
     }
   }
 </script>
@@ -58,7 +56,7 @@
   bind:value={$inputValue} 
   on:focus
   on:blur
-  on:beforeinput={onBeforeInput}
+  on:input={onInput}
   on:keydown={onKeyDown}
   on:keyup={onKeyUp}
   on:paste
