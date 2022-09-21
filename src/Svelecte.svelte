@@ -598,7 +598,10 @@
         if (!ctrlKey && !['Tab', 'Shift'].includes(event.key) && !$hasDropdownOpened && !isFetchingData) {
           $hasDropdownOpened = true;
         }
-        if (!multiple && selectedOptions.length && event.key !== 'Tab') event.preventDefault();
+        if (!multiple && selectedOptions.length && event.key !== 'Tab') {
+          event.preventDefault();
+          event.stopPropagation();
+        }
     }
   }
 
