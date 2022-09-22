@@ -138,13 +138,14 @@ The simplest example can be found in this [REPL](https://svelte.dev/repl/627c83c
 
 ### Emitted events:
 
-Event        | arguments | description
--------------|-----------|-------------
-fetch        | options   | newly fetched remote options
-change       | selection | selected objects. If `anchor` property is defined, `change` event is called also on it
-createoption | option    | newly created option object
-blur         | -         | blur event
-invalidValue | invalidValue | triggered when passed `value` is out of provided `options` items. Internal (and bound, if any) `value` is set to `null` or `[]` if multiple
+Event        | arguments                   | description
+-------------|-----------------------------|----------------------------------------------------------------------------
+fetch        | options                     | newly fetched remote options
+change       | selection                   | selected objects. If `anchor` property is defined, `change` event is called also on it
+createoption | option                      | newly created option object
+blur         | -                           | blur event
+invalidValue | invalidValue                | triggered when passed `value` is out of provided `options` items. Internal (and bound, if any) `value` is set to `null` or `[]` if multiple
+enterKey     | underlying `keyDown` event  | triggered when natively it would cause form submit (dropdown is closed). This gives you ability to prevent it by calling `event.detail.preventDefault()` 
 
 ### Public API:
 

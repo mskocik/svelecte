@@ -562,7 +562,10 @@
         break;
       case Tab:
       case 'Enter':
-        if (!$hasDropdownOpened) return;
+        if (!$hasDropdownOpened) {
+          event.key !== Tab && dispatch('enterKey', event); // ref #125
+          return;
+        }
         let activeDropdownItem = !ctrlKey ? availableItems[dropdownActiveIndex] : null;
         if (creatable && $inputValue) {
           activeDropdownItem = !activeDropdownItem || ctrlKey
@@ -576,6 +579,7 @@
         }
         if (!activeDropdownItem && selectedOptions.length) {
           $hasDropdownOpened = false;
+          event.key !== Tab && dispatch('enterKey', event); // ref #125
           return;
         }
         event.preventDefault(); // prevent form submit

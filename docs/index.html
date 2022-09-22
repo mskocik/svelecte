@@ -1004,6 +1004,12 @@ const OPTION_LIST = [
                 <td>triggered when passed <code>value</code> is out of provided <code>options</code> items. Internal <code>value</code> is always set to <code>null</code>.
                 </td>
               </tr>
+              <tr>
+                <td colspan="2">enterKey</td>
+                <td>underlying <code>keyDown</code> event</td>
+                <td>triggered when natively it would cause form submit (dropdown is closed). This gives you ability to prevent it by calling <code>event.detail.preventDefault()</code>.
+                </td>
+              </tr>
             </tbody>
 
             <tbody>
