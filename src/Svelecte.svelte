@@ -215,7 +215,7 @@
           listMessage = _i18n.fetchEmpty;
           tick().then(() => {
             if (initFetchOnly && fetchInitValue) {
-              handleValueUpdate(fetchInitValue, true);
+              handleValueUpdate(fetchInitValue);
               fetchInitValue = null;
             }
             dispatch('fetch', options)
@@ -351,23 +351,19 @@
   /**
    * update inner selection, when 'value' property is changed
    * 
-   * @internal it seems it was intentional to be able to set value objects (valueAsObject=true) to options out of option
-   * list. I don't know why, but to keep this 'feature' and unify conditions upon which the 'invalidValue' event is
-   * dispatched, `isRefetchUpdate` parameter was introduced
-   * 
-   * @param {bool} isRefetchUpdate - set this parameter to validate if selection is valid
+   * @internal before 3.9.1 it was possible when `valueAsObject` was set to set value OUTSIDE defined options. Fix at
+   * 3.9.1 broke manual value setter. Which has been resolved now through #128. Which disables pre 3.9.1 behavior
+   *
+   * FUTURE: to enable this behavior add property for it. Could be useful is some edge cases I would say.
    */
-  function handleValueUpdate(passedVal, isRefetchUpdate = false) {
+  function handleValueUpdate(passedVal) {
     clearSelection();
     if (passedVal) {
       let _selection = Array.isArray(passedVal) ? passedVal : [passedVal];
       const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
       _selection = _selection.reduce((res, val) => {
         const opt = flatItems.find(item => valueAsObject
-          ? (isRefetchUpdate
-            ? item[valueProp] == val[valueProp]
-            : val
-          )
+          ? item[valueProp] == val[valueProp]
           : item[valueProp] == val
         );
         opt && res.push(opt);
