@@ -63,7 +63,6 @@
     }, 100);
     dispatch('blur');
   }
-
 </script>
 
 <div class="sv-control" class:is-active={$hasFocus} class:is-disabled={disabled}
@@ -72,7 +71,7 @@
 >
   <slot name="icon"></slot>
   <!-- selection & input -->
-  <div class="sv-content sv-input-row" class:has-multiSelection={multiple} use:dndzone={{items:selectedOptions,flipDurationMs, morphDisabled: true }} on:consider on:finalize>
+  <div class="sv-content sv-input-row" class:has-multiSelection={multiple} use:dndzone={{items:selectedOptions,flipDurationMs, type: inputId }} on:consider on:finalize>
     {#if selectedOptions.length }
       {#if multiple && collapseSelection && doCollapse}
         { collapseSelection(selectedOptions.length, selectedOptions) }

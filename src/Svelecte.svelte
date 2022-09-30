@@ -652,7 +652,7 @@
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
-    {disabled} {clearable} {searchable} {placeholder} {multiple} {inputId} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
+    {disabled} {clearable} {searchable} {placeholder} {multiple} inputId={inputId || __id} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
     {dndzone} {currentValueField} {isAndroid}
     itemComponent={controlItem}
@@ -719,15 +719,18 @@
   .is-hidden { opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px}
 
   /** globally available styles for control/dropdown Item components */    
-  :global(.svelecte-control .has-multiSelection .sv-item) {
+  :global(.svelecte-control .has-multiSelection .sv-item),
+  :global(#dnd-action-dragged-el .sv-item) {
     background-color: var(--sv-item-selected-bg);
     margin: 2px 4px 2px 0;
   }
   :global(.svelecte-control .has-multiSelection .sv-item-content),
-  :global(.svelecte-control .sv-dropdown-content .sv-item) {
+  :global(.svelecte-control .sv-dropdown-content .sv-item),
+  :global(#dnd-action-dragged-el .sv-item-content) {
     padding: 3px 3px 3px 6px;
   }
-  :global(.svelecte-control .sv-item) {
+  :global(.svelecte-control .sv-item),
+  :global(#dnd-action-dragged-el .sv-item) {
     display: flex;
     min-width: 0px;
     box-sizing: border-box;
@@ -736,7 +739,8 @@
   }
   :global(.svelecte-control .sv-item.is-disabled) { opacity: 0.5; cursor: not-allowed; }
 
-  :global(.svelecte-control .sv-item-content) {
+  :global(.svelecte-control .sv-item-content),  
+  :global(#dnd-action-dragged-el .sv-item-content) {
     color: var(--sv-item-color, var(--sv-color));
     text-overflow: ellipsis;
     white-space: nowrap;
