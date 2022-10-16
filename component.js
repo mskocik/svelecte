@@ -24,6 +24,13 @@ const OPTION_LIST = [
   'label-as-value'
 ];
 
+function formatValueProp(value, delimiter) {
+  return value ? value.split(delimiter).map(item => {
+    const _v = parseInt(item);
+    return isNaN(_v) ? (item !== 'null' ? item : null) : _v;
+  }) : ''
+}
+
 function formatValue(name, value) {
   switch (name) {
     case 'options':
@@ -37,11 +44,6 @@ function formatValue(name, value) {
         value = [];
       }
       return value;
-    case 'value':
-      return value ? value.split(',').map(item => {
-        const _v = parseInt(item);
-        return isNaN(_v) ? (item !== 'null' ? item : null) : _v;
-      }) : '';
     case 'renderer':
       return value || 'default';
     case 'required':
@@ -118,7 +120,8 @@ class SvelecteElement extends HTMLElement {
             : null;
         },
         set(value) {
-          this.setAttribute('value', Array.isArray(value) ? value.join(',') : value);
+          const delim = this.getAttribute('value-delimiter') || ',';
+          this.setAttribute('value', Array.isArray(value) ? value.join(delim) : value);
         }
       },
       'options': {
@@ -312,7 +315,9 @@ class SvelecteElement extends HTMLElement {
     let props = {};
     for (const attr of OPTION_LIST) {
       if (this.hasAttribute(attr)) {
-        props[formatProp(attr)] = formatValue(attr, this.getAttribute(attr));
+        props[formatProp(attr)] = attr !== 'value'
+          ? formatValue(attr, this.getAttribute(attr))
+          : formatValueProp(this.getAttribute('value'), this.getAttribute('value-delimiter') || ',');
       }
     }
     if (this.hasAttribute('class')) {
