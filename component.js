@@ -320,6 +320,14 @@ class SvelecteElement extends HTMLElement {
           : formatValueProp(this.getAttribute('value'), this.getAttribute('value-delimiter') || ',');
       }
     }
+    if (this.hasAttribute('i18n')) {
+      const i18nObj = JSON.parse(this.getAttribute('i18n'));
+      if (i18nObj.createRowLabel) {
+        const labelText = i18nObj.createRowLabel;
+        i18nObj.createRowLabel = value => labelText.replace('#value', value);
+      }
+      props.i18n = i18nObj;
+    }
     if (this.hasAttribute('class')) {
       props.class = this.getAttribute('class');
     }
