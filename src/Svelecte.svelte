@@ -50,6 +50,7 @@
   export let selectOnTab = defaults.selectOnTab;
   export let resetOnBlur = defaults.resetOnBlur;
   export let resetOnSelect = defaults.resetOnSelect;
+  export let closeDropdownOnSelect = defaults.closeDropdownOnSelect;
   export let dndzone = () => ({ noop: true, destroy: () => {}});
   export let validatorAction = null;
   export let dropdownItem = Item;
@@ -455,7 +456,7 @@
 
     selectOption(opt);
     if ((multiple && resetOnSelect) || !multiple) $inputValue = '';
-    if (!multiple) {
+    if (!multiple || closeDropdownOnSelect) {
       $hasDropdownOpened = false;
     } else {
       tick().then(() => {
