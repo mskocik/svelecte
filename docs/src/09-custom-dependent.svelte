@@ -27,12 +27,11 @@
   </el-svelecte>
   <!-- server-side rendered -->
   <div>Server-side rendered inner select:</div>
-  <el-svelecte options={`[{"id":"posts,x","label":"Posts", "prop": "Posts"},{"id":"users","label":"Users", "prop": "Users"},{"id":"comments","label":"Comments", "prop": "Comment"}]`}
+  <el-svelecte options={`[{"id":"posts","label":"Posts", "prop": "Posts"},{"id":"users","label":"Users", "prop": "Users"},{"id":"comments","label":"Comments", "prop": "Comment"}]`}
     style="margin-bottom: 0"
     lazy-dropdown="false"
     multiple
     reset-on-select="false"
-    value-delimiter="|"
   >
     <select id="anchored" name="demo" multiple on:change={e => console.log(e.target.selectedOptions)}></select>
   </el-svelecte>
