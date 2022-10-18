@@ -94,6 +94,7 @@ resetOnBlur       | bool             | `true`     | Control if input value shoul
 resetOnSelect     | bool             | `true`     | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple` 
 clearable         | bool             | `false`    | Display ✖ icon to clear whole selection
 multiple          | bool             | `false`    | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
+closeAfterSelect  | bool             | `false`    | useful for **multiple** select only. For single select dropdown is always closed no matter the value of this property
 max               | number           | `0`        | Maximum allowed items selected, applicable only for multiselect
 collapseSelection | bool             | `false`    | collapse selection when `multiple` and not focused
 inputId           | string           | `null`     | allow targeting input using a html label.

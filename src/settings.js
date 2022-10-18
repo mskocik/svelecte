@@ -16,9 +16,9 @@ const settings = {
   resetOnBlur: true,
   resetOnSelect: true,
   fetchResetOnBlur: true,
-  closeDropdownOnSelect: false,
   // multi
   multiple: false,
+  closeAfterSelect: false,
   max: 0,
   collapseSelection: false, // enable collapsible multiple selection
   // create
