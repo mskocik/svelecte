@@ -7,8 +7,8 @@ export function initSelection(initialValue, valueAsObject, config) {
   const valueField = config.labelAsValue ? config.labelField : config.valueField;
 
   const initialSelection = this/** options */.reduce((res, val, i) => {
-    if (val.options) {  // handle groups
-      const selected = val.options.reduce((res, groupVal) => {
+    if (val[config.optItems] && val[config.optItems].length) {  // handle groups
+      const selected = val[config.optItems].reduce((res, groupVal) => {
         if (_initialValue.includes(groupVal[valueField])) res.push(groupVal);
         return res;
       }, []);
