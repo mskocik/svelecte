@@ -45,6 +45,7 @@
   // UI, UX
   export let searchable = defaults.searchable;
   export let clearable = defaults.clearable;
+  export let toggleClearIcon = defaults.toggleClearIcon;
   export let renderer = null;
   export let disableHighlight = false;
   export let selectOnTab = defaults.selectOnTab;
@@ -653,7 +654,8 @@
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
-    {disabled} {clearable} {searchable} {placeholder} {multiple} inputId={inputId || __id} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
+    {disabled} {clearable} {toggleClearIcon} {searchable} {placeholder} {multiple} inputId={inputId || __id} {resetOnBlur}
+           collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
     {dndzone} {currentValueField} {isAndroid}
     itemComponent={controlItem}
@@ -666,6 +668,7 @@
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
     <div slot="control-end"><slot name="control-end"></slot></div>
+    <div slot="icon-toggle-clear"><slot name="icon-toggle-clear"></slot></div> <!-- in addition to filling this slot, we need to give toggleClearIcon = true -->
   </Control>
   <Dropdown bind:this={refDropdown} renderer={itemRenderer} {disableHighlight} {creatable} {maxReached} {alreadyCreated}
     {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown} {multiple}

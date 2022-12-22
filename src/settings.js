@@ -12,6 +12,7 @@ const settings = {
   // ui
   searchable: true,
   clearable: false,
+  toggleClearIcon: false,
   selectOnTab: false,
   resetOnBlur: true,
   resetOnSelect: true,
