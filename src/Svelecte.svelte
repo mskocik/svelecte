@@ -665,6 +665,7 @@
     on:blur
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
+    <div slot="control-end"><slot name="control-end"></slot></div>
   </Control>
   <Dropdown bind:this={refDropdown} renderer={itemRenderer} {disableHighlight} {creatable} {maxReached} {alreadyCreated}
     {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown} {multiple}
