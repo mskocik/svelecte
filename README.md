@@ -208,6 +208,14 @@ const myI18n = {
 <Svelecte i18n={myI18n}></Svelecte>
 ```
 
+## Customizable Slots
+
+There are different slots within the component that allow to insert custom code and icons.
+
+### Control.svelte (bubbled up to the Svelecte component)
+- ```icon``` This allows to insert custom code like e.g. an icon at the start/left of the Control.svelte
+- ```control-end``` This allows to insert custom code at the end/right of the Control.svelte. It is positioned AFTER the indicator icons.
+
 ## 🙏 Thanks to
 
 - [selectize.js](https://github.com/selectize/selectize.js) - inspiration
