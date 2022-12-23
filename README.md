@@ -215,6 +215,9 @@ There are different slots within the component that allow to insert custom code 
 ### Control.svelte (bubbled up to the Svelecte component)
 - ```icon``` This allows to insert custom code like e.g. an icon at the start/left of the Control.svelte
 - ```control-end``` This allows to insert custom code at the end/right of the Control.svelte. It is positioned AFTER the indicator icons.
+- ```icon-toggle-clear``` When ```clearable = true``` and ```toggleIcon = true```, we can insert an icon, like e.g. magnifying glasses, that is showing when 
+  no input is given. As soon as there is any input, we see the X-icon that allows to clear the input. This essentially means that we have switching 
+  icons depending if the input is empty or not.
 
 ## 🙏 Thanks to
 
