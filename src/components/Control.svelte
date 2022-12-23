@@ -42,12 +42,12 @@
 
   /** ************************************ context */
   const dispatch = createEventDispatcher();
-  
+
   let doCollapse = true;
   let refInput = undefined;
 
   function onFocus() {
-    $hasFocus = true; 
+    $hasFocus = true;
     $hasDropdownOpened = true;
     setTimeout(() => {
     doCollapse = false;
@@ -113,10 +113,11 @@
       </svg>
     </div>
   </div>
+  <slot name="control-end"></slot>
 </div>
 
 <style>
-.sv-control { 
+.sv-control {
   background-color: var(--sv-bg);
   border: var(--sv-border);
   border-radius: 4px;
