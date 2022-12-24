@@ -66,7 +66,7 @@
               <li class="menu-item"><a href="#basic-example">Basic example</a></li>
               <li class="menu-item"><a href="#groups">Option groups</a></li>
               <li class="menu-item"><a href="#item-rendering">Custom item rendering</a></li>
-              <li class="menu-item"><a href="#slot">Icon slot</a></li>
+              <li class="menu-item"><a href="#slot">Slots</a></li>
               <li class="menu-item"><a href="#fetch">Remote datasource</a></li>
               <li class="menu-item"><a href="#playground">Playground</a></li>
               <li class="divider" data-content="Custom element"></li>
@@ -347,9 +347,13 @@
         <div class="section" id="slot">
           <div class="columns">
             <div class="column col-lg-12 col-xl-6 col-6">
-              <h4>&bull; Icon slot &bull;</h4>
+              <h4>&bull; Slots &bull;</h4>
               <div id="example-5" class="example-wrap"></div>
-              <p class="mt-2">You can provide icon by defining <code>icon</code> slot content</p>
+              <p class="mt-2"><code>Control</code> component provides 2 slots.
+              <ul>
+                <li><code>icon</code> - This allows to insert custom code like e.g. an icon at the start/left of the Control.svelte (as shown in the example above)</li>
+                <li><code>control-end</code> - This allows to insert custom code at the end/right of the Control.svelte. It is positioned AFTER the indicator icons.</li>
+              </ul>
             </div>
             <div class="column col-lg-12 col-xl-6 col-6">
               <details>
