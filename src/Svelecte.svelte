@@ -266,7 +266,7 @@
   let alreadyCreated = [''];
   $: flatItems = flatList(options, itemConfig);
   $: prevValue !== value && handleValueUpdate(value);
-  $: maxReached = max && selectedOptions.length === max
+  $: maxReached = max && selectedOptions.length == max;   // == is intentional, if string is provided
   $: availableItems = maxReached
     ? []
     : filterList(flatItems, disableSifter ? null : $inputValue, multiple ? selectedKeys : false, searchField, sortField, itemConfig);
@@ -444,6 +444,7 @@
   function clearSelection() {
     selectedKeys.clear();
     selectedOptions = [];
+    maxReached = false;       // reset forcefully, related to #145
     flatItems = flatItems;
   }
 
