@@ -363,6 +363,10 @@
       let _selection = Array.isArray(passedVal) ? passedVal : [passedVal];
       const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
       _selection = _selection.reduce((res, val) => {
+        if (creatable && valueAsObject && val.$created) {
+          res.push(val);
+          return res;
+        }
         const opt = flatItems.find(item => valueAsObject
           ? item[valueProp] == val[valueProp]
           : item[valueProp] == val
