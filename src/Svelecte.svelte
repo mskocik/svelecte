@@ -41,7 +41,7 @@
   export let groupLabelField = defaults.groupLabelField;
   export let groupItemsField = defaults.groupItemsField;
   export let disabledField = defaults.disabledField;
-  export let placeholder = 'Select';
+  export let placeholder = defaults.placeholder;
   // UI, UX
   export let searchable = defaults.searchable;
   export let clearable = defaults.clearable;

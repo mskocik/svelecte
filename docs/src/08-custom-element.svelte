@@ -1,5 +1,5 @@
 <script>
-  import { addFormatter, config, registerSvelecte } from './../../component.js';
+  import { addFormatter, config, registerSvelecte } from './../../index.js';
   import { dataset } from './data.js';
 
   let container;

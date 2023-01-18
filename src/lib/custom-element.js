@@ -20,9 +20,11 @@ const OPTION_LIST = [
   'label-as-value'
 ];
 
+const intRegex = /^[0-9]+$/;
+
 function formatValueProp(value, delimiter) {
   return value ? value.split(delimiter).map(item => {
-    const _v = parseInt(item);
+    const _v = intRegex.test(value) ? parseInt(value) : value;
     return isNaN(_v) ? (item !== 'null' ? item : null) : _v;
   }) : ''
 }
@@ -406,7 +408,14 @@ class SvelecteElement extends HTMLElement {
   }
 }
 
-export function registerSvelecte(component, globalConfig, name = 'el-svelecte') {
+/**
+ * Define custom element
+ * 
+ * @param {string} name custom-element name
+ * @param {object} component Svelecte component
+ * @param {object} globalConfig globally available config
+ */
+export function registerSvelecte(name, component, globalConfig) {
   _component = component
   _config = globalConfig;
   window.customElements.define(name, SvelecteElement);

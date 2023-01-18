@@ -1,4 +1,4 @@
-import Svelecte, { addFormatter, config, registerSvelecte as internalRegister } from './index';
+import Svelecte, { addFormatter, config, registerSvelecte } from './index';
 
 export { addFormatter, config };
-export const registerSvelecte = (name) => internalRegister(Svelecte, config, name || 'el-svelecte');
+export const registerAsCustomElement = (name) => registerSvelecte(name || 'el-svelecte', Svelecte, config);
