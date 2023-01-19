@@ -287,7 +287,13 @@
       ? _i18n.nomatch
       : (fetch
         ? (minQuery <= 1 
-          ? (initFetchOnly ? _i18n.fetchInit : _i18n.fetchBefore)
+          ? (initFetchOnly 
+            ? (isFetchingData
+              ? _i18n.fetchInit
+              : _i18n.empty
+              )
+            : _i18n.fetchBefore
+            )
           : _i18n.fetchQuery(minQuery, $inputValue.length)
         )
         : _i18n.empty
