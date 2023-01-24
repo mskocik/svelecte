@@ -117,6 +117,7 @@ class SvelecteElement extends HTMLElement {
         },
         set(value) {
           const delim = this.getAttribute('value-delimiter') || ',';
+          if (value === null) value = '';
           this.setAttribute('value', Array.isArray(value) ? value.join(delim) : value);
         }
       },
@@ -281,21 +282,10 @@ class SvelecteElement extends HTMLElement {
         if (!this._selfSetValue) {
           newValue
             ? this.svelecte.setSelection(formatValue(name, newValue), volatileEmitChange)
-            : this.svelecte.clearByParent(this.parent ? true : false);
+            : this.svelecte.clearByParent(this.parent ? true : false, volatileEmitChange);
         }
         this._selfSetValue = false;
         volatileEmitChange = false;
-        this.anchorSelect && setTimeout(() => {
-          const value = this.svelecte.getSelection(true);
-          this.anchorSelect.innerHTML = (Array.isArray(value) ? (value.length ? value : [null]) : [value]).reduce((res, item) => {
-            if (!item) {
-              res+= '<option value="" selected="">Empty</option>';
-              return res;
-            }
-            res+= `<option value="${item}" selected>${item}</option>`;
-            return res;
-          }, '');
-        });
         return;
       }
       this.svelecte.$set({ [formatProp(name)]: formatValue(name, newValue) });
@@ -361,7 +351,8 @@ class SvelecteElement extends HTMLElement {
       anchorSelect.tabIndex = -1; // just to be sure
       this.anchorSelect = anchorSelect;
       this.anchorSelect.multiple = props.multiple || anchorSelect.name.includes('[]');
-      (Array.isArray(props.value) ? props.value : [props.value || null]).forEach(val => {
+      const initialValue = Array.isArray(props.value) ? props.value : [props.value || null].filter(e => e);
+      anchorSelect.options.length !== initialValue.length && initialValue.forEach(val => {
         this.anchorSelect.innerHTML += `<option value="${val || ''}" selected>${val || 'No value'}</option>`;
       });
     }
@@ -374,22 +365,21 @@ class SvelecteElement extends HTMLElement {
     this.svelecte.$on('change', e => {
       const value = this.svelecte.getSelection(true);
       this._selfSetValue = true;
-      this.value = value;
+      this.value = value !== null ? value : ''; // this updates <option selected> items
       setTimeout(() => {
         this._selfSetValue = false;
       }, 100);
       // Custom-element related
       if (this.anchorSelect) {
+        const value = this.svelecte.getSelection(true);
         this.anchorSelect.innerHTML = (Array.isArray(value) ? (value.length ? value : [null]) : [value]).reduce((res, item) => {
-          if (!item) {
-            res+= '<option value="" selected="">Empty</option>';
-            return res;
-          }
-          res+= `<option value="${item}" selected>${item}</option>`;
+          res+= item === '' || item === null
+            ? '<option value="" selected="">Empty</option>'
+            : `<option value="${item}" selected>${item}</option>`;
           return res;
         }, '');
         this.anchorSelect.dispatchEvent(new Event('change'));
-      }
+      };
       this.dispatchEvent(e);
     });
     this.svelecte.$on('fetch', e => {

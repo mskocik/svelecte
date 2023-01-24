@@ -109,9 +109,9 @@
     triggerChangeEvent && emitChangeEvent();
   }
   // API: internal for CE
-  export const clearByParent = doDisable => {
+  export const clearByParent = (doDisable, triggerChangeEvent) => {
     clearSelection();
-    emitChangeEvent();
+    triggerChangeEvent && emitChangeEvent();
     if (doDisable) {
       disabled = true;
       fetch = null;
@@ -664,7 +664,7 @@
 
 <div class={`svelecte ${className}`} class:is-disabled={disabled} {style}>
   <Control bind:this={refControl} renderer={itemRenderer}
-    {disabled} {clearable} {searchable} {placeholder} {multiple} inputId={inputId || __id} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
+    {disabled} {clearable} {searchable} {placeholder} {multiple} inputId={inputId || __id + '_input'} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
     {dndzone} {currentValueField} {isAndroid}
     itemComponent={controlItem}
