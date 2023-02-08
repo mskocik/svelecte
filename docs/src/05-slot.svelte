@@ -15,4 +15,5 @@
   placeholder="Pick your color, even the black 😉"
 >
   <b slot="icon">{iconSlot}</b>
+  <svelte:fragment slot="indicator-icon" let:hasDropdownOpened>{hasDropdownOpened?'😃':'😄'}</svelte:fragment>
 </Svelecte>
