@@ -349,10 +349,12 @@
             <div class="column col-lg-12 col-xl-6 col-6">
               <h4>&bull; Slots &bull;</h4>
               <div id="example-5" class="example-wrap"></div>
-              <p class="mt-2"><code>Control</code> component provides 2 slots.
+              <p class="mt-2"><code>Control</code> component provides 4 slots.
               <ul>
                 <li><code>icon</code> - This allows to insert custom code like e.g. an icon at the start/left of the Control.svelte (as shown in the example above)</li>
                 <li><code>control-end</code> - This allows to insert custom code at the end/right of the Control.svelte. It is positioned AFTER the indicator icons.</li>
+                <li><code>indicator-icon</code> - This allows to customize the indicator icon in the Control.svelte. Slot has <code>hasDropdownOpened</code> property that helps customizing different control states.</li>
+                <li><code>clear-icon</code> - This allows to customize the clear icon in the Control.svelte.</li>
               </ul>
             </div>
             <div class="column col-lg-12 col-xl-6 col-6">
