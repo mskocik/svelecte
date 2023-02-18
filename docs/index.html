@@ -66,6 +66,7 @@
               <li class="menu-item"><a href="#basic-example">Basic example</a></li>
               <li class="menu-item"><a href="#groups">Option groups</a></li>
               <li class="menu-item"><a href="#item-rendering">Custom item rendering</a></li>
+              <li class="menu-item"><a href="#collapsable-option">Collapsable items</a></li>
               <li class="menu-item"><a href="#slot">Slots</a></li>
               <li class="menu-item"><a href="#fetch">Remote datasource</a></li>
               <li class="menu-item"><a href="#playground">Playground</a></li>
@@ -338,6 +339,80 @@
               <details>
                 <summary class="label label-rounded c-hand">Show code</summary>
                 <pre data-src="04-item-rendering"></pre>
+              </details>
+            </div>
+          </div>
+        </div>
+
+        <!-- collapsable -->
+        <div class="section" id="collapsable-option">
+          <div class="columns">
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <h4>&bull; Collapsable items &bull;</h4>
+              <div id="example-12" class="example-wrap"></div>
+
+              <p class="mt-2">
+                Option to keep your select the same height when multiple items are selected. This
+                option creates two dropdown lists - one for selected values and second one for the rest of items.
+              </p>
+              <p class="mt-2">
+                This basically disables selected item stacking in the input and prevents input changing its height.
+              </p>
+              <p class="mt-2">
+                For it to function, you need to set <code>virtualList</code>, <code>multiple</code> and <code>collapsable</code> to <code>true</code>.
+              </p>
+              <p class="mt-2">
+                Dropdowns will now always drop down.
+              </p>
+              <details class="mt-2">
+                <summary class="label label-rounded c-hand">Related properties:</summary>
+                <div class="mt-2">
+                  <dl>
+                    <dt>
+                      <span class="label">resetOnCollapsableDeselect:</span>
+                      <code>bool</code>
+                    </dt>
+                    <dd>
+                      Resets input value when deselecting from the dropdown list.
+                    </dd>
+                    <dd>
+                      By default its <code>true</code>.
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt>
+                      <span class="label">virtualList:</span>
+                      <code>bool</code>
+                    </dt>
+                    <dd>
+                      This is required to be <code>true</code> alongside <code>collapsable</code> and <code>multiple</code>.
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt>
+                      <span class="label">multiple:</span>
+                      <code>bool</code>
+                    </dt>
+                    <dd>
+                      This is required to be <code>true</code> alongside <code>virtualList</code> and <code>collapsable</code>.
+                    </dd>
+                  </dl>
+                  <dl>
+                    <dt>
+                      <span class="label">collapsable:</span>
+                      <code>bool</code>
+                    </dt>
+                    <dd>
+                      This is required to be <code>true</code> alongside <code>virtualList</code> and and <code>multiple</code>.
+                    </dd>
+                  </dl>
+                </div>
+              </details>
+            </div>
+            <div class="column col-lg-12 col-xl-6 col-6">
+              <details>
+                <summary class="label label-rounded c-hand">Show code</summary>
+                <pre data-src="13-collapsable"></pre>
               </details>
             </div>
           </div>

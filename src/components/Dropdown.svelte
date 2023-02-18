@@ -25,6 +25,9 @@
   export let createLabel;
   export let metaKey;
   export let itemComponent;
+  export let collapsable;
+  export let type;
+  export let selectedOptionsLength;
 
   export function scrollIntoView(params) {
     if (virtualList) return;
@@ -59,6 +62,7 @@
 
   const dispatch = createEventDispatcher();
 
+  let showDropdown;
   let container;
   let scrollContainer;
   let isMounted = false;
@@ -93,7 +97,7 @@
   }
 
   function positionDropdown(val) {
-    if (!scrollContainer && !renderDropdown) return;
+    if ((!scrollContainer && !renderDropdown) || (virtualList && collapsable)) return;
     const outVp = isOutOfViewport(scrollContainer);
     if (outVp.bottom && !outVp.top) {
       scrollContainer.parentElement.style.bottom = (scrollContainer.parentElement.parentElement.clientHeight + 1) + 'px';
@@ -118,9 +122,9 @@
       }
       return value;
     }
-    vl_height = pixelGetter(scrollContainer, 'maxHeight')
+    vl_height = (pixelGetter(scrollContainer, 'maxHeight')
       - pixelGetter(scrollContainer, 'paddingTop')
-      - pixelGetter(scrollContainer, 'paddingBottom');
+      - pixelGetter(scrollContainer, 'paddingBottom')) * (collapsable && virtualList && type === "selected" ? 0.5 : 1);
     // get item size (hacky style)
     scrollContainer.parentElement.style = 'opacity: 0; display: block';
     const firstItem = refVirtualList.$$.ctx[1].firstElementChild.firstElementChild;
@@ -163,12 +167,23 @@
     isMounted = true;
   });
   onDestroy(() => dropdownStateSubscription());
+
+  $: {
+    if(collapsable && virtualList && type === "selected") {
+      showDropdown = isMounted && renderDropdown && (selectedOptionsLength > 1)
+    } else {
+      showDropdown = isMounted && renderDropdown
+    }
+  }
 </script>
 
-{#if isMounted && renderDropdown}
-<div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened}
+{#if showDropdown}
+<div class="sv-dropdown" class:is-virtual={virtualList} class:is-selected-dropdown={type === "selected"} aria-expanded={$hasDropdownOpened}
   on:mousedown|preventDefault
 >
+  {#if collapsable && virtualList}
+    <span class="sv-collapsable-title">{type === "selected" ? "Selected items" : "Available items"}</span>
+  {/if}
   <div class="sv-dropdown-scroll" class:is-empty={!items.length}  bind:this={scrollContainer} tabindex="-1" >
     <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
     {#if items.length}
@@ -241,7 +256,7 @@
 <style>
 .sv-dropdown {
   box-sizing: border-box;
-  position: absolute;
+  position: relative;
   background-color: var(--sv-bg);
   width: 100%;
   display: none;
@@ -263,6 +278,14 @@
   overflow-y: auto;
   overflow-x: hidden;
   
+}
+.is-selected-dropdown {
+  margin-bottom: 5px;
+}
+.sv-collapsable-title {
+  font-weight: bold;
+  font-size: 11px;
+  padding-left: 7px;
 }
 .sv-dropdown-scroll.is-empty {
   padding: 0;

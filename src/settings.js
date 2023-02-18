@@ -15,6 +15,7 @@ const settings = {
   selectOnTab: false,
   resetOnBlur: true,
   resetOnSelect: true,
+  resetOnCollapsableDeselect: true,
   fetchResetOnBlur: true,
   // multi
   multiple: false,

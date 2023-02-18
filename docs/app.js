@@ -10,8 +10,9 @@ import Element from './src/08-custom-element.svelte';
 import Dependent from './src/09-custom-dependent.svelte';
 import Remote from './src/10-custom-remote.svelte';
 import Vue from './src/11-vue.svelte';
+import Collapsable from './src/13-collapsable.svelte';
 
-[BasicExample, BasicExampleExt, Groups, ItemRender, Slot, Fetch, Playground, Element, Dependent, Remote, Vue]
+[BasicExample, BasicExampleExt, Groups, ItemRender, Slot, Fetch, Playground, Element, Dependent, Remote, Vue, Collapsable]
   .forEach(
     (component, index) => new component({
       target: document.getElementById(`example-${index +1}`),

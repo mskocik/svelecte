@@ -50,6 +50,7 @@
   export let selectOnTab = defaults.selectOnTab;
   export let resetOnBlur = defaults.resetOnBlur;
   export let resetOnSelect = defaults.resetOnSelect;
+  export let resetOnCollapsableDeselect = defaults.resetOnCollapsableDeselect;
   export let closeAfterSelect = defaults.closeAfterSelect;
   export let dndzone = () => ({ noop: true, destroy: () => {}});
   export let validatorAction = null;
@@ -59,6 +60,7 @@
   export let multiple = defaults.multiple;
   export let max = defaults.max;
   export let collapseSelection = defaults.collapseSelection;
+  export let collapsable = false
   // creating
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;
@@ -140,6 +142,7 @@
   let refControl;
   let ignoreHover = false;
   let dropdownActiveIndex = null;
+  let dropdownSelectedActiveIndex = null;
   let currentValueField = valueField || fieldInit('value', options, itemConfig);
   let currentLabelField = labelField || fieldInit('label', options, itemConfig);
   let isIOS = false;
@@ -272,6 +275,11 @@
     : filterList(flatItems, disableSifter ? null : $inputValue, multiple ? selectedKeys : false, searchField, sortField, itemConfig);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
   $: listIndex = indexList(availableItems, creatable && $inputValue, itemConfig);
+
+  $: selectedFlatItems = virtualList && collapsable ? flatList(selectedOptions, itemConfig) : []
+  $: selectedItems = filterList(selectedFlatItems, disableSifter ? null : $inputValue, false, searchField, sortField, itemConfig)
+  $: selectedListIndex = indexList(selectedItems, false, itemConfig)
+
   $: {
     if (dropdownActiveIndex === null) {
       dropdownActiveIndex = listIndex.first;
@@ -491,6 +499,11 @@
     emitChangeEvent();
   }
 
+  function onCollapsableDeselect(event, opt) {
+    if (resetOnCollapsableDeselect) $inputValue = '';
+    onDeselect(event, opt);
+  }
+
   /**
    * Dropdown hover handler - update active item
    */
@@ -500,6 +513,17 @@
       return;
     }
     dropdownActiveIndex = event.detail;
+  }
+
+  /**
+   * Dropdown hover handler - update active item
+   */
+  function onCollapsableHover(event) {
+    if (ignoreHover) {
+      ignoreHover = false;
+      return;
+    }
+    dropdownSelectedActiveIndex = event.detail;
   }
 
   /** keyboard related props */
@@ -582,6 +606,7 @@
           ctrlKey = false;
         }
         !ctrlKey && activeDropdownItem && onSelect(null, activeDropdownItem);
+        !activeDropdownItem && selectedItems.length === 1 && onCollapsableDeselect(null, selectedItems[0])
         if (availableItems.length <= dropdownActiveIndex) {
           dropdownActiveIndex = currentListLength > 0 ? currentListLength : listIndex.first;
         }
@@ -656,6 +681,7 @@
       const selectedProp = valueAsObject ? prevValue[prop] : prevValue;
       dropdownActiveIndex = flatItems.findIndex(opt => opt[prop] === selectedProp);
     }
+    dropdownSelectedActiveIndex = selectedListIndex.first
     isIOS = iOS();
     isAndroid = android();
     if (name && !hasAnchor) refSelectElement = document.getElementById(__id);
@@ -666,7 +692,7 @@
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} inputId={inputId || __id} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
-    {dndzone} {currentValueField} {isAndroid}
+    {dndzone} {currentValueField} {isAndroid} {collapsable} {virtualList}
     itemComponent={controlItem}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
@@ -678,18 +704,36 @@
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
     <div slot="control-end"><slot name="control-end"></slot></div>
   </Control>
-  <Dropdown bind:this={refDropdown} renderer={itemRenderer} {disableHighlight} {creatable} {maxReached} {alreadyCreated}
-    {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown} {multiple}
-    dropdownIndex={dropdownActiveIndex}
-    items={availableItems} {listIndex}
-    inputValue={dropdownInputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
-    metaKey={isIOS ? '⌘' : 'Ctrl'}
-    itemComponent={dropdownItem}
-    on:select={onSelect}
-    on:hover={onHover}
-    on:createoption
-    let:item={item}
-  ></Dropdown>
+  <div class="sv-dropdown-container">
+    {#if virtualList && collapsable && selectedItems.length}
+      <Dropdown renderer={itemRenderer} {disableHighlight} creatable={false}
+        {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown} {multiple}
+        dropdownIndex={dropdownSelectedActiveIndex} selectedOptionsLength={selectedOptions.length}
+        items={selectedItems} listIndex={selectedListIndex}
+        inputValue={dropdownInputValue} {hasDropdownOpened} {listMessage} {disabledField}
+        metaKey={isIOS ? '⌘' : 'Ctrl'} {collapsable}
+        itemComponent={dropdownItem}
+        type="selected"
+        on:select={onCollapsableDeselect}
+        on:hover={onCollapsableHover}
+        let:item={item}
+      ></Dropdown>
+    {/if}
+    <Dropdown bind:this={refDropdown} selectedItemsLength={selectedItems.length} renderer={itemRenderer}
+      {disableHighlight} {creatable} {maxReached} {alreadyCreated}
+      {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown} {multiple}
+      dropdownIndex={dropdownActiveIndex}
+      items={availableItems} {listIndex} {collapsable}
+      inputValue={dropdownInputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
+      metaKey={isIOS ? '⌘' : 'Ctrl'}
+      itemComponent={dropdownItem}
+      type="default"
+      on:select={onSelect}
+      on:hover={onHover}
+      on:createoption
+      let:item={item}
+    ></Dropdown>
+  </div>
   {#if name && !hasAnchor}
   <select id={__id} name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled} use:refSelectAction={refSelectActionParams}>
     {#each selectedOptions as opt}
@@ -730,6 +774,13 @@
   .svelecte.is-disabled { pointer-events: none; }
   .icon-slot { display: flex; }
   .is-hidden { opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px}
+
+  .sv-dropdown-container {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    z-index: 2;
+  }
 
   /** globally available styles for control/dropdown Item components */    
   :global(.svelecte-control .has-multiSelection .sv-item),

@@ -22,6 +22,8 @@
   export let currentValueField;
   export let itemComponent;
   export let isAndroid;
+  export let collapsable;
+  export let virtualList;
 
   const flipDurationMs = 100;
 
@@ -63,6 +65,8 @@
     }, 100);
     dispatch('blur');
   }
+
+  $: selectedOptionsLength = selectedOptions.length
 </script>
 
 <div class="sv-control" class:is-active={$hasFocus} class:is-disabled={disabled}
@@ -72,9 +76,15 @@
   <slot name="icon"></slot>
   <!-- selection & input -->
   <div class="sv-content sv-input-row" class:has-multiSelection={multiple} use:dndzone={{items:selectedOptions,flipDurationMs, type: inputId }} on:consider on:finalize>
-    {#if selectedOptions.length }
-      {#if multiple && collapseSelection && doCollapse}
-        { collapseSelection(selectedOptions.length, selectedOptions) }
+    {#if selectedOptionsLength }
+      {#if virtualList && collapsable && selectedOptionsLength > 1}
+        <slot name="collapsable" selectedCount={selectedOptionsLength}>
+          <div class="sv-item">
+            <div class="sv-item-content">{selectedOptionsLength} selected</div>
+          </div>
+        </slot>
+      {:else if multiple && collapseSelection && doCollapse}
+        { collapseSelection(selectedOptionsLength, selectedOptions) }
       {:else}
         {#each selectedOptions as opt (opt[currentValueField])}
         <div animate:flip={{duration: flipDurationMs }}>
@@ -96,7 +106,7 @@
   </div>
   <!-- buttons, indicators -->
   <div class="indicator" class:is-loading={isFetchingData} >
-    {#if clearable && selectedOptions.length && !disabled}
+    {#if clearable && selectedOptionsLength && !disabled}
     <div aria-hidden="true" class="indicator-container close-icon"
       on:mousedown|preventDefault
       on:click={() => dispatch('deselect')}
