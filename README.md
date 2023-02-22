@@ -124,6 +124,7 @@ hasAnchor         | bool             | `null`     | `internal`: when passing als
 i18n              | object           | `null`     | I18n object overriding default settings
 dndzone           | function         | empty      | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [example REPL](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)
 validatorAction   | array            | `null`     | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`. See the [example REPL](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1). For this to work, `name` property MUST be defined
+collapsable       | bool             | `false`    | Splits available and selected items into two different dropdowns and shows only the number of selected items in the input
 
 
 ### Custom items
@@ -215,6 +216,11 @@ There are different slots within the component that allow to insert custom code 
 ### Control.svelte (bubbled up to the Svelecte component)
 - ```icon``` This allows to insert custom code like e.g. an icon at the start/left of the Control.svelte
 - ```control-end``` This allows to insert custom code at the end/right of the Control.svelte. It is positioned AFTER the indicator icons.
+- ```collapsable-item``` This allows to customize the `collapsable` element/item in the input. Only used when more than one option is selected.
+
+### Dropdown.svelte (bubbled up to the Svelecte component)
+- ```collapsable-selected``` This allows to customize `collapsable` selected items dropdown title.
+- ```collapsable-available``` This allows to customize `collapsable` available items dropdown title.
 
 ## 🙏 Thanks to
 

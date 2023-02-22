@@ -78,11 +78,7 @@
   <div class="sv-content sv-input-row" class:has-multiSelection={multiple} use:dndzone={{items:selectedOptions,flipDurationMs, type: inputId }} on:consider on:finalize>
     {#if selectedOptionsLength }
       {#if virtualList && collapsable && selectedOptionsLength > 1}
-        <slot name="collapsable" selectedCount={selectedOptionsLength}>
-          <div class="sv-item">
-            <div class="sv-item-content">{selectedOptionsLength} selected</div>
-          </div>
-        </slot>
+        <slot name="collapsable-item"/>
       {:else if multiple && collapseSelection && doCollapse}
         { collapseSelection(selectedOptionsLength, selectedOptions) }
       {:else}

@@ -49,7 +49,9 @@ const settings = {
     fetchInit: 'Fetching data, please wait...',
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
-    createRowLabel: value => `Create '${value}'`
+    createRowLabel: value => `Create '${value}'`,
+    collapsableSelected: 'Selected items',
+    collapsableAvailable: 'Available items',
   },
   // bound to 'i18n'
   collapseSelectionFn: function(selectionCount, selection) {

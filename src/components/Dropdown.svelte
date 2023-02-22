@@ -182,7 +182,12 @@
   on:mousedown|preventDefault
 >
   {#if collapsable && virtualList}
-    <span class="sv-collapsable-title">{type === "selected" ? "Selected items" : "Available items"}</span>
+    {#if type === "selected"}
+      <slot name="collapsable-selected"/>
+    {/if}
+    {#if type === "available"}
+      <slot name="collapsable-available"/>
+    {/if}
   {/if}
   <div class="sv-dropdown-scroll" class:is-empty={!items.length}  bind:this={scrollContainer} tabindex="-1" >
     <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
@@ -281,11 +286,6 @@
 }
 .is-selected-dropdown {
   margin-bottom: 5px;
-}
-.sv-collapsable-title {
-  font-weight: bold;
-  font-size: 11px;
-  padding-left: 7px;
 }
 .sv-dropdown-scroll.is-empty {
   padding: 0;

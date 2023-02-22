@@ -703,6 +703,11 @@
   >
     <div slot="icon" class="icon-slot"><slot name="icon"></slot></div>
     <div slot="control-end"><slot name="control-end"></slot></div>
+    <slot name="collapsable-item" slot="collapsable-item">
+      <div class="sv-item">
+        <div class="sv-item-content">{config.collapseSelectionFn.bind(_i18n)(selectedOptions.length, selectedOptions)}</div>
+      </div>
+    </slot>
   </Control>
   <div class="sv-dropdown-container">
     {#if virtualList && collapsable && selectedItems.length}
@@ -717,7 +722,11 @@
         on:select={onCollapsableDeselect}
         on:hover={onCollapsableHover}
         let:item={item}
-      ></Dropdown>
+      >
+        <slot name="collapsable-selected" slot="collapsable-selected">
+          <span class="sv-collapsable-title">{_i18n.collapsableSelected}</span>
+        </slot>
+      </Dropdown>
     {/if}
     <Dropdown bind:this={refDropdown} selectedItemsLength={selectedItems.length} renderer={itemRenderer}
       {disableHighlight} {creatable} {maxReached} {alreadyCreated}
@@ -727,12 +736,16 @@
       inputValue={dropdownInputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
       metaKey={isIOS ? '⌘' : 'Ctrl'}
       itemComponent={dropdownItem}
-      type="default"
+      type="available"
       on:select={onSelect}
       on:hover={onHover}
       on:createoption
       let:item={item}
-    ></Dropdown>
+    >
+      <slot name="collapsable-available" slot="collapsable-available">
+        <span class="sv-collapsable-title">{_i18n.collapsableAvailable}</span>
+      </slot>
+    </Dropdown>
   </div>
   {#if name && !hasAnchor}
   <select id={__id} name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled} use:refSelectAction={refSelectActionParams}>
@@ -775,6 +788,11 @@
   .icon-slot { display: flex; }
   .is-hidden { opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px}
 
+  :global(.sv-collapsable-title){
+    font-weight: bold;
+    font-size: 11px;
+    padding-left: 7px;
+  }
   .sv-dropdown-container {
     box-sizing: border-box;
     position: absolute;
