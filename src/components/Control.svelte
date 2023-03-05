@@ -11,6 +11,7 @@
   export let multiple;
   export let resetOnBlur;
   export let collapseSelection;
+  export let alwaysCollapsed;
   export let inputId;
   /** internal props */
   export let inputValue;
@@ -49,7 +50,7 @@
   function onFocus() {
     $hasFocus = true;
     $hasDropdownOpened = true;
-    setTimeout(() => {
+    !alwaysCollapsed && setTimeout(() => {
     doCollapse = false;
     }, 150);
   }
@@ -58,7 +59,7 @@
     $hasFocus = false;
     $hasDropdownOpened = false;
     if (resetOnBlur) $inputValue = ''; // reset
-    setTimeout(() => {
+    !alwaysCollapsed && setTimeout(() => {
       doCollapse = true;
     }, 100);
     dispatch('blur');
@@ -74,7 +75,7 @@
   <div class="sv-content sv-input-row" class:has-multiSelection={multiple} use:dndzone={{items:selectedOptions,flipDurationMs, type: inputId }} on:consider on:finalize>
     {#if selectedOptions.length }
       {#if multiple && collapseSelection && doCollapse}
-        { collapseSelection(selectedOptions.length, selectedOptions) }
+        {@html collapseSelection(selectedOptions.length, selectedOptions) }
       {:else}
         {#each selectedOptions as opt (opt[currentValueField])}
         <div animate:flip={{duration: flipDurationMs }}>

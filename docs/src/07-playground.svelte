@@ -43,7 +43,7 @@
   let isFlexWidth = false;
   let selectOnTabNav = false;
   let { 
-    multiple, max, collapseSelection,
+    multiple, max, collapseSelection, alwaysCollapsed,
     placeholder, searchable, clearable, selectOnTab,
     disabled,
     creatable, creatablePrefix, allowEditing, keepCreated, delimiter,
@@ -122,7 +122,7 @@
       }
     } else if (['json', 'colors'].includes(remoteValue)) {
       settings = {
-        multiple, max, collapseSelection,
+        multiple, max, collapseSelection, alwaysCollapsed,
         searchable, clearable, selectOnTab,
         disabled, creatable, creatablePrefix, allowEditing, keepCreated, delimiter, virtualList,
         style,
@@ -136,7 +136,7 @@
       }
     } else if (remoteValue === 'tags') {
       settings = {
-        multiple, max, collapseSelection,
+        multiple, max, collapseSelection, alwaysCollapsed,
         searchable, clearable, selectOnTab, placeholder,
         disabled, creatable, creatablePrefix, allowEditing, keepCreated, delimiter, virtualList,
         style,
@@ -275,6 +275,11 @@
             <span class="tooltip" data-tooltip="Limit selection count"><input class="input-sm" type="number" placeholder="limit" disabled={!settings.multiple} on:input={e => s('max', parseInt(e.target.value))} min="0" bind:value={max}></span>
             <br>
             <label class="tooltip" data-tooltip="Show only selection sum string"><input type="checkbox" on:change={e => s('collapseSelection', e.target.checked) } disabled={!settings.multiple} bind:checked={collapseSelection}> Collapse selection</label>
+            <br>
+            <label class="tooltip" data-tooltip=
+"Always keep selection collapsed.
+Show selection in dropdown"
+            ><input type="checkbox" on:change={e => s('alwaysCollapsed', e.target.checked) } disabled={!settings.multiple} bind:checked={alwaysCollapsed}> Always collapsed</label>
             <hr>
             <label><input type="checkbox" bind:checked={isFlexWidth}> Inline width</label>
           </fieldset>

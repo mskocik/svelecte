@@ -25,6 +25,7 @@
   export let createLabel;
   export let metaKey;
   export let itemComponent;
+  export let selection = null;
 
   export function scrollIntoView(params) {
     if (virtualList) return;
@@ -169,6 +170,13 @@
 <div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened}
   on:mousedown|preventDefault
 >
+  {#if selection}
+  <div class="sv-content has-multiSelection alwaysCollapsed-selection">
+    {#each selection as opt, i (i)}
+      <svelte:component this={itemComponent} formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple} {inputValue}/>
+    {/each}
+  </div>
+  {/if}
   <div class="sv-dropdown-scroll" class:is-empty={!items.length}  bind:this={scrollContainer} tabindex="-1" >
     <div class="sv-dropdown-content" bind:this={container} class:max-reached={maxReached}>
     {#if items.length}
@@ -324,5 +332,10 @@
   overflow: hidden;
   padding: 7px 7px 7px 10px;
   text-align: left;
+}
+.alwaysCollapsed-selection.has-multiSelection {
+  padding: 4px 4px 0;
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
