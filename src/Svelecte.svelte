@@ -59,6 +59,7 @@
   export let multiple = defaults.multiple;
   export let max = defaults.max;
   export let collapseSelection = defaults.collapseSelection;
+  export let alwaysCollapsed = defaults.alwaysCollapsed;
   // creating
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;
@@ -666,7 +667,7 @@
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} inputId={inputId || __id} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
-    {dndzone} {currentValueField} {isAndroid}
+    {dndzone} {currentValueField} {isAndroid} {alwaysCollapsed}
     itemComponent={controlItem}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
@@ -694,8 +695,10 @@
     items={availableItems} {listIndex}
     inputValue={dropdownInputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}
     metaKey={isIOS ? '⌘' : 'Ctrl'}
+    selection={collapseSelection && alwaysCollapsed ? selectedOptions : null}
     itemComponent={dropdownItem}
     on:select={onSelect}
+    on:deselect={onDeselect}
     on:hover={onHover}
     on:createoption
     let:item={item}
