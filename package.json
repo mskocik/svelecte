@@ -2,7 +2,7 @@
   "name": "svelecte",
   "module": "dist/svelecte.mjs",
   "svelte": "src/Svelecte.svelte",
-  "version": "3.15.1",
+  "version": "3.15.2",
   "license": "MIT",
   "description": "Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as custom element (CE)",
   "scripts": {
