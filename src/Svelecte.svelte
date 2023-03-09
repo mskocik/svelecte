@@ -1,5 +1,5 @@
 <script context="module">
-  import defaults, { TAB_SELECT_NAVIGATE } from './settings.js';
+  import defaults from './settings.js';
   import { debounce, xhr, fieldInit, iOS, android } from './lib/utils.js'; // shared across instances
 
   const formatterList = {
@@ -16,6 +16,7 @@
     }
   };
   export const config = defaults;
+  export const TAB_SELECT_NAVIGATE = 'select-navigate';
 </script>
 
 <!-- svelte-ignore module-script-reactive-declaration -->

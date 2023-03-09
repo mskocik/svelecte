@@ -1,6 +1,5 @@
 <script>
-  import Svelecte, { addFormatter, config } from  '../../src/Svelecte.svelte';
-  import { TAB_SELECT_NAVIGATE } from '../../src/settings.js';
+  import Svelecte, { addFormatter, config, TAB_SELECT_NAVIGATE } from  '../../src/Svelecte.svelte';
   import { dataset } from './data.js';
 
   let myValue = null;
@@ -153,7 +152,7 @@
   function s(prop, value) {
     if (prop === 'selectOnTabNav') {
       prop = 'selectOnTab';
-      value = TAB_SELECT_NAVIGATE;
+      value = value ? TAB_SELECT_NAVIGATE : false;
     } 
     settings[prop] = value !== null ? value : !settings[prop];
     settings = settings;
