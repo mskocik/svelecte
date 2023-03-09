@@ -16,6 +16,7 @@
     }
   };
   export const config = defaults;
+  export const TAB_SELECT_NAVIGATE = 'select-navigate';
 </script>
 
 <!-- svelte-ignore module-script-reactive-declaration -->
@@ -590,7 +591,7 @@
           event.key !== Tab && dispatch('enterKey', event); // ref #125
           return;
         }
-        event.preventDefault(); // prevent form submit
+        (event.key !== Tab || (event.key === Tab && selectOnTab !== TAB_SELECT_NAVIGATE)) && event.preventDefault(); // prevent form submit
         break;
       case ' ':
         if (!fetch && !$hasDropdownOpened) {

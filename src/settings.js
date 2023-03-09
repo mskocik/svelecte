@@ -12,7 +12,7 @@ const settings = {
   // ui
   searchable: true,
   clearable: false,
-  selectOnTab: false,
+  selectOnTab: null,        // recognize values: null, truthy, 'select-navigate'
   resetOnBlur: true,
   resetOnSelect: true,
   fetchResetOnBlur: true,

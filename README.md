@@ -89,7 +89,7 @@ disabled          | bool             | `false`    | Disable component
 renderer          | string\|function | `null`     | dropdown and selection renderer function. More info in item rendering section
 controlItem       | Component        | `Item`     | Item component when item is selected. See [Custom Items](#custom-items) section for more details.
 dropdownItem      | Component        | `Item`     | Item component in dropdown. See [Custom Items](#custom-items) section for more details.
-selectOnTab       | bool             | `false`    | Allow selecting currently active item by <kbd>Tab</kbd> key
+selectOnTab       | bool|string|null | `null`     | Based on value provided, it allows selecting currently active item by <kbd>Tab</kbd> AND (if value is `'select-navigate'`) also focus next input. The constant `TAB_SELECT_NAVIGATE` is exported from svelecte
 resetOnBlur       | bool             | `true`     | Control if input value should be cleared on blur
 resetOnSelect     | bool             | `true`     | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple` 
 clearable         | bool             | `false`    | Display ✖ icon to clear whole selection
