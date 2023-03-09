@@ -54,7 +54,7 @@ const settings = {
   // bound to 'i18n'
   collapseSelectionFn: function(selectionCount, selection) {
     return this.collapsedSelection(selectionCount);
-  }
+  },
 }
 
 export default settings;
