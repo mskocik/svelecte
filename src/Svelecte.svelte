@@ -1,5 +1,5 @@
 <script context="module">
-  import defaults from './settings.js';
+  import defaults, { TAB_SELECT_NAVIGATE } from './settings.js';
   import { debounce, xhr, fieldInit, iOS, android } from './lib/utils.js'; // shared across instances
 
   const formatterList = {
@@ -591,7 +591,7 @@
           event.key !== Tab && dispatch('enterKey', event); // ref #125
           return;
         }
-        event.preventDefault(); // prevent form submit
+        (event.key !== Tab || (event.key === Tab && selectOnTab !== TAB_SELECT_NAVIGATE)) && event.preventDefault(); // prevent form submit
         break;
       case ' ':
         if (!fetch && !$hasDropdownOpened) {

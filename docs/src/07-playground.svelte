@@ -1,5 +1,6 @@
 <script>
   import Svelecte, { addFormatter, config } from  '../../src/Svelecte.svelte';
+  import { TAB_SELECT_NAVIGATE } from '../../src/settings.js';
   import { dataset } from './data.js';
 
   let myValue = null;
@@ -41,6 +42,7 @@
 
   let cmp;
   let isFlexWidth = false;
+  let selectOnTabNav = false;
   let { 
     multiple, max, collapseSelection, alwaysCollapsed,
     placeholder, searchable, clearable, selectOnTab,
@@ -149,6 +151,10 @@
   }
 
   function s(prop, value) {
+    if (prop === 'selectOnTabNav') {
+      prop = 'selectOnTab';
+      value = TAB_SELECT_NAVIGATE;
+    } 
     settings[prop] = value !== null ? value : !settings[prop];
     settings = settings;
   }
@@ -305,7 +311,8 @@ when creating new items">
             Placeholder <input class="input-sm" on:input={e => s('placeholder', e.target.value)} bind:value={settings.placeholder}><br>
             <label><input type="checkbox" on:change={e => s('searchable', e.target.checked)} bind:checked={searchable}> Searchable</label><br>
             <label><input type="checkbox" on:change={e => s('clearable', e.target.checked)} bind:checked={clearable}> Clearable</label><br>
-            <label><input type="checkbox" on:change={e => s('selectOnTab', e.target.checked)} bind:checked={selectOnTab}> Select on <kbd>Tab</kbd></label>
+            <label><input type="checkbox" on:change={e => s('selectOnTab', e.target.checked)} bind:checked={selectOnTab}> Select on <kbd>Tab</kbd></label><br>
+            <label><input type="checkbox" on:change={e => s('selectOnTabNav', e.target.checked)} bind:checked={selectOnTabNav}> Select on <kbd>Tab</kbd> and navigate to next input</label>
             
           </fieldset>
 

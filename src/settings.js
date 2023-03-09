@@ -12,7 +12,7 @@ const settings = {
   // ui
   searchable: true,
   clearable: false,
-  selectOnTab: false,
+  selectOnTab: null,        // recognize values: null, truthy, 'select-navigate'
   resetOnBlur: true,
   resetOnSelect: true,
   fetchResetOnBlur: true,
@@ -58,3 +58,5 @@ const settings = {
 }
 
 export default settings;
+
+export const TAB_SELECT_NAVIGATE = 'select-navigate';
