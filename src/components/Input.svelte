@@ -12,6 +12,7 @@
   export let hasDropdownOpened;
   export let selectedOptions;
   export let isAndroid;
+  export let inputMode = 'text';
 
   let inputRef = null;
   let shadowWidth = 0;
@@ -66,6 +67,7 @@
   on:paste
   on:change|stopPropagation
   enterkeyhint={enterHint}
+  inputmode={inputMode}
 >
 <div class="shadow-text" bind:clientWidth={shadowWidth}>{shadowText}</div>
 <!--</div>-->
