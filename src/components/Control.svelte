@@ -33,6 +33,8 @@
       !$hasFocus && refInput.focus();
       $hasDropdownOpened = true;
       return;
+    } else if (event?.target.tagName !== 'INPUT') {
+      event.preventDefault();
     }
     if (!$hasFocus) {
       refInput.focus();
@@ -64,11 +66,22 @@
     }, 100);
     dispatch('blur');
   }
+
+  /**
+   * not really sure why this preventDefault modifier has been used before
+   * But to keep it's original function I keep it here, but to address #134
+   * the IF branch is required
+   */
+  function onMouseDown(event) {
+    if (event?.target.tagName !== 'INPUT') {
+      event.preventDefault();
+    }
+  }
 </script>
 
 <div class="sv-control" class:is-active={$hasFocus} class:is-disabled={disabled}
-  on:mousedown|preventDefault
-  on:click|preventDefault={focusControl}
+on:mousedown={onMouseDown}
+on:click={focusControl}
 >
   <slot name="icon"></slot>
   <!-- selection & input -->
