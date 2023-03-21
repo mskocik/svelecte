@@ -23,9 +23,11 @@
   export let currentValueField;
   export let itemComponent;
   export let isAndroid;
+  export let isIOS;
 
   const flipDurationMs = 100;
 
+  let inputMode = 'none';             // mobile related only
 
   export function focusControl(event) {
     if (disabled) return;
@@ -39,6 +41,10 @@
     if (!$hasFocus) {
       refInput.focus();
     } else {
+      if ((isAndroid || isIOS) && inputMode !== 'text') {
+        inputMode = 'text';
+        return;
+      }
       $hasDropdownOpened = !$hasDropdownOpened;
     }
   }
@@ -58,6 +64,7 @@
   }
 
   function onBlur() {
+    inputMode = 'none';
     $hasFocus = false;
     $hasDropdownOpened = false;
     if (resetOnBlur) $inputValue = ''; // reset
@@ -100,7 +107,7 @@ on:click={focusControl}
     <!-- input -->
     <Input {disabled} {searchable} {placeholder} {multiple} {inputId}
       {inputValue} {hasDropdownOpened} {selectedOptions}
-      {isAndroid}
+      {isAndroid} {inputMode}
       bind:this={refInput}
       on:focus={onFocus}
       on:blur={onBlur}

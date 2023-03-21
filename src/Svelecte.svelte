@@ -668,7 +668,7 @@
   <Control bind:this={refControl} renderer={itemRenderer}
     {disabled} {clearable} {searchable} {placeholder} {multiple} inputId={inputId || __id} {resetOnBlur} collapseSelection={collapseSelection ? config.collapseSelectionFn.bind(_i18n): null}
     inputValue={inputValue} hasFocus={hasFocus} hasDropdownOpened={hasDropdownOpened} selectedOptions={selectedOptions} {isFetchingData}
-    {dndzone} {currentValueField} {isAndroid} {alwaysCollapsed}
+    {dndzone} {currentValueField} {isAndroid} {isIOS} {alwaysCollapsed}
     itemComponent={controlItem}
     on:deselect={onDeselect}
     on:keydown={onKeyDown}
