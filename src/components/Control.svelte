@@ -45,6 +45,13 @@
         inputMode = 'text';
         return;
       }
+      if (event?.target.tagName === 'INPUT' && $inputValue) {
+        return;
+      } else if (inputMode === 'text') {
+        inputMode = 'none';
+        $hasDropdownOpened = true;
+        return
+      }
       $hasDropdownOpened = !$hasDropdownOpened;
     }
   }
@@ -74,21 +81,16 @@
     dispatch('blur');
   }
 
-  /**
-   * not really sure why this preventDefault modifier has been used before
-   * But to keep it's original function I keep it here, but to address #134
-   * the IF branch is required
-   */
-  function onMouseDown(event) {
-    if (event?.target.tagName !== 'INPUT') {
-      event.preventDefault();
-    }
+  function toggleDropdown(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    inputMode = 'none';
+    $hasDropdownOpened = !$hasDropdownOpened;
   }
 </script>
 
 <div class="sv-control" class:is-active={$hasFocus} class:is-disabled={disabled}
-on:mousedown={onMouseDown}
-on:click={focusControl}
+on:mousedown={focusControl}
 >
   <slot name="icon"></slot>
   <!-- selection & input -->
@@ -128,7 +130,7 @@ on:click={focusControl}
     {#if clearable}
     <span class="indicator-separator"></span>
     {/if}
-    <div aria-hidden="true" class="indicator-container" on:mousedown|preventDefault>
+    <div aria-hidden="true" class="indicator-container" on:mousedown={toggleDropdown}>
       <slot name="indicator-icon"></slot>
     </div>
   </div>
