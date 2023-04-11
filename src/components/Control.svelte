@@ -85,7 +85,11 @@
     event.preventDefault();
     event.stopPropagation();
     inputMode = 'none';
-    $hasDropdownOpened = !$hasDropdownOpened;
+    if (!$hasFocus) {
+      refInput.focus();
+    } else {
+      $hasDropdownOpened = !$hasDropdownOpened;
+    }
   }
 </script>
 
@@ -131,7 +135,7 @@ on:mousedown={focusControl}
     <span class="indicator-separator"></span>
     {/if}
     <div aria-hidden="true" class="indicator-container" on:mousedown={toggleDropdown}>
-      <slot name="indicator-icon"></slot>
+      <slot name="indicator-icon" hasDropdownOpened={$hasDropdownOpened}></slot>
     </div>
   </div>
   <slot name="control-end"></slot>
