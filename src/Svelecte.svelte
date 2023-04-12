@@ -48,6 +48,7 @@
   export let clearable = defaults.clearable;
   export let renderer = null;
   export let disableHighlight = false;
+  export let highlightFirstItem = defaults.highlightFirstItem;
   export let selectOnTab = defaults.selectOnTab;
   export let resetOnBlur = defaults.resetOnBlur;
   export let resetOnSelect = defaults.resetOnSelect;
@@ -275,7 +276,7 @@
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
   $: listIndex = indexList(availableItems, creatable && $inputValue, itemConfig);
   $: {
-    if (dropdownActiveIndex === null) {
+    if (dropdownActiveIndex === null && (highlightFirstItem || $inputValue)) {
       dropdownActiveIndex = listIndex.first;
     } else if (dropdownActiveIndex > listIndex.last) {
       dropdownActiveIndex = listIndex.last;
@@ -533,6 +534,9 @@
         event.preventDefault();
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
+          if (dropdownActiveIndex === null) {
+            dropdownActiveIndex = listIndex.first
+          }
           return;
         }
         dropdownActiveIndex = listIndex.prev(dropdownActiveIndex);
@@ -553,9 +557,12 @@
         event.preventDefault();
         if (!$hasDropdownOpened) {
           $hasDropdownOpened = true;
+          if (dropdownActiveIndex === null) {
+            dropdownActiveIndex = listIndex.first
+          }
           return;
         }
-        dropdownActiveIndex = listIndex.next(dropdownActiveIndex);
+        dropdownActiveIndex = dropdownActiveIndex === null ? listIndex.first : listIndex.next(dropdownActiveIndex);
         tick().then(refDropdown.scrollIntoView);
         ignoreHover = true;
         break;
@@ -652,7 +659,6 @@
       const valueProp = itemConfig.labelAsValue ? currentLabelField : currentValueField;
       alreadyCreated = [''].concat(flatItems.map(opt => opt[valueProp]).filter(opt => opt));
     }
-    dropdownActiveIndex = listIndex.first;
     if (prevValue && !multiple) {
       const prop = labelAsValue ? currentLabelField : currentValueField;
       const selectedProp = valueAsObject ? prevValue[prop] : prevValue;
