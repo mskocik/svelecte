@@ -15,6 +15,7 @@
   bind:readSelection={selection}
   bind:value={value}
   multiple
+  highlightFirstItem={false}
   placeholder="Select country"
 ></Svelecte>
 
