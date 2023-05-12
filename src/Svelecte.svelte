@@ -711,7 +711,7 @@
     let:item={item}
   ></Dropdown>
   {#if name && !hasAnchor}
-  <select id={__id} name={name} {multiple} class="is-hidden" tabindex="-1" {required} {disabled} use:refSelectAction={refSelectActionParams}>
+  <select id={__id} name={name} {multiple} class="sv-hidden-element" tabindex="-1" {required} {disabled} use:refSelectAction={refSelectActionParams}>
     {#each selectedOptions as opt}
     <option value={opt[labelAsValue ? currentLabelField : currentValueField]} selected>{opt[currentLabelField]}</option>
     {/each}
@@ -749,7 +749,7 @@
   .svelecte { position: relative; flex: 1 1 auto; color: var(--sv-color);}
   .svelecte.is-disabled { pointer-events: none; }
   .icon-slot { display: flex; }
-  .is-hidden { opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px}
+  .sv-hidden-element { opacity: 0; position: absolute; z-index: -2; top: 0; height: var(--sv-min-height)}
 
   /** globally available styles for control/dropdown Item components */    
   :global(.svelecte-control .has-multiSelection .sv-item),
