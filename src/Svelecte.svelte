@@ -97,6 +97,7 @@
   export let value = null;
   export let labelAsValue = false;
   export let valueAsObject = defaults.valueAsObject;
+  export let parentValue = undefined;
   export const focus = event => {
     refControl.focusControl(event);
   };
@@ -161,6 +162,14 @@
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
   if (!createFilter) createFilter = defaultCreateFilter;
   $: if (!createTransform) createTransform = defaultCreateTransform;
+  $: {
+    if (parentValue !== internalParentValue) {
+      handleValueUpdate();
+      disabled = !parentValue ? true : false;
+    }
+    internalParentValue = parentValue;
+  }
+  let internalParentValue = undefined;
 
   /** ************************************ Context definition */
   const inputValue = writable('');
@@ -172,9 +181,9 @@
   let initFetchOnly = fetchMode === 'init' || (fetchMode === 'auto' && typeof fetch === 'string' && fetch.indexOf('[query]') === -1);
   let fetchInitValue = initFetchOnly ? value : null;
   let fetchUnsubscribe = null;
-  $: createFetch(fetch);
+  $: fetch && createFetch(fetch, parentValue);
   $: disabled && hasDropdownOpened.set(false);
-
+  
   function cancelXhr() {
     if (isInitialized && isFetchingData) {
       xhr && ![0,4].includes(xhr.readyState) && xhr.abort();
@@ -183,7 +192,7 @@
     return true;
   }
 
-  function createFetch(fetch) {
+  function createFetch(fetch, parentValue) {
     if (fetchUnsubscribe) {
       fetchUnsubscribe();
       fetchUnsubscribe = null;
@@ -202,7 +211,7 @@
         isFetchingData = false;
         return;
       }
-      fetchSource(query, fetchCallback)
+      fetchSource(query, parentValue, fetchCallback)
         .then(data => {
           if (!Array.isArray(data)) {
             console.warn('[Svelecte]:Fetch - array expected, invalid property provided:', data);
@@ -228,7 +237,7 @@
     }, 500);
 
     if (initFetchOnly) {
-      if (typeof fetch === 'string' && fetch.indexOf('[parent]') !== -1) return null;
+      if (typeof fetch === 'string' && fetch.indexOf('[parent]') !== -1 && !parentValue) return null;
       isFetchingData = true;
       options = [];
       debouncedFetch(null);
@@ -650,6 +659,8 @@
   function onDndEvent(e) {
     selectedOptions = e.detail.items;
   }
+
+
 
   /** ************************************ component lifecycle related */
 

@@ -22,9 +22,12 @@ export function isOutOfViewport(elem) {
 export let xhr = null;
 
 export function fetchRemote(url) {
-  return function(query, cb) {
+  return function(query, parentValue, cb) {
     return new Promise((resolve, reject) => {
       xhr = new XMLHttpRequest();
+      if (parentValue) {
+        url = url.replace('[parent]', encodeURIComponent(parentValue));
+      }
       xhr.open('GET', `${url.replace('[query]', encodeURIComponent(query))}`);
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
       xhr.send();
