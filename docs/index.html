@@ -769,9 +769,9 @@ const OPTION_LIST = [
               </tr>
               <tr>
                 <td>selectOnTab</td>
-                <td>bool</td>
-                <td><code>false</code></td>
-                <td>Allow selecting currently active item by <kbd>Tab</kbd> key</td>
+                <td>bool|string|null</td>
+                <td><code>null</code></td>
+                <td>Based on value provided, it allows selecting currently active item by <kbd>Tab</kbd> AND (if value is <code>'select-navigate'</code>) also focus next input. The constant <code>TAB_SELECT_NAVIGATE</code> is exported from svelecte.</td>
               </tr>
               <tr>
                 <td>resetOnBlur</td>
