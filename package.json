@@ -1,40 +1,63 @@
 {
-  "name": "svelecte",
-  "module": "dist/svelecte.mjs",
-  "svelte": "src/Svelecte.svelte",
-  "version": "4.0.0-alpha.10",
-  "license": "MIT",
-  "type": "module",
-  "description": "Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as custom element (CE)",
-  "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv docs",
-    "prepublishOnly": "npm run build"
-  },
-  "dependencies": {
-    "svelte-tiny-virtual-list": "^2.0.0"
-  },
-  "devDependencies": {
-    "@rollup/plugin-node-resolve": "^13.0.5",
-    "rollup": "^2.58.0",
-    "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-livereload": "^2.0.5",
-    "rollup-plugin-svelte": "^7.0.0",
-    "rollup-plugin-terser": "^7.0.0",
-    "sirv-cli": "^1.0.14",
-    "svelte": "^3.43.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mskocik/svelecte"
-  },
-  "homepage": "https://mskocik.github.io/svelecte/",
-  "keywords": [
-    "svelte",
-    "autocomplete",
-    "select",
-    "custom-element",
-    "multiselect"
-  ]
+	"name": "svelecte",
+	"description": "Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as custom element (CE)",
+	"version": "4.0.0-alpha.11",
+	"type": "module",
+	"license": "MIT",
+	"keywords": [
+	  "svelte",
+	  "autocomplete",
+	  "select",
+	  "custom-element",
+	  "multiselect"
+	],
+	"homepage": "https://mskocik.github.io/svelecte/",
+	"repository": {
+	  "type": "git",
+	  "url": "https://github.com/mskocik/svelecte"
+	},
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build && npm run package",
+		"preview": "vite preview",
+		"package": "svelte-kit sync && svelte-package && publint",
+		"prepublishOnly": "npm run package",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
+		"test": "npm run test:integration && npm run test:unit",
+		"test:integration": "playwright test",
+		"test:unit": "vitest"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"svelte": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"!dist/**/*.test.*",
+		"!dist/**/*.spec.*"
+	],
+	"svelte": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"peerDependencies": {
+		"svelte": "^3.43.0 || ^4.0.0"
+	},
+	"devDependencies": {
+		"@playwright/test": "^1.28.1",
+		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/kit": "^1.20.4",
+		"@sveltejs/package": "^2.0.0",
+		"publint": "^0.1.9",
+		"svelte": "^4.0.0",
+		"svelte-check": "^3.4.3",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0",
+		"vite": "^4.3.6",
+		"vitest": "^0.32.2"
+	},
+	"dependencies": {
+		"svelte-tiny-virtual-list": "^2.0.5"
+	}
 }
