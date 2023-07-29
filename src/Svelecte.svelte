@@ -1,9 +1,9 @@
 <script context="module">
   import defaults from './settings.js';
-  import { debounce, xhr, fieldInit, iOS, android } from './lib/utils.js'; // shared across instances
+  import { debounce, xhr, fieldInit, iOS, android, escapeHtml } from './lib/utils.js'; // shared across instances
 
   const formatterList = {
-    default: function(item) { return item[this.label]; }
+    default: function(item) { return escapeHtml(item[this.label]); }
   };
   // provide ability to add additional renderers
   export function addFormatter(name, formatFn) {

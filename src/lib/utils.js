@@ -189,3 +189,17 @@ export function defaultCreateTransform(inputValue, creatablePrefix, valueField, 
     [labelField]: creatablePrefix + inputValue,
   }
 }
+
+/**
+ * Escape HTML
+ * @param {string} str 
+ * @returns {string}
+ */
+export function escapeHtml(html) {
+  return `${html}`
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+};
