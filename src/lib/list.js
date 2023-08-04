@@ -43,13 +43,16 @@ export function flatList(options, config) {
       });
       return res;
     }
-    if (opt[config.optItems] && opt[config.optItems].length) {
-      config.optionsWithGroups = true;
-      res.push({ label: opt[config.optLabel], $isGroupHeader: true });
-      res.push(...opt[config.optItems].map(_opt => {
-        _opt.$isGroupItem = true;
-        return _opt;
-      }));
+    if (opt[config.optItems] && Array.isArray(opt[config.optItems])) {
+      // we're skipping empty group
+      if (opt[config.optItems].length) {
+        config.optionsWithGroups = true;
+        res.push({ label: opt[config.optLabel], $isGroupHeader: true });
+        res.push(...opt[config.optItems].map(_opt => {
+          _opt.$isGroupItem = true;
+          return _opt;
+        }));
+      }
       return res;
     }
     res.push(opt);
