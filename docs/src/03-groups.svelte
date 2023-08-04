@@ -3,6 +3,10 @@
 
   const options = [
     {
+      groupHeader: 'Empty',
+      items: []
+    },
+    {
       groupHeader: 'A',
       items: [{
         value: 'al',
