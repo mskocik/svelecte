@@ -419,7 +419,14 @@
    */
   function selectOption(opt) { 
     if (!opt || (multiple && maxReached)) return false;
-    if (selectedKeys.has(opt[currentValueField])) return;
+    if (selectedKeys.has(opt[currentValueField])) {
+      if (!hideSelections || !multiple) return;
+
+      if (hideSelections && multiple) {
+        deselectOption(opt);
+        return;
+      }
+    }
 
     if (typeof opt === 'string') {
       if (!creatable) return;
