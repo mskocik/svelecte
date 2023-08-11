@@ -63,6 +63,7 @@
   export let collapseSelection = defaults.collapseSelection;
   export let alwaysCollapsed = defaults.alwaysCollapsed;
   export let filterSelections = defaults.filterSelections;
+  export let hideSelections = defaults.hideSelections;
   // creating
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;
@@ -709,7 +710,7 @@
     </slot>
   </Control>
   <Dropdown bind:this={refDropdown} renderer={itemRenderer} {disableHighlight} {creatable} {maxReached} {alreadyCreated}
-    {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown} {multiple}
+    {virtualList} {vlHeight} {vlItemSize} lazyDropdown={virtualList || lazyDropdown} {multiple} {hideSelections}
     dropdownIndex={dropdownActiveIndex}
     items={availableItems} {listIndex}
     inputValue={dropdownInputValue} {hasDropdownOpened} {listMessage} {disabledField} createLabel={_i18n.createRowLabel}

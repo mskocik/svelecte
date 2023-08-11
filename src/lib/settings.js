@@ -24,6 +24,7 @@ const settings = {
   collapseSelection: false, // enable collapsible multiple selection
   alwaysCollapsed: false,
   filterSelections: true,
+  hideSelections: false,
   // create
   creatable: false,
   creatablePrefix: '*',

@@ -26,6 +26,7 @@
   export let metaKey;
   export let itemComponent;
   export let selection = null;
+  export let hideSelections;
 
   export function scrollIntoView(params) {
     if (virtualList) return;
@@ -171,7 +172,7 @@
 <div class="sv-dropdown" class:is-virtual={virtualList} aria-expanded={$hasDropdownOpened}
   on:mousedown|preventDefault
 >
-  {#if selection}
+  {#if selection && !hideSelections}
   <div class="sv-content has-multiSelection alwaysCollapsed-selection">
     {#each selection as opt, i (i)}
       <svelte:component this={itemComponent} formatter={renderer} item={opt} isSelected={true} on:deselect isMultiple={multiple} {inputValue}/>

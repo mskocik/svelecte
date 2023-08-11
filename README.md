@@ -100,6 +100,7 @@ max               | number           | `0`        | Maximum allowed items select
 collapseSelection | bool             | `false`    | collapse selection when `multiple` and not focused
 alwaysCollapsed   | bool             | `false`    | keep collapsed selection _even_ when focused. Selected options are shown in dropdown on the top
 filterSelections  | bool             | `true`     | Whether to filter selected items from the available list or not
+hideSelections    | bool             | `false`    | Hides the section with selected items from the dropdown
 inputId           | string           | `null`     | allow targeting input using a html label.
 creatable         | bool             | `false`    | Allow creating new item(s)
 creatablePrefix   | string           | `*`        | Prefix marking new item
