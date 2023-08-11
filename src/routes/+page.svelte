@@ -6,6 +6,7 @@
   for (let i = 1; i <= items; i++) {
     options.push({id: i, text: `Item #${i}`});
   }
+  let values = []
 </script>
 
 <div class="container">
@@ -13,9 +14,10 @@
 </div>
 
 <div class="container">
-  <Svelecte {options} filterSelections={false} multiple value={[3,7]} clearable />
+  <Svelecte {options} filterSelections={false} hideSelections multiple bind:value={values} clearable />
 </div>
 
+<span>{values}</span>
 <style>
   .container {
     width: 492px;
