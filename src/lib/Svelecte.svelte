@@ -62,6 +62,7 @@
   export let max = defaults.max;
   export let collapseSelection = defaults.collapseSelection;
   export let alwaysCollapsed = defaults.alwaysCollapsed;
+  export let filterSelections = defaults.filterSelections;
   // creating
   export let creatable = defaults.creatable;
   export let creatablePrefix = defaults.creatablePrefix;
@@ -281,7 +282,7 @@
   $: maxReached = max && selectedOptions.length == max;   // == is intentional, if string is provided
   $: availableItems = maxReached
     ? []
-    : filterList(flatItems, disableSifter ? null : $inputValue, multiple ? selectedKeys : false, searchField, sortField, itemConfig);
+    : filterList(flatItems, disableSifter ? null : $inputValue, multiple && filterSelections ? selectedKeys : false, searchField, sortField, itemConfig);
   $: currentListLength = creatable && $inputValue ? availableItems.length : availableItems.length - 1;
   $: listIndex = indexList(availableItems, creatable && $inputValue, itemConfig);
   $: {

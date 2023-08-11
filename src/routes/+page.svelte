@@ -12,6 +12,10 @@
   <Svelecte {options} multiple value={[3,7]} clearable />
 </div>
 
+<div class="container">
+  <Svelecte {options} filterSelections={false} multiple value={[3,7]} clearable />
+</div>
+
 <style>
   .container {
     width: 492px;
