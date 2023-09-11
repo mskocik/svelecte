@@ -75,7 +75,6 @@
   export let fetchMode = 'auto';
   export let fetchCallback = defaults.fetchCallback;
   export let fetchResetOnBlur = true;
-  export let fetchDebounceTime = 500;
   export let minQuery = defaults.minQuery;
   // performance
   export let lazyDropdown = defaults.lazyDropdown;
@@ -235,7 +234,7 @@
             dispatch('fetch', options)
           });
         })
-    }, fetchDebounceTime);
+    }, 500);
 
     if (initFetchOnly) {
       if (typeof fetch === 'string' && fetch.indexOf('[parent]') !== -1 && !parentValue) return null;
