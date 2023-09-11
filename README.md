@@ -111,6 +111,7 @@ fetch             | string\|function | `null`     | Check "remote datasource" se
 fetchMode         | string           | `auto`     | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
 fetchCallback     | function         | `null`     | optional fetch callback
 fetchResetOnBlur  | bool             | `true`     | reset previous search results on empty input, related to `resetOnBlur`
+fetchDebounceTime | number           | `500`      | Change default debounce time for fetch request
 minQuery          | number           | `1`        | Minimal amount of characters required to perform remote request. Usable with `fetch` property
 lazyDropdown      | bool             | `true`     | render dropdown after first focus, not by default
 virtualList       | bool             | `false`    | Whether use virtual list for dropdown items (useful for large datasets)
