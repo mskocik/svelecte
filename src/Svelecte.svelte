@@ -397,6 +397,18 @@
         return;
       }
       readSelection = Array.isArray(passedVal) ? _selection : _selection.shift();
+
+      /**
+       * Issue #194: Handling virtual list redraw after programatic value setting by subscribing to dropdown toggle
+       * and re-assigning virtual list active index to force list re-render
+       */
+      if (!$hasDropdownOpened && virtualList) {
+        let unsub = hasDropdownOpened.subscribe(val => {
+          if (!val) return;
+          dropdownActiveIndex = dropdownActiveIndex;
+          unsub && unsub();
+        })
+      }
     }
     prevValue = passedVal;
   }
