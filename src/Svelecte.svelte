@@ -505,6 +505,11 @@
     }
     tick().then(refControl.focusControl);
     emitChangeEvent();
+    // focus first item and scroll to top, #195, rework for v4, NOTE: doesn't work for virtual list
+    if ((multiple && selectedOptions.length === 0) || !multiple) {
+      dropdownActiveIndex = highlightFirstItem ? 0 : null;
+      tick().then(refDropdown.scrollIntoView);
+    }
   }
 
   /**

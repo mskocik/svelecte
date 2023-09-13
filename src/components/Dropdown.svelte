@@ -29,7 +29,11 @@
 
   export function scrollIntoView(params) {
     if (virtualList) return;
-    const focusedEl = container.querySelector(`[data-pos="${dropdownIndex}"]`);
+    if (dropdownIndex === null && scrollContainer) { // handle case when `highlightFirstItem` is false
+      scrollContainer.scrollTo(0,0);
+      return;
+    }
+    const focusedEl = container?.querySelector(`[data-pos="${dropdownIndex}"]`);
     if (!focusedEl) return;
     const focusedRect = focusedEl.getBoundingClientRect();
     const menuRect = scrollContainer.getBoundingClientRect();
