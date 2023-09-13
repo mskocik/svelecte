@@ -285,6 +285,13 @@
       dropdownActiveIndex = listIndex.first;
     }
   }
+  $: {
+    // keep always active selected item for single-select (#196) rework in v4
+    if (!multiple && $hasDropdownOpened === false && selectedOptions.length) {
+        dropdownActiveIndex = flatItems.findIndex(item => item[currentValueField] === selectedOptions[0][currentValueField]);
+        refDropdown && tick().then(refDropdown.scrollIntoView);
+      }
+  }
   $: listMessage = maxReached
     ? _i18n.max(max)
     : ($inputValue.length && availableItems.length === 0 && minQuery <= 1
