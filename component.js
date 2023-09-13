@@ -365,6 +365,7 @@ class SvelecteElement extends HTMLElement {
       anchorSelect.tabIndex = -1; // just to be sure
       this.anchorSelect = anchorSelect;
       this.anchorSelect.multiple = props.multiple || anchorSelect.name.includes('[]');
+      this.anchorSelect.innerHTML = '';
       (Array.isArray(props.value) ? props.value : [props.value || null]).forEach(val => {
         this.anchorSelect.innerHTML += `<option value="${val || ''}" selected>${val || 'No value'}</option>`;
       });
