@@ -94,7 +94,7 @@
   export let i18n = null;
   // API: public
   export let readSelection = null;
-  export let value = null;
+  export let value;
   export let labelAsValue = false;
   export let valueAsObject = defaults.valueAsObject;
   export let parentValue = undefined;
