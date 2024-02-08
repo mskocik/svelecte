@@ -21,7 +21,8 @@
 
 <!-- svelte-ignore module-script-reactive-declaration -->
 <script>
-  import { createEventDispatcher, tick, onMount } from 'svelte';
+  import { tick, onMount } from 'svelte';
+  import { get_current_component } from 'svelte/internal';
   import { writable } from 'svelte/store';
   import { fetchRemote, defaultCreateFilter, defaultCreateTransform } from './lib/utils.js';
   import { initSelection, flatList, filterList, indexList, getFilterProps } from './lib/list.js';
@@ -123,6 +124,23 @@
   }
 
   const __id = `sv-select-${Math.random()}`.replace('.', '');
+
+  // hack: default event dipatcher doesn't pass target
+  // hack: https://svelte.dev/repl/c93cbf99a8ca4f44912e662a8e3cbef7?version=3.37.0
+  function createEventDispatcher() {
+    const component = get_current_component();
+    return (type, target, detail) => {
+      const callbacks = component.$$.callbacks[type];
+      if (callbacks) {
+        const event = new CustomEvent(type, { detail });
+			  target.dispatchEvent(event);
+        callbacks.slice().forEach((fn) => {
+        fn.call(component, event);
+      });
+    }
+  };
+}
+
   const dispatch = createEventDispatcher();
 
   const itemConfig = {
@@ -352,7 +370,7 @@
    */
   function emitChangeEvent() {
     tick().then(() => {
-      dispatch('change', readSelection);
+      dispatch('change', refSelectElement, readSelection);
       if (refSelectElement) {
         refSelectElement.dispatchEvent(new Event('input'));   // required for svelte-use-form
         refSelectElement.dispatchEvent(new Event('change'));  // typically you expect change event to be fired
@@ -364,7 +382,7 @@
    * Dispatch createoption event when user creates a new entry (with 'creatable' feature)
    */
   function emitCreateEvent(createdOpt) {
-      dispatch('createoption', createdOpt)
+      dispatch('createoption', refSelectElement, createdOpt)
   }
 
   /**
