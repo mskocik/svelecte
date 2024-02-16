@@ -1,20 +1,20 @@
 {
 	"name": "svelecte",
 	"description": "Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as custom element (CE)",
-	"version": "4.0.0-alpha.11",
+	"version": "4.0.0-alpha.13",
 	"type": "module",
 	"license": "MIT",
 	"keywords": [
-	  "svelte",
-	  "autocomplete",
-	  "select",
-	  "custom-element",
-	  "multiselect"
+		"svelte",
+		"autocomplete",
+		"select",
+		"custom-element",
+		"multiselect"
 	],
 	"homepage": "https://mskocik.github.io/svelecte/",
 	"repository": {
-	  "type": "git",
-	  "url": "https://github.com/mskocik/svelecte"
+		"type": "git",
+		"url": "https://github.com/mskocik/svelecte"
 	},
 	"scripts": {
 		"dev": "vite dev",
@@ -52,10 +52,14 @@
 		"publint": "^0.1.9",
 		"svelte": "^4.0.0",
 		"svelte-check": "^3.4.3",
+		"svelte-dnd-action": "^0.9.38",
+		"svelte-use-form": "^2.10.0",
+		"sveltekit-superforms": "^2.2.0",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
 		"vite": "^4.3.6",
-		"vitest": "^0.32.2"
+		"vitest": "^0.32.2",
+		"zod": "^3.22.4"
 	},
 	"dependencies": {
 		"svelte-tiny-virtual-list": "^2.0.5"

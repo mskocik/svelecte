@@ -13,3 +13,6 @@ vite.config.ts.timestamp-*
 /_dist
 /_package.json
 /.npmrc
+*.todo
+/tests
+playwright*

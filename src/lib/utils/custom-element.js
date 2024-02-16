@@ -1,3 +1,4 @@
+// TODO: update to v4
 const OPTION_LIST = [
   'options', 'value',
   // form-related
@@ -15,9 +16,7 @@ const OPTION_LIST = [
   // perf & virtual list
   'lazy-dropdown', 'virtual-list', 'vl-height', 'vl-item-size',
   // sifter
-  'search-field', 'sort-field', 'disable-sifter',
-  // others
-  'label-as-value'
+  'search-field', 'sort-field', 'disable-sifter'
 ];
 
 const intRegex = /^[0-9]+$/;
@@ -61,7 +60,6 @@ function formatValue(name, value) {
     case 'lazy-dropdown':
     case 'virtual-list':
     case 'disable-sifter':
-    case 'label-as-value':
       return value !== null && value !== 'false';
     case 'max':
       return isNaN(parseInt(value)) ? 0 : parseInt(value);

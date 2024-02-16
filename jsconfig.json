@@ -5,7 +5,9 @@
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
+		"allowJs": true,
+		"checkJs": true,
 		"sourceMap": true,
-		"moduleResolution": "NodeNext"
+		"moduleResolution": "bundler"
 	}
 }
