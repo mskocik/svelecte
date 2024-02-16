@@ -738,7 +738,8 @@
    * @param {MouseEvent & { currentTarget: EventTarget & HTMLDivElement} & { target: HTMLElement }} event
    */
   function onClick(event) {
-    /** @type {HTMLElement & import('./actions.js').ExtButton} */
+    if (disabled) return;
+    /** @type {HTMLElement & import('./utils/actions.js').ExtButton} */
     const target = event.target.closest('[data-action]');
 
     // allow escaping click handler
@@ -853,7 +854,7 @@
   /** @type {AbortController} */
   let fetch_controller;
 
-  /** @type {import('./lib/utils.js').RequestFactoryFn} */
+  /** @type {import('./utils/helpers.js').RequestFactoryFn} */
   let fetch_factory;
   
   $: trigger_fetch(input_value);
@@ -1065,6 +1066,7 @@
           inputmode={input_mode}
           readonly={!searchable}
           enterkeyhint={enter_hint}
+          {disabled}
           bind:this={ref_input}
           bind:value={input_value}
           on:focus={onFocus}
@@ -1225,6 +1227,7 @@
     --sv-input--wrap-padding: var(--sv-general-padding);
     --sv-item-padding: var(--sv-general-padding);
     --sv-dropdown-offset: 1px;
+
   }
 
   .sv-control {
@@ -1233,6 +1236,10 @@
     /** make editable */
     border: 1px solid #ccc;
     border-radius: 4px;
+
+    &.is-disabled {
+      background-color: #eee;
+    }
   }
   
   .sv-control--selection {

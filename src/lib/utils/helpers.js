@@ -14,6 +14,8 @@ import { asciifold } from './sifter.js';
  */ 
 
 /**
+ * Built-in fetch request factory
+ * 
  * @type {RequestFactoryFn}
  */
 export function requestFactory(query, { url, parentValue, initial, controller }) {
