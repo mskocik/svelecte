@@ -161,7 +161,7 @@
   let currentLabelField = labelField || fieldInit('label', prev_options, groupItemsField);
   let selectedOptions = value !== null ? initSelection(prev_options, value, valueAsObject, groupItemsField, currentValueField) : [];
   /** @type {Set<string|number>} */
-  let selectedKeys = selectedOptions.reduce((/** @type {Set} */ set,/** @type {object} */ opt) => { 
+  let selectedKeys = selectedOptions.reduce((/** @type {Set} */ set,/** @type {object} */ opt) => {
     set.add(opt[currentValueField]);
     return set;
   }, new Set());
@@ -214,7 +214,7 @@
   $: maxReached = max && selectedOptions.length == max;     // == is intentional, if string is provided
   $: watch_options(options);
   $: options_flat = flatList(prev_options, itemConfig);
-  // TODO: add #205 
+  // TODO: add #205
   $: options_filtered = maxReached
     ? []
     : filterList(options_flat, disableSifter ? null : input_value, multiple ? selectedKeys : null, searchField, sortField, itemConfig);
@@ -222,7 +222,7 @@
   $: highlightFirstItem && setDropdownIndex(0, { asc: true });
   // TODO: check behavior and convert to watch_fn
   $: options_filtered.length <= dropdown_index && setDropdownIndex(0, { asc: !creatable, desc: creatable });
-  
+
   $: if (!createHandler) createHandler = string => ({
     [currentValueField]: string,
     [currentLabelField]: `${creatablePrefix}${string}`
@@ -232,12 +232,12 @@
   $: watch_value_change(value)
   $: watch_parentValue(parentValue);
   $: watch_selectedOptions(selectedOptions);
-  /** 
+  /**
    * @callback RenderFunction
    * @param {object} item
    * @param {boolean?} [isSelected]
    * @param {string} [inputValue]
-   * 
+   *
    * @type {RenderFunction}
    */
   $: itemRenderer = typeof renderer === 'function'
@@ -245,11 +245,11 @@
     : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
   $: watch_i18n(i18n);
   $: collapseSelectionFn = collapseSelection ? settings.collapseSelectionFn.bind(i18n_actual) : null;
-  
+
   /** ************************************ dropdown-specific */
 
   // TODO: rewrite to watcher
-  $: vl_listHeight = Math.min(vl_height, Array.isArray(vl_itemSize) 
+  $: vl_listHeight = Math.min(vl_height, Array.isArray(vl_itemSize)
     ? vl_itemSize.reduce((res, num) => {
       res+= num;
       return res;
@@ -264,8 +264,8 @@
     : (input_value.length && options_filtered.length === 0 && minQuery <= 1
       ? i18n_actual.nomatch
       : (fetch
-        ? (minQuery <= 1 
-          ? (fetch_initOnly 
+        ? (minQuery <= 1
+          ? (fetch_initOnly
             ? (isFetchingData
               ? i18n_actual.fetchInit
               : i18n_actual.empty
@@ -277,11 +277,11 @@
         : i18n_actual.empty
       )
     );
-  
+
   $: watch_is_dropdown_opened(is_dropdown_opened);
 
   /** ************************************ input-specific */
-  
+
   /** @type {"none"|"text"} */
   $: input_mode = allowInputModeToggle
     // TODO: implement this
@@ -291,7 +291,7 @@
   $: placeholder_active = selectedOptions.length ? '' : placeholder;
   /** @type {'enter'} */
   $: enter_hint = selectedOptions.length > 0 && multiple === false ? null : 'enter';
-  
+
   // #endregion
 
   // #region [watchers]
@@ -299,7 +299,7 @@
   /**
    * TODO: what if options change together with `valueField` and `labelField`
    * Resolve fields (TODO: optionally) and set internal options
-   * 
+   *
    * @param {array} opts
    */
   function watch_options(opts) {
@@ -399,7 +399,7 @@
     }
     prev_parent_value = newParentValue;
   }
-  
+
   /**
    * @param {array[]} [_watchTrigger]
    */
@@ -480,7 +480,7 @@
       if (!creatable) return;
       opt = onCreate_helper(opt);
       if (alreadyCreated.includes(opt)) return;
-      
+
       isCreating = true;
       Promise.resolve(createHandler.call(null, opt, currentValueField, currentLabelField, creatablePrefix))
         .then(newObj => {
@@ -513,13 +513,13 @@
     }
   }
 
-  /** 
+  /**
    * Add given option to selection pool
    * Check if not already selected or max item selection reached
-   * 
+   *
    * @returns bool
    */
-  function selectOption(opt) { 
+  function selectOption(opt) {
     if (multiple) {
       selectedOptions.push(opt);
       selectedOptions = selectedOptions;
@@ -536,7 +536,7 @@
   }
 
   /**
-   * 
+   *
    * @param {object} event
    * @param {object} [opt]
    * @param {boolean} [backspacePressed]
@@ -555,10 +555,10 @@
     // tick().then(focusControl);
     emitChangeEvent();
   }
-  
+
   /**
    * Remove option/all options from selection pool
-   * 
+   *
    * @param {object} opt,
    * @param {boolean} [backspacePressed]
    */
@@ -587,7 +587,7 @@
     maxReached = false;       // reset forcefully, related to #145
     // TODO: check if re-filter items wouldn't be better
     selectedKeys = selectedKeys;
-    options_flat = options_flat;  
+    options_flat = options_flat;
   }
 
   function onCreate(event) {
@@ -598,7 +598,7 @@
 
   /**
    * @param {KeyboardEvent} event
-   * 
+   *
    * //NOTE: previously Svelecte.svelte/onKeyDown
    */
   function processKeyDown(event) {
@@ -725,7 +725,7 @@
   }
 
   /**
-   * Prevent focus change 
+   * Prevent focus change
    * @param {MouseEvent} event
    */
   function onMouseDown(event) {
@@ -734,7 +734,7 @@
 
   /**
    * Single click handler. Unified for dropdown items, for selected items and 'x' clear button
-   * 
+   *
    * @param {MouseEvent & { currentTarget: EventTarget & HTMLDivElement} & { target: HTMLElement }} event
    */
   function onClick(event) {
@@ -744,7 +744,7 @@
 
     // allow escaping click handler
     if (target?.dataset.action === 'default') return;
-    
+
     event.preventDefault();
     /** @type {HTMLElement} */
     const dropdown_item = event.target.closest('[data-pos]');
@@ -754,13 +754,13 @@
       return focusControl(event.target);
     }
     const action = target?.dataset.action || 'select';
-    
+
     // dropdown items has no data-action set
     switch(action) {
       case 'deselect':
         onDeselect({}, target.bound_item)
         break;
-      case 'select': 
+      case 'select':
         const opt_position = parseInt(dropdown_item.dataset.pos);
         onSelect(null, options_filtered[opt_position]);
         break;
@@ -818,7 +818,7 @@
       doCollapse = true;
     }, 100);
   }
-  
+
   /**
    * Enable create items by pasting
    */
@@ -856,7 +856,7 @@
 
   /** @type {import('./utils/helpers.js').RequestFactoryFn} */
   let fetch_factory;
-  
+
   $: trigger_fetch(input_value);
   $: is_mounted && watch_fetch_init(fetch, fetchFactory);
 
@@ -878,7 +878,7 @@
     }
 
     // update fetchInitValue when fetch is changed, but we are in 'init' mode, ref #113
-    if (fetch_initOnly && prev_value) fetch_initValue = prev_value; 
+    if (fetch_initOnly && prev_value) fetch_initValue = prev_value;
 
     // reset found items
     if (fetchResetOnBlur) prev_options = [];
@@ -920,12 +920,12 @@
   // #endregion
 
   // #region [helper functions]
-  
+
   /**
    * @typedef {object} DirectionSettings
    * @property {boolean} [asc]
    * @property {boolean} [desc]
-   * 
+   *
    * @param {number} pos
    * @param {DirectionSettings} direction
    */
@@ -974,7 +974,7 @@
   }
 
   /**
-   * @returns {number[]} 
+   * @returns {number[]}
    */
   function get_dropdown_dimensions() {
     if (virtualList) {
@@ -1118,7 +1118,7 @@
     on:click={onClick}
   >
   {#if is_mounted && render_dropdown}
-    <!-- 
+    <!--
       TODO: rework selection rendering in dropdown to slot
     -->
       {#if is_mounted && collapseSelection && alwaysCollapsed && selectedOptions.length}
@@ -1159,7 +1159,7 @@
                 {#if opt.$isGroupHeader}
                   <div class="sv-optgroup-header"><b>{opt.label}</b></div>
                 {:else}
-                  <div data-pos={index} 
+                  <div data-pos={index}
                     class="sv-item--wrap in-dropdown"
                     class:sv-dd-item-active={dropdown_index === index}
                   >
@@ -1175,7 +1175,7 @@
               {#if opt.$isGroupHeader}
                 <div class="sv-optgroup-header"><b>{opt.label}</b></div>
               {:else}
-                <div data-pos={i} 
+                <div data-pos={i}
                   class="sv-item--wrap in-dropdown"
                   class:sv-dd-item-active={dropdown_index === i}
                 >
@@ -1240,7 +1240,7 @@
       background-color: #eee;
     }
   }
-  
+
   .sv-control--selection {
     display: flex;
     flex-wrap: wrap;
@@ -1265,7 +1265,7 @@
     &.is-multi {
       background-color: var(--sv-item-selected-bg, #efefef);
     }
-    
+
   }
   .sv-item--content {
     overflow: hidden;
@@ -1415,7 +1415,7 @@
     align-items: center;
     border-radius: 2px;
     padding: 3px 3px 3px 6px;
-    
+
     &:hover,
     &:active,
     &.active {
@@ -1486,7 +1486,7 @@
     padding-left: 0;
     margin-left: -2px;
   }
-  
+
   .sv-input--text {
     outline: none;
     &:placeholder {
