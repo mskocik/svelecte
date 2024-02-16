@@ -4,18 +4,34 @@
   import { requestFactory, debounce } from './utils/fetch.js';
   import { onCreate_helper, escapeHtml } from './utils/helpers.js';
 
+  /**
+   * @callback RenderFunction
+   * @param {object} item
+   * @param {boolean?} [isSelected]
+   * @param {string} [inputValue]
+   * @returns {string}
+   */
+
   const formatterList = {
+    /**
+     * @type {RenderFunction}
+     */
     default: function(item) { return escapeHtml(item[this.label]); }
   };
   // TODO: rename to addRenderer
   // provide ability to add additional renderers
-  export function addFormatter(name, formatFn) {
+  /**
+   *
+   * @param name
+   * @param {RenderFunction} rendererFn
+   */
+  export function addFormatter(name, rendererFn) {
     if (name instanceof Object) {
       for (let prop in name) {
         formatterList[prop] = name[prop];
       }
     } else {
-      formatterList[name] = formatFn
+      formatterList[name] = rendererFn
     }
   };
 
@@ -61,6 +77,7 @@
   export let searchable = defaults.searchable;
   /** @type {boolean} */
   export let clearable = defaults.clearable;
+  /** @type {string|RenderFunction}*/
   export let renderer = null;
   /** @type {boolean} */
   export let disableHighlight = false;
@@ -232,12 +249,8 @@
   $: watch_value_change(value)
   $: watch_parentValue(parentValue);
   $: watch_selectedOptions(selectedOptions);
+
   /**
-   * @callback RenderFunction
-   * @param {object} item
-   * @param {boolean?} [isSelected]
-   * @param {string} [inputValue]
-   *
    * @type {RenderFunction}
    */
   $: itemRenderer = typeof renderer === 'function'
@@ -480,7 +493,7 @@
     if (typeof opt === 'string') {
       if (!creatable) return;
       opt = onCreate_helper(opt);
-      if (alreadyCreated.includes(opt)) return;
+      if (alreadyCreated.includes(opt) || selectedKeys.has(opt)) return;
 
       isCreating = true;
       Promise.resolve(createHandler.call(null, opt, currentValueField, currentLabelField, creatablePrefix))
@@ -563,14 +576,17 @@
    * @param {boolean} [backspacePressed]
    */
    function deselectOption(opt, backspacePressed) {
-    if (opt.$created && backspacePressed && allowEditing) {
-      alreadyCreated.splice(alreadyCreated.findIndex(o => o === opt[labelAsValue ? currentLabelField : currentValueField]), 1);
+    if (opt.$created) {
+      alreadyCreated.splice(alreadyCreated.findIndex(o => o === opt[currentValueField]), 1);
       alreadyCreated = alreadyCreated;
       if (keepCreated) {
-        options.splice(options.findIndex(o => o === opt), 1);
-        options = options;
+        const idx = prev_options.findIndex(o => o[currentValueField] === opt[currentValueField]);
+        idx !== -1 && prev_options.splice(idx, 1);
+        prev_options = prev_options;
       }
-      input_value = opt[currentLabelField].replace(creatablePrefix, '');
+      if (backspacePressed && allowEditing) {
+        input_value = opt[currentLabelField].replace(creatablePrefix, '');
+      }
     }
     const id = opt[currentValueField];
     selectedKeys.delete(id);
@@ -583,11 +599,12 @@
   function clearSelection() {
     selectedKeys.clear();
     selectedOptions = [];
+    if (!keepCreated) alreadyCreated = [];  // ref #198
     maxReached = false;       // reset forcefully, related to #145
     options_flat = options_flat;
   }
 
-  function onCreate(event) {
+  function onCreate(_event) {
     if (alreadyCreated.includes(input_value)) return;
 
     onSelect(null, input_value);
@@ -1002,7 +1019,7 @@
       ref_select_element = document.getElementById(anchor_element);
       ref_select_element.className = 'sv-hidden-element';
       ref_select_element.innerHTML = '';
-      ref_select_element.tabIndex = '-1';
+      ref_select_element.tabIndex = -1;
       selectedKeys.forEach(k => {
         ref_select_element.insertAdjacentHTML('beforeend', `<option value=${k} selected>${k}</option>`);
       });
