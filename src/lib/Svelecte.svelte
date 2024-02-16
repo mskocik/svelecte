@@ -1,7 +1,8 @@
 <script context="module">
   import defaults from './settings.js';
 
-  import { onCreate_helper, escapeHtml, requestFactory, debounce } from './utils/helpers.js';
+  import { requestFactory, debounce } from './utils/fetch.js';
+  import { onCreate_helper, escapeHtml } from './utils/helpers.js';
 
   const formatterList = {
     default: function(item) { return escapeHtml(item[this.label]); }
@@ -102,7 +103,7 @@
   // remote
   /** @type {string?} */
   export let fetch = null;
-  /** @type {function?} */
+  /** @type {import('./utils/fetch.js').RequestFactoryFn|null} */
   export let fetchFactory = null;
   /** @type {'auto'|'init'} */
   export let fetchMode = 'auto';
@@ -136,7 +137,7 @@
   export let value = null;
   export let labelAsValue = false;
   export let valueAsObject = defaults.valueAsObject;
-  // export let parentValue = undefined;   // TODO: #178
+  export let parentValue = undefined;
 
   const dispatch = createEventDispatcher();
   const DOM_ID = `sv-${name}-select`;
@@ -150,18 +151,16 @@
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
   /** ************************************ END preparation */
 
-  const parentValue = 'UNDEFINED';   // TODO: #178
-
   let is_mounted = false;
   // state-related
   let prev_value;
   let prev_options = ensureObjectArray(options, valueField, labelField);
-  let prev_parent_value = parentValue;
+  let prev_parent_value;
   let currentValueField = valueField || fieldInit('value', prev_options, groupItemsField);
   let currentLabelField = labelField || fieldInit('label', prev_options, groupItemsField);
   let selectedOptions = value !== null ? initSelection(prev_options, value, valueAsObject, groupItemsField, currentValueField) : [];
   /** @type {Set<string|number>} */
-  let selectedKeys = selectedOptions.reduce((/** @type {Set} */ set,/** @type {object} */ opt) => {
+  const selectedKeys = selectedOptions.reduce((/** @type {Set} */ set,/** @type {object} */ opt) => {
     set.add(opt[currentValueField]);
     return set;
   }, new Set());
@@ -196,6 +195,7 @@
   let isCreating = false;
   let flipDurationMs = 100;
   let is_dragging = false;
+  let is_fetch_dependent = false;
   // refs
   let /** @type {HTMLInputElement}  */  ref_input;
   let /** @type {HTMLElement}       */  ref_select_element;
@@ -388,16 +388,17 @@
   }
 
   /**
-   * TODO: implement #178
-   * @param newParentValue
+   * @param {any} newParentValue
    */
   function watch_parentValue(newParentValue) {
-    if (prev_parent_value !== newParentValue) {
-      // TODO: handle value update
-      // handleValueUpdate();
+    // check for undefined is required because parent have empty value as well and I want to avoid 2 props just for this
+    if (newParentValue !== undefined && prev_parent_value !== newParentValue ) {
+      clearSelection();
+      prev_value = multiple ? [] : null;
       disabled = !parentValue ? true : false;
     }
     prev_parent_value = newParentValue;
+    is_fetch_dependent = newParentValue !== undefined;
   }
 
   /**
@@ -530,7 +531,6 @@
       selectedKeys.add(opt[currentValueField]);
       dropdown_index = options_flat.indexOf(opt);
     }
-    selectedKeys = selectedKeys;
     options_flat = options_flat;
     return true;
   }
@@ -578,15 +578,12 @@
     selectedOptions = selectedOptions;
     // TODO: check if re-filter items wouldn't be better
     options_flat = options_flat;
-    selectedKeys = selectedKeys;
   }
 
   function clearSelection() {
     selectedKeys.clear();
     selectedOptions = [];
     maxReached = false;       // reset forcefully, related to #145
-    // TODO: check if re-filter items wouldn't be better
-    selectedKeys = selectedKeys;
     options_flat = options_flat;
   }
 
@@ -629,7 +626,6 @@
           );
         }
       case 'ArrowUp':
-        console.log('⬆️');
         event.preventDefault();
         if (!is_dropdown_opened) {
           is_dropdown_opened = true;
@@ -854,13 +850,19 @@
   /** @type {AbortController} */
   let fetch_controller;
 
-  /** @type {import('./utils/helpers.js').RequestFactoryFn} */
+  /** @type {import('./utils/fetch.js').RequestFactoryFn} */
   let fetch_factory;
 
   $: trigger_fetch(input_value);
-  $: is_mounted && watch_fetch_init(fetch, fetchFactory);
+  $: is_mounted && watch_fetch_init(fetch, fetchFactory, parentValue);
 
-  function watch_fetch_init(fetch, fetchFactory) {
+  /**
+   *
+   * @param {string?} fetch
+   * @param {import('./utils/fetch.js').RequestFactoryFn?} fetchFactory
+   * @param {string?} _parentValue
+   */
+  function watch_fetch_init(fetch, fetchFactory, _parentValue) {
     if (!fetch && !fetchFactory) return;
 
     fetch_factory = fetch ? requestFactory : fetchFactory;
@@ -871,7 +873,7 @@
     fetch_factory && debounce(fetch_runner, fetchDebounceTime)();
   }
   function fetch_runner(skipInputValueCheck) {
-    if (skipInputValueCheck !== true && !input_value.length) {
+    if ((skipInputValueCheck !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
       if (fetchResetOnBlur) prev_options = [];
       return;
@@ -932,7 +934,6 @@
    function setDropdownIndex(pos, direction = {}, limit = 0) {
     const dropdown_list_length = creatable ? options_filtered.length + 1 : options_filtered.length;
     if (limit >= 2) return;
-    console.log(pos, dropdown_list_length, limit, direction);
     if (pos < 0) pos = direction.desc
       ? dropdown_list_length - 1
       : 0;
@@ -1001,6 +1002,7 @@
       ref_select_element = document.getElementById(anchor_element);
       ref_select_element.className = 'sv-hidden-element';
       ref_select_element.innerHTML = '';
+      ref_select_element.tabIndex = '-1';
       selectedKeys.forEach(k => {
         ref_select_element.insertAdjacentHTML('beforeend', `<option value=${k} selected>${k}</option>`);
       });
@@ -1011,9 +1013,9 @@
 
 <div class={`svelecte ${className}`}>
   {#if name && !anchor_element}
-  <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID}>
-    {#each selectedKeys as k (k)}
-    <option value={k} selected>{k}</option>
+  <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1">
+    {#each selectedOptions as opt (opt[currentValueField])}
+    <option value={opt[currentValueField]} selected>{opt[currentValueField]}</option>
     {/each}
   </select>
   {/if}

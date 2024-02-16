@@ -1,76 +1,19 @@
 import { asciifold } from './sifter.js';
 
-/**
- * @typedef {object} RequestFactoryProps
- * @property {string?} url
- * @property {string?} parentValue
- * @property {string[]|string|number} initial
- * @property {AbortController} controller
- * 
- * @callback RequestFactoryFn
- * @param {string} query
- * @param {RequestFactoryProps} props
- * @returns {Request}
- */ 
-
-/**
- * Built-in fetch request factory
- * 
- * @type {RequestFactoryFn}
- */
-export function requestFactory(query, { url, parentValue, initial, controller }) {
-  if (parentValue) {
-    url = url.replace('[parent]', encodeURIComponent(parentValue));
-  }
-  if (query) {
-    url = url.replace('[query]', encodeURIComponent(query));
-  }
-  if (initial) {
-    url = url.replace('[query]', 'init');
-  }
-  const fetchUrl = url[0] === '/'
-    ? new URL(url, window.location.origin)
-    : new URL(url);
-
-  if (initial) {
-    const arr = Array.isArray(initial) ? initial : [initial];
-    fetchUrl.searchParams.append('init', arr.join(','));
-  }
-  return new Request(fetchUrl, {
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest'
-    },
-    cache: 'no-store',
-    signal: controller.signal
-  });
-}
-
-export function debounce(fn, delay) {
-  let timeout;
-	return function() {
-		const self = this;
-		const args = arguments;
-		clearTimeout(timeout);
-		timeout = setTimeout(function() {
-      fn.apply(self, args)
-		}, delay);
-	};
-};
-
 let itemHtml;
 
 /**
- * 
- * @param {object} item 
- * @param {boolean} isSelected 
- * @param {string} inputValue 
- * @param {function} formatter 
- * @param {boolean} disableHighlight 
+ *
+ * @param {object} item
+ * @param {boolean} isSelected
+ * @param {string} inputValue
+ * @param {function} formatter
+ * @param {boolean} disableHighlight
  * @returns {string}
  */
 export function highlightSearch(item, isSelected, inputValue, formatter, disableHighlight) {
   const itemHtmlText = formatter(item, isSelected, inputValue);
-  
+
   if (inputValue == '' || item.isSelected || disableHighlight) {
     return itemHtmlText;
   }
@@ -84,7 +27,7 @@ export function highlightSearch(item, isSelected, inputValue, formatter, disable
   pattern.split(' ').filter(e => e).forEach(pat => {
     highlight(itemHtml, pat);
   });
-  
+
   return itemHtml.innerHTML;
 }
 
@@ -110,8 +53,8 @@ const highlight = function(node, regex) {
       middlebit.parentNode.replaceChild(spannode, middlebit);
       skip = 1;
     }
-  } 
-  // Recurse element node, looking for child text nodes to highlight, unless element 
+  }
+  // Recurse element node, looking for child text nodes to highlight, unless element
   // is childless, <script>, <style>, or already highlighted: <span class="hightlight">
   else if (node.nodeType === 1 && node.childNodes && !/(script|style)/i.test(node.tagName) && ( node.className !== 'highlight' || node.tagName !== 'SPAN' )) {
     for (var i = 0; i < node.childNodes.length; ++i) {
@@ -123,7 +66,7 @@ const highlight = function(node, regex) {
 
 /**
  * Detect Mac device
- * 
+ *
  * @returns {boolean}
  */
 export function iOS() {
@@ -141,7 +84,7 @@ export function iOS() {
 
 /**
  * Detects if on android device
- * 
+ *
  * @returns {boolean}
  */
 export function android() {
@@ -150,17 +93,17 @@ export function android() {
 
 /**
  * Internal formatter of newly created items
- * 
- * @param {string} enteredValue 
+ *
+ * @param {string} enteredValue
  * @returns {string}
  */
-export function onCreate_helper(enteredValue) {  
+export function onCreate_helper(enteredValue) {
   return (enteredValue || '').replace(/\t/g, ' ').trim().split(' ').filter(ch => ch).join(' ');
 }
 
 /**
  * Escape HTML
- * @param {string} html 
+ * @param {string} html
  * @returns {string}
  */
 export function escapeHtml(html) {
