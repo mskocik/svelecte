@@ -1,7 +1,3 @@
-<script context="module">
-  import Svelecte from "$lib/Svelecte.svelte";
-</script>
-
 <div class="main-container">
   <slot />
 </div>
