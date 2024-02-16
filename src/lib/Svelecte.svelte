@@ -1142,76 +1142,75 @@
         {/each}
       </div>
       {/if}
-    <div bind:this={ref_container_scroll} class="sv-dropdown-scroll" class:has-items={options_filtered.length>0} class:is-virtual={virtualList} tabindex="-1">
-      <div bind:this={ref_container} class="sv-dropdown-content" class:max-reached={maxReached} >
-      {#if options_filtered.length}
-        {#if virtualList}
-          <TinyVirtualList bind:this={ref_virtuallist}
-            width="100%"
-            height={vl_listHeight}
-            itemCount={options_filtered.length}
-            itemSize={vl_itemSize}
-            scrollToAlignment="auto"
-            scrollToIndex={dropdown_index}
-          >
-            <div slot="item" let:index let:style {style}>
-              {@const opt = options_filtered[index]}
+      <div bind:this={ref_container_scroll} class="sv-dropdown-scroll" class:has-items={options_filtered.length>0} class:is-virtual={virtualList} tabindex="-1">
+        <div bind:this={ref_container} class="sv-dropdown-content" class:max-reached={maxReached} >
+        {#if options_filtered.length}
+          {#if virtualList}
+            <TinyVirtualList bind:this={ref_virtuallist}
+              width="100%"
+              height={vl_listHeight}
+              itemCount={options_filtered.length}
+              itemSize={vl_itemSize}
+              scrollToAlignment="auto"
+              scrollToIndex={dropdown_index}
+            >
+              <div slot="item" let:index let:style {style}>
+                {@const opt = options_filtered[index]}
+                {#if opt.$isGroupHeader}
+                  <div class="sv-optgroup-header"><b>{opt.label}</b></div>
+                {:else}
+                  <div data-pos={index} 
+                    class="sv-item--wrap in-dropdown"
+                    class:sv-dd-item-active={dropdown_index === index}
+                  >
+                    <div class="sv-item--content">
+                      {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
+                    </div>
+                  </div>
+                {/if}
+              </div>
+            </TinyVirtualList>
+          {:else}
+            {#each options_filtered as opt, i}
               {#if opt.$isGroupHeader}
                 <div class="sv-optgroup-header"><b>{opt.label}</b></div>
               {:else}
-                <div data-pos={index} 
+                <div data-pos={i} 
                   class="sv-item--wrap in-dropdown"
-                  class:sv-dd-item-active={dropdown_index === index}
+                  class:sv-dd-item-active={dropdown_index === i}
                 >
                   <div class="sv-item--content">
                     {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
                   </div>
                 </div>
               {/if}
-            </div>
-          </TinyVirtualList>
-        {:else}
-          {#each options_filtered as opt, i}
-            {#if opt.$isGroupHeader}
-              <div class="sv-optgroup-header"><b>{opt.label}</b></div>
-            {:else}
-              <div data-pos={i} 
-                class="sv-item--wrap in-dropdown"
-                class:sv-dd-item-active={dropdown_index === i}
-              >
-                <div class="sv-item--content">
-                  {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
-                </div>
-              </div>
-            {/if}
-          {/each}
+            {/each}
+          {/if}
+        {:else if options_filtered.length === 0 && (!creatable || !input_value) || maxReached}
+          <!-- TODO: listMessage -->
+          <div class="is-dropdown-row">
+            <div class="sv-item--wrap"><div class="sv-item--content">{listMessage}</div></div>
+          </div>
         {/if}
-      {:else if options_filtered.length === 0 && (!creatable || !input_value) || maxReached}
-        <!-- TODO: listMessage -->
-        <div class="is-dropdown-row">
-          <div class="sv-item--wrap"><div class="sv-item--content">{listMessage}</div></div>
-        </div>
-      {/if}
-    </div>
-  </div> <!-- scroll container end -->
-  {#if creatable && input_value && !maxReached}
-    <div class="is-dropdown-row">
-      <button type="button" class="creatable-row" on:click|preventDefault={onCreate} on:mousedown|preventDefault
-        class:active={(options_filtered.length ? options_filtered.length : 0) === dropdown_index}
-        class:is-disabled={alreadyCreated.includes(input_value)}
-      >
-        <!-- TODO: make it a slot -->
-        <span class:is-loading={isCreating}>
-          {@html i18n_actual.createRowLabel(input_value)}
-        </span>
-        <span class="shortcut"><kbd>{meta_key}</kbd>+<kbd>Enter</kbd></span>
-      </button>
-    </div>
+      </div>
+    </div> <!-- scroll container end -->
+    {#if creatable && input_value && !maxReached}
+      <div class="is-dropdown-row">
+        <button type="button" class="creatable-row" on:click|preventDefault={onCreate} on:mousedown|preventDefault
+          class:active={(options_filtered.length ? options_filtered.length : 0) === dropdown_index}
+          class:is-disabled={alreadyCreated.includes(input_value)}
+        >
+          <!-- TODO: make it a slot -->
+          <span class:is-loading={isCreating}>
+            {@html i18n_actual.createRowLabel(input_value)}
+          </span>
+          <span class="shortcut"><kbd>{meta_key}</kbd>+<kbd>Enter</kbd></span>
+        </button>
+      </div>
+    {/if}
   {/if}
-  {/if}
-<!-- #endregion -->
-</div>
-
+  <!-- #endregion -->
+  </div>
 </div> <!-- /svelecte -->
 
 <style>
