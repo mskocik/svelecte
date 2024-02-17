@@ -7,7 +7,20 @@ import Sifter from './sifter.js';
  * @property {string} labelField
  * @property {string} optLabel
  * @property {string} optItems
- * @property {string[]} optionProps deprevated soon
+ * @property {string[]} optionProps
+ */
+
+/**
+ * @typedef {object} SortDef
+ * @property {string} field
+ * @property {string?} [direction]
+ *
+ * @typedef {object} SearchProps
+ * @property {string|string[]} [fields]
+ * @property {string|SortDef[]} [sort]
+ * @property {boolean} [nesting]
+ * @property {'or'} [conjunction]
+ * @property {boolean} [disabled]
  */
 
 /**
@@ -19,7 +32,6 @@ import Sifter from './sifter.js';
  */
 export function createConfig(valueField, labelField, optLabel, optItems) {
   return {
-    // FUTURE: drop this & replace by extended search config
     optionProps: [],
     optionsWithGroups: false,
     valueField,
@@ -127,7 +139,7 @@ function updateOptionProps(options, config) {
  * @returns {string[]}
  */
 export function getFilterProps(object) {
-  const exclude = ['$disabled', '$isGroupHeader', '$isGroupItem', '$created'];
+  const exclude = ['$disabled', '$isGroupHeader', '$isGroupItem', '$created', '$selected'];
   return Object.keys(object).filter(prop => !exclude.includes(prop));
 }
 
@@ -136,12 +148,11 @@ export function getFilterProps(object) {
  * @param {object[]} options
  * @param {?string} inputValue
  * @param {?Set} excludeSelected
- * @param {string} sifterSearchField
- * @param {string} sifterSortField
  * @param {ComponentConfig} config
- * @returns
+ * @param {SearchProps} searchProps
+ * @returns {object[]}
  */
-export function filterList(options, inputValue, excludeSelected, sifterSearchField, sifterSortField, config) {
+export function filterList(options, inputValue, excludeSelected, config, searchProps) {
   if (excludeSelected) {
     options = options
       .filter(opt => !excludeSelected.has(opt[config.valueField]))
@@ -156,7 +167,7 @@ export function filterList(options, inputValue, excludeSelected, sifterSearchFie
         return true;
       })
   }
-  if (!inputValue) return options;
+  if (searchProps.disabled) return options;
 
   const sifter = new Sifter(options);
   /**
@@ -169,13 +180,14 @@ export function filterList(options, inputValue, excludeSelected, sifterSearchFie
   let conjunction = 'and';
   if (inputValue.startsWith('|| ')) {
     conjunction = 'or';
-    inputValue = inputValue.substr(2);
+    inputValue = inputValue.substring(2);
   }
 
   const result = sifter.search(inputValue, {
-    fields: sifterSearchField || config.optionProps,
-    sort: createSifterSortField(sifterSortField || config.labelField),
-    conjunction: conjunction
+    fields: searchProps.fields || config.optionProps,
+    sort: searchProps.sort || createSifterSortField(config.labelField),
+    conjunction: searchProps.conjunction || conjunction,
+    nesting: searchProps.nesting || false
   });
 
   const mapped = config.optionsWithGroups

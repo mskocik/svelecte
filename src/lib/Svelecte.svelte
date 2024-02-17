@@ -145,9 +145,8 @@
   export let vlHeight = defaults.vlHeight;
   export let vlItemSize = defaults.vlItemSize;
   // sifter related
-  export let searchField = null;
-  export let sortField = null;
-  export let disableSifter = false;
+  /** @type {import('./utils/list.js').SearchProps|null} */
+  export let searchProps = null;
   // styling
   let className = 'svelecte-control';
   export { className as class};
@@ -157,7 +156,6 @@
   export let readSelection = null;
   /** @type {array|string|number|null} */
   export let value = null;
-  export let labelAsValue = false;
   export let valueAsObject = defaults.valueAsObject;
   export let parentValue = undefined;
 
@@ -229,10 +227,6 @@
   let /** svelte-tiny-virtual-list  */  ref_virtuallist;
 
   const itemConfig = createConfig(currentValueField, currentLabelField, groupLabelField, groupItemsField);
-  // FUTURE: drop this
-  itemConfig.optionProps = value && valueAsObject && (multiple && Array.isArray(value) ? value.length > 0 : true)
-    ? getFilterProps(Array.isArray(value) ? value.slice(0,1).shift() : value)
-    : [currentValueField, currentLabelField];
 
   // #region [reactivity]
 
@@ -243,16 +237,15 @@
     ? []
     : filterList(
       options_flat,
-      disableSifter ? null : input_value,
+      input_value,
       keepSelectionInList || !multiple
         ? (input_value.length // when filtering ALWAYS exclude selection
           ? selectedKeys
           : null
         )
         : selectedKeys,
-      searchField,
-      sortField,
-      itemConfig
+      itemConfig,
+      searchProps || {}
     );
   // only initial setter
   $: highlightFirstItem && setDropdownIndex(0, { asc: true });
