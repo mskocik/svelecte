@@ -636,6 +636,7 @@
     selectedOptions = [];
     if (!keepCreated) alreadyCreated = [];  // ref #198
     maxReached = false;       // reset forcefully, related to #145
+    if (input_value) input_value = '';
     options_flat = options_flat;
   }
 
@@ -748,8 +749,6 @@
           is_dropdown_opened = true;
           event.preventDefault();
         }
-        // FUTURE: remove to allow search while selected for single select
-        if (!multiple && selectedOptions.length) event.preventDefault();
         break;
       case 'Backspace':
         backspacePressed = true;
@@ -763,11 +762,6 @@
         // if (!ctrlKey && !['Tab', 'Shift'].includes(event.key) && !is_dropdown_opened && !isFetchingData) {
         if (!ctrlKey && !['Tab', 'Shift'].includes(event.key) && !is_dropdown_opened) {
           is_dropdown_opened = true;
-        }
-        // FUTURE: remove to allow search while selected for single select
-        if (!multiple && selectedOptions.length && event.key !== 'Tab') {
-          event.preventDefault();
-          event.stopPropagation();
         }
     }
   }
@@ -1104,7 +1098,7 @@
   >
     <slot name="icon"></slot>
     <!-- #region selection & input -->
-    <div class="sv-control--selection" class:is-single={multiple === false} class:has-items={selectedOptions.length > 0}
+    <div class="sv-control--selection" class:is-single={multiple === false} class:has-items={selectedOptions.length > 0} class:has-input={input_value.length}
       use:dndzone={{items: selectedOptions, flipDurationMs, type: inputId }}
       on:consider={onDndEvent}
       on:finalize={onDndEvent}
@@ -1136,7 +1130,7 @@
 
       <!-- #regions INPUT -->
       <span class="sv-input--sizer" data-value={input_value || placeholder_active}>
-        <input type="text" class="sv-input--text" size="1"
+        <input type="text" class="sv-input--text" size="1" class:keep-value={!resetOnBlur}
           id={inputId}
           placeholder={input_value ? '' : placeholder_active}
           inputmode={input_mode}
@@ -1557,6 +1551,12 @@
       visibility: hidden;
       white-space: pre-wrap;
     }
+  }
+  .has-items .keep-value:not(:focus) {
+    color: transparent;
+  }
+  .is-focused .is-single.has-items.has-input > .sv-item--container {
+    width: 0;
   }
   .sv-input--sizer:after,
   .sv-input--text {
