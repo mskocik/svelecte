@@ -240,7 +240,10 @@
       input_value,
       keepSelectionInList || !multiple
         ? (input_value.length // when filtering ALWAYS exclude selection
-          ? selectedKeys
+          ? (searchProps?.disabled
+            ? null
+            : selectedKeys
+          )
           : null
         )
         : selectedKeys,
