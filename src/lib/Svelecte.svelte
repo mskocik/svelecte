@@ -95,7 +95,7 @@
   export let dndzone = () => ({ noop: true, destroy: () => {}});
   export let validatorAction = null;
 
-  export let allowInputModeToggle = false;
+  // TODO: resolve
   // export let dropdownItem = Item;
   // export let controlItem = Item;
   // multiple
@@ -277,7 +277,6 @@
 
   /** ************************************ dropdown-specific */
 
-  // TODO: rewrite to watcher
   $: vl_listHeight = Math.min(vl_height, Array.isArray(vl_itemSize)
     ? vl_itemSize.reduce((res, num) => {
       res+= num;
@@ -291,11 +290,7 @@
 
   /** ************************************ input-specific */
 
-  /** @type {"none"|"text"} */
-  $: input_mode = allowInputModeToggle
-    // TODO: implement this
-    ? 'text' // in the meantime it has default behavior
-    : 'text'
+  $: input_mode = searchable ? 'text' : 'none';
   /** @type {string} */
   $: placeholder_active = selectedOptions.length ? '' : placeholder;
   /** @type {'enter'} */
@@ -442,7 +437,7 @@
 
   function watch_is_dropdown_opened(val) {
     if (!is_mounted) return;
-    if (!focus_by_mouse) focus_by_mouse = true;
+    if (val && !focus_by_mouse) focus_by_mouse = true;
 
     if (!render_dropdown && val) render_dropdown = true;
     tick()
@@ -612,8 +607,6 @@
     } else {  // apply for 'x' when clearable:true || ctrl+backspace || ctrl+delete
       clearSelection();
     }
-    // TODO: investigate
-    // tick().then(focusControl);
     emitChangeEvent();
   }
 
@@ -1028,19 +1021,6 @@
     if (disabled) return;
     if (!is_focused) {
       ref_input.focus();
-    } else {
-      if ((isAndroid || isIOS) && input_mode !== 'text') {
-        input_mode = 'text';
-        return;
-      }
-      if (target.tagName === 'INPUT' && input_value) {
-        return;
-      } else if (input_mode === 'text') {
-        input_mode = 'none';
-        is_dropdown_opened = true;
-        return;
-      }
-      is_dropdown_opened = !is_dropdown_opened;
     }
   }
 
