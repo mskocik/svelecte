@@ -91,7 +91,8 @@ export function ensureObjectArray(options, valueField, labelField) {
  */
 export function flatList(options, config) {
   const flatOpts = options.reduce((res, opt, i) => {
-    if (opt[config.optItems] && opt[config.optItems].length) {
+    if (opt[config.optItems]) {
+      if (opt[config.optItems].length === 0) return res;
       config.optionsWithGroups = true;
       res.push({ label: opt[config.optLabel], $isGroupHeader: true });
       console.log(opt, config.optItems);
