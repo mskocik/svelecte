@@ -1021,7 +1021,13 @@
     if (disabled) return;
     if (!is_focused) {
       ref_input.focus();
+      return;
     }
+    if (target.tagName === 'INPUT' && input_value) {
+      return;
+    }
+
+    is_dropdown_opened = !is_dropdown_opened;
   }
 
   /**
