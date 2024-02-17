@@ -16,6 +16,19 @@
  * @param {string} value
  * @returns {string}
  *
+ * @callback i18n_aria_selection
+ * @param {string[]} opts
+ * @returns {string}
+ *
+ * @callback i18n_aria_listActive
+ * @param {object} opt
+ * @param {string} labelField
+ * @param {number} resultCount
+ * @returns {string}
+ *
+ * @callback i18n_aria_inputFocus
+ * @returns {string}
+ *
  * @callback i18n_collapseSelectionFn
  * @param {number} selectionCount
  * @param {object[]} selection
@@ -32,42 +45,47 @@
  * @property {string} fetchEmpty
  * @property {i18n_collapsedSelection} collapsedSelection
  * @property {i18n_createRowLabel} createRowLabel
+ * @property {i18n_aria_selection} aria_selected
+ * @property {i18n_aria_listActive} aria_listActive
+ * @property {i18n_aria_inputFocus} aria_inputFocused
+ * @property {string} aria_label
+ * @property {string} aria_describedby
  *
  * @typedef {object} Settings
  * @property {boolean} disabled
  * @property {boolean} disabled
  * @property {boolean} disabled
  *
- * @property {string|null} valueField,
- * @property {string|null} labelField,
- * @property {string} groupLabelField: 'label',
- * @property {string} groupItemsField: 'options',
- * @property {string} disabledField: '$disabled',
- * @property {string} placeholder: 'Select',
- * @property {boolean} valueAsObject: false,
- * @property {boolean} searchable: true,
- * @property {boolean} clearable: false,
- * @property {boolean} highlightFirstItem: true,
- * @property {null|true|'select-navigate'} selectOnTab: null,        // recognize values: null, truthy, 'select-navigate'
- * @property {boolean} resetOnBlur: true,
- * @property {boolean} resetOnSelect: true,
- * @property {boolean} fetchResetOnBlur: true,
- * @property {boolean} multiple: false,
- * @property {boolean|string} closeAfterSelect: 'auto',
- * @property {number} max: 0,
- * @property {boolean} collapseSelection: false, // enable collapsible multiple selection
- * @property {boolean} alwaysCollapsed: false,
- * @property {boolean} creatable: false,
- * @property {string} creatablePrefix: '*',
- * @property {boolean} keepCreated: true,
- * @property {boolean} allowEditing: false,
- * @property {string} delimiter: ',',
- * @property {function} fetchCallback: null,
- * @property {number} minQuery: 1,
- * @property {boolean} lazyDropdown: true,
- * @property {boolean} virtualList: false,
- * @property {number|null} vlItemSize: null,
- * @property {number|null} vlHeight: null,
+ * @property {string|null} valueField
+ * @property {string|null} labelField
+ * @property {string} groupLabelField
+ * @property {string} groupItemsField
+ * @property {string} disabledField
+ * @property {string} placeholder
+ * @property {boolean} valueAsObject
+ * @property {boolean} searchable
+ * @property {boolean} clearable
+ * @property {boolean} highlightFirstItem
+ * @property {null|true|'select-navigate'} selectOnTab
+ * @property {boolean} resetOnBlur
+ * @property {boolean} resetOnSelect
+ * @property {boolean} fetchResetOnBlur
+ * @property {boolean} multiple
+ * @property {boolean|string} closeAfterSelect
+ * @property {number} max
+ * @property {boolean} collapseSelection
+ * @property {boolean} alwaysCollapsed
+ * @property {boolean} creatable
+ * @property {string} creatablePrefix
+ * @property {boolean} keepCreated
+ * @property {boolean} allowEditing
+ * @property {string} delimiter
+ * @property {function} fetchCallback
+ * @property {number} minQuery
+ * @property {boolean} lazyDropdown
+ * @property {boolean} virtualList
+ * @property {number|null} vlItemSize
+ * @property {number|null} vlHeight
  * @property {I18nObject} i18n
  * @property {i18n_collapseSelectionFn} collapseSelectionFn
  */
@@ -113,6 +131,11 @@ const /**@type {Settings} */ settings = {
   vlHeight: null,
   // i18n
   i18n: {
+    aria_label: '',
+    aria_describedby: '',
+    aria_selected: (opts) => opts.length ? `Option${opts.length > 1 ? 's' : ''} ${opts.join(', ')} selected.` : '',
+    aria_listActive: (opt, labelField, count) => `You are currently focused on option ${opt[labelField]}. ${count} result${count>1?'s': ''} available.`,
+    aria_inputFocused: () => 'Select is focused, type to refine list, press down to scroll through the list',
     empty: 'No options',
     nomatch: 'No matching options',
     max: num => `Maximum items ${num} selected`,

@@ -184,6 +184,7 @@
   let alreadyCreated = selectedOptions.filter(opt => opt.$created);
   // logic-related
   let is_focused = false;
+  let focus_by_mouse = false;
   let is_tainted = false; // true after first focus
   let is_dropdown_opened = false;
   let dropdown_index = highlightFirstItem ? 0 : null;
@@ -248,6 +249,7 @@
   });
 
   // watch functions
+  $: watch_i18n(i18n);
   $: watch_value_change(value)
   $: watch_parentValue(parentValue);
   $: watch_selectedOptions(selectedOptions);
@@ -258,7 +260,6 @@
   $: itemRenderer = typeof renderer === 'function'
     ? renderer
     : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
-  $: watch_i18n(i18n);
   $: collapseSelectionFn = collapseSelection ? settings.collapseSelectionFn.bind(i18n_actual) : null;
 
   /** ************************************ dropdown-specific */
@@ -286,6 +287,20 @@
   $: placeholder_active = selectedOptions.length ? '' : placeholder;
   /** @type {'enter'} */
   $: enter_hint = selectedOptions.length > 0 && multiple === false ? null : 'enter';
+
+  // aria related
+  $: aria_selection = i18n_actual.aria_selected(selectedOptions.map(o => o[currentLabelField]));
+  $: aria_context = options_filtered.length
+    ? (
+      is_dropdown_opened
+        ? i18n_actual.aria_listActive(options_filtered[dropdown_index], currentLabelField, options_filtered.length)
+        : i18n_actual.aria_inputFocused()
+    )
+    : (input_value.length
+      ? i18n_actual.nomatch
+      : i18n_actual.empty
+    );
+
 
   // #endregion
 
@@ -414,6 +429,7 @@
 
   function watch_is_dropdown_opened(val) {
     if (!is_mounted) return;
+    if (!focus_by_mouse) focus_by_mouse = true;
 
     if (!render_dropdown && val) render_dropdown = true;
     tick()
@@ -774,6 +790,7 @@
     /** @type {HTMLElement & import('./utils/actions.js').ExtButton} */
     const target = event.target.closest('[data-action]');
 
+    if (!focus_by_mouse) focus_by_mouse = true;
     // allow escaping click handler
     if (target?.dataset.action === 'default') return;
 
@@ -834,7 +851,7 @@
 
   function onFocus() {
     is_focused = true;
-    is_dropdown_opened = true;
+    is_dropdown_opened = focus_by_mouse;
     if (!is_tainted) is_tainted = true;
     !alwaysCollapsed && setTimeout(() => {
       doCollapse = false;
@@ -844,6 +861,7 @@
   function onBlur() {
     is_focused = false;
     is_dropdown_opened = false;
+    focus_by_mouse = false;
     if (resetOnBlur) input_value = '';
     !alwaysCollapsed && setTimeout(() => {
       doCollapse = true;
@@ -995,6 +1013,8 @@
   }
 
   /**
+   * FUTURE: take into account searchable to keep inputmode=none
+   *
    * @param {HTMLElement} target
    */
   function focusControl(target) {
@@ -1054,6 +1074,13 @@
   });
 </script>
 
+<span aria-live="polite" aria-atomic="false" aria-relevant="additions text" class="a11y-text">
+  {#if is_focused}
+      <span id="aria-selection">{aria_selection}</span>
+      <span id="aria-context">{aria_context}</span>
+  {/if}
+</span>
+
 <div class={`svelecte ${className}`}
   class:is-required={required}
   class:is-empty={selectedOptions.length === 0}
@@ -1063,6 +1090,7 @@
   class:is-focused={is_focused}
   class:is-open={is_dropdown_opened}
   class:is-disabled={disabled}
+  role="none"
 >
   {#if name && !anchor_element}
   <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1">
@@ -1116,6 +1144,8 @@
           readonly={!searchable}
           enterkeyhint={enter_hint}
           {disabled}
+          aria-label={i18n_actual.aria_label} aria-describedby={i18n_actual.aria_describedby}
+          autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" aria-autocomplete="list" tabindex="0"
           bind:this={ref_input}
           bind:value={input_value}
           on:focus={onFocus}
@@ -1266,6 +1296,17 @@
   /** make it global to be able to apply it also for anchored select */
   :global(.sv-hidden-element) { opacity: 0; position: absolute; z-index: -2; top: 0; height: var(--sv-min-height)}
 
+  .a11y-text {
+    z-index: 9999;
+    border: 0px;
+    clip: rect(1px, 1px, 1px, 1px);
+    height: 1px;
+    width: 1px;
+    position: absolute;
+    overflow: hidden;
+    padding: 0px;
+    white-space: nowrap;
+  }
   .svelecte {
     position: relative;
     flex: 1 1 auto;
