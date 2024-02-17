@@ -1074,13 +1074,6 @@
   });
 </script>
 
-<span aria-live="polite" aria-atomic="false" aria-relevant="additions text" class="a11y-text">
-  {#if is_focused}
-      <span id="aria-selection">{aria_selection}</span>
-      <span id="aria-context">{aria_context}</span>
-  {/if}
-</span>
-
 <div class={`svelecte ${className}`}
   class:is-required={required}
   class:is-empty={selectedOptions.length === 0}
@@ -1092,8 +1085,14 @@
   class:is-disabled={disabled}
   role="none"
 >
+  <span aria-live="polite" aria-atomic="false" aria-relevant="additions text" class="a11y-text">
+    {#if is_focused}
+        <span id="aria-selection">{aria_selection}</span>
+        <span id="aria-context">{aria_context}</span>
+    {/if}
+  </span>
   {#if name && !anchor_element}
-  <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1">
+  <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1" aria-hidden="true" >
     {#each selectedOptions as opt (opt[currentValueField])}
     <option value={opt[currentValueField]} selected>{opt[currentValueField]}</option>
     {/each}
