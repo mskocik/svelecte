@@ -241,7 +241,12 @@
     : filterList(
       options_flat,
       disableSifter ? null : input_value,
-      keepSelectionInList || !multiple ? null : selectedKeys,
+      keepSelectionInList || !multiple
+        ? (input_value.length // when filtering ALWAYS exclude selection
+          ? selectedKeys
+          : null
+        )
+        : selectedKeys,
       searchField,
       sortField,
       itemConfig
