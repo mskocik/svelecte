@@ -73,7 +73,7 @@
  * @property {boolean} multiple
  * @property {boolean|string} closeAfterSelect
  * @property {number} max
- * @property {boolean} collapseSelection
+ * @property {'blur'|'always'|null} collapseSelection
  * @property {boolean} alwaysCollapsed
  * @property {boolean} keepSelectionInList
  * @property {boolean} creatable
@@ -113,7 +113,7 @@ const /**@type {Settings} */ settings = {
   multiple: false,
   closeAfterSelect: 'auto',
   max: 0,
-  collapseSelection: false, // enable collapsible multiple selection
+  collapseSelection: null,
   alwaysCollapsed: false,
   keepSelectionInList: false,
   // create

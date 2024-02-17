@@ -5,10 +5,14 @@
   import { onCreate_helper, escapeHtml } from './utils/helpers.js';
 
   /**
+   * Due to adding `$selected` property to items and ability to render selected items in dropdown
+   * second parameter is not related to option selection status, buth whether it's rendered in selection (true)
+   * or in dropdown (false)
+   *
    * @callback RenderFunction
    * @param {object} item
-   * @param {boolean?} [isSelected]
-   * @param {string} [inputValue]
+   * @param {boolean?} [selectionSection]
+   * @param {string?} [inputValue]
    * @returns {string}
    */
 
@@ -103,7 +107,7 @@
   export let multiple = defaults.multiple;
   /** @type {number} */
   export let max = defaults.max;
-  /** @type {boolean} */
+  /** @type {'blur'|'always'|null} */
   export let collapseSelection = defaults.collapseSelection;
   /** @type {boolean} */
   export let alwaysCollapsed = defaults.alwaysCollapsed;
@@ -211,7 +215,7 @@
     : ((fetch || fetchFactory) && options.length === 0 ? value : null);
   let isIOS = null;
   let isAndroid = null;
-  let doCollapse = true;
+  let doCollapse = collapseSelection !== null;
   let isFetchingData = false;
   let fetch_performed = false;  // related to and reset in watch_listMessage
   let isCreating = false;
@@ -577,6 +581,7 @@
    * @returns bool
    */
   function selectOption(opt) {
+    opt.$selected = true;
     if (multiple) {
       selectedOptions.push(opt);
       selectedOptions = selectedOptions;
@@ -629,17 +634,21 @@
         input_value = opt[currentLabelField].replace(creatablePrefix, '');
       }
     }
+    opt.$selected = false;
     const id = opt[currentValueField];
     selectedKeys.delete(id);
     selectedOptions.splice(selectedOptions.findIndex(o => o[currentValueField] == id), 1);
     selectedOptions = selectedOptions;
-    // TODO: check if re-filter items wouldn't be better
     options_flat = options_flat;
   }
 
   function clearSelection() {
     selectedKeys.clear();
-    selectedOptions = [];
+
+    selectedOptions = selectedOptions.reduce((_, opt) => {
+      opt.$selected = false;
+      return [];
+    }, []);
     if (!keepCreated) alreadyCreated = [];  // ref #198
     maxReached = false;       // reset forcefully, related to #145
     if (input_value) input_value = '';
@@ -807,7 +816,13 @@
     // dropdown items has no data-action set
     switch(action) {
       case 'deselect':
-        onDeselect({}, target.bound_item)
+        let bound_item = target.bound_item;
+        // otherwise try to get item id from data-id prop
+        if (!bound_item) {
+          const dataId = target.dataset.id;
+          bound_item = selectedOptions.filter(o => o[currentValueField] == dataId).shift();
+        }
+        onDeselect({}, bound_item);
         break;
       case 'select':
         const opt_position = parseInt(dropdown_item.dataset.pos);
@@ -853,7 +868,7 @@
     is_focused = true;
     is_dropdown_opened = focus_by_mouse;
     if (!is_tainted) is_tainted = true;
-    !alwaysCollapsed && setTimeout(() => {
+    collapseSelection === 'blur' && setTimeout(() => {
       doCollapse = false;
     }, 100);
   }
@@ -863,7 +878,7 @@
     is_dropdown_opened = false;
     focus_by_mouse = false;
     if (resetOnBlur) input_value = '';
-    !alwaysCollapsed && setTimeout(() => {
+    collapseSelection === 'blur' && setTimeout(() => {
       doCollapse = true;
     }, 100);
   }
@@ -1104,7 +1119,7 @@
     >
       {#if selectedOptions.length }
       <!-- TODO: re-implement comments -->
-      {#if multiple && collapseSelection && doCollapse}
+      {#if multiple && doCollapse}
         <span>{@html collapseSelectionFn(selectedOptions.length, selectedOptions) }</span>
       {:else}
           {#each selectedOptions as opt (opt[currentValueField])}
@@ -1189,30 +1204,7 @@
     on:click={onClick}
   >
   {#if is_mounted && render_dropdown}
-    <!--
-      TODO: rework selection rendering in dropdown to slot
-    -->
-      {#if is_mounted && collapseSelection && alwaysCollapsed && selectedOptions.length}
-      <div class="sv-control--selection">
-        {#each selectedOptions as opt (opt[currentValueField])}
-          <div class="sv-item--container" animate:flip={{duration: flipDurationMs }}>
-            <div class="sv-item--wrap" class:is-multi={multiple}>
-              <div class="sv-item--content">{@html itemRenderer(opt, true)}</div>
-            </div>
-            {#if multiple}
-            <button class="sv-item--btn" tabindex="-1" type="button"
-              data-action="deselect"
-              use:bindItem={opt}
-            >
-              <svg height="16" width="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path>
-              </svg>
-            </button>
-            {/if}
-          </div>
-        {/each}
-      </div>
-      {/if}
+      <slot name="list-header" />
       <div bind:this={ref_container_scroll} class="sv-dropdown-scroll" class:has-items={options_filtered.length>0} class:is-virtual={virtualList} tabindex="-1">
         <div bind:this={ref_container} class="sv-dropdown-content" class:max-reached={maxReached} >
         {#if options_filtered.length}
@@ -1258,7 +1250,6 @@
             {/each}
           {/if}
         {:else if options_filtered.length === 0 && (!creatable || !input_value) || maxReached}
-          <!-- TODO: listMessage -->
           <div class="is-dropdown-row">
             <div class="sv-item--wrap"><div class="sv-item--content">{listMessage}</div></div>
           </div>
@@ -1336,11 +1327,11 @@
       flex-wrap: nowrap;
     }
   }
-  .sv-item--container {
+  :global(.sv-item--container) {
     display: flex;
     min-width: 0;
   }
-  .sv-item--wrap {
+  :global(.sv-item--wrap) {
     display: flex;
     min-width: 0;
     padding: 3px 3px 3px 6px;
@@ -1349,13 +1340,13 @@
     }
 
   }
-  .sv-item--content {
+  :global(.sv-item--content) {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
 
-  .sv-item--btn {
+  :global(.sv-item--btn) {
     position: relative;
     display: inline-flex;
     align-items: center;

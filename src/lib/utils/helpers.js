@@ -5,14 +5,14 @@ let itemHtml;
 /**
  *
  * @param {object} item
- * @param {boolean} isSelected
+ * @param {boolean} renderInSelection
  * @param {string} inputValue
- * @param {function} formatter
+ * @param {function} itemRenderer
  * @param {boolean} disableHighlight
  * @returns {string}
  */
-export function highlightSearch(item, isSelected, inputValue, formatter, disableHighlight) {
-  const itemHtmlText = formatter(item, isSelected, inputValue);
+export function highlightSearch(item, renderInSelection, inputValue, itemRenderer, disableHighlight) {
+  const itemHtmlText = itemRenderer(item, renderInSelection, inputValue);
 
   if (inputValue == '' || item.isSelected || disableHighlight) {
     return itemHtmlText;
