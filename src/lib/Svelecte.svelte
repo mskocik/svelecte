@@ -129,7 +129,7 @@
   /** @type {boolean} */
   export let fetchResetOnBlur = true;
   /** @type {number} */
-  export let fetchDebounceTime = 0;
+  export let fetchDebounceTime = 0; // TODO: set some default
   /** @type {number} */
   export let minQuery = defaults.minQuery;
   // performance
@@ -862,8 +862,6 @@
 
   // #region [fetch]
 
-  // TODO: add parentValue handling
-
   /** @type {AbortController} */
   let fetch_controller;
 
@@ -883,18 +881,23 @@
     if (!fetch && !fetchFactory) return;
 
     fetch_factory = fetch ? requestFactory : fetchFactory;
-    (fetch_initOnly || fetch_initValue) && fetch_runner(true); // skip debounce on init
+    (fetch_initOnly || fetch_initValue) && fetch_runner({init: true}); // skip debounce on init
   }
 
-  function trigger_fetch(_inputValue) {
+  function trigger_fetch(inputValue) {
+    if (fetch_initOnly) return;
     fetch_factory && debounce(fetch_runner, fetchDebounceTime)();
   }
-  function fetch_runner(skipInputValueCheck) {
-    if ((skipInputValueCheck !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
+  function fetch_runner(opts = {}) {
+    if ((opts.init !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
-      if (fetchResetOnBlur) prev_options = [];
+      if (fetchResetOnBlur) {
+        prev_options = [];
+      }
       return;
     }
+
+    if (input_value && input_value.length < minQuery) return;
 
     // update fetchInitValue when fetch is changed, but we are in 'init' mode, ref #113
     if (fetch_initOnly && prev_value) fetch_initValue = prev_value;
