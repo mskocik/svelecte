@@ -110,7 +110,6 @@
   /** @type {'blur'|'always'|null} */
   export let collapseSelection = defaults.collapseSelection;
   /** @type {boolean} */
-  export let alwaysCollapsed = defaults.alwaysCollapsed;
   /** @type {boolean} */
   export let keepSelectionInList = defaults.keepSelectionInList;
   // creating

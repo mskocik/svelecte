@@ -74,7 +74,6 @@
  * @property {boolean|string} closeAfterSelect
  * @property {number} max
  * @property {'blur'|'always'|null} collapseSelection
- * @property {boolean} alwaysCollapsed
  * @property {boolean} keepSelectionInList
  * @property {boolean} creatable
  * @property {string} creatablePrefix
@@ -114,7 +113,6 @@ const /**@type {Settings} */ settings = {
   closeAfterSelect: 'auto',
   max: 0,
   collapseSelection: null,
-  alwaysCollapsed: false,
   keepSelectionInList: false,
   // create
   creatable: false,
