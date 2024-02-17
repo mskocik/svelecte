@@ -1,12 +1,17 @@
 # Svelecte [![NPM version](http://img.shields.io/npm/v/svelecte.svg?style=flat)](https://www.npmjs.org/package/svelecte)
 
+> [!NOTE]
+> Version 4 is in development. Current `master` branch is instable and have (yet) undocumented breaking changes. Do not
+> use in production
+
+
 ![svelecte](https://mskocik.github.io/svelecte/static/svelecte.png)
 
 Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as [custom element](https://github.com/mskocik/svelecte-element) (CE). Usable in forms, behaves very similar to standard `<select>` element.
 
 See the latest changes on the [Releases](https://github.com/mskocik/svelecte/releases) page.
 
-## 📃 Features 
+## 📃 Features
 
 - searchable
 - multiselect with limit of max selected items
@@ -20,7 +25,7 @@ See the latest changes on the [Releases](https://github.com/mskocik/svelecte/rel
 - lazy dropdown rendering
 - usable as custom element
 - stylable
-- reordable multi selection  with addition of `svelte-dnd-action` ([example](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)) 
+- reordable multi selection  with addition of `svelte-dnd-action` ([example](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0))
 - usable with `svelte-use-form`  ([example](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1))
 
 
@@ -92,7 +97,7 @@ dropdownItem      | Component        | `Item`     | Item component in dropdown. 
 highlightFirstItem| bool             | `true`     | Automatically highlight the first item in the list when the dropdown opens
 selectOnTab       | bool|string|null | `null`     | Based on value provided, it allows selecting currently active item by <kbd>Tab</kbd> AND (if value is `'select-navigate'`) also focus next input. The constant `TAB_SELECT_NAVIGATE` is exported from svelecte
 resetOnBlur       | bool             | `true`     | Control if input value should be cleared on blur
-resetOnSelect     | bool             | `true`     | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple` 
+resetOnSelect     | bool             | `true`     | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple`
 clearable         | bool             | `false`    | Display ✖ icon to clear whole selection
 multiple          | bool             | `false`    | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
 closeAfterSelect  | bool             | `false`    | closes dropdown after selection. Setting this to `true` is useful for **multiple** select only. For single select dropdown is always closed no matter the value this property has
@@ -130,7 +135,7 @@ validatorAction   | array            | `null`     | Bind validator action for in
 
 ### Custom items
 
-If `renderer` property is not enough for you or you prefer Component syntax to HTML strings, you can use your own Components. Keep in mind that default `Item` component handles highlighting when searching, but the rest of features 
+If `renderer` property is not enough for you or you prefer Component syntax to HTML strings, you can use your own Components. Keep in mind that default `Item` component handles highlighting when searching, but the rest of features
 like styling should be inherited if you use proper css classes (the same as `Item` component)..
 
 To make it easier to use your own Components, there are available actions, highlighting function and close button icon for you to use.
@@ -148,7 +153,7 @@ change       | selection                   | selected objects. If `anchor` prope
 createoption | option                      | newly created option object
 blur         | -                           | blur event
 invalidValue | invalidValue                | triggered when passed `value` is out of provided `options` items. Internal (and bound, if any) `value` is set to `null` or `[]` if multiple
-enterKey     | underlying `keyDown` event  | triggered when natively it would cause form submit (dropdown is closed). This gives you ability to prevent it by calling `event.detail.preventDefault()` 
+enterKey     | underlying `keyDown` event  | triggered when natively it would cause form submit (dropdown is closed). This gives you ability to prevent it by calling `event.detail.preventDefault()`
 
 ### Public API:
 
@@ -163,16 +168,16 @@ addFormatter  | function | -         | **context function**: with signature `(na
 
 ### I18n
 
-This is default value of `i18n` property: 
+This is default value of `i18n` property:
 ```js
 // config.i18n defaults:
 {
   i18n: {
     empty: 'No options',
-    nomatch: 'No matching options',    
+    nomatch: 'No matching options',
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to start searching',
-    fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength 
+    fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength
       ? `at least ${minQuery - inputLength} characters `
       : '' }to start searching`,
     fetchEmpty: 'No data related to your search',
