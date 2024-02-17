@@ -87,7 +87,7 @@
   export let disableHighlight = false;
   /** @type {boolean} */
   export let highlightFirstItem = defaults.highlightFirstItem;
-  /** @type {null|true|'select-navigate'} */
+  /** @type {boolean|'select-navigate'} */
   export let selectOnTab = defaults.selectOnTab;
   /** @type {boolean} */
   export let resetOnBlur = defaults.resetOnBlur;

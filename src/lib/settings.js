@@ -66,7 +66,7 @@
  * @property {boolean} searchable
  * @property {boolean} clearable
  * @property {boolean} highlightFirstItem
- * @property {null|true|'select-navigate'} selectOnTab
+ * @property {boolean|'select-navigate'} selectOnTab
  * @property {boolean} resetOnBlur
  * @property {boolean} resetOnSelect
  * @property {boolean} fetchResetOnBlur
@@ -104,7 +104,7 @@ const /**@type {Settings} */ settings = {
   searchable: true,
   clearable: false,
   highlightFirstItem: true,
-  selectOnTab: null,        // recognize values: null, truthy, 'select-navigate'
+  selectOnTab: false,
   resetOnBlur: true,
   resetOnSelect: true,
   fetchResetOnBlur: true,
