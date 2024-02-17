@@ -184,6 +184,7 @@
   let alreadyCreated = selectedOptions.filter(opt => opt.$created);
   // logic-related
   let is_focused = false;
+  let is_tainted = false; // true after first focus
   let is_dropdown_opened = false;
   let dropdown_index = highlightFirstItem ? 0 : null;
   // dropdown-related
@@ -831,16 +832,15 @@
     }
   }
 
-  // TODO: missing functionality related to AlwayCollapsed
   function onFocus() {
     is_focused = true;
     is_dropdown_opened = true;
+    if (!is_tainted) is_tainted = true;
     !alwaysCollapsed && setTimeout(() => {
       doCollapse = false;
     }, 100);
   }
 
-  // TODO: missing functionality related to AlwayCollapsed
   function onBlur() {
     is_focused = false;
     is_dropdown_opened = false;
@@ -1054,7 +1054,16 @@
   });
 </script>
 
-<div class={`svelecte ${className}`}>
+<div class={`svelecte ${className}`}
+  class:is-required={required}
+  class:is-empty={selectedOptions.length === 0}
+  class:is-invalid={required && selectedOptions.length === 0}
+  class:is-tainted={is_tainted}
+  class:is-valid={required ? selectedOptions.length > 0 : true}
+  class:is-focused={is_focused}
+  class:is-open={is_dropdown_opened}
+  class:is-disabled={disabled}
+>
   {#if name && !anchor_element}
   <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1">
     {#each selectedOptions as opt (opt[currentValueField])}
@@ -1065,11 +1074,6 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div class="sv-control" on:mousedown={onMouseDown} on:click={onClick}
-    class:is-focused={is_focused}
-    class:is-open={is_dropdown_opened}
-    class:is-required={required}
-    class:is-valid={required ? selectedOptions.length > 0 : true}
-    class:is-disabled={disabled}
   >
     <slot name="icon"></slot>
     <!-- #region selection & input -->
@@ -1272,6 +1276,9 @@
     --sv-item-padding: var(--sv-general-padding);
     --sv-dropdown-offset: 1px;
 
+    &.is-disabled > .sv-control {
+      background-color: #eee;
+    }
   }
 
   .sv-control {
@@ -1281,9 +1288,6 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 
-    &.is-disabled {
-      background-color: #eee;
-    }
   }
 
   .sv-control--selection {
