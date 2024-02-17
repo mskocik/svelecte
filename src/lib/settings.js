@@ -2,26 +2,26 @@
  * @callback i18n_max
  * @param {number} max
  * @returns {string}
- * 
+ *
  * @callback i18n_fetchQuery
  * @param {number} max
  * @param {number} inputLength
  * @returns {string}
- * 
+ *
  * @callback i18n_collapsedSelection
  * @param {number} count
  * @returns {string}
- * 
+ *
  * @callback i18n_createRowLabel
  * @param {string} value
  * @returns {string}
- * 
+ *
  * @callback i18n_collapseSelectionFn
  * @param {number} selectionCount
  * @param {object[]} selection
  * @this {I18nObject}
  * @returns {string}
- * 
+ *
  * @typedef {object} I18nObject
  * @property {string} empty
  * @property {string} nomatch
@@ -32,12 +32,12 @@
  * @property {string} fetchEmpty
  * @property {i18n_collapsedSelection} collapsedSelection
  * @property {i18n_createRowLabel} createRowLabel
- * 
+ *
  * @typedef {object} Settings
  * @property {boolean} disabled
  * @property {boolean} disabled
  * @property {boolean} disabled
- * 
+ *
  * @property {string|null} valueField,
  * @property {string|null} labelField,
  * @property {string} groupLabelField: 'label',
@@ -114,10 +114,10 @@ const /**@type {Settings} */ settings = {
   // i18n
   i18n: {
     empty: 'No options',
-    nomatch: 'No matching options',    
+    nomatch: 'No matching options',
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to start searching',
-    fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength 
+    fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength
       ? `at least ${minQuery - inputLength} characters `
       : '' }to start searching`,
     fetchInit: 'Fetching data, please wait...',
@@ -127,10 +127,10 @@ const /**@type {Settings} */ settings = {
   },
   /**
    * Bound to 'i18n'
-   * 
+   *
    * @this {I18nObject}
-   * @param {number} selectionCount 
-   * @param {object[]} selection 
+   * @param {number} selectionCount
+   * @param {object[]} selection
    * @returns {string}
    */
   collapseSelectionFn: function(selectionCount, selection) {

@@ -1,6 +1,6 @@
 /**
- * @param {HTMLDivElement} element 
- * @param {string} prop 
+ * @param {HTMLDivElement} element
+ * @param {string} prop
  * @returns {number}
  */
 function pixelGetter(element, prop) {
@@ -12,7 +12,7 @@ function pixelGetter(element, prop) {
       ? document.documentElement
       : element.parentElement.parentElement;
     const multipler = parseFloat(window.getComputedStyle(el).fontSize.match(/\d+/).shift());
-    floatValue = multipler * floatValue; 
+    floatValue = multipler * floatValue;
   }
   return floatValue;
 }
@@ -24,8 +24,8 @@ function pixelGetter(element, prop) {
  * @property {boolean} bottom
  * @property {boolean} right
  * @property {boolean} any
- * 
- * @param {*} elem 
+ *
+ * @param {*} elem
  * @returns {outValue}
  */
 function isOutOfViewport(elem) {
@@ -39,7 +39,7 @@ function isOutOfViewport(elem) {
   out.top = parentBounding.top < 0;
   out.left = parentBounding.left < 0;
   out.bottom = parentBounding.bottom + bounding.height > (window.innerHeight || document.documentElement.clientHeight)
-    && parentBounding.top > bounding.height && ((window.innerHeight || document.documentElement.clientHeight) > bounding.height + 50); 
+    && parentBounding.top > bounding.height && ((window.innerHeight || document.documentElement.clientHeight) > bounding.height + 50);
   out.right = parentBounding.right > (window.innerWidth || document.documentElement.clientWidth);
   out.any = out.top || out.left || out.bottom || out.right;
 
@@ -47,9 +47,9 @@ function isOutOfViewport(elem) {
 };
 
 /**
- * @param {boolean} isOpened 
- * @param {HTMLDivElement} scrollContainer 
- * @param {boolean} renderDropdown 
+ * @param {boolean} isOpened
+ * @param {HTMLDivElement} scrollContainer
+ * @param {boolean} renderDropdown
  * @returns {void}
  */
 export function positionDropdown(isOpened, scrollContainer, renderDropdown) {
@@ -67,10 +67,10 @@ export function positionDropdown(isOpened, scrollContainer, renderDropdown) {
  * @typedef {object} ItemDimension
  * @property {number} size
  * @property {number} height
- * 
- * @param {import('svelte').SvelteComponent} refVirtualList 
- * @param {HTMLDivElement} scrollContainer 
- * @param {array} options 
+ *
+ * @param {import('svelte').SvelteComponent} refVirtualList
+ * @param {HTMLDivElement} scrollContainer
+ * @param {array} options
  * @returns {ItemDimension}
  */
 export function virtualListDimensionsResolver(refVirtualList, scrollContainer, options) {
@@ -81,7 +81,7 @@ export function virtualListDimensionsResolver(refVirtualList, scrollContainer, o
   // get item size (hacky style)
   scrollContainer.parentElement.style.cssText = 'opacity: 0; display: block';
   const firstItem = refVirtualList.$$.ctx[1].firstElementChild.firstElementChild;
-  
+
   if (firstItem) {
     firstItem.style = '';
     const firstSize = firstItem.getBoundingClientRect().height;
@@ -100,7 +100,7 @@ export function virtualListDimensionsResolver(refVirtualList, scrollContainer, o
     }
   }
   scrollContainer.parentElement.style.cssText = '';
-  
+
   return {
     size: vl_itemSize,
     height: vl_height
@@ -113,14 +113,14 @@ export function virtualListDimensionsResolver(refVirtualList, scrollContainer, o
  * @property {HTMLDivElement} scrollContainer
  * @property {boolean} virtualList
  * @property {boolean} center
- * 
+ *
  * @param {ScrollParams} params
  * @param {number} dropdownIndex
- * @returns 
+ * @returns
  */
 export function scrollIntoView({ container, scrollContainer, virtualList, center }, dropdownIndex) {
   if (virtualList) return;
-  
+
   /** @type {HTMLDivElement} */
   const focusedEl = container.querySelector(`[data-pos="${dropdownIndex}"]`);
   if (!focusedEl) return;

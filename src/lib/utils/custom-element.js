@@ -288,7 +288,7 @@ class SvelecteElement extends HTMLElement {
       }
       this.svelecte.$set({ [formatProp(name)]: formatValue(name, newValue) });
     }
-  } 
+  }
 
   connectedCallback() {
     setTimeout(() => { this.render() });
@@ -398,7 +398,7 @@ class SvelecteElement extends HTMLElement {
 
 /**
  * Define custom element
- * 
+ *
  * @param {string} name custom-element name
  * @param {object} component Svelecte component
  * @param {object} globalConfig globally available config

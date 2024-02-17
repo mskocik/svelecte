@@ -11,10 +11,10 @@ import Sifter from './sifter.js';
  */
 
 /**
- * @param {string} valueField 
- * @param {string} labelField 
- * @param {string} optLabel 
- * @param {string} optItems 
+ * @param {string} valueField
+ * @param {string} labelField
+ * @param {string} optLabel
+ * @param {string} optItems
  * @returns {ComponentConfig}
  */
 export function createConfig(valueField, labelField, optLabel, optItems) {
@@ -31,12 +31,12 @@ export function createConfig(valueField, labelField, optLabel, optItems) {
 
 
 /**
- * 
- * @param {array} options 
- * @param {array|string|number} initialValue 
- * @param {boolean} valueAsObject 
- * @param {string} groupItemsField 
- * @param {string} valueField 
+ *
+ * @param {array} options
+ * @param {array|string|number} initialValue
+ * @param {boolean} valueAsObject
+ * @param {string} groupItemsField
+ * @param {string} valueField
  * @returns {array}
  */
 export function initSelection(options, initialValue, valueAsObject, groupItemsField, valueField) {
@@ -68,10 +68,10 @@ export function initSelection(options, initialValue, valueAsObject, groupItemsFi
 }
 
 /**
- * 
- * @param {object[]|string[]} options 
- * @param {string} valueField 
- * @param {string} labelField 
+ *
+ * @param {object[]|string[]} options
+ * @param {string} valueField
+ * @param {string} labelField
  * @returns {object[]}
  */
 export function ensureObjectArray(options, valueField, labelField) {
@@ -84,10 +84,10 @@ export function ensureObjectArray(options, valueField, labelField) {
 }
 
 /**
- * 
- * @param {object[]} options 
- * @param {ComponentConfig} config 
- * @returns 
+ *
+ * @param {object[]} options
+ * @param {ComponentConfig} config
+ * @returns
  */
 export function flatList(options, config) {
   const flatOpts = options.reduce((res, opt, i) => {
@@ -109,8 +109,8 @@ export function flatList(options, config) {
 }
 
 /**
- * @param {object[]} options 
- * @param {ComponentConfig} config 
+ * @param {object[]} options
+ * @param {ComponentConfig} config
  */
 function updateOptionProps(options, config) {
   options.some(opt => {
@@ -121,8 +121,8 @@ function updateOptionProps(options, config) {
 }
 
 /**
- * 
- * @param {object} object 
+ *
+ * @param {object} object
  * @returns {string[]}
  */
 export function getFilterProps(object) {
@@ -131,14 +131,14 @@ export function getFilterProps(object) {
 }
 
 /**
- * 
- * @param {object[]} options 
- * @param {?string} inputValue 
- * @param {?Set} excludeSelected 
- * @param {string} sifterSearchField 
- * @param {string} sifterSortField 
- * @param {ComponentConfig} config 
- * @returns 
+ *
+ * @param {object[]} options
+ * @param {?string} inputValue
+ * @param {?Set} excludeSelected
+ * @param {string} sifterSearchField
+ * @param {string} sifterSortField
+ * @param {ComponentConfig} config
+ * @returns
  */
 export function filterList(options, inputValue, excludeSelected, sifterSearchField, sifterSortField, config) {
   if (excludeSelected) {
@@ -147,7 +147,7 @@ export function filterList(options, inputValue, excludeSelected, sifterSearchFie
       .filter((opt, idx, self) => {
         if (opt.$isGroupHeader &&
           (
-            (self[idx + 1] && self[idx + 1].$isGroupHeader) 
+            (self[idx + 1] && self[idx + 1].$isGroupHeader)
           || self.length <= 1
           || self.length - 1 === idx
           )
@@ -162,7 +162,7 @@ export function filterList(options, inputValue, excludeSelected, sifterSearchFie
    * Sifter is used for searching to provide rich filter functionality.
    * But it degradate nicely, when optgroups are present
   */
-  if (config.optionsWithGroups) {  // disable sorting 
+  if (config.optionsWithGroups) {  // disable sorting
     sifter.getSortFunction = () => null;
   }
   let conjunction = 'and';
@@ -202,7 +202,7 @@ function createSifterSortField(prop) {
 
 /**
  * Automatic setter for 'valueField' or 'labelField' when they are not set
- * 
+ *
  * @param {string} type
  * @param {array} options
  * @param {string?} groupItemsField
@@ -219,7 +219,7 @@ export function fieldInit(type, options, groupItemsField) {
       : ['name', 'title', 'label'];
     val = Object.keys(firstItem).filter(prop => guessList.includes(prop))
       .concat([Object.keys(firstItem)[autoAddItem]])  // auto add field (used as fallback) if empty list is returned
-      .shift();  
+      .shift();
   }
   return val;
 }
