@@ -75,6 +75,7 @@
  * @property {number} max
  * @property {boolean} collapseSelection
  * @property {boolean} alwaysCollapsed
+ * @property {boolean} keepSelectionInList
  * @property {boolean} creatable
  * @property {string} creatablePrefix
  * @property {boolean} keepCreated
@@ -114,6 +115,7 @@ const /**@type {Settings} */ settings = {
   max: 0,
   collapseSelection: false, // enable collapsible multiple selection
   alwaysCollapsed: false,
+  keepSelectionInList: false,
   // create
   creatable: false,
   creatablePrefix: '*',

@@ -107,6 +107,8 @@
   export let collapseSelection = defaults.collapseSelection;
   /** @type {boolean} */
   export let alwaysCollapsed = defaults.alwaysCollapsed;
+  /** @type {boolean} */
+  export let keepSelectionInList = defaults.keepSelectionInList;
   // creating
   /** @type {boolean} */
   export let creatable = defaults.creatable;
@@ -234,10 +236,16 @@
   $: maxReached = max && selectedOptions.length == max;     // == is intentional, if string is provided
   $: watch_options(options);
   $: options_flat = flatList(prev_options, itemConfig);
-  // TODO: add #205
   $: options_filtered = maxReached
     ? []
-    : filterList(options_flat, disableSifter ? null : input_value, multiple ? selectedKeys : null, searchField, sortField, itemConfig);
+    : filterList(
+      options_flat,
+      disableSifter ? null : input_value,
+      keepSelectionInList || !multiple ? null : selectedKeys,
+      searchField,
+      sortField,
+      itemConfig
+    );
   // only initial setter
   $: highlightFirstItem && setDropdownIndex(0, { asc: true });
   // TODO: check behavior and convert to watch_fn
