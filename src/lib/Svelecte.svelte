@@ -209,6 +209,7 @@
   let isAndroid = null;
   let doCollapse = true;
   let isFetchingData = false;
+  let fetch_performed = false;  // related to and reset in watch_listMessage
   let isCreating = false;
   let flipDurationMs = 100;
   let is_dragging = false;
@@ -271,26 +272,6 @@
   );
   $: virtuallist_automode && watch_options_virtualList(options_filtered);
 
-  // TODO: rewrite to watcher
-  $: listMessage = maxReached
-    ? i18n_actual.max(max)
-    : (input_value.length && options_filtered.length === 0 && minQuery <= 1
-      ? i18n_actual.nomatch
-      : (fetch
-        ? (minQuery <= 1
-          ? (fetch_initOnly
-            ? (isFetchingData
-              ? i18n_actual.fetchInit
-              : i18n_actual.empty
-              )
-            : i18n_actual.fetchBefore
-            )
-          : i18n_actual.fetchQuery(minQuery, input_value.length)
-        )
-        : i18n_actual.empty
-      )
-    );
-
   $: watch_is_dropdown_opened(is_dropdown_opened);
 
   /** ************************************ input-specific */
@@ -318,7 +299,6 @@
   function watch_options(opts) {
     if (!is_mounted) return;
 
-    console.log(">", prev_options, opts);
     if (prev_options !== opts) {
       // make sure, it's an array
       opts = ensureObjectArray(opts, currentValueField, currentLabelField);
@@ -451,6 +431,44 @@
 
   function watch_i18n(obj) {
     i18n_actual = Object.assign({}, config.i18n, obj || {});
+  }
+
+  function watch_listMessage(maxReached, options_filtered, input_value, minQuery, fetch_factory, isFetchingData) {
+    let val = i18n_actual.empty;
+    if (maxReached) {
+      val = i18n_actual.max(max);
+    } else {
+      // fetch mode
+      if (fetch_factory) {
+        if (fetch_performed && options_filtered.length === 0) {
+          listMessage = fetch_initOnly
+            ? i18n_actual.empty
+            : i18n_actual.fetchEmpty;
+          fetch_performed = false;
+          return;
+        }
+        if (isFetchingData) {
+          val = i18n_actual.fetchInit;
+        } else {
+          if (fetch_initOnly) {
+            listMessage = val;
+            return;
+          }
+          if (minQuery <= 1) {
+            val = i18n_actual.fetchBefore;
+          } else {
+            val = i18n_actual.fetchQuery(minQuery, input_value.length);
+          }
+        }
+      // normal mode
+      } else {
+        if (input_value.length && options_filtered.length === 0) {
+          val = i18n_actual.nomatch;
+        }
+      }
+    }
+
+    listMessage = val;
   }
 
   // #endregion
@@ -871,6 +889,9 @@
   $: trigger_fetch(input_value);
   $: is_mounted && watch_fetch_init(fetch, fetchFactory, parentValue);
 
+  let listMessage;
+  $: watch_listMessage(maxReached, options_filtered, input_value, minQuery, fetch_factory, isFetchingData);
+
   /**
    *
    * @param {string?} fetch
@@ -892,6 +913,7 @@
     if ((opts.init !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
       if (fetchResetOnBlur) {
+        fetch_performed = false;
         prev_options = [];
       }
       return;
@@ -933,6 +955,7 @@
       })
       // teardown
       .finally(() => {
+        fetch_performed = true;
         isFetchingData = false;
         if (is_focused) is_dropdown_opened = true;
         listMessage = i18n_actual.fetchEmpty;
