@@ -14,5 +14,4 @@ vite.config.ts.timestamp-*
 /_package.json
 /.npmrc
 *.todo
-/tests
 playwright*

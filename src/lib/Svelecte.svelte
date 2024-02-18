@@ -110,7 +110,7 @@
   /** @type {'blur'|'always'|null} */
   export let collapseSelection = defaults.collapseSelection;
   /** @type {boolean} */
-  /** @type {boolean} */
+  /** @type {boolean|'auto'} */
   export let keepSelectionInList = defaults.keepSelectionInList;
   // creating
   /** @type {boolean} */
@@ -233,20 +233,13 @@
   $: maxReached = max && selectedOptions.length == max;     // == is intentional, if string is provided
   $: watch_options(options);
   $: options_flat = flatList(prev_options, itemConfig);
+  $: watch_value_change(value);
   $: options_filtered = maxReached
     ? []
     : filterList(
       options_flat,
       input_value,
-      keepSelectionInList || !multiple
-        ? (input_value.length // when filtering ALWAYS exclude selection
-          ? (searchProps?.disabled
-            ? null
-            : selectedKeys
-          )
-          : null
-        )
-        : selectedKeys,
+      resolveExcludedValue(input_value),
       itemConfig,
       searchProps || {}
     );
@@ -262,7 +255,6 @@
 
   // watch functions
   $: watch_i18n(i18n);
-  $: watch_value_change(value)
   $: watch_parentValue(parentValue);
   $: watch_selectedOptions(selectedOptions);
 
@@ -529,7 +521,7 @@
     opt = opt || event.detail;
     if (disabled || opt[disabledField] || opt.$isGroupHeader) return;
     if (!opt || (multiple && maxReached)) return false;
-    if (selectedKeys.has(opt[currentValueField])) return;
+    if (selectedKeys.has(opt[currentValueField])) return onDeselect(null, opt);
 
     // creatable branch
     if (typeof opt === 'string') {
@@ -638,6 +630,7 @@
   }
 
   function clearSelection() {
+    if (selectedKeys.size === 0) return;
     selectedKeys.clear();
 
     selectedOptions = selectedOptions.reduce((_, opt) => {
@@ -761,6 +754,7 @@
         }
         break;
       case 'Backspace':
+        if (collapseSelection === 'always') return;
         backspacePressed = true;
       case 'Delete':
         if (input_value === '' && selectedOptions.length) {
@@ -995,6 +989,23 @@
   // #region [helper functions]
 
   /**
+   * Resolve whether already selected items should be shown or not in the dropdown.
+   *
+   * @param {string} inputValue
+   */
+  function resolveExcludedValue(inputValue) {
+    if (!keepSelectionInList) return selectedKeys;
+    if (keepSelectionInList === true) return inputValue ? selectedKeys : null;
+    // 'auto' otherwise
+    return inputValue
+      ? selectedKeys
+      : (multiple
+        ? selectedKeys
+        : null
+      );
+  }
+
+  /**
    * @typedef {object} DirectionSettings
    * @property {boolean} [asc]
    * @property {boolean} [desc]
@@ -1097,7 +1108,7 @@
   {#if name && !anchor_element}
   <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1" aria-hidden="true" >
     {#each selectedOptions as opt (opt[currentValueField])}
-    <option value={opt[currentValueField]} selected>{opt[currentValueField]}</option>
+    <option value={opt[currentValueField]} selected></option>
     {/each}
   </select>
   {/if}

@@ -8,9 +8,6 @@
 		"allowJs": true,
 		"checkJs": true,
 		"sourceMap": true,
-		"moduleResolution": "bundler",
-		"types": [
-			"vitest/globals", "@testing-library/jest-dom"
-		]
+		"moduleResolution": "bundler"
 	}
 }
