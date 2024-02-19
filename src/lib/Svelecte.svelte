@@ -159,6 +159,17 @@
   export let valueAsObject = defaults.valueAsObject;
   export let parentValue = undefined;
 
+  /**
+   * Add ability to re-initialize fetch even when component is in query mode
+   * @param {string|number|array} value
+   */
+  export function refetchWith(value) {
+    fetch_runner({
+      init: true,
+      initValue: value
+    });
+  }
+
   const dispatch = createEventDispatcher();
   const DOM_ID = `sv-${name}-select`;
 

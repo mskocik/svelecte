@@ -92,5 +92,23 @@ describe('fetch:query', () => {
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
   });
+
+  it('fetch default value object and change value property', async () => {
+    const { component } = render(Svelecte, {
+      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetchDebounceTime: 0,
+      value: 'blue'
+    });
+
+    await sleep(300);
+
+    expect(screen.queryByText('Blue')).toBeInTheDocument();
+
+    component.refetchWith('red');
+
+    await sleep(500);
+
+    expect(screen.queryByText('Red')).toBeInTheDocument();
+  });
 });
 
