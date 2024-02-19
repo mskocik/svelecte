@@ -274,7 +274,6 @@
   $: itemRenderer = typeof renderer === 'function'
     ? renderer
     : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
-  $: collapseSelectionFn = collapseSelection ? settings.collapseSelectionFn.bind(i18n_actual) : null;
 
   /** ************************************ dropdown-specific */
 
@@ -1156,8 +1155,9 @@
       {#if selectedOptions.length }
       <!-- TODO: re-implement comments -->
       {#if multiple && doCollapse}
-        <span>{@html collapseSelectionFn(selectedOptions.length, selectedOptions) }</span>
+        <slot name="collapsedSelection" {selectedOptions} i18n={i18n_actual}>{i18n_actual.collapsedSelection(selectedOptions.length)}</slot>
       {:else}
+        <slot name="selection" {selectedOptions} {bindItem}>
           {#each selectedOptions as opt (opt[currentValueField])}
           <div class="sv-item--container" animate:flip={{duration: flipDurationMs }}>
             <div class="sv-item--wrap" class:is-multi={multiple}>
@@ -1175,6 +1175,7 @@
             {/if}
           </div>
           {/each}
+        </slot>
         {/if}
       {/if}
 
@@ -1262,9 +1263,11 @@
                     class="sv-item--wrap in-dropdown"
                     class:sv-dd-item-active={dropdown_index === index}
                   >
-                    <div class="sv-item--content">
-                      {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
-                    </div>
+                    <slot name="option" item={opt}>
+                      <div class="sv-item--content">
+                        {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
+                      </div>
+                    </slot>
                   </div>
                 {/if}
               </div>
@@ -1278,9 +1281,11 @@
                   class="sv-item--wrap in-dropdown"
                   class:sv-dd-item-active={dropdown_index === i}
                 >
-                  <div class="sv-item--content">
-                    {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
-                  </div>
+                  <slot name="option" item={opt}>
+                    <div class="sv-item--content">
+                      {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
+                    </div>
+                  </slot>
                 </div>
               {/if}
             {/each}

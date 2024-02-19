@@ -29,12 +29,6 @@
  * @callback i18n_aria_inputFocus
  * @returns {string}
  *
- * @callback i18n_collapseSelectionFn
- * @param {number} selectionCount
- * @param {object[]} selection
- * @this {I18nObject}
- * @returns {string}
- *
  * @typedef {object} I18nObject
  * @property {string} empty
  * @property {string} nomatch
@@ -87,7 +81,6 @@
  * @property {number|null} vlItemSize
  * @property {number|null} vlHeight
  * @property {I18nObject} i18n
- * @property {i18n_collapseSelectionFn} collapseSelectionFn
  */
 const /**@type {Settings} */ settings = {
   // html
@@ -147,18 +140,7 @@ const /**@type {Settings} */ settings = {
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`
-  },
-  /**
-   * Bound to 'i18n'
-   *
-   * @this {I18nObject}
-   * @param {number} selectionCount
-   * @param {object[]} selection
-   * @returns {string}
-   */
-  collapseSelectionFn: function(selectionCount, selection) {
-    return this.collapsedSelection(selectionCount);
-  },
+  }
 }
 
 export default settings;
