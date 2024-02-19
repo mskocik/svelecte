@@ -353,7 +353,7 @@
    * @param {ValueWatcherOptions} [opts]
    */
   function watch_value_change(passedVal, opts) {
-    if (prev_value === passedVal && !opts.skipEqualityCheck) return;
+    if (prev_value === passedVal && !opts?.skipEqualityCheck) return;
     clearSelection();
     if (passedVal) {
       // wait for fetch to be resolved
