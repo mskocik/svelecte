@@ -17,6 +17,6 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['tests/**/*.{test,spec}.{js,ts}'],
     // extend jsdom matchers
-    setupFiles: ['./tests/setup.js']
+    setupFiles: ['./tests/_setup.js']
   }
 });

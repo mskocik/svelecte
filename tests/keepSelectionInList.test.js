@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/svelte';
 import Svelecte from '$lib/Svelecte.svelte';
-import { sleep } from '../helpers';
+import { sleep } from './_helpers';
 import userEvent from '@testing-library/user-event';
 
 describe('keepSelectionInList:auto', () => {
