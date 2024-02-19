@@ -281,6 +281,7 @@
 
   /** ************************************ input-specific */
 
+  /** @type {'text'|'none'}*/
   $: input_mode = searchable ? 'text' : 'none';
   /** @type {string} */
   $: placeholder_active = selectedOptions.length ? '' : placeholder;
