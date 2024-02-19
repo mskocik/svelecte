@@ -229,7 +229,6 @@
   const itemConfig = createConfig(currentValueField, currentLabelField, groupLabelField, groupItemsField);
 
   // #region [reactivity]
-
   $: maxReached = max && selectedOptions.length == max;     // == is intentional, if string is provided
   $: watch_options(options);
   $: options_flat = flatList(prev_options, itemConfig);
@@ -335,11 +334,20 @@
 
   /**
    * TODO: extend to allow value out of range
-  */
-  function watch_value_change(passedVal) {
-    if (prev_value === passedVal) return;
+   *
+   * @typedef {object} ValueWatcherOptions
+   * @property {boolean} [skipEqualityCheck]
+   *
+   * @param {any} passedVal
+   * @param {ValueWatcherOptions} [opts]
+   */
+  function watch_value_change(passedVal, opts) {
+    if (prev_value === passedVal && !opts.skipEqualityCheck) return;
     clearSelection();
     if (passedVal) {
+      // wait for fetch to be resolved
+      if (fetch_initValue) return;
+
       let _selection = Array.isArray(passedVal) ? passedVal : [passedVal];
       _selection = _selection.reduce((res, val) => {
         if (creatable && valueAsObject && val.$created) {
@@ -932,6 +940,13 @@
     if (fetch_initOnly) return;
     fetch_factory && debounce(fetch_runner, fetchDebounceTime)();
   }
+  /**
+   * @typedef {object} FetchOptions
+   * @property {boolean} [init=false]
+   * @property {any} [initValue]
+   *
+   * @param {FetchOptions} opts
+   */
   function fetch_runner(opts = {}) {
     if ((opts.init !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
@@ -950,11 +965,13 @@
     // reset found items
     if (fetchResetOnBlur) prev_options = [];
 
+    const initial = fetch_initValue || opts.initValue;
+
     isFetchingData = true;
     fetch_controller = new AbortController();
-    const request = fetch_factory(input_value, { parentValue, url: fetch, initial: fetch_initValue, controller: fetch_controller } );
+    const request = fetch_factory(input_value, { parentValue, url: fetch, initial, controller: fetch_controller } );
     window.fetch(request)
-      .then((/** @type {Response} */ resp) => resp.json())
+      .then(resp => resp.json())
       // success
       .then((/** @type {object} */ json) => {
         Promise.resolve(fetchCallback ? fetchCallback(json) : (json.data || json.items || json.options || json))
@@ -965,9 +982,9 @@
             }
             prev_options = data;
             tick().then(() => {
-              if (fetch_initValue) {
-                watch_value_change(fetch_initValue);
-                fetch_initValue = null;
+              if (initial) {
+                fetch_initValue = null; // always reset
+                watch_value_change(initial, { skipEqualityCheck: true });
               }
             })
           })
@@ -981,7 +998,8 @@
         fetch_performed = true;
         isFetchingData = false;
         if (is_focused) is_dropdown_opened = true;
-        listMessage = i18n_actual.fetchEmpty;
+
+        dispatch('fetch', prev_options);
       });
   }
 
