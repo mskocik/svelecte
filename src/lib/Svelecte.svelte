@@ -593,6 +593,8 @@
       selectedOptions = selectedOptions;
       selectedKeys.add(opt[currentValueField]);
     } else {
+      const previousSelected = selectedOptions.shift();
+      if (previousSelected) previousSelected.$selected = false;
       selectedOptions = [opt];
       selectedKeys.clear();
       selectedKeys.add(opt[currentValueField]);
