@@ -119,7 +119,7 @@ export function virtualListDimensionsResolver(refVirtualList, scrollContainer, o
  * @returns
  */
 export function scrollIntoView({ container, scrollContainer, virtualList, center }, dropdownIndex) {
-  if (virtualList) return;
+  if (virtualList || !container) return;
 
   /** @type {HTMLDivElement} */
   const focusedEl = container.querySelector(`[data-pos="${dropdownIndex}"]`);
