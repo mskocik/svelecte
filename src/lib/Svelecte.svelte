@@ -1587,7 +1587,7 @@
     color: transparent;
   }
   .is-focused .is-single.has-items.has-input > .sv-item--container {
-    width: 0;
+    opacity: 0.2;
   }
   .sv-input--sizer:after,
   .sv-input--text {
