@@ -16,26 +16,25 @@
    * @returns {string}
    */
 
-  const formatterList = {
+  const stringFormatters = {
     /**
      * @type {RenderFunction}
      */
     default: function(item) { return escapeHtml(item[this.label]); }
   };
-  // TODO: rename to addRenderer
-  // provide ability to add additional renderers
   /**
+   * Provide ability to add additional renderers in raw html string format
    *
-   * @param name
+   * @param {string|Record<string, RenderFunction>} name
    * @param {RenderFunction} rendererFn
    */
-  export function addFormatter(name, rendererFn) {
+  export function addRenderer(name, rendererFn) {
     if (name instanceof Object) {
       for (let prop in name) {
-        formatterList[prop] = name[prop];
+        stringFormatters[prop] = name[prop];
       }
     } else {
-      formatterList[name] = rendererFn
+      stringFormatters[name] = rendererFn
     }
   };
 
@@ -273,7 +272,7 @@
    */
   $: itemRenderer = typeof renderer === 'function'
     ? renderer
-    : (formatterList[renderer] || formatterList.default.bind({ label: currentLabelField}));
+    : (stringFormatters[renderer] || stringFormatters.default.bind({ label: currentLabelField}));
 
   /** ************************************ dropdown-specific */
 
@@ -334,7 +333,7 @@
       if (!labelField && currentLabelField !== ilabel) {
         itemConfig.labelField = currentLabelField = ilabel
         if (renderer === null || renderer === 'default') {
-          itemRenderer = formatterList.default.bind({ label: currentLabelField });
+          itemRenderer = stringFormatters.default.bind({ label: currentLabelField });
         }
       };
     }
