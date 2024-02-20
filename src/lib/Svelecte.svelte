@@ -98,7 +98,8 @@
   export let dndzone = () => ({ noop: true, destroy: () => {}});
   // TODO: resolve
   export let validatorAction = null;
-
+  /** @type {boolean} */
+  export let strictMode = true;
   // multiple
   /** @type {boolean} */
   export let multiple = defaults.multiple;
@@ -372,8 +373,6 @@
   }
 
   /**
-   * TODO: extend to allow value out of range
-   *
    * @typedef {object} ValueWatcherOptions
    * @property {boolean} [skipEqualityCheck]
    *
@@ -384,26 +383,44 @@
     if (prev_value === passedVal && !opts?.skipEqualityCheck) return;
     clearSelection();
     if (passedVal) {
+      if ((multiple && !Array.isArray(passedVal)) || (!multiple && Array.isArray(passedVal))) {
+        console.warn(`Passed 'value' property should ${ multiple ? 'be' : 'NOT be'} an array`);
+      }
       // wait for fetch to be resolved
       if (fetch_initValue) return;
 
-      let _selection = Array.isArray(passedVal) ? passedVal : [passedVal];
-      _selection = _selection.reduce((res, val) => {
-        if (creatable && valueAsObject && val.$created) {
+      const arrValue = Array.isArray(passedVal) ? passedVal : [passedVal];
+      const _selection = arrValue.reduce((res, val) => {
+        // skip options scan when in valueAsObject non-strict mode
+        if (valueAsObject && (!strictMode || (creatable && val.$created))) {
           res.push(val);
           return res;
         }
-        const opt = options_flat.find(item => valueAsObject
-          ? item[currentValueField] == val[currentValueField]
-          : item[currentValueField] == val
-        );
-        opt && res.push(opt);
+        const opt = options_flat.find(item => item[currentValueField] == val);
+        if (opt) {
+          res.push(opt);
+        } else {
+          !strictMode && res.push(
+            // only sync (or default) handler is allowed for code simplicty
+            createHandler
+              ? createHandler({
+                [currentValueField]: val,
+                [currentLabelField]: val
+              })
+              : {
+                [currentValueField]: val,
+                [currentLabelField]: val
+              }
+          );
+        }
         return res;
       }, []);
+
       let success = _selection.every(selectOption) && (multiple
-        ? passedVal.length === _selection.length
+        ? arrValue.length === _selection.length
         : _selection.length > 0
       );
+
       if (!success) {
         // this is run only when invalid 'value' is provided, like out of option array
         console.warn('[Svelecte]: provided "value" property is invalid', passedVal);
