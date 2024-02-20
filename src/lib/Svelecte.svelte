@@ -858,6 +858,7 @@
           bound_item = selectedOptions.filter(o => o[currentValueField] == dataId).shift();
         }
         onDeselect({}, bound_item);
+        bound_item && !is_focused && ref_input.focus();
         break;
       case 'select':
         const opt_position = parseInt(dropdown_item.dataset.pos);
