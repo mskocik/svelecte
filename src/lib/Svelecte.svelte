@@ -96,11 +96,9 @@
   export let closeAfterSelect = defaults.closeAfterSelect;
   /** @type {function} */
   export let dndzone = () => ({ noop: true, destroy: () => {}});
+  // TODO: resolve
   export let validatorAction = null;
 
-  // TODO: resolve
-  // export let dropdownItem = Item;
-  // export let controlItem = Item;
   // multiple
   /** @type {boolean} */
   export let multiple = defaults.multiple;
@@ -239,6 +237,7 @@
   const itemConfig = createConfig(currentValueField, currentLabelField, groupLabelField, groupItemsField);
 
   // #region [reactivity]
+  $: watch_item_props(valueField, labelField);
   $: maxReached = max && selectedOptions.length == max;     // == is intentional, if string is provided
   $: watch_options(options);
   $: options_flat = flatList(prev_options, itemConfig);
@@ -315,9 +314,28 @@
   // #region [watchers]
 
   /**
-   * TODO: what if options change together with `valueField` and `labelField`
-   * Resolve fields (TODO: optionally) and set internal options
+   * Set current*Field reiliably when props change
    *
+   * @param {string?} valueProp
+   * @param {string?} labelProp
+   */
+  function watch_item_props(valueProp, labelProp) {
+    if (!is_mounted) return;
+
+    if (valueProp) {
+      itemConfig.valueField = currentValueField = valueProp;
+      // check note in watch_options()
+      selectedKeys.size > 0 && clearSelection();
+    }
+    if (labelProp) {
+      itemConfig.labelField = currentLabelField = labelProp;
+      if (renderer === null || renderer === 'default') {
+        itemRenderer = stringFormatters.default.bind({ label: currentLabelField });
+      }
+    }
+  }
+
+  /**
    * @param {array} opts
    */
   function watch_options(opts) {
@@ -327,15 +345,27 @@
       // make sure, it's an array
       opts = ensureObjectArray(opts, currentValueField, currentLabelField);
 
-      const ivalue = fieldInit('value', opts || null, groupItemsField);
-      const ilabel = fieldInit('label', opts || null, groupItemsField);
-      if (!valueField && currentValueField !== ivalue) itemConfig.valueField = currentValueField = ivalue;
-      if (!labelField && currentLabelField !== ilabel) {
-        itemConfig.labelField = currentLabelField = ilabel
-        if (renderer === null || renderer === 'default') {
-          itemRenderer = stringFormatters.default.bind({ label: currentLabelField });
+      // do these automatic re-adjustments only when props are not specified
+      if (!valueField) {
+        const ivalue = fieldInit('value', opts || null, groupItemsField);
+        if (!valueField && currentValueField !== ivalue) {
+          itemConfig.valueField = currentValueField = ivalue;
+          /**
+           * NOTE: selection is RESET when non-matching is detected (selection would be messed up anyway)
+           */
+          selectedKeys.size > 0 && clearSelection();
         }
-      };
+      }
+      if (!labelField) {
+        const ilabel = fieldInit('label', opts || null, groupItemsField);
+        if (!labelField && currentLabelField !== ilabel) {
+          itemConfig.labelField = ilabel;
+          currentLabelField = ilabel;
+          if (renderer === null || renderer === 'default') {
+            itemRenderer = stringFormatters.default.bind({ label: currentLabelField });
+          }
+        };
+      }
     }
     options = opts;
     prev_options = opts;  // continue to update options_flat
