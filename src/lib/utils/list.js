@@ -21,6 +21,7 @@ import Sifter from './sifter.js';
  * @property {boolean} [nesting]
  * @property {'or'} [conjunction]
  * @property {boolean} [disabled]
+ * @property {boolean} [skipSort]
  */
 
 /**
@@ -167,20 +168,20 @@ export function filterList(options, inputValue, excludeSelected, config, searchP
         return true;
       })
   }
-  if (searchProps.disabled) return options;
+  if (searchProps.disabled || !inputValue) return options;
 
   const sifter = new Sifter(options);
   /**
    * Sifter is used for searching to provide rich filter functionality.
    * But it degradate nicely, when optgroups are present
   */
-  if (config.optionsWithGroups) {  // disable sorting
+  if (config.optionsWithGroups || searchProps.skipSort) {  // disable sorting
     sifter.getSortFunction = () => null;
   }
   let conjunction = 'and';
-  if (inputValue.startsWith('|| ')) {
+  if (inputValue.includes('|')) {
     conjunction = 'or';
-    inputValue = inputValue.substring(2);
+    inputValue = inputValue.split('|').map(word => word.trim()).join(' ');
   }
 
   const result = sifter.search(inputValue, {

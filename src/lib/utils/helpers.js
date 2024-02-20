@@ -24,9 +24,13 @@ export function highlightSearch(item, renderInSelection, inputValue, itemRendere
   itemHtml.innerHTML = itemHtmlText;
 
   const pattern = asciifold(inputValue);
-  pattern.split(' ').filter(e => e).forEach(pat => {
-    highlight(itemHtml, pat);
-  });
+  (pattern.includes('|')
+    ? pattern.split('|').map(w => w.trim())
+    : pattern.split(' ')
+  )
+    .filter(e => e).forEach(pat => {
+      highlight(itemHtml, pat);
+    });
 
   return itemHtml.innerHTML;
 }
