@@ -151,7 +151,7 @@
   export let i18n = null;
   // API: public
   export let readSelection = null;
-  /** @type {array|string|number|null} */
+  /** @type {array|string|number|object|null} */
   export let value = null;
   export let valueAsObject = defaults.valueAsObject;
   export let parentValue = undefined;

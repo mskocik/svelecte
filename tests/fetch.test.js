@@ -67,15 +67,18 @@ describe('fetch:init', () => {
       value: 'blue'
     });
 
-
     await sleep(300);
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
 
-    component.$$set({ fetch: 'http://localhost:5173/api/countries' });
+    component.$$set({ fetch: 'http://localhost:5173/api/countries-colors?sleep=400' });
     await sleep(1000);
 
-    screen.debug();
+    expect(screen.queryByText('Blue')).toBeInTheDocument();
+
+    component.$$set({ fetch: 'http://localhost:5173/api/countries?sleep=400' });
+    await sleep(1000);
+
     expect(screen.queryByText('Blue')).not.toBeInTheDocument();
   });
 });
@@ -93,11 +96,12 @@ describe('fetch:query', () => {
     expect(screen.queryByText('Blue')).toBeInTheDocument();
   });
 
-  it('fetch default value object and change value property', async () => {
+  it('use refetchWith to fetch newly changed default value (in initMode)', async () => {
     const { component } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors?query=[query]',
       fetchDebounceTime: 0,
-      value: 'blue'
+      value: 'blue',
+      // fetchMode: 'init'  // NOTE: resolved automatically from `fetch`
     });
 
     await sleep(300);
@@ -112,3 +116,4 @@ describe('fetch:query', () => {
   });
 });
 
+// TODO: test with `valueAsObject`
