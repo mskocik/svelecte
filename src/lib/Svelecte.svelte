@@ -722,7 +722,6 @@
       case 'End':
         if (input_value.length !== 0) return;
         setDropdownIndex(options_filtered.length, { desc: true });
-      // TODO: impl
       case 'PageDown':
         if (isPageEvent) {
           const [wrap, item] = get_dropdown_dimensions();
@@ -758,7 +757,6 @@
           return;
         }
         !supressIndexMove && setDropdownIndex(dropdown_index + 1, { asc: true });
-        // TODO:
         tick().then(() => scrollIntoView({ scrollContainer: ref_container_scroll, container: ref_container, virtualList, center: false}, dropdown_index));
         break;
       case 'Escape':
@@ -769,8 +767,6 @@
         if (!input_value) {
           is_dropdown_opened = false;
         }
-        // TODO:
-        // cancelXhr();
         input_value = '';
         break;
       case Tab:
@@ -916,7 +912,11 @@
     is_focused = false;
     is_dropdown_opened = false;
     focus_by_mouse = false;
-    if (resetOnBlur) input_value = '';
+    if (resetOnBlur) {
+      input_value = '';
+    } else {
+      fetch_controller && fetch_controller.abort();
+    }
     collapseSelection === 'blur' && setTimeout(() => {
       doCollapse = true;
     }, 100);
@@ -989,6 +989,8 @@
    * @param {FetchOptions} opts
    */
   function fetch_runner(opts = {}) {
+    if (fetch_controller && fetch_controller.signal.aborted === false) fetch_controller.abort();
+
     if ((opts.init !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
       if (fetchResetOnBlur) {
@@ -1036,6 +1038,7 @@
       })
       // teardown
       .finally(() => {
+        fetch_controller = null;
         fetch_performed = true;
         isFetchingData = false;
         if (is_focused) is_dropdown_opened = true;
