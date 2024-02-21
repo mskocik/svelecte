@@ -16,6 +16,16 @@
    * @returns {string}
    */
 
+  /**
+   * Resolver function for creating new items. Async functions are support
+   *
+   * @callback CreateHandlerFunction
+   * @param {string} inputValue
+   * @param {string} valueField
+   * @param {string} labelField
+   * @param {string} createblePrefix
+   * @returns {Promise|object}
+   */
   const stringFormatters = {
     /**
      * @type {RenderFunction}
@@ -50,7 +60,6 @@
   import { createConfig, ensureObjectArray, filterList, flatList, getFilterProps, initSelection, fieldInit } from './utils/list.js';
   import { iOS, android, highlightSearch } from './utils/helpers.js';
   import { bindItem } from './utils/actions.js';
-  import settings from './settings.js';
 
   /** @type {string} */
   export let name = 'svelecte';
@@ -119,6 +128,7 @@
   /** @type {boolean} */
   export let keepCreated = defaults.keepCreated;
   export let delimiter = defaults.delimiter;
+  /** @type {CreateHandlerFunction} */
   export let createHandler = null;
   // remote
   /** @type {string?} */
@@ -403,10 +413,7 @@
           !strictMode && res.push(
             // only sync (or default) handler is allowed for code simplicty
             createHandler
-              ? createHandler({
-                [currentValueField]: val,
-                [currentLabelField]: val
-              })
+              ? createHandler(val, currentValueField, currentLabelField, creatablePrefix)
               : {
                 [currentValueField]: val,
                 [currentLabelField]: val
