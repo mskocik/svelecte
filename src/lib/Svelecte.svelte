@@ -26,6 +26,14 @@
    * @param {string} createblePrefix
    * @returns {Promise|object}
    */
+
+
+  /**
+   * @callback OptionResolverFunction
+   * @param {object[][]} options
+   * @param {Set} selectedKeys
+   */
+
   const stringFormatters = {
     /**
      * @type {RenderFunction}
@@ -73,6 +81,8 @@
   export let anchor_element = null;
   /** @type {array} */
   export let options = [];
+  /** @type {OptionResolverFunction} */
+  export let optionResolver = null;
   /** @type {string} */
   export let valueField = defaults.valueField;
   /** @type {string} */
@@ -193,7 +203,9 @@
   let is_mounted = false;
   // state-related
   let prev_value;
-  let prev_options = ensureObjectArray(options, valueField, labelField);
+  let prev_options = optionResolver
+    ? optionResolver(options, new Set())
+    : ensureObjectArray(options, valueField, labelField);
   let prev_parent_value;
   let currentValueField = valueField || fieldInit('value', prev_options, groupItemsField);
   let currentLabelField = labelField || fieldInit('label', prev_options, groupItemsField);
@@ -379,7 +391,10 @@
       }
     }
     options = opts;
-    prev_options = opts;  // continue to update options_flat
+    // continue to update options_flat
+    prev_options = optionResolver
+      ? optionResolver(opts, selectedKeys)
+      : opts;
   }
 
   /**
@@ -521,6 +536,15 @@
     i18n_actual = Object.assign({}, config.i18n, obj || {});
   }
 
+  /**
+   * TODO: add option for 'noOption_creatable'
+   * @param maxReached
+   * @param options_filtered
+   * @param input_value
+   * @param minQuery
+   * @param fetch_factory
+   * @param isFetchingData
+   */
   function watch_listMessage(maxReached, options_filtered, input_value, minQuery, fetch_factory, isFetchingData) {
     let val = i18n_actual.empty;
     if (maxReached) {
@@ -653,6 +677,12 @@
       selectedKeys.add(opt[currentValueField]);
       dropdown_index = options_flat.indexOf(opt);
     }
+
+    if (optionResolver) {
+      prev_options = optionResolver(options, selectedKeys)
+      return true;
+    }
+
     options_flat = options_flat;
     return true;
   }
@@ -700,6 +730,12 @@
     selectedKeys.delete(id);
     selectedOptions.splice(selectedOptions.findIndex(o => o[currentValueField] == id), 1);
     selectedOptions = selectedOptions;
+
+    if (optionResolver) {
+      prev_options = optionResolver(options, selectedKeys);
+      return;
+    }
+
     options_flat = options_flat;
   }
 
@@ -1023,7 +1059,7 @@
       isFetchingData = false;
       if (fetchResetOnBlur) {
         fetch_performed = false;
-        prev_options = [];
+        prev_options = optionResolver ? optionResolver(options, selectedKeys) : [];
       }
       return;
     }
