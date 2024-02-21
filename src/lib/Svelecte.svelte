@@ -4,6 +4,8 @@
   import { requestFactory, debounce } from './utils/fetch.js';
   import { onCreate_helper, escapeHtml } from './utils/helpers.js';
 
+  defaults.requestFactory = requestFactory;
+
   /**
    * Due to adding `$selected` property to items and ability to render selected items in dropdown
    * second parameter is not related to option selection status, buth whether it's rendered in selection (true)
@@ -143,8 +145,8 @@
   // remote
   /** @type {string?} */
   export let fetch = null;
-  /** @type {import('./utils/fetch.js').RequestFactoryFn|null} */
-  export let fetchFactory = null;
+  /** @type {object} user-provided optional properties for Request constructor*/
+  export let fetchProps = {};
   /** @type {'auto'|'init'} */
   export let fetchMode = 'auto';
   /** @type {function} */
@@ -182,7 +184,7 @@
    * @param {string|number|array} value
    */
   export function refetchWith(value) {
-    fetch_runner({
+    fetch && fetch_runner({
       init: true,
       initValue: value
     });
@@ -193,7 +195,7 @@
 
   /** ************************************ preparation */
   /* possibility to provide initial (selected) values in `fetch` mode **/
-  if ((fetch || fetchFactory) && value && valueAsObject && (!options || (options && options.length === 0))) {
+  if (fetch && value && valueAsObject && (!options || (options && options.length === 0))) {
     options = Array.isArray(value) ? value : [value];
   }
   if (!inputId) inputId = `${DOM_ID}-input`;
@@ -238,10 +240,10 @@
   // utils
   /** @type {import('./settings.js').I18nObject} */
   let i18n_actual;
-  let fetch_initOnly = fetchMode === 'init' || (typeof fetch === 'string' && !fetch.includes('[query]'));
+  let fetch_initOnly = fetchMode === 'init' || (fetch && fetch.includes('[query]') === false);
   let fetch_initValue = fetch_initOnly
     ? value
-    : ((fetch || fetchFactory) && options.length === 0 ? value : null);
+    : (fetch && options.length === 0 ? value : null);
   let isIOS = null;
   let isAndroid = null;
   let doCollapse = collapseSelection !== null;
@@ -552,16 +554,16 @@
    * @param options_filtered
    * @param input_value
    * @param minQuery
-   * @param fetch_factory
+   * @param fetch
    * @param isFetchingData
    */
-  function watch_listMessage(maxReached, options_filtered, input_value, minQuery, fetch_factory, isFetchingData) {
+  function watch_listMessage(maxReached, options_filtered, input_value, minQuery, fetch, isFetchingData) {
     let val = i18n_actual.empty;
     if (maxReached) {
       val = i18n_actual.max(max);
     } else {
       // fetch mode
-      if (fetch_factory) {
+      if (fetch) {
         if (fetch_performed && options_filtered.length === 0) {
           listMessage = fetch_initOnly
             ? i18n_actual.empty
@@ -1035,24 +1037,23 @@
   let fetch_factory;
 
   $: trigger_fetch(input_value);
-  $: is_mounted && watch_fetch_init(fetch, fetchFactory, parentValue);
+  $: is_mounted && watch_fetch_init(fetch, parentValue);
 
   let listMessage;
-  $: watch_listMessage(maxReached, options_filtered, input_value, minQuery, fetch_factory, isFetchingData);
+  $: watch_listMessage(maxReached, options_filtered, input_value, minQuery, isFetchingData);
 
   /**
    *
    * @param {string?} fetch
-   * @param {import('./utils/fetch.js').RequestFactoryFn?} fetchFactory
    * @param {string?} _parentValue
    */
-  function watch_fetch_init(fetch, fetchFactory, _parentValue) {
-    if (!fetch && !fetchFactory) {
+  function watch_fetch_init(fetch, _parentValue) {
+    if (!fetch) {
       fetch_factory = null;
       return;
     }
 
-    fetch_factory = fetch ? requestFactory : fetchFactory;
+    fetch_factory = defaults.requestFactory;
     (fetch_initOnly || fetch_initValue) && fetch_runner({init: true}); // skip debounce on init
   }
 
@@ -1091,7 +1092,8 @@
 
     isFetchingData = true;
     fetch_controller = new AbortController();
-    const request = fetch_factory(input_value, { parentValue, url: fetch, initial, controller: fetch_controller } );
+    const request = fetch_factory(input_value, { parentValue, url: fetch, initial, controller: fetch_controller }, fetchProps
+    );
     window.fetch(request)
       .then(resp => resp.json())
       // success

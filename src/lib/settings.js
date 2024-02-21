@@ -81,6 +81,7 @@
  * @property {number|null} vlItemSize
  * @property {number|null} vlHeight
  * @property {I18nObject} i18n
+ * @property {import("./utils/fetch").RequestFactoryFn} requestFactory
  */
 const /**@type {Settings} */ settings = {
   // html
@@ -140,7 +141,8 @@ const /**@type {Settings} */ settings = {
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
     createRowLabel: value => `Create '${value}'`
-  }
+  },
+  requestFactory: null
 }
 
 export default settings;

@@ -26,6 +26,7 @@ export function debounce(fn, delay) {
  * @callback RequestFactoryFn
  * @param {string} query
  * @param {RequestFactoryProps} props
+ * @param {RequestInit|object} fetchProps
  * @returns {Request}
  */
 
@@ -34,7 +35,7 @@ export function debounce(fn, delay) {
  *
  * @type {RequestFactoryFn}
  */
-export function requestFactory(query, { url, parentValue, initial, controller }) {
+export function requestFactory(query, { url, parentValue, initial, controller }, fetchProps) {
   if (parentValue) {
     url = url.replace('[parent]', encodeURIComponent(parentValue));
   }
@@ -52,11 +53,12 @@ export function requestFactory(query, { url, parentValue, initial, controller })
     const arr = Array.isArray(initial) ? initial : [initial];
     fetchUrl.searchParams.append('init', arr.join(','));
   }
-  return new Request(fetchUrl, {
+  const props = Object.assign({}, {
     headers: {
       'X-Requested-With': 'XMLHttpRequest'
     },
     cache: 'no-store',
     signal: controller.signal
-  });
+  }, fetchProps);
+  return new Request(fetchUrl, props);
 }
