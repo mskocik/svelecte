@@ -996,7 +996,10 @@
    * @param {string?} _parentValue
    */
   function watch_fetch_init(fetch, fetchFactory, _parentValue) {
-    if (!fetch && !fetchFactory) return;
+    if (!fetch && !fetchFactory) {
+      fetch_factory = null;
+      return;
+    }
 
     fetch_factory = fetch ? requestFactory : fetchFactory;
     (fetch_initOnly || fetch_initValue) && fetch_runner({init: true}); // skip debounce on init
