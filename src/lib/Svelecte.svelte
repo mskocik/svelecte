@@ -323,7 +323,7 @@
 
   // aria related
   $: aria_selection = i18n_actual.aria_selected(selectedOptions.map(o => o[currentLabelField]));
-  $: aria_context = options_filtered.length
+  $: aria_context = options_filtered.length && dropdown_index
     ? (
       is_dropdown_opened
         ? i18n_actual.aria_listActive(options_filtered[dropdown_index], currentLabelField, options_filtered.length)
@@ -530,7 +530,7 @@
         if (val) {
           // ensure proper dropdown index
           // do not respect highlightFirstItem here
-          if (selectedOptions.length === 0 || multiple) setDropdownIndex(0, { asc: true});
+          if (highlightFirstItem && (selectedOptions.length === 0 || multiple)) setDropdownIndex(0, { asc: true});
           if (!multiple && selectedOptions.length) {
               // ensure item is set
             dropdown_index = options_flat.findIndex(opt => opt === selectedOptions[0]);
@@ -1163,12 +1163,14 @@
    * @param {DirectionSettings} direction
    */
    function setDropdownIndex(pos, direction = {}, limit = 0) {
-    const dropdown_list_length = creatable ? options_filtered.length + 1 : options_filtered.length;
+    const dropdown_list_length = creatable
+      ? options_filtered.length + 1
+      : options_filtered.length;
     if (limit >= 2) return;
     if (pos < 0) pos = direction.desc
       ? dropdown_list_length - 1
       : 0;
-    if (dropdown_index === null || pos >= dropdown_list_length) {
+    if ((dropdown_index === null && highlightFirstItem) || pos >= dropdown_list_length) {
       pos = 0;
     }
     // if pos represents group header, move to next one
