@@ -40,7 +40,7 @@ describe('fetch: onMount', () => {
 });
 
 describe('fetch:init', () => {
-  it('properly set initial value while in list (v3 compatible) step I', async () => {
+  it('properly set initial value while in liFtst (v3 compatible) step I', async () => {
     const { component } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors',
       fetchDebounceTime: 0,
@@ -96,7 +96,7 @@ describe('fetch:query', () => {
     expect(screen.queryByText('Blue')).toBeInTheDocument();
   });
 
-  it('use refetchWith to fetch newly changed default value (in initMode)', async () => {
+  it('use refetchWith to fetch newly changed default value', async () => {
     const { component } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors?query=[query]',
       fetchDebounceTime: 0,
