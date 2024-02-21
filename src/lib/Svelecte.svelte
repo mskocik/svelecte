@@ -1379,6 +1379,7 @@
                   <div data-pos={index}
                     class="sv-item--wrap in-dropdown"
                     class:sv-dd-item-active={dropdown_index === index}
+                    class:is-selected={opt.$selected}
                   >
                     <slot name="option" item={opt}>
                       <div class="sv-item--content">
@@ -1397,6 +1398,7 @@
                 <div data-pos={i}
                   class="sv-item--wrap in-dropdown"
                   class:sv-dd-item-active={dropdown_index === i}
+                  class:is-selected={opt.$selected}
                 >
                   <slot name="option" item={opt}>
                     <div class="sv-item--content">
@@ -1623,12 +1625,14 @@
       padding: 4px;
     }
   }
-  .sv-dd-item-active,
+  .in-dropdown.is-selected {
+    background-color: #ecf3f9;
+  }
+  .in-dropdown.sv-dd-item-active,
   .in-dropdown:hover,
   .in-dropdown:active {
     background-color: #F2F5F8;
   }
-
   .is-dropdown-row {
     padding: var(--sv-general-padding, 4px);
   }
