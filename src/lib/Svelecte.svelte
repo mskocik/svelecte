@@ -979,6 +979,7 @@
     collapseSelection === 'blur' && !is_dragging && setTimeout(() => {
       doCollapse = false;
     }, 100);
+    dispatch('focus', ref_input);
   }
 
   function onBlur() {
@@ -993,6 +994,7 @@
     collapseSelection === 'blur' && !is_dragging && setTimeout(() => {
       doCollapse = true;
     }, 100);
+    dispatch('blur', ref_input);
   }
 
   /**
