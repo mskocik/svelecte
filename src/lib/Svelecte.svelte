@@ -221,6 +221,7 @@
   let focus_by_mouse = false;
   let is_tainted = false; // true after first focus
   let is_dropdown_opened = false;
+  let dropdown_show = false;
   let dropdown_index = highlightFirstItem ? 0 : null;
   // dropdown-related
   let render_dropdown = !lazyDropdown;
@@ -524,9 +525,18 @@
       })
       .then(() => {
         positionDropdown(val, ref_container_scroll, true);
-        val && scrollIntoView({ container: ref_container, scrollContainer: ref_container_scroll, virtualList, center: true }, dropdown_index);
+        if (val) {
+          // ensure proper dropdown index
+          // do not respect highlightFirstItem here
+          if (selectedOptions.length === 0 || multiple) setDropdownIndex(0, { asc: true});
+          if (!multiple && selectedOptions.length) {
+              // ensure item is set
+            dropdown_index = options_flat.findIndex(opt => opt === selectedOptions[0]);
+          }
+          scrollIntoView({ container: ref_container, scrollContainer: ref_container_scroll, virtualList, center: false }, dropdown_index);
+        }
+        tick().then(() => dropdown_show = val);
       });
-
     if (!dropdown_scroller) dropdown_scroller = () => positionDropdown(val, ref_container_scroll, true);
     // bind/unbind scroll listener
     document[val ? 'addEventListener' : 'removeEventListener']('scroll', dropdown_scroller, { passive: true });
@@ -1339,7 +1349,7 @@
   <!-- #region DROPDOWN -->
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="sv_dropdown" class:is-open={is_dropdown_opened}
+  <div class="sv_dropdown" class:is-open={dropdown_show}
     on:mousedown={onMouseDown}
     on:click={onClick}
   >
@@ -1582,17 +1592,20 @@
     position: absolute;
     min-width: 100%;
     width: var(--sv-dropdown-width);
-    display: none;
     background-color: var(--sv-bg, #fff);
     overflow-y: auto;
     overflow-x: hidden;
     border: 1px solid rgba(0,0,0,0.15);
     border-radius: var(--sv-border-radius, 4px);
     box-shadow: var(--sv-dropdown-shadow, 0 6px 12px #0000002d);
-    z-index: 2;
+    opacity: 0;
+    z-index: -1000;
+    pointer-events: none;
 
     &.is-open {
-      display: block;
+      opacity: 1;
+      z-index: 2;
+      pointer-events: auto;
     }
   }
   .sv-dropdown-scroll {
