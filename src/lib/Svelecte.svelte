@@ -710,8 +710,11 @@
     opt = opt || event.detail;
     if (opt) {
       deselectOption(opt, backspacePressed);
-      if (!multiple && !is_dropdown_opened) setDropdownIndex(0, { asc:true });
-      tick().then(() => scrollIntoView({ scrollContainer: ref_container_scroll, container: ref_container, virtualList, center: false}, dropdown_index));
+      /**
+       * Condition for keepSelectionInList is important, othwise dropdown jump back to start.
+       * It's required only for multiselect with default 'closeAfterSelect' setting.
+       */
+      keepSelectionInList !== true && tick().then(() => scrollIntoView({ scrollContainer: ref_container_scroll, container: ref_container, virtualList, center: false}, dropdown_index));
     } else {  // apply for 'x' when clearable:true || ctrl+backspace || ctrl+delete
       clearSelection();
     }
