@@ -964,7 +964,7 @@
     is_focused = true;
     is_dropdown_opened = focus_by_mouse;
     if (!is_tainted) is_tainted = true;
-    collapseSelection === 'blur' && setTimeout(() => {
+    collapseSelection === 'blur' && !is_dragging && setTimeout(() => {
       doCollapse = false;
     }, 100);
   }
@@ -978,7 +978,7 @@
     } else {
       fetch_controller && fetch_controller.abort();
     }
-    collapseSelection === 'blur' && setTimeout(() => {
+    collapseSelection === 'blur' && !is_dragging && setTimeout(() => {
       doCollapse = true;
     }, 100);
   }
@@ -1006,7 +1006,12 @@
   function onDndEvent(e) {
     is_dragging = e.type === 'consider';
     selectedOptions = e.detail.items;
-    !is_dragging && emitChangeEvent();
+    if (!is_dragging) {
+      emitChangeEvent();
+      if (collapseSelection === 'blur') setTimeout(() => {
+        doCollapse = true;
+      }, 200);
+    }
   }
 
   // #endregion
@@ -1246,7 +1251,7 @@
     <slot name="icon"></slot>
     <!-- #region selection & input -->
     <div class="sv-control--selection" class:is-single={multiple === false} class:has-items={selectedOptions.length > 0} class:has-input={input_value.length}
-      use:dndzone={{items: selectedOptions, flipDurationMs, type: inputId }}
+      use:dndzone={{items: selectedOptions, flipDurationMs, type: inputId, dragDisabled: doCollapse }}
       on:consider={onDndEvent}
       on:finalize={onDndEvent}
     >
@@ -1256,7 +1261,9 @@
       {:else}
         <slot name="selection" {selectedOptions} {bindItem}>
           {#each selectedOptions as opt (opt[currentValueField])}
-          <div class="sv-item--container" animate:flip={{duration: flipDurationMs }}>
+          <div class="sv-item--container" animate:flip={{duration: flipDurationMs }}
+            on:mousedown|preventDefault
+          >
             <div class="sv-item--wrap" class:is-multi={multiple}>
               <div class="sv-item--content">{@html itemRenderer(opt, true)}</div>
             </div>
