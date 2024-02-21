@@ -64,6 +64,7 @@
  * @property {boolean} resetOnBlur
  * @property {boolean} resetOnSelect
  * @property {boolean} fetchResetOnBlur
+ * @property {number} fetchDebounceTime
  * @property {boolean} multiple
  * @property {boolean|string} closeAfterSelect
  * @property {number} max
@@ -102,6 +103,7 @@ const /**@type {Settings} */ settings = {
   resetOnBlur: true,
   resetOnSelect: true,
   fetchResetOnBlur: true,
+  fetchDebounceTime: 300,
   // multi
   multiple: false,
   closeAfterSelect: 'auto',

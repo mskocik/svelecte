@@ -117,8 +117,8 @@
   export let closeAfterSelect = defaults.closeAfterSelect;
   /** @type {function} */
   export let dndzone = () => ({ noop: true, destroy: () => {}});
-  // TODO: resolve
-  export let validatorAction = null;
+  /** @type {array} wrapper array for passing 'svelte-use-form validator action and its params '*/
+  export let validatorAction = [];
   /** @type {boolean} */
   export let strictMode = true;
   // multiple
@@ -154,7 +154,7 @@
   /** @type {boolean} */
   export let fetchResetOnBlur = true;
   /** @type {number} */
-  export let fetchDebounceTime = 0; // TODO: set some default
+  export let fetchDebounceTime = defaults.fetchDebounceTime;
   /** @type {number} */
   export let minQuery = defaults.minQuery;
   // performance
@@ -279,7 +279,6 @@
     );
   // only initial setter
   $: highlightFirstItem && setDropdownIndex(0, { asc: true });
-  // TODO: check behavior and convert to watch_fn
   $: options_filtered.length <= dropdown_index && setDropdownIndex(0, { asc: !creatable, desc: creatable });
 
   $: if (!createHandler) createHandler = string => ({
@@ -550,6 +549,7 @@
 
   /**
    * TODO: add option for 'noOption_creatable'
+   *
    * @param maxReached
    * @param options_filtered
    * @param input_value
@@ -883,9 +883,7 @@
           event.preventDefault();
         }
       default:
-        // TODO: keep this old impl, remove line below it
-        // if (!ctrlKey && !['Tab', 'Shift'].includes(event.key) && !is_dropdown_opened && !isFetchingData) {
-        if (!ctrlKey && !['Tab', 'Shift'].includes(event.key) && !is_dropdown_opened) {
+        if (!ctrlKey && !['Tab', 'Shift'].includes(event.key) && !is_dropdown_opened && !isFetchingData) {
           is_dropdown_opened = true;
         }
     }
@@ -1221,6 +1219,10 @@
 
   //#endregion
 
+  const svelte_use_form_validator = validatorAction.length
+    ? validatorAction.shift()
+    : () => {}; // noop
+
   onMount(() => {
     is_mounted = true;
     isAndroid = android();
@@ -1257,7 +1259,7 @@
     {/if}
   </span>
   {#if name && !anchor_element}
-  <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1" aria-hidden="true" >
+  <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1" aria-hidden="true" use:svelte_use_form_validator={validatorAction}>
     {#each selectedOptions as opt (opt[currentValueField])}
     <option value={opt[currentValueField]} selected></option>
     {/each}
