@@ -1441,8 +1441,39 @@
 
 <style>
   /** make it global to be able to apply it also for anchored select */
-  :global(.sv-hidden-element) { opacity: 0; position: absolute; z-index: -2; top: 0; height: var(--sv-min-height)}
+  :global(.sv-hidden-element) { opacity: 0; position: absolute; z-index: -2; top: 0; height: var(--sv-min-height, 30px)}
 
+    /* stylable styles */
+  :root {
+    --sv-min-height: 30px;
+    --sv-bg: #fff;
+    --sv-disabled-bg: #eee;
+    --sv-border: 1px solid #ccc;
+    --sv-border-radius: 4px;
+    --sv-general-padding: 4px;
+    --sv-control-bg: var(--sv-bg);
+    --sv-item-wrap-padding: 3px 3px 3px 6px
+    --sv-item-selected-bg: #efefef;
+    --sv-item-btn-color: #000;
+    --sv-item-btn-bg: #efefef;
+    --sv-item-btn-bg-hover: #ddd;
+    --sv-icon-color: #bbb;
+    --sv-icon-color-hover: #777;
+    --sv-icon-bg: transparent;
+    --sv-icon-size: 20px;
+    --sv-separator-bg: #ccc;
+    --sv-btn-border: 0;
+    --sv-placeholder-color: ccccd6;
+    --sv-dropdown-bg: var(--sv-bg);
+    --sv-dropdown-offset: 1px;
+    --sv-dropdown-width: auto;
+    --sv-dropdown-shadow: 0 6px 12px #0000002d;
+    --sv-dropdown-height: 320px;
+    --sv-dropdown-active-bg: #F2F5F8;
+    --sv-dropdown-selected-bg: #ECF3F9;
+    --sv-create-disabled-bg: #fcbaba;
+    --sv-loader-border: 2px solid #ccc;
+  }
   .a11y-text {
     z-index: 9999;
     border: 0px;
@@ -1458,24 +1489,18 @@
     position: relative;
     flex: 1 1 auto;
     color: var(--sv-color, inherit);
-    --sv-border: var(--sv-border-width, 1px) var(--sv-border-style, solid) var(--sv-border-color, #ccc);
-    --sv-general-padding: 4px;  /* theme */
-    --sv-input--wrap-padding: var(--sv-general-padding);
-    --sv-item-padding: var(--sv-general-padding);
-    --sv-dropdown-offset: 1px;
 
     &.is-disabled > .sv-control {
-      background-color: #eee;
+      background-color: var(--sv-disabled-bg);
     }
   }
 
   .sv-control {
     display: flex;
     align-items: center;
-    /** make editable */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-
+    border: var(--sv-border, 1px solid #ccc);
+    border-radius: var(--sv-border-radius, 4px);
+    background-color: var(--sv-control-bg);
   }
 
   .sv-control--selection {
@@ -1498,7 +1523,7 @@
   :global(.sv-item--wrap) {
     display: flex;
     min-width: 0;
-    padding: 3px 3px 3px 6px;
+    padding: var(--item-wrap-padding, 3px 3px 3px 6px);
     &.is-multi {
       background-color: var(--sv-item-selected-bg, #efefef);
     }
@@ -1521,13 +1546,13 @@
     border-width: 0;
     margin: 0;
     cursor: pointer;
-    background-color: var(--sv-item-btn-bg, var(--sv-item-selected-bg, #efefef));
+    background-color: var(--sv-item-btn-bg, var(--sv-item-selected-bg));
 
     &:hover {
-      background-color: var(--sv-item-btn-bg-hover, #ddd);
+      background-color: var(--sv-item-btn-bg-hover);
     }
     & > svg {
-      fill: var(--sv-item-btn-icon, var(--sv-icon-color));
+      fill: var(--sv-item-btn-color, var(--sv-icon-color));
     }
   }
 
@@ -1540,12 +1565,12 @@
     position: relative;
   }
   .sv-btn-indicator {
-    color: var(--sv-icon-color, #bbb);
+    color: var(--sv-icon-color);
     display: flex;
     transition: color 150ms ease 0s;
     box-sizing: border-box;
-    background-color: var(--sv-icon-bg-color, transparent);
-    border-width: var(--sv-icon-border-width, 0);
+    background-color: var(--sv-icon-bg);
+    border: var(--sv-btn-border, 0);
     padding: 0;
     margin: var(--sv-general-padding, 4px);
     align-items: center;
@@ -1554,33 +1579,33 @@
     stroke: currentcolor;
     stroke-width: 0px;
     &:hover {
-      color: var(--sv-icon-color-hover, #777);
+      color: var(--sv-icon-color-hover);
     }
   }
   .sv-btn-separator {
     align-self: stretch;
-    background-color: var(--sv-border-color, #ccc);
+    background-color: var(--sv-separator-bg);
     margin-bottom: var(--sv-general-padding, 4px);
     margin-top: var(--sv-general-padding, 4px);
     width: 1px;
     box-sizing: border-box;
   }
   .indicator-icon {
-    width: var(--sv-icon-size, 20px);
-    height: var(--sv-icon-size, 20px);
+    width: var(--sv-icon-size);
+    height: var(--sv-icon-size);
   }
   .is-loading:after {
     animation: spinAround 0.5s infinite linear;
-    border: var(--sv-loader-border, 2px solid #ccc);
+    border: var(--sv-loader-border);
     border-radius: 290486px;
     border-right-color: transparent;
     border-top-color: transparent;
     content: "";
     display: block;
-    height: var(--sv-icon-size, 20px);
-    width: var(--sv-icon-size, 20px);
+    height: var(--sv-icon-size);
+    width: var(--sv-icon-size);
     right: var(--sv-general-padding, 4px);
-    top: calc(50% - (var(--sv-icon-size, 20px) / 2));
+    top: calc(50% - (var(--sv-icon-size) / 2));
     position: absolute !important;
     box-sizing: border-box;
   }
@@ -1598,17 +1623,17 @@
   /** ************************************ dropdown */
 
   .sv_dropdown {
-    margin: var(--sv-dropdown-offset, 0) 0;
+    margin: var(--sv-dropdown-offset, 1px) 0;
     box-sizing: border-box;
     position: absolute;
     min-width: 100%;
     width: var(--sv-dropdown-width);
-    background-color: var(--sv-bg, #fff);
+    background-color: var(--sv-dropdown-bg);
     overflow-y: auto;
     overflow-x: hidden;
     border: 1px solid rgba(0,0,0,0.15);
     border-radius: var(--sv-border-radius, 4px);
-    box-shadow: var(--sv-dropdown-shadow, 0 6px 12px #0000002d);
+    box-shadow: var(--sv-dropdown-shadow);
     opacity: 0;
     z-index: -1000;
     pointer-events: none;
@@ -1623,7 +1648,7 @@
     /* min-height: 40px; */
     padding: 0;
     box-sizing: border-box;
-    max-height: var(--sv-dropdown-height, 316px);
+    max-height: var(--sv-dropdown-height);
     overflow-y: auto;
     overflow-x: hidden;
     &.has-items {
@@ -1631,7 +1656,7 @@
     }
   }
   .in-dropdown.is-selected {
-    background-color: #ecf3f9;
+    background-color: var(--sv-dropdown-selected-bg);
   }
   .in-dropdown.is-disabled {
     opacity: 0.5;
@@ -1640,7 +1665,7 @@
   .in-dropdown.sv-dd-item-active,
   .in-dropdown:hover,
   .in-dropdown:active {
-    background-color: #F2F5F8;
+    background-color: var(--sv-dropdown-active-bg);
   }
   .is-dropdown-row {
     padding: var(--sv-general-padding, 4px);
@@ -1649,7 +1674,8 @@
   /** ************************************ creatable */
 
   .sv-dropdown-scroll.has-items + .is-dropdown-row {
-    border-top: 1px solid #efefef;
+    border-top: 1px solid transparent;
+    border-color: var(--sv-separator-bg);
   }
   .creatable-row {
     width: 100%;
@@ -1665,11 +1691,11 @@
     &:hover,
     &:active,
     &.active {
-      background-color: var(--sv-item-active-bg, #F2F5F8);
+      background-color: var(--sv-dropdown-active-bg);
     }
     &.active.is-disabled {
       opacity: 0.5;
-      background-color: rgb(252, 186, 186);
+      background-color: var(--sv-create-disabled-bg);
     }
     &.is-disabled {
       opacity: 0.5;
@@ -1706,7 +1732,6 @@
 
     &:not(:focus-within) {
       position: absolute;
-      z-index: -1;
     }
 
     &:after {
@@ -1742,7 +1767,7 @@
   .sv-input--text {
     outline: none;
     &:placeholder {
-      color: var(--sv-placeholder-color, #ccccd6);
+      color: var(--sv-placeholder-color);
     }
   }
   /* #endregion */
