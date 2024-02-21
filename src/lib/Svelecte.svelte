@@ -1383,6 +1383,7 @@
                     class="sv-item--wrap in-dropdown"
                     class:sv-dd-item-active={dropdown_index === index}
                     class:is-selected={opt.$selected}
+                    class:is-disabled={opt[disabledField]}
                   >
                     <slot name="option" item={opt}>
                       <div class="sv-item--content">
@@ -1402,6 +1403,7 @@
                   class="sv-item--wrap in-dropdown"
                   class:sv-dd-item-active={dropdown_index === i}
                   class:is-selected={opt.$selected}
+                  class:is-disabled={opt[disabledField]}
                 >
                   <slot name="option" item={opt}>
                     <div class="sv-item--content">
@@ -1630,6 +1632,10 @@
   }
   .in-dropdown.is-selected {
     background-color: #ecf3f9;
+  }
+  .in-dropdown.is-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   .in-dropdown.sv-dd-item-active,
   .in-dropdown:hover,
