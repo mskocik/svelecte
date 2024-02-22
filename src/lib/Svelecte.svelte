@@ -19,13 +19,22 @@
    */
 
   /**
+   * @callback CreateFilterFunction
+   * @param {string} inputValue
+   * @returns {boolean}
+   */
+
+  /**
    * Resolver function for creating new items. Async functions are support
    *
+   * @typedef {object} CreateHandlerProps
+   * @property {string} inputValue
+   * @property {string} valueField
+   * @property {string} labelField
+   * @property {string} prefix
+   *
    * @callback CreateHandlerFunction
-   * @param {string} inputValue
-   * @param {string} valueField
-   * @param {string} labelField
-   * @param {string} createblePrefix
+   * @param {CreateHandlerProps} props
    * @returns {Promise|object}
    */
 
@@ -140,6 +149,8 @@
   /** @type {boolean} */
   export let keepCreated = defaults.keepCreated;
   export let delimiter = defaults.delimiter;
+  /** @type {CreateFilterFunction} */
+  export let createFilter = null;
   /** @type {CreateHandlerFunction} */
   export let createHandler = null;
   // remote
@@ -179,6 +190,18 @@
   export let valueAsObject = defaults.valueAsObject;
   export let parentValue = undefined;
 
+  export function focus() {
+    ref_input.focus();
+  }
+  // required for custom element
+  export function setSelection(selection, triggerChangeEvent) {
+    watch_value_change(selection);
+    triggerChangeEvent && emitChangeEvent();
+  }
+  // required for custom element
+  export function getSelection(onlyValues) {
+    return onlyValues ? value : readSelection;
+  }
   /**
    * Add ability to re-initialize fetch even when component is in query mode
    * @param {string|number|array} value
@@ -281,9 +304,10 @@
   $: highlightFirstItem && setDropdownIndex(0, { asc: true });
   $: options_filtered.length <= dropdown_index && setDropdownIndex(0, { asc: !creatable, desc: creatable });
 
-  $: if (!createHandler) createHandler = string => ({
-    [currentValueField]: string,
-    [currentLabelField]: `${creatablePrefix}${string}`
+  $: if (!createFilter) createFilter = inputVal => alreadyCreated.includes(inputVal);
+  $: if (!createHandler) createHandler = ({ inputValue, labelField, valueField, prefix }) => ({
+    [valueField]: inputValue,
+    [labelField]: `${prefix}${inputValue}`
   });
 
   // watch functions
@@ -430,7 +454,12 @@
           !strictMode && res.push(
             // only sync (or default) handler is allowed for code simplicty
             createHandler
-              ? createHandler(val, currentValueField, currentLabelField, creatablePrefix)
+              ? createHandler({
+                inputValue: val,
+                valueField: currentValueField,
+                labelField: currentLabelField,
+                prefix: creatablePrefix
+              })
               : {
                 [currentValueField]: val,
                 [currentLabelField]: val
@@ -1429,7 +1458,7 @@
       <div class="is-dropdown-row">
         <button type="button" class="creatable-row" on:click|preventDefault={onCreate} on:mousedown|preventDefault
           class:active={(options_filtered.length ? options_filtered.length : 0) === dropdown_index}
-          class:is-disabled={alreadyCreated.includes(input_value)}
+          class:is-disabled={createFilter(input_value)}
         >
           <slot name="create-row" {isCreating} inputValue={input_value} i18n={i18n_actual}>
             <span class:is-loading={isCreating}>{i18n_actual.createRowLabel(input_value)}</span>
