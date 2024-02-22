@@ -716,7 +716,9 @@
       selectedOptions = [opt];
       selectedKeys.clear();
       selectedKeys.add(opt[currentValueField]);
-      dropdown_index = options_flat.indexOf(opt);
+      tick().then(() => {
+        dropdown_index = options_flat.indexOf(opt);
+      });
     }
 
     if (optionResolver) {
