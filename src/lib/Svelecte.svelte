@@ -816,6 +816,12 @@
     if (!keepCreated) alreadyCreated = [];  // ref #198
     maxReached = false;       // reset forcefully, related to #145
     if (input_value) input_value = '';
+
+    if (optionResolver) {
+      prev_options = optionResolver(options, selectedKeys);
+      return;
+    }
+
     options_flat = options_flat;
   }
 
