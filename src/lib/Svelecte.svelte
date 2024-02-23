@@ -1047,7 +1047,7 @@
     if (resetOnBlur) {
       input_value = '';
     } else {
-      fetch_controller && fetch_controller.abort();
+      fetch_controller && !fetch_initOnly && fetch_controller.abort();
     }
     collapseSelection === 'blur' && !is_dragging && setTimeout(() => {
       doCollapse = true;
@@ -1119,7 +1119,10 @@
 
   function trigger_fetch(inputValue) {
     if (fetch_initOnly) return;
-    fetch_factory && debounce(fetch_runner, fetchDebounceTime)();
+    if (fetch_factory) {
+      if (fetch_controller && fetch_controller.signal.aborted === false) fetch_controller.abort();
+      debounce(fetch_runner, fetchDebounceTime)();
+    }
   }
   /**
    * @typedef {object} FetchOptions
@@ -1129,8 +1132,6 @@
    * @param {FetchOptions} opts
    */
   function fetch_runner(opts = {}) {
-    if (fetch_controller && fetch_controller.signal.aborted === false) fetch_controller.abort();
-
     if ((opts.init !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
       if (fetchResetOnBlur) {
