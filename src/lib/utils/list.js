@@ -13,7 +13,7 @@ import Sifter from './sifter.js';
 /**
  * @typedef {object} SortDef
  * @property {string} field
- * @property {string?} [direction]
+ * @property {'asc'|'desc'} [direction]
  *
  * @typedef {object} SearchProps
  * @property {string|string[]} [fields]
@@ -150,7 +150,7 @@ export function getFilterProps(object) {
  * @param {?string} inputValue
  * @param {?Set} excludeSelected
  * @param {ComponentConfig} config
- * @param {SearchProps} searchProps
+ * @param {SearchProps|null} searchProps
  * @returns {object[]}
  */
 export function filterList(options, inputValue, excludeSelected, config, searchProps) {

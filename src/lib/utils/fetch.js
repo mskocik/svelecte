@@ -17,15 +17,14 @@ export function debounce(fn, delay) {
 };
 
 /**
- * @typedef {object} RequestFactoryProps
- * @property {string?} url
- * @property {string?} parentValue
- * @property {string[]|string|number} initial
- * @property {AbortController} controller
- *
  * @callback RequestFactoryFn
  * @param {string} query
- * @param {RequestFactoryProps} props
+ * @param {{
+ *  url: ?string,
+ *  parentValue: string|number|null|undefined,
+ *  initial: string|number|string[]|null,
+ *  controller: AbortController
+ *  }} props
  * @param {RequestInit|object} fetchProps
  * @returns {Request}
  */

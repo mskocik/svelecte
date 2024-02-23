@@ -13,8 +13,8 @@
    *
    * @callback RenderFunction
    * @param {object} item
-   * @param {boolean?} [selectionSection]
-   * @param {string?} [inputValue]
+   * @param {boolean} [selectionSection]
+   * @param {string} [inputValue]
    * @returns {string}
    */
 
@@ -27,22 +27,22 @@
   /**
    * Resolver function for creating new items. Async functions are support
    *
-   * @typedef {object} CreateHandlerProps
-   * @property {string} inputValue
-   * @property {string} valueField
-   * @property {string} labelField
-   * @property {string} prefix
-   *
    * @callback CreateHandlerFunction
-   * @param {CreateHandlerProps} props
-   * @returns {Promise|object}
+   * @param {{
+   *  inputValue: string,
+   *  valueField: string,
+   *  labelField: string,
+   *  prefix: string
+   * }} props
+   * @returns {Promise<object>|object}
    */
 
 
   /**
    * @callback OptionResolverFunction
-   * @param {object[][]} options
+   * @param {any} options
    * @param {Set} selectedKeys
+   * @returns {object[]}
    */
 
   const stringFormatters = {
@@ -137,12 +137,12 @@
   export let max = defaults.max;
   /** @type {'blur'|'always'|null} */
   export let collapseSelection = defaults.collapseSelection;
-  /** @type {boolean} */
   /** @type {boolean|'auto'} */
   export let keepSelectionInList = defaults.keepSelectionInList;
   // creating
   /** @type {boolean} */
   export let creatable = defaults.creatable;
+  /** @type {string} */
   export let creatablePrefix = defaults.creatablePrefix;
   /** @type {boolean} */
   export let allowEditing = defaults.allowEditing;
@@ -187,7 +187,9 @@
   export let readSelection = null;
   /** @type {array|string|number|object|null} */
   export let value = null;
+  /** @type {boolean} */
   export let valueAsObject = defaults.valueAsObject;
+  /** @type {string|number|null|undefined} */
   export let parentValue = undefined;
 
   export function focus() {
@@ -231,7 +233,7 @@
   let prev_options = optionResolver
     ? optionResolver(options, new Set())
     : ensureObjectArray(options, valueField, labelField);
-  let prev_parent_value;
+  let prev_parent_value = undefined;
   let currentValueField = valueField || fieldInit('value', prev_options, groupItemsField);
   let currentLabelField = labelField || fieldInit('label', prev_options, groupItemsField);
   let selectedOptions = value !== null ? initSelection(prev_options, value, valueAsObject, groupItemsField, currentValueField) : [];
