@@ -42,6 +42,7 @@ export function requestFactory(query, { url, parentValue, initial }, fetchProps)
   if (query) {
     url = url.replace('[query]', encodeURIComponent(query));
   }
+  if (Array.isArray(initial) && initial.length === 0) initial = null;
   if (initial) {
     url = url.replace('[query]', 'init');
   }

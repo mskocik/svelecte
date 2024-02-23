@@ -274,7 +274,6 @@
   let isAndroid = null;
   let doCollapse = collapseSelection !== null;
   let isFetchingData = false;
-  let fetch_performed = false;  // related to and reset in watch_listMessage
   let isCreating = false;
   let flipDurationMs = 100;
   let is_dragging = false;
@@ -291,7 +290,7 @@
 
   // #region [reactivity]
   $: watch_item_props(valueField, labelField);
-  $: maxReached = max && selectedOptions.length == max;     // == is intentional, if string is provided
+  $: maxReached = selectedOptions.length && max && selectedOptions.length == max;     // == is intentional, if string is provided
   $: watch_options(options);
   $: options_flat = flatList(prev_options, itemConfig);
   $: watch_value_change(value);
@@ -598,47 +597,14 @@
    *
    * @param maxReached
    * @param options_filtered
-   * @param input_value
-   * @param minQuery
-   * @param fetch
-   * @param isFetchingData
    */
-  function watch_listMessage(maxReached, options_filtered, input_value, minQuery, fetch, isFetchingData) {
-    let val = i18n_actual.empty;
-    if (maxReached) {
-      val = i18n_actual.max(max);
-    } else {
-      // fetch mode
-      if (fetch) {
-        if (fetch_performed && options_filtered.length === 0) {
-          listMessage = fetch_initOnly
-            ? i18n_actual.empty
-            : i18n_actual.fetchEmpty;
-          fetch_performed = false;
-          return;
-        }
-        if (isFetchingData) {
-          val = i18n_actual.fetchInit;
-        } else {
-          if (fetch_initOnly) {
-            listMessage = val;
-            return;
-          }
-          if (minQuery <= 1) {
-            val = i18n_actual.fetchBefore;
-          } else {
-            val = i18n_actual.fetchQuery(minQuery, input_value.length);
-          }
-        }
-      // normal mode
-      } else {
-        if (input_value.length && options_filtered.length === 0) {
-          val = i18n_actual.nomatch;
-        }
-      }
-    }
+  function watch_listMessage(maxReached, options_filtered) {
+    // fetch-related states are handled manually
+    if (fetch && !fetch_initOnly) return;
 
-    listMessage = val;
+    listMessage = options_filtered.length !== options_flat.length
+      ? i18n_actual.nomatch
+      : i18n_actual.empty;
   }
 
   // #endregion
@@ -1109,13 +1075,13 @@
   let listMessage = fetch
     ? (fetch_initOnly
       ? i18n_actual.fetchInit
-      : (minQuery > 0
+      : (minQuery > 1
         ? i18n_actual.fetchQuery(minQuery, 0)
         : i18n_actual.fetchBefore
       )
     )
     : i18n_actual.empty;
-  $: watch_listMessage(maxReached, options_filtered, input_value, minQuery, isFetchingData);
+  $: watch_listMessage(maxReached, options_filtered);
 
   /**
    *
@@ -1128,8 +1094,12 @@
       return;
     }
 
+    if (fetch_initOnly || fetch_initValue) {
+      isFetchingData = true;
+      fetch_runner({init: true}); // skip debounce on init
+    }
+
     debouncedFetch = debounce(fetch_runner, fetchDebounceTime);
-    (fetch_initOnly || fetch_initValue) && fetch_runner({init: true}); // skip debounce on init
   }
 
   /**
@@ -1146,13 +1116,22 @@
     return { control };
   })
 
+  /**
+   * User only for QUERY mode
+   *
+   * @param {string} inputValue
+   */
   function trigger_fetch(inputValue) {
-    if (fetch_initOnly) return;
+    if (fetch_initOnly || maxReached) return;
     if (debouncedFetch) {
       fetch_reset();
-      if (!inputValue) isFetchingData = false;
+      isFetchingData = true;
+      if (input_value.length < minQuery) {
+        isFetchingData = false;
+      }
       if (fetchResetOnBlur) options_filtered = [];
-      listMessage = minQuery < 1
+      dropdown_show = inputValue.length >= minQuery ? false : true;
+      listMessage = minQuery <= 1
         ? i18n_actual.fetchBefore
         : i18n_actual.fetchQuery(minQuery, inputValue.length);
       debouncedFetch();
@@ -1170,23 +1149,25 @@
     if ((opts.init !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
       if (fetchResetOnBlur) {
-        fetch_performed = false;
         prev_options = optionResolver ? optionResolver(options, selectedKeys) : [];
       }
       return;
     }
 
-    if (input_value && input_value.length < minQuery) return;
+    if (input_value && input_value.length < minQuery) {
+      isFetchingData = false;
+      return;
+    }
 
     // update fetchInitValue when fetch is changed, but we are in 'init' mode, ref #113
-    if (fetch_initOnly && prev_value) fetch_initValue = prev_value;
+    if (fetch_initOnly && prev_value && (!multiple || prev_value?.length > 0)) fetch_initValue = prev_value;
 
     // reset found items
     if (fetchResetOnBlur) prev_options = [];
+    // if (fetchResetOnBlur) prev_options = [];
 
     const initial = fetch_initValue || opts.initValue;
 
-    isFetchingData = true;
     const built = defaults.requestFactory(input_value, { parentValue, url: fetch, initial }, fetchProps);
     fetch_controller = built.controller;
     fetch_reset(built.controller);
@@ -1203,7 +1184,7 @@
               data = [];
             }
             prev_options = data;
-            dispatch('fetch', prev_options);
+            dispatch('fetch', data);
 
             tick().then(() => {
               if (initial) {
@@ -1225,12 +1206,20 @@
         if (fetchAborted === true) return;
         listMessage = fetch_initOnly
           ? i18n_actual.empty
-          : i18n_actual.fetchEmpty;
+          : (opts.initValue
+            ? (minQuery > 1
+              ? i18n_actual.fetchQuery(minQuery, 0)
+              : i18n_actual.fetchBefore
+            )
+            : i18n_actual.fetchEmpty
+          );
         fetch_controller = null;
-        fetch_performed = true;
         isFetchingData = false;
         if (is_focused) is_dropdown_opened = true;
 
+        if (is_dropdown_opened && !dropdown_show) {
+          dropdown_show = true;
+        }
       });
   }
 
