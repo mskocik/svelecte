@@ -4,7 +4,7 @@
  * @returns {string}
  *
  * @callback i18n_fetchQuery
- * @param {number} max
+ * @param {number} minQuery
  * @param {number} inputLength
  * @returns {string}
  *
@@ -136,9 +136,10 @@ const /**@type {Settings} */ settings = {
     nomatch: 'No matching options',
     max: num => `Maximum items ${num} selected`,
     fetchBefore: 'Type to start searching',
-    fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength
-      ? `at least ${minQuery - inputLength} characters `
-      : '' }to start searching`,
+    fetchQuery: (minQuery, inputLength) => `Type at least ${minQuery} character${
+        minQuery > 1 ? 's' : ''
+      } to start searching`
+    ,
     fetchInit: 'Fetching data, please wait...',
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,

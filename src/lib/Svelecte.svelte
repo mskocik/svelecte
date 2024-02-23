@@ -286,6 +286,7 @@
   let /** svelte-tiny-virtual-list  */  ref_virtuallist;
 
   const itemConfig = createConfig(currentValueField, currentLabelField, groupLabelField, groupItemsField);
+  watch_i18n(i18n, true); // ensure it is available immediately
 
   // #region [reactivity]
   $: watch_item_props(valueField, labelField);
@@ -513,6 +514,9 @@
     }
     value = prev_value;
     readSelection = unified_selection;
+    if (newSelection.length === max) {
+      listMessage = i18n_actual.max(max);
+    }
   }
 
   /**
@@ -582,8 +586,10 @@
     document[val ? 'addEventListener' : 'removeEventListener']('scroll', dropdown_scroller, { passive: true });
   }
 
-  function watch_i18n(obj) {
-    i18n_actual = Object.assign({}, config.i18n, obj || {});
+  function watch_i18n(obj, forceInit = null) {
+    if (is_mounted || forceInit) {
+      i18n_actual = Object.assign({}, config.i18n, obj || {});
+    }
   }
 
   /**
@@ -1099,7 +1105,15 @@
   $: trigger_fetch(input_value);
   $: is_mounted && watch_fetch_init(fetch, parentValue);
 
-  let listMessage;
+  let listMessage = fetch
+    ? (fetch_initOnly
+      ? i18n_actual.fetchInit
+      : (minQuery > 0
+        ? i18n_actual.fetchQuery(minQuery, 0)
+        : i18n_actual.fetchBefore
+      )
+    )
+    : i18n_actual.empty;
   $: watch_listMessage(maxReached, options_filtered, input_value, minQuery, isFetchingData);
 
   /**
@@ -1121,6 +1135,10 @@
     if (fetch_initOnly) return;
     if (fetch_factory) {
       if (fetch_controller && fetch_controller.signal.aborted === false) fetch_controller.abort();
+      if (fetchResetOnBlur) options_filtered = [];
+      listMessage = minQuery < 1
+        ? i18n_actual.fetchBefore
+        : i18n_actual.fetchQuery(minQuery, inputValue.length);
       debounce(fetch_runner, fetchDebounceTime)();
     }
   }
@@ -1186,6 +1204,9 @@
       })
       // teardown
       .finally(() => {
+        listMessage = fetch_initOnly
+          ? i18n_actual.empty
+          : i18n_actual.fetchEmpty;
         fetch_controller = null;
         fetch_performed = true;
         isFetchingData = false;
