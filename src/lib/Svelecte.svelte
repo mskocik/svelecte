@@ -1478,7 +1478,8 @@
   /** make it global to be able to apply it also for anchored select */
   :global(.sv-hidden-element) { opacity: 0; position: absolute; z-index: -2; top: 0; height: var(--sv-min-height, 30px)}
 
-    /* stylable styles */
+  /* stylable props */
+  /*
   :root {
     --sv-min-height: 30px;
     --sv-bg: #fff;
@@ -1487,9 +1488,10 @@
     --sv-border-radius: 4px;
     --sv-general-padding: 4px;
     --sv-control-bg: var(--sv-bg);
-    --sv-item-wrap-padding: 3px 3px 3px 6px
+    --sv-item-wrap-padding: 3px 3px 3px 6px;
     --sv-item-selected-bg: #efefef;
     --sv-item-btn-color: #000;
+    --sv-item-btn-color-hover: #777;
     --sv-item-btn-bg: #efefef;
     --sv-item-btn-bg-hover: #ddd;
     --sv-icon-color: #bbb;
@@ -1498,17 +1500,21 @@
     --sv-icon-size: 20px;
     --sv-separator-bg: #ccc;
     --sv-btn-border: 0;
-    --sv-placeholder-color: ccccd6;
+    --sv-placeholder-color: #ccccd6;
     --sv-dropdown-bg: var(--sv-bg);
     --sv-dropdown-offset: 1px;
+    --sv-dropdown-border: 1px solid rgba(0,0,0,0.15);
     --sv-dropdown-width: auto;
     --sv-dropdown-shadow: 0 6px 12px #0000002d;
     --sv-dropdown-height: 320px;
     --sv-dropdown-active-bg: #F2F5F8;
     --sv-dropdown-selected-bg: #ECF3F9;
     --sv-create-disabled-bg: #fcbaba;
+    --sv-create-kbd-border: 1px solid #efefef;
+    --sv-create-kbd-bg: #fff;
     --sv-loader-border: 2px solid #ccc;
   }
+  */
   .a11y-text {
     z-index: 9999;
     border: 0px;
@@ -1526,7 +1532,7 @@
     color: var(--sv-color, inherit);
 
     &.is-disabled > .sv-control {
-      background-color: var(--sv-disabled-bg);
+      background-color: var(--sv-disabled-bg, #eee);
     }
   }
 
@@ -1535,7 +1541,8 @@
     align-items: center;
     border: var(--sv-border, 1px solid #ccc);
     border-radius: var(--sv-border-radius, 4px);
-    background-color: var(--sv-control-bg);
+    background-color: var(--sv-control-bg, var(--sv-bg, #fff));
+    min-height: var(--sv-min-height, 30px);
   }
 
   .sv-control--selection {
@@ -1558,7 +1565,7 @@
   :global(.sv-item--wrap) {
     display: flex;
     min-width: 0;
-    padding: var(--item-wrap-padding, 3px 3px 3px 6px);
+    padding: var(--sv-item-wrap-padding, 3px 3px 3px 6px);
     &.is-multi {
       background-color: var(--sv-item-selected-bg, #efefef);
     }
@@ -1577,17 +1584,20 @@
     align-self: stretch;
     padding: 0 4px;
     box-sizing: border-box;
-    border-radius: 2px;
+    border-radius: calc(var(--sv-border-radius, 4px) / 2);
     border-width: 0;
     margin: 0;
     cursor: pointer;
-    background-color: var(--sv-item-btn-bg, var(--sv-item-selected-bg));
+    background-color: var(--sv-item-btn-bg, var(--sv-item-selected-bg, #efefef));
 
-    &:hover {
-      background-color: var(--sv-item-btn-bg-hover);
-    }
     & > svg {
-      fill: var(--sv-item-btn-color, var(--sv-icon-color));
+      fill: var(--sv-item-btn-color, var(--sv-icon-color, #bbb));
+    }
+    &:hover {
+      background-color: var(--sv-item-btn-bg-hover, #ddd);
+      & > svg {
+        fill: var(--sv-item-btn-color-hover, #777);
+      }
     }
   }
 
@@ -1600,11 +1610,11 @@
     position: relative;
   }
   .sv-btn-indicator {
-    color: var(--sv-icon-color);
+    color: var(--sv-icon-color, #bbb);
     display: flex;
     transition: color 150ms ease 0s;
     box-sizing: border-box;
-    background-color: var(--sv-icon-bg);
+    background-color: var(--sv-icon-bg, transparent);
     border: var(--sv-btn-border, 0);
     padding: 0;
     margin: var(--sv-general-padding, 4px);
@@ -1614,33 +1624,33 @@
     stroke: currentcolor;
     stroke-width: 0px;
     &:hover {
-      color: var(--sv-icon-color-hover);
+      color: var(--sv-icon-color-hover, #777);
     }
   }
   .sv-btn-separator {
     align-self: stretch;
-    background-color: var(--sv-separator-bg);
+    background-color: var(--sv-separator-bg, #ccc);
     margin-bottom: var(--sv-general-padding, 4px);
     margin-top: var(--sv-general-padding, 4px);
     width: 1px;
     box-sizing: border-box;
   }
   .indicator-icon {
-    width: var(--sv-icon-size);
-    height: var(--sv-icon-size);
+    width: var(--sv-icon-size, 20px);
+    height: var(--sv-icon-size, 20px);
   }
   .is-loading:after {
     animation: spinAround 0.5s infinite linear;
-    border: var(--sv-loader-border);
-    border-radius: 290486px;
+    border: var(--sv-loader-border, 2px solid #ccc);
+    border-radius: 50%;
     border-right-color: transparent;
     border-top-color: transparent;
     content: "";
     display: block;
-    height: var(--sv-icon-size);
-    width: var(--sv-icon-size);
+    height: var(--sv-icon-size, 20px);
+    width: var(--sv-icon-size, 20px);
     right: var(--sv-general-padding, 4px);
-    top: calc(50% - (var(--sv-icon-size) / 2));
+    top: calc(50% - (var(--sv-icon-size, 20px) / 2));
     position: absolute !important;
     box-sizing: border-box;
   }
@@ -1662,13 +1672,13 @@
     box-sizing: border-box;
     position: absolute;
     min-width: 100%;
-    width: var(--sv-dropdown-width);
-    background-color: var(--sv-dropdown-bg);
+    width: var(--sv-dropdown-width, auto);
+    background-color: var(--sv-dropdown-bg, var(--sv-bg, #fff));
     overflow-y: auto;
     overflow-x: hidden;
-    border: 1px solid rgba(0,0,0,0.15);
+    border: var(--sv-dropdown-border, 1px solid rgba(0,0,0,0.15));
     border-radius: var(--sv-border-radius, 4px);
-    box-shadow: var(--sv-dropdown-shadow);
+    box-shadow: var(--sv-dropdown-shadow, 0 6px 12px #0000002d);
     opacity: 0;
     z-index: -1000;
     pointer-events: none;
@@ -1683,7 +1693,7 @@
     /* min-height: 40px; */
     padding: 0;
     box-sizing: border-box;
-    max-height: var(--sv-dropdown-height);
+    max-height: var(--sv-dropdown-height, 320px);
     overflow-y: auto;
     overflow-x: hidden;
     &.has-items {
@@ -1691,7 +1701,7 @@
     }
   }
   .in-dropdown.is-selected {
-    background-color: var(--sv-dropdown-selected-bg);
+    background-color: var(--sv-dropdown-selected-bg, #ECF3F9);
   }
   .in-dropdown.is-disabled {
     opacity: 0.5;
@@ -1700,7 +1710,7 @@
   .in-dropdown.sv-dd-item-active,
   .in-dropdown:hover,
   .in-dropdown:active {
-    background-color: var(--sv-dropdown-active-bg);
+    background-color: var(--sv-dropdown-active-bg, #F2F5F8);
   }
   .is-dropdown-row {
     padding: var(--sv-general-padding, 4px);
@@ -1710,7 +1720,7 @@
 
   .sv-dropdown-scroll.has-items + .is-dropdown-row {
     border-top: 1px solid transparent;
-    border-color: var(--sv-separator-bg);
+    border-color: var(--sv-separator-bg, #ccc);
   }
   .creatable-row {
     width: 100%;
@@ -1720,17 +1730,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: 2px;
-    padding: 3px 3px 3px 6px;
+    border-radius: calc(var(--sv-border-radius, 4px) / 2);
+    padding: var(--sv-item-wrap-padding, 3px 3px 3px 6px);
 
     &:hover,
     &:active,
     &.active {
-      background-color: var(--sv-dropdown-active-bg);
+      background-color: var(--sv-dropdown-active-bg, #F2F5F8);
     }
     &.active.is-disabled {
       opacity: 0.5;
-      background-color: var(--sv-create-disabled-bg);
+      background-color: var(--sv-create-disabled-bg, #fcbaba);
     }
     &.is-disabled {
       opacity: 0.5;
@@ -1751,11 +1761,11 @@
     align-content: center;
   }
   .shortcut > kbd {
-      border: 1px solid #efefef;
-      border-radius: 4px;
+      border: var(--sv-create-kbd-border, 1px solid #efefef);
+      border-radius: var(--sv-border-radius, 4px);
       padding: 0px 6px;
       margin: -1px 0;
-      background-color: white;
+      background-color: var(--sv-create-kbd-bg, #fff);
   }
 
   /** #region input */
@@ -1802,7 +1812,7 @@
   .sv-input--text {
     outline: none;
     &:placeholder {
-      color: var(--sv-placeholder-color);
+      color: var(--sv-placeholder-color, #ccccd6);
     }
   }
   /* #endregion */
