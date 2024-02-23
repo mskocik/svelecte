@@ -39,6 +39,7 @@
  * @property {string} fetchEmpty
  * @property {i18n_collapsedSelection} collapsedSelection
  * @property {i18n_createRowLabel} createRowLabel
+ * @property {string} emptyCreatable
  * @property {i18n_aria_selection} aria_selected
  * @property {i18n_aria_listActive} aria_listActive
  * @property {i18n_aria_inputFocus} aria_inputFocused
@@ -143,7 +144,8 @@ const /**@type {Settings} */ settings = {
     fetchInit: 'Fetching data, please wait...',
     fetchEmpty: 'No data related to your search',
     collapsedSelection: count => `${count} selected`,
-    createRowLabel: value => `Create '${value}'`
+    createRowLabel: value => `Add '${value}'`,
+    emptyCreatable: 'Add new by typing'
   },
   requestFactory: null
 }

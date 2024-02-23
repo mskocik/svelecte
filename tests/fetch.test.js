@@ -81,6 +81,21 @@ describe('fetch:init', () => {
 
     expect(screen.queryByText('Blue')).not.toBeInTheDocument();
   });
+
+  it('properly set initial value for multiple', async () => {
+    const { component } = render(Svelecte, {
+      fetch: 'http://localhost:5173/api/colors',
+      fetchDebounceTime: 0,
+      fetchMode: 'init',
+      value: ['blue', 'red'],
+      multiple: true
+    });
+
+    await sleep(300);
+
+    expect(screen.queryByText('Blue')).toBeInTheDocument();
+    expect(screen.queryByText('Red')).toBeInTheDocument();
+  });
 });
 
 describe('fetch:query', () => {
@@ -94,6 +109,22 @@ describe('fetch:query', () => {
     await sleep(300);
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
+  });
+
+
+  it('properly set initial value for multiple', async () => {
+    render(Svelecte, {
+      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetchDebounceTime: 0,
+      fetchMode: 'init',
+      value: ['blue', 'red'],
+      multiple: true
+    });
+
+    await sleep(300);
+
+    expect(screen.queryByText('Blue')).toBeInTheDocument();
+    expect(screen.queryByText('Red')).toBeInTheDocument();
   });
 
   it('use refetchWith to fetch newly changed default value', async () => {

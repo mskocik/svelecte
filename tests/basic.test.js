@@ -4,12 +4,12 @@ import Svelecte from '$lib/Svelecte.svelte';
 describe('Core', () => {
   it('Empty setup', () => {
     const rr = render(Svelecte);
-    
+
     expect(rr.container.querySelector('.svelecte')).toBeInTheDocument();
   });
 
   it('Simple single-select', () => {
-    
+
     const rr = render(Svelecte, {
       options: ['One', 'Two', 'Three']
     });

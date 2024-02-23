@@ -290,7 +290,7 @@
 
   // #region [reactivity]
   $: watch_item_props(valueField, labelField);
-  $: maxReached = selectedOptions.length && max && selectedOptions.length == max;     // == is intentional, if string is provided
+  $: maxReached = max !== 0 && selectedOptions.length == max;     // == is intentional, if string is provided
   $: watch_options(options);
   $: options_flat = flatList(prev_options, itemConfig);
   $: watch_value_change(value);
@@ -514,7 +514,7 @@
     }
     value = prev_value;
     readSelection = unified_selection;
-    if (newSelection.length === max) {
+    if (max && newSelection.length === max) {
       listMessage = i18n_actual.max(max);
     }
   }
@@ -602,9 +602,20 @@
     // fetch-related states are handled manually
     if (fetch && !fetch_initOnly) return;
 
+    if (maxReached) {
+      listMessage = i18n_actual.max(max);
+      return;
+    }
+
     listMessage = options_filtered.length !== options_flat.length
-      ? i18n_actual.nomatch
-      : i18n_actual.empty;
+      ? (creatable
+        ? i18n_actual.emptyCreatable
+        : i18n_actual.nomatch
+      )
+      : (creatable
+        ? i18n_actual.emptyCreatable
+        : i18n_actual.empty
+      );
   }
 
   // #endregion
@@ -686,7 +697,7 @@
     if (closeAfterSelect === true || (closeAfterSelect === 'auto' && !multiple)) {
       is_dropdown_opened = false;
     }
-    if (selectedOptions.length == max) {
+    if (max && selectedOptions.length == max) {
       dropdown_index = 0;
     }
   }
@@ -1080,7 +1091,10 @@
         : i18n_actual.fetchBefore
       )
     )
-    : i18n_actual.empty;
+    : (creatable
+      ? i18n_actual.emptyCreatable
+      : i18n_actual.empty
+    );
   $: watch_listMessage(maxReached, options_filtered);
 
   /**
@@ -1167,6 +1181,7 @@
     // if (fetchResetOnBlur) prev_options = [];
 
     const initial = fetch_initValue || opts.initValue;
+    if (fetch_initOnly) listMessage = i18n_actual.fetchInit;
 
     const built = defaults.requestFactory(input_value, { parentValue, url: fetch, initial }, fetchProps);
     fetch_controller = built.controller;
@@ -1206,7 +1221,7 @@
         if (fetchAborted === true) return;
         listMessage = fetch_initOnly
           ? i18n_actual.empty
-          : (opts.initValue
+          : (initial
             ? (minQuery > 1
               ? i18n_actual.fetchQuery(minQuery, 0)
               : i18n_actual.fetchBefore
