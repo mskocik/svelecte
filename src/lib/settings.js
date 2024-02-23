@@ -47,10 +47,6 @@
  * @property {string} aria_describedby
  *
  * @typedef {object} Settings
- * @property {boolean} disabled
- * @property {boolean} disabled
- * @property {boolean} disabled
- *
  * @property {string|null} valueField
  * @property {string|null} labelField
  * @property {string} groupLabelField
@@ -86,8 +82,6 @@
  * @property {import("./utils/fetch").RequestFactoryFn} requestFactory
  */
 const /**@type {Settings} */ settings = {
-  // html
-  disabled: false,
   // basic
   valueField: null,
   labelField: null,

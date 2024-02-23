@@ -2,7 +2,7 @@ import { superValidate, message } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 import { schema } from './schema';
-import { dataset } from '../../data';
+import { dataset } from '../data';
 
 
 ///// Load function /////
@@ -23,6 +23,6 @@ export const actions = {
 
 		if (!form.valid) return fail(400, { form });
 
-		return message(form, 'Form posted successfully!');
+		return message(form, `Form posted successfully! You have submitted ${form.data.tags.length} colors.`);
 	}
 };

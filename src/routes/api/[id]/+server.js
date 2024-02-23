@@ -19,17 +19,21 @@ export async function GET({ url, params }) {
     if (throttle) {
       await sleep(parseInt(throttle));
     }
-
+    // asdasdasasd
     // allow multipe sources
-    let data = params.id.split('-').map(data => dataset[data]()).reduce((/** @type {array} */ res, list) => {
-      return res.concat(...list);
-    }, []);
+    let data = params.id.split('-')
+      .map(data => dataset[data]())
+      .reduce((/** @type {array} */ res, list) => {
+        // country groups
+        if (Array.isArray(list[0].options)) list = list.reduce((r, g) => r.concat(...g.options), []);
+        return res.concat(...list);
+      }, []);
 
     if (query === 'init' && initial) {
       const vals = initial.split(',');
-      data = colors.filter(c => vals.includes(c.value));
+      data = data.filter(c => vals.includes(c.value));
     } else if (query) {
-      data = colors.filter(c => c.text.toLowerCase().includes(query.toLowerCase()));
+      data = data.filter(c => c.text.toLowerCase().includes(query.toLowerCase()));
     }
 
     return json({ data });

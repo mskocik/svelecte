@@ -1,5 +1,6 @@
 import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vitest/config';
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 const vitestBrowserConditionPlugin = {
   name: 'vite-plugin-vitest-browser-condition',
@@ -11,7 +12,11 @@ const vitestBrowserConditionPlugin = {
 }
 
 export default defineConfig({
-  plugins: [vitestBrowserConditionPlugin, sveltekit()],
+  plugins: [
+    nodePolyfills({
+      include: ['path', 'fs'],
+    }),
+    vitestBrowserConditionPlugin, sveltekit()],
   test: {
     globals: true,
     environment: 'jsdom',

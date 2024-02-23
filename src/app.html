@@ -7,8 +7,21 @@
 		%sveltekit.head%
 		<link rel="stylesheet" href="%sveltekit.assets%/normalize.css">
 		<style>
-			.highlight {
-				background-color: yellow;
+			.dark {
+				& .highlight {
+					background-color: #626262;
+				}
+				& .catppuccin-latte {
+					display: none;
+				}
+			}
+			html:not(.dark) {
+				.monokai {
+					display: none;
+					}
+				.highlight {
+					background-color: yellow;
+				}
 			}
 		</style>
 	</head>

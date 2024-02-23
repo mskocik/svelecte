@@ -1,10 +1,10 @@
 <script>
-  import { page } from '$app/stores';
   import { arrayProxy, superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
   import Svelecte from '$lib/Svelecte.svelte';
 
   export let data;
+  export let status;
 
   const pageForm = superForm(data.form, {
     clearOnSubmit: 'none'
@@ -17,34 +17,33 @@
   const { values, errors } = arrayProxy(pageForm, 'tags', { taint: true });
 </script>
 
-<SuperDebug data={$form} />
-
-<h3>Superforms multi-select component</h3>
-
 {#if $message}
   <div class="status"
-    class:error={$page.status >= 400}
-    class:success={$page.status == 200}
+    class:error={status.status >= 400}
+    class:success={status.status == 200}
   >
     {$message}
   </div>
 {/if}
 
-<h3>{$values}</h3>
-
 <form method="POST" use:enhance>
-  <label for="sv-select-tags-input">Pick a color</label>
+  <fieldset>
+    <legend>Superform</legend>
+  <label for="sv-tags-select-input">
+    Pick a color
+  </label>
   <Svelecte {options} name="tags" bind:value={$values} clearable required multiple/>
-  
-  {#if $errors}<p class="invalid">{$errors}</p>{/if}
-
+  <br>
   <div>
-    <button type="submit">Submit</button>
+    <button type="submit" class="press-btn">Submit</button>
+    {#if $errors}<span class="invalid">{$errors}</span>{/if}
   </div>
+</fieldset>
 </form>
+<SuperDebug data={$form} />
+<br>
+<p><a target="_blank" href="https://superforms.rocks/api">Superforms API Reference</a></p>
 
-<hr>
-<p><a target="_blank" href="https://superforms.rocks/api">API Reference</a></p>
 
 <style>
   .status {
@@ -53,10 +52,19 @@
     padding-left: 8px;
     border-radius: 2px;
     font-weight: 500;
+    padding: 32px;
   }
 
   .status.success {
     background-color: seagreen;
+  }
+
+  fieldset, legend {
+    padding: 12px;
+  }
+  legend {
+    padding: 6px 12px;
+    border: 1px solid white;
   }
 
   .status.error {
@@ -68,10 +76,12 @@
   }
   .invalid {
     color: crimson;
+    margin: 0 20px;
   }
-
-  hr {
-    margin-top: 4rem;
+  .press-btn {
+    background-color: var(--vp-c-brand-2);
+    padding: 8px 12px;
+    border-radius: 4px;
   }
 
   form {
