@@ -520,10 +520,18 @@
    */
   function watch_parentValue(newParentValue) {
     // check for undefined is required because parent have empty value as well and I want to avoid 2 props just for this
-    if (newParentValue !== undefined && prev_parent_value !== newParentValue ) {
+    if ((newParentValue !== undefined && prev_parent_value !== newParentValue)
+      || (newParentValue === undefined && prev_parent_value !== newParentValue)
+    ) {
+      const disabled_to_set = newParentValue === undefined
+        ? false
+        : (!newParentValue
+          ? true
+          : false
+        )
       clearSelection();
       prev_value = multiple ? [] : null;
-      disabled = !parentValue ? true : false;
+      disabled = disabled_to_set;
     }
     prev_parent_value = newParentValue;
     is_fetch_dependent = newParentValue !== undefined;
