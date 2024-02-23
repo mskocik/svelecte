@@ -68,7 +68,6 @@
   };
 
   export const config = defaults;
-  export const TAB_SELECT_NAVIGATE = 'select-navigate';
 </script>
 
 <script>
@@ -593,8 +592,6 @@
   }
 
   /**
-   * TODO: add option for 'noOption_creatable'
-   *
    * @param maxReached
    * @param options_filtered
    */
@@ -786,7 +783,9 @@
       return;
     }
 
-    options_flat = options_flat;
+    options_flat = fetch && !fetch_initOnly && fetchResetOnBlur
+      ? []
+      :options_flat;
   }
 
   function clearSelection() {
@@ -806,7 +805,9 @@
       return;
     }
 
-    options_flat = options_flat;
+    options_flat = fetch && !fetch_initOnly && fetchResetOnBlur
+      ? []
+      :options_flat;
   }
 
   function onCreate(_event) {
@@ -817,8 +818,6 @@
 
   /**
    * @param {KeyboardEvent} event
-   *
-   * //NOTE: previously Svelecte.svelte/onKeyDown
    */
   function processKeyDown(event) {
     // DEPRECATED check this?
@@ -1192,7 +1191,10 @@
       .then((/** @type {object} */ json) => {
         // sveltekit returns error property
         if (!Array.isArray(json) && json?.error) dispatch('fetchError', json.error);
-        return Promise.resolve(fetchCallback ? fetchCallback(json) : (json.data || json.items || json.options || json))
+        return Promise.resolve(fetchCallback
+          ? fetchCallback(json)
+          : (json.data || json.items || json.options || json)
+        )
           .then(data => {
             if (!Array.isArray(data)) {
               console.warn('[Svelecte]:Fetch - array expected, invalid property provided:', data);
@@ -1290,7 +1292,7 @@
   }
 
   /**
-   * FUTURE: take into account searchable to keep inputmode=none
+   * FUTURE: take into account searchable to keep inputmode=none - is this even valid?
    *
    * @param {HTMLElement} target
    */
