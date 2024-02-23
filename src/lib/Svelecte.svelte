@@ -73,6 +73,7 @@
 
 <script>
   import { createEventDispatcher, onMount, tick } from 'svelte';
+  import { writable } from 'svelte/store';
   import { flip } from 'svelte/animate';
   import TinyVirtualList from 'svelte-tiny-virtual-list';
   import { positionDropdown, scrollIntoView, virtualListDimensionsResolver } from './utils/dropdown.js';
@@ -1053,7 +1054,7 @@
     if (resetOnBlur) {
       input_value = '';
     } else {
-      fetch_controller && !fetch_initOnly && fetch_controller.abort();
+      fetch_controller && !fetch_initOnly && fetch_controller.abort('blur');
     }
     collapseSelection === 'blur' && !is_dragging && setTimeout(() => {
       doCollapse = true;
@@ -1099,8 +1100,8 @@
   /** @type {AbortController} */
   let fetch_controller;
 
-  /** @type {import('./utils/fetch.js').RequestFactoryFn} */
-  let fetch_factory;
+  /** @type {function|null} */
+  let debouncedFetch;
 
   $: trigger_fetch(input_value);
   $: is_mounted && watch_fetch_init(fetch, parentValue);
@@ -1123,23 +1124,38 @@
    */
   function watch_fetch_init(fetch, _parentValue) {
     if (!fetch) {
-      fetch_factory = null;
+      debouncedFetch = null;
       return;
     }
 
-    fetch_factory = defaults.requestFactory;
+    debouncedFetch = debounce(fetch_runner, fetchDebounceTime);
     (fetch_initOnly || fetch_initValue) && fetch_runner({init: true}); // skip debounce on init
   }
 
+  /**
+   * Holder for AbortController implemented as store because of reactivity delays
+   *
+   * @type {import('svelte/store').Writable<{control:AbortController}>}
+   */
+  let fetch_store = writable({control: null});
+  /**
+   * @param {AbortController?} control
+   */
+  const fetch_reset = (control = null) => fetch_store.update(val => {
+    val.control?.abort();
+    return { control };
+  })
+
   function trigger_fetch(inputValue) {
     if (fetch_initOnly) return;
-    if (fetch_factory) {
-      if (fetch_controller && fetch_controller.signal.aborted === false) fetch_controller.abort();
+    if (debouncedFetch) {
+      fetch_reset();
+      if (!inputValue) isFetchingData = false;
       if (fetchResetOnBlur) options_filtered = [];
       listMessage = minQuery < 1
         ? i18n_actual.fetchBefore
         : i18n_actual.fetchQuery(minQuery, inputValue.length);
-      debounce(fetch_runner, fetchDebounceTime)();
+      debouncedFetch();
     }
   }
   /**
@@ -1150,6 +1166,7 @@
    * @param {FetchOptions} opts
    */
   function fetch_runner(opts = {}) {
+    fetch_reset();
     if ((opts.init !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
       if (fetchResetOnBlur) {
@@ -1170,10 +1187,10 @@
     const initial = fetch_initValue || opts.initValue;
 
     isFetchingData = true;
-    fetch_controller = new AbortController();
-    const request = fetch_factory(input_value, { parentValue, url: fetch, initial, controller: fetch_controller }, fetchProps
-    );
-    window.fetch(request)
+    const built = defaults.requestFactory(input_value, { parentValue, url: fetch, initial }, fetchProps);
+    fetch_controller = built.controller;
+    fetch_reset(built.controller);
+    window.fetch(built.request)
       .then(resp => resp.json())
       // success
       .then((/** @type {object} */ json) => {
@@ -1198,12 +1215,14 @@
       })
       // error
       .catch(e => {
+        if (e instanceof DOMException && e.name === 'AbortError') return true;
         prev_options = [];
         dispatch('fetchError', e);
-        console.warn('[Svelecte] Unexpected Fetch Error', e);
+        console.warn('[Svelecte] Fetch Error:', e);
       })
       // teardown
-      .finally(() => {
+      .then(fetchAborted => {
+        if (fetchAborted === true) return;
         listMessage = fetch_initOnly
           ? i18n_actual.empty
           : i18n_actual.fetchEmpty;

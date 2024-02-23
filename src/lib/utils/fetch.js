@@ -3,15 +3,14 @@
  *
  * @param {function} fn
  * @param {number} delay
+ * @returns fn
  */
 export function debounce(fn, delay) {
   let timeout;
-	return function() {
-		const self = this;
-		const args = arguments;
+	return (...args) => {
 		clearTimeout(timeout);
-		timeout = setTimeout(function() {
-      fn.apply(self, args)
+		timeout = setTimeout(() => {
+      fn.apply(this, args);
 		}, delay);
 	};
 };
@@ -22,11 +21,13 @@ export function debounce(fn, delay) {
  * @param {{
  *  url: ?string,
  *  parentValue: string|number|null|undefined,
- *  initial: string|number|string[]|null,
- *  controller: AbortController
+ *  initial: string|number|string[]|null
  *  }} props
  * @param {RequestInit|object} fetchProps
- * @returns {Request}
+ * @returns {{
+ *  request: Request
+ *  controller: AbortController
+ * }}
  */
 
 /**
@@ -34,7 +35,7 @@ export function debounce(fn, delay) {
  *
  * @type {RequestFactoryFn}
  */
-export function requestFactory(query, { url, parentValue, initial, controller }, fetchProps) {
+export function requestFactory(query, { url, parentValue, initial }, fetchProps) {
   if (parentValue) {
     url = url.replace('[parent]', encodeURIComponent(parentValue));
   }
@@ -52,12 +53,15 @@ export function requestFactory(query, { url, parentValue, initial, controller },
     const arr = Array.isArray(initial) ? initial : [initial];
     fetchUrl.searchParams.append('init', arr.join(','));
   }
+  const controller = new AbortController();
   const props = Object.assign({}, {
     headers: {
       'X-Requested-With': 'XMLHttpRequest'
     },
     cache: 'no-store',
-    signal: controller.signal
-  }, fetchProps);
-  return new Request(fetchUrl, props);
+  }, fetchProps, { signal: controller.signal });
+  return {
+    request: new Request(fetchUrl, props),
+    controller: controller
+  };
 }
