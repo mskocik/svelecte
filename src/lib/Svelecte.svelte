@@ -1290,7 +1290,10 @@
     {/if}
   </span>
   {#if name && !anchor_element}
-  <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1" aria-hidden="true" use:svelte_use_form_validator={validatorAction}>
+  <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1" aria-hidden="true"
+    bind:this={ref_select_element}
+    use:svelte_use_form_validator={validatorAction}
+  >
     {#each selectedOptions as opt (opt[currentValueField])}
     <option value={opt[currentValueField]} selected></option>
     {/each}
