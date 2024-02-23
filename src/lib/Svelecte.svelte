@@ -677,7 +677,12 @@
       if (alreadyCreated.includes(opt) || selectedKeys.has(opt)) return;
 
       isCreating = true;
-      Promise.resolve(createHandler.call(null, opt, currentValueField, currentLabelField, creatablePrefix))
+      Promise.resolve(createHandler.call(null, {
+        inputValue: opt,
+        valueField: currentValueField,
+        labelField: currentLabelField,
+        prefix: creatablePrefix
+      }))
         .then(newObj => {
           isCreating = false;
           !fetch && alreadyCreated.push(opt);
@@ -688,7 +693,12 @@
           onSelectTeardown();
           emitChangeEvent();
         })
-        .catch(e => console.log('[svelecte] item not created.', e));
+        .catch(e => {
+          dispatch('createFail', {
+            input: opt,
+            error: e
+          });
+        });
 
       return;
     }
