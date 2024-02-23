@@ -1105,7 +1105,7 @@
   /**
    *
    * @param {string?} fetch
-   * @param {string?} _parentValue
+   * @param {string|number|null|undefined} _parentValue
    */
   function watch_fetch_init(fetch, _parentValue) {
     if (!fetch) {
@@ -1158,13 +1158,17 @@
       .then(resp => resp.json())
       // success
       .then((/** @type {object} */ json) => {
-        Promise.resolve(fetchCallback ? fetchCallback(json) : (json.data || json.items || json.options || json))
+        // sveltekit returns error property
+        if (!Array.isArray(json) && json?.error) dispatch('fetchError', json.error);
+        return Promise.resolve(fetchCallback ? fetchCallback(json) : (json.data || json.items || json.options || json))
           .then(data => {
             if (!Array.isArray(data)) {
               console.warn('[Svelecte]:Fetch - array expected, invalid property provided:', data);
               data = [];
             }
             prev_options = data;
+            dispatch('fetch', prev_options);
+
             tick().then(() => {
               if (initial) {
                 fetch_initValue = null; // always reset
@@ -1174,8 +1178,10 @@
           })
       })
       // error
-      .catch(() => {
+      .catch(e => {
         prev_options = [];
+        dispatch('fetchError', e);
+        console.warn('[Svelecte] Unexpected Fetch Error', e);
       })
       // teardown
       .finally(() => {
@@ -1184,7 +1190,6 @@
         isFetchingData = false;
         if (is_focused) is_dropdown_opened = true;
 
-        dispatch('fetch', prev_options);
       });
   }
 
