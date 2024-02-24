@@ -4,6 +4,7 @@ import { fail } from '@sveltejs/kit';
 import { schema } from './schema';
 import { dataset } from '../data';
 
+export const prerender = false;
 
 ///// Load function /////
 

@@ -1,5 +1,5 @@
 <script>
-  import Svelecte, { addFormatter, config, registerSvelecte } from './../../index.js';
+  import { addFormatter, config, registerSvelecte } from './../../component.js';
   import { dataset } from './data.js';
 
   let container;
@@ -14,7 +14,7 @@
   }
 
   /** here we register svelecte as custom element */
-  registerSvelecte('el-svelecte', Svelecte, config);
+  registerSvelecte('el-svelecte');
 
   /** define some custom renderers */
   addFormatter('dotted', item => `<span style="background-color:${item.hex}" class="color"></span> ${item.text}`);

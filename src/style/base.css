@@ -250,3 +250,14 @@
     display: inline-block;
     margin: auto;
   }
+
+  .app-wrap {
+    min-height: 100vh;
+    display: flex;
+  }
+  .page-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+  }
