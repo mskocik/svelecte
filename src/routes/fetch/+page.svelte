@@ -5,6 +5,13 @@ import Svelecte from "$lib/Svelecte.svelte";
   let parentValue = null;
   let value;
 
+  let refetchValue = 'blue';
+  let refetcher;
+
+  function onClick() {
+    refetcher.refetchWith('red');
+  }
+
   let parentOptions = [
     { id: 'colors', text: 'Colors'},
     { id: 'countries', text: 'Countries' },
@@ -17,8 +24,10 @@ import Svelecte from "$lib/Svelecte.svelte";
 # Remote fetching
 
 Fetching capabilities are defined by `fetch` property - URL of desired endpoint. Svelecte automatically
-resolves "fetch mode" by `[query]` placeholder in `fetch` property. When this placeholder is missing,
-Svelecte switches to _init_ mode, where remote endpoint is requested, when component is mounted.
+resolves "fetch mode" by `[query]` placeholder in `fetch` property.
+
+When this placeholder `[qyery]` is presents, svelecte operates in _"query"_ mode. Otherwise  switches to _"init"_ mode,
+where remote endpoint is requested, when component is mounted.
 
 ```svelte
 <!-- remote fetch is triggered when user types -->
@@ -46,34 +55,43 @@ in `init` mode.
 
 <!-- Multiselect -->
 <!-- URL requested: https://example.com/url?search=init&init=one,two,three  -->
-<Svelecte multiple fetch="https://example.com/url?search[query]" bind:value={multiValue}>
+<Svelecte multiple fetch="https://example.com/url?search[query]" bind:value={multiValue} />
 ```
-### Other useful fetch-related properties are:
+
+## Manually re-fetching value in "query" mode
+
+Imagine scenario, you have component in query mode with default value set. And you _need_ to change default value, but
+still keep the same fech mode.
+
+By default changing `value='blue'` to `value='red'` wouldn't change the value. You need to call `refetchWith(newValue)` API method.
+
+```svelte
+<script>
+  let value = ['blue'];
+  let el;
+
+  function onClick() {
+    el.refetchWith('red');
+  }
+</script>
+
+<Svelecte bind:this={el} fetch="https://example.com/url?search=[query]" bind:value />
+<button on:click={onClick}>Change selected value to red</button>
+```
+
+Results to:
+
+<Svelecte fetch="/api/colors?query=[query]" bind:value={refetchValue} bind:this={refetcher} />
+<button class="btn" on:click={onClick}>Change selected value to red</button>
+
+
+## Other useful fetch-related properties are:
 
 - `fetchCallback: Function` Response transform function. It contains JSON-ized response. If not specified, one of following properties are tried in given order: `data`, `items`, `options` or response JSON itself as a fallback. Svelecte expects array to be returned.
 - `fetchResetOnBlur: boolean` Setting to `false` will keep fetched results in dropdown.
 - `minQuery: number` Force minimal length of input text to trigger remote request.
 - Settings `skipSort:  true` on `searchProps` to avoid re-ordering search results. More about search settings at [Searching](/searching) page.
 
-# Dependent selects
-
-This functionality is not strictly related to remote fetch, but it's typical how it's used. Just set `parentValue` and
-you're done. If you require `parentValue` in your `fetch` URL, just use `[parent]` placeholder.
-
-```svelte
-<script>
-  let parentValue;
-  let value;
-</script>
-
-<Svelecte {options} bind:parentValue />
-<Svelecte {parentValue} bind:value fetch="/api/[parent]?search=[query]" />
-```
-
-<label for="parent">Choose category first</label>
-<Svelecte options={parentOptions} bind:value={parentValue} inputId="parent" clearable/>
-<label for="child">Search for it</label>
-<Svelecte {parentValue} bind:value fetch="/api/[parent]?query=[query]&sleep=500" inputId="child" placeholder={childPlaceholder} on:fetchError={console.log}/>
 
 ## ⚠️ Notice
 

@@ -129,6 +129,8 @@ const settings = {
 
 ### I18n
 
+I18n section contains some ARIA related properties.
+
 <div class="toggle-wrap">
   <button class="press-btn" on:click={toggleDef}>Toggle definition / Defaults</button>
 
@@ -136,16 +138,16 @@ const settings = {
 export type I18nObject = {
   empty: string;
   nomatch: string;
-  max: i18n_max;
+  max: (max: number) => string;
   fetchBefore: string;
-  fetchQuery: i18n_fetchQuery;
+  fetchQuery: (minQuery: number, inputLength: number) => string;
   fetchInit: string;
   fetchEmpty: string;
-  collapsedSelection: i18n_collapsedSelection;
-  createRowLabel: i18n_createRowLabel;
-  aria_selected: i18n_aria_selection;
-  aria_listActive: i18n_aria_listActive;
-  aria_inputFocused: i18n_aria_inputFocus;
+  collapsedSelection: (count: number) => string;
+  createRowLabel: (value: string) => string;
+  aria_selected: (opts: string[]) => string;
+  aria_listActive: (opt: object, labelField: string, resultCount: number) => string;
+  aria_inputFocused: () => string;
   aria_label: string;
   aria_describedby: string;
 }

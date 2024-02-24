@@ -1,4 +1,3 @@
-// TODO: update to v4
 const OPTION_LIST = [
   'options', 'value',
   // form-related
@@ -15,9 +14,11 @@ const OPTION_LIST = [
   'fetch', 'fetch-reset-on-blur', 'min-query',
   // perf & virtual list
   'lazy-dropdown', 'virtual-list', 'vl-height', 'vl-item-size',
-  // sifter
-  'search-field', 'sort-field', 'disable-sifter'
+
 ];
+/**
+ * You can specify 'create-row-label' on component level. Placeholder {value} will be replaced with current value
+ */
 
 const intRegex = /^[0-9]+$/;
 
@@ -59,7 +60,6 @@ function formatValue(name, value) {
     case 'fetch-reset-on-blur':
     case 'lazy-dropdown':
     case 'virtual-list':
-    case 'disable-sifter':
       return value !== null && value !== 'false';
     case 'max':
       return isNaN(parseInt(value)) ? 0 : parseInt(value);
@@ -80,8 +80,15 @@ function formatProp(name) {
 let volatileEmitChange = false;
 
 let _component;
+/** @type {import("$lib/settings").Settings} */
 let _config;
 
+/**
+ * @type {HTMLElement & {
+ *  disabled: boolean,
+ *  parent: HTMLSelectElement?
+ * }}
+ */
 class SvelecteElement extends HTMLElement {
   constructor() {
     super();
@@ -267,6 +274,7 @@ class SvelecteElement extends HTMLElement {
   }
 
   focus() {
+    // @ts-ignore
     !this.disabled && this.querySelector('input').focus();
   }
 
@@ -291,10 +299,6 @@ class SvelecteElement extends HTMLElement {
   }
 
   connectedCallback() {
-    setTimeout(() => { this.render() });
-  }
-
-  render() {
     if (this.svelecte) return;
     let props = {};
     for (const attr of OPTION_LIST) {
@@ -304,48 +308,33 @@ class SvelecteElement extends HTMLElement {
           : formatValueProp(this.getAttribute('value'), this.getAttribute('value-delimiter') || ',');
       }
     }
-    if (this.hasAttribute('i18n')) {
-      const i18nObj = JSON.parse(this.getAttribute('i18n'));
-      if (i18nObj.createRowLabel) {
-        const labelText = i18nObj.createRowLabel;
-        i18nObj.createRowLabel = value => labelText.replace('#value', value);
-      }
-      props.i18n = i18nObj;
+    if (this.hasAttribute('create-row-label')) {
+      const label = this.getAttribute('create-row-label');
+      const localI18n = {
+        createRowLabel: value => label.replace('{value}', value)
+      };
+      props.i18n = localI18n;
     }
     if (this.hasAttribute('class')) {
       props.class = this.getAttribute('class');
     }
     if (this.hasAttribute('parent')) {
+      // @ts-ignore
       this.parent = document.getElementById(this.getAttribute('parent'));
       if (!this.parent.value && this.svelecte) {
         return;
       };
       const parentValue = this.parent.value || this.parent.getAttribute('value'); // for 'fetch'ed parent, value is always null
-      if (parentValue) {
-        props.disabled = false;
-        props.fetch = this.getAttribute('fetch').replace('[parent]', parentValue);
-      } else {
-        delete props['fetch'];
-        props.disabled = true;
-      }
+      props.parentValue = parentValue;
       this.parentCallback = e => {
-        if (!e.target.selection || (Array.isArray(e.target.selection) && !e.target.selection.length)) {
-          this.svelecte.clearByParent(true);
-          return;
-        }
-        !this.parent.disabled && this.removeAttribute('disabled');
-        if (this.hasAttribute('fetch')) {
-          this.svelecte.clearByParent(true);
-          const fetchUrl = this.getAttribute('fetch').replace('[parent]', e.target.value);
-          this.svelecte.$set({ fetch: fetchUrl, disabled: false });
-        }
+        this.svelecte.$set({ parentValue: e.target.value });
       };
       this.parent.addEventListener('change', this.parentCallback);
     }
-    const anchorSelect = this.querySelector('select');
-    if (anchorSelect) {
-      props['hasAnchor'] = true;
-      anchorSelect.style = 'opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px';
+    const anchorSelect = (/** @type {HTMLSelectElement} */(/** @type {unknown} */ this.previousElementSibling));
+    if (anchorSelect && anchorSelect.tagName==='SELECT') {
+      props['anchor_element'] = anchorSelect.id;
+      anchorSelect.style.cssText = 'opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px';
       anchorSelect.tabIndex = -1; // just to be sure
       this.anchorSelect = anchorSelect;
       this.anchorSelect.multiple = props.multiple || anchorSelect.name.includes('[]');
@@ -353,10 +342,12 @@ class SvelecteElement extends HTMLElement {
       anchorSelect.options.length !== initialValue.length && initialValue.forEach(val => {
         this.anchorSelect.innerHTML += `<option value="${val || ''}" selected>${val || 'No value'}</option>`;
       });
+      setTimeout(() => {
+        this.firstElementChild.appendChild(anchorSelect);
+      });
     }
     this.svelecte = new _component({
       target: this,
-      anchor: anchorSelect,
       props,
     });
     // event listeners
@@ -401,7 +392,7 @@ class SvelecteElement extends HTMLElement {
  *
  * @param {string} name custom-element name
  * @param {object} component Svelecte component
- * @param {object} globalConfig globally available config
+ * @param {import("$lib/settings").Settings} globalConfig globally available config
  */
 export function registerSvelecte(name, component, globalConfig) {
   _component = component

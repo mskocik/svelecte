@@ -108,7 +108,6 @@ export function flatList(options, config) {
       if (opt[config.optItems].length === 0) return res;
       config.optionsWithGroups = true;
       res.push({ label: opt[config.optLabel], $isGroupHeader: true });
-      console.log(opt, config.optItems);
       res.push(...opt[config.optItems].map(_opt => {
         _opt.$isGroupItem = true;
         return _opt;

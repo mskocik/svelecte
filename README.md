@@ -1,13 +1,9 @@
 # Svelecte [![NPM version](http://img.shields.io/npm/v/svelecte.svg?style=flat)](https://www.npmjs.org/package/svelecte)
 
-> [!NOTE]
-> Version 4 is in development. Current `master` branch is instable and have (yet) undocumented breaking changes. Do not
-> use in production
 
+![svelecte](https://svelecte.vercel.app/svelecte.png)
 
-![svelecte](https://mskocik.github.io/svelecte/static/svelecte.png)
-
-Flexible autocomplete/select component written in Svelte. Massively inspired by Selectize.js. Also usable as [custom element](https://github.com/mskocik/svelecte-element) (CE). Usable in forms, behaves very similar to standard `<select>` element.
+Flexible autocomplete/select component written in Svelte. Initially inspired by Selectize.js. Also usable as custom element. Usable in forms, behaves very similar to standard `<select>` element.
 
 See the latest changes on the [Releases](https://github.com/mskocik/svelecte/releases) page.
 
@@ -20,13 +16,13 @@ See the latest changes on the [Releases](https://github.com/mskocik/svelecte/rel
 - allow creating new items (and possibly edit them)
 - remote data fetch
 - virtual list support
-- i18n support
+- i18n and basic ARIA support
 - SSR support
+- client-validation support (tested with [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms/))
 - lazy dropdown rendering
 - usable as custom element
-- stylable
-- reordable multi selection  with addition of `svelte-dnd-action` ([example](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0))
-- usable with `svelte-use-form`  ([example](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1))
+- customizable styling
+- dnd intergration with `svelte-dnd-action`
 
 
 ## 🔧 Installation
@@ -48,187 +44,115 @@ let myValue = null;
 <Svelecte options={list} bind:value={myValue}></Svelecte>
 ```
 
-<details>
-<summary><strong>💭 Note about <code>value</code> and <code>readSelection</strong></code> property</summary>
-<div>
-Since v3.0 inner logic behind these properties has changed. Now `value` property reflects inner selection. By default it
-returns `valueField` property (if not defined, Svelecte tries to guess which property is representing value). This also means
-that if you want to set new value, you need to assign to it correct value. Let's take the example above:
+## Properties
 
+Property            | Type              | Default     | Description
+--------------------|-------------------|-------------|------------
+name                | `string`          | `'svelecte'`| Create internal `<select>` element. Without `name` defined, no `<select>` is created
+inputId             | `string`          | `null`      | Allow targeting input using a html ID. Otherwise it is based on `name` property
+required            | `bool`            | `false`     | Make sense only when `name` is defined and you work with it as standard `<select>` element
+disabled            | `bool`            | `false`     | Disable component
+options             | `array`           | `[]`        | Option list, see [Options](https://svelecte.vercel.app/options) for more info
+optionResolver      | `function`        |`undefined`  | Custom option resolver. Enabling "query mode". Check the example on [Options](https://svelecte.vercel.app/options) page
+value               | `string`,`object` |  `null`     | Bound value property. For `multiple` is always array
+valueAsObject       | `bool`            | `false`     | Switch whether Svelecte should expects from and return to `bind:value` objects or primitive value (usually string, number)
+parentValue         | `string`          | `undefined` | Value which this component depends on. When `parentValue` is `null`, component is disabled. There is an example on [Remote Datasource](https://svelecte.vercel.app/fetch) page.
+valueField          | `string`          | `null`      | Property to be used as value (if not specified, will be resolved automatically)
+labelField          | `string`          | `null`      | Property shown in dropdown (if not specified, will be resolved automatically)
+groupLabelField     | `string`          | `label`     | Property to be used as optgroup label
+groupItemsField     | `string`          | `options`   | Property holding optgroup option list
+disabledField       | `string`          | `$disabled` | Property to check, whether given options should be disabled and unselectable
+placeholder         | `string`          | `Select`    | Input placeholder
+searchable          | `bool`            | `true`      | Allow search among items by typing
+clearable           | `bool`            | `false`     | Display ✖ icon to clear whole selection
+renderer            | `mixed`           | `null`      | Dropdown and selection renderer function. More on [Rendering](https://svelecte.vercel.app/rendering) page
+disableHighlight    | `bool`            | `false`     | Disable highlighting of input value in results. Can be useful with a `renderer` function that includes additional text or does its own highlighting
+highlightFirstItem  | `bool`            | `true`      | Automatically highlight the first item in the list when the dropdown opens
+selectOnTab         | `bool`,`string`   | `null`      | Based on value provided, it allows selecting currently active item by <kbd>Tab</kbd> AND (if value is `'select-navigate'`) also focus next input.
+resetOnBlur         | `bool`            | `true`      | Control if input value should be cleared on blur
+resetOnSelect       | `bool`            | `true`      | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple`
+closeAfterSelect    | `bool`            | `'auto'`    | closes dropdown after selection. Setting this to `true` is useful for **multiple** select only. For single select dropdown is always closed no matter the value this property has
+strictMode          | `bool`            | `true`      | When `true`, passed value is checked whether exists on provided `options` array. If not, `invalidValue` event is dispatched
+multiple            | `bool`            | `false`     | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
+max                 | `number`          | `0`         | Maximum allowed items selected, applicable only for multiselect
+collapseSelection   | `string`          | `null`      | Whether selection should be collapsed and when, check [Rendering](https://svelecte.vercel.app/rendering) for more info.
+keepSelectionInList | `bool`            | `'auto'`    | Whether keep selected items in dropdown. `auto` for `multiple` removes selected items from dropdown
+creatable           | `bool`            | `false`     | Allow creating new item(s)
+creatablePrefix     | `string`          | `*`         | Prefix marking new item
+allowEditing        | `bool`            | `false`     | When pressing `Backspace` switch to edit mode instead of removing newly created item. **NOTE** intended to be used with `creatable` property
+keepCreated         | `bool`            | `true`      | Switch whether to add newly created option to option list or not
+delimiter           | `string`          | `,`         | split inserted text when pasting to create multiple items
+createFilter        | `function`        | `null`      | Function, that transform input string to custom value. It can serve as a filter, if value is valid or not. If you want to dismiss entered value, function should return `''` (empty string). By default all input string is trimmed and all multiple spaces are removed.
+createHandler       | `function`        | `null`      | Custom (may be) async function transforming input string to option object. Default returns object with `valueField` and `labelField` properties, where `labelField`'s value is input string prefixed with `creatablePrefix` property.
+fetch               | `string`          | `null`      | Sets fetch URL. Visit [Remote datasource] form more details
+fetchProps          | `object`          | `null`      | Set options for new fetch [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request)
+fetchCallback       | `function`        | `null`      | optional fetch callback
+fetchResetOnBlur    | `bool`            | `true`      | reset previous search results on empty input, related to `resetOnBlur`
+fetchDebounceTime   | `number`          | `300`       | how many miliseconds is request debounced before fetch is executed
+minQuery            | `number`          | `1`         | Minimal amount of characters required to perform remote request. Usable with `fetch` property
+lazyDropdown        | `bool`            | `true`      | render dropdown after first focus, not by default
+virtualList         | `bool`            | `false`     | Whether use virtual list for dropdown items (useful for large datasets)
+vlHeight            | `number`          | `null`      | Height of virtual list dropdown (if not specified, computed automatically)
+vlItemSize          | `number`          | `null`      | Height of one row (if not specified, computed automatically)
+searchProps         | `object`          | `null`      | Customize `sifter.js` settings. See [Searching](https://svelecte.vercel.app/searching) page for more details
+class               | `string`          | `svelecte-control` | default css class
+i18n                | `object`          | `null`      | I18n object overriding default settings
+dndzone             | `function`        | noop        | Pass `dndzone` from `svelte-dnd-action`, see [Examples](https://svelecte.vercel.app/examples) page
+validatorAction     | `array`           | `null`      | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`, see [Validation](https://svelecte.vercel.app/validation) page. For this to work, `name` property MUST be defined
+anchor_element      | `bool`            | `null`      | `internal`: when passing also existing select (for custom element)
+
+
+## Available slots
+
+For more info refer to [Rendering](https://svelecte.vercel.app/rendering) page.
+
+```html
+<slot name="icon" />
+<slot name="collapsedSelection" let:selectedOptions let:i18n />
+<slot name="selection" let:selectedOptions let:bindItem />
+<slot name="clear-icon" let:selectedOptions let:inputValue />
+<slot name="dropdown-toggle" let:isOpen />
+<slot name="list-header" />
+<slot name="option" let:item />
+<slot name="create-row" let:isCreating let:inputValue let:i18n  />
 ```
-myValue = 2;
-```
-This would select item with `id` property `2`.
 
-Sometimes you want to work strictly with objects, like `myValue = {id: 2, name: 'Item 2'}`. You can set property `valueAsObject` which tells Svelecte to handle `value` property as object or array of object (if `multiple` is also set).
-
-Property `readSelection` _always_ returns selected object or object array no matter if `valueAsObject` is set or not.
-</div>
-</details>
-
----
-
-## 👀 Examples
-
-👉 Examples with more detailed documentation can be found at [https://mskocik.github.io/svelecte/](https://mskocik.github.io/svelecte/).
-
-## 🛠 Configuration & API
-
-### Exposed properties:
-
-
-Property          | Type             | Default    | Description
-------------------|------------------|------------|------------
-name              | string           | `null`     | create internal `<select>` element which you can use `validatorAction` on. Without `name` defined, no `<select>` is created
-options           | array            | `[]`       | Data array
-valueAsObject     | bool             | `false`    | Switch whether Svelecte should expects from and return to `bind:value` objects or primitive value (usually string, number)
-valueField        | string           | `null`     | Property to be used as value (if not specified, will be selected automatically)
-labelField        | string           | `null`     | Property shown in dropdown (if not specified, will be selected automatically)
-groupLabelField   | string           | `label`    | Property to be used as optgroup label
-groupItemsField   | string           | `options`  | Property holding optgroup option list
-disabledField     | string           | `$disabled`| Property to check, whether given options should be disabled and unselectable
-required          | bool             | `false`    | make sense only when `name` is defined
-placeholder       | string           | `Select`   | Input placeholder
-searchable        | bool             | `true`     | Allow search among items by typing
-disabled          | bool             | `false`    | Disable component
-renderer          | string\|function | `null`     | dropdown and selection renderer function. More info in item rendering section
-controlItem       | Component        | `Item`     | Item component when item is selected. See [Custom Items](#custom-items) section for more details.
-dropdownItem      | Component        | `Item`     | Item component in dropdown. See [Custom Items](#custom-items) section for more details.
-highlightFirstItem| bool             | `true`     | Automatically highlight the first item in the list when the dropdown opens
-selectOnTab       | bool|string|null | `null`     | Based on value provided, it allows selecting currently active item by <kbd>Tab</kbd> AND (if value is `'select-navigate'`) also focus next input. The constant `TAB_SELECT_NAVIGATE` is exported from svelecte
-resetOnBlur       | bool             | `true`     | Control if input value should be cleared on blur
-resetOnSelect     | bool             | `true`     | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple`
-clearable         | bool             | `false`    | Display ✖ icon to clear whole selection
-multiple          | bool             | `false`    | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
-closeAfterSelect  | bool             | `false`    | closes dropdown after selection. Setting this to `true` is useful for **multiple** select only. For single select dropdown is always closed no matter the value this property has
-max               | number           | `0`        | Maximum allowed items selected, applicable only for multiselect
-collapseSelection | bool             | `false`    | collapse selection when `multiple` and not focused
-alwaysCollapsed   | bool             | `false`    | keep collapsed selection _even_ when focused. Selected options are shown in dropdown on the top
-inputId           | string           | `null`     | allow targeting input using a html label.
-creatable         | bool             | `false`    | Allow creating new item(s)
-creatablePrefix   | string           | `*`        | Prefix marking new item
-allowEditing      | bool             | `false`    | When pressing `Backspace` switch to edit mode instead of removing newly created item. **NOTE** intended to be used with `creatable` property
-keepCreated       | bool             | `true`     | Switch whether to add newly created option to option list or not
-delimiter         | string           | `,`        | split inserted text when pasting to create multiple items
-createFilter      | function         | `null`     | Function, that transform input string to custom value. It can serve as a filter, if value is valid or not. If you want to dismiss entered value, function should return `''` (empty string). By default all input string is trimmed and all multiple spaces are removed. Function notation:<br>`createFilter(inputValue: string, dropdownOptions: array): string`
-createTransform   | function         | `null`     | Custom function transforming input string to option object. Default returns object with `valueField` and `labelField` properties, where `labelField`'s value is input string prefixed with `creatablePrefix` property. Function notation:<br>`createTransform(inputValue: string, creatablePrefix: string, valueField: string, labelField: string): object`
-fetch             | string\|function | `null`     | Check "remote datasource" section for more details
-fetchMode         | string           | `auto`     | When set to `init` options are fetched only when mounted, when searching it search in downloaded dataset
-fetchCallback     | function         | `null`     | optional fetch callback
-fetchResetOnBlur  | bool             | `true`     | reset previous search results on empty input, related to `resetOnBlur`
-minQuery          | number           | `1`        | Minimal amount of characters required to perform remote request. Usable with `fetch` property
-lazyDropdown      | bool             | `true`     | render dropdown after first focus, not by default
-virtualList       | bool             | `false`    | Whether use virtual list for dropdown items (useful for large datasets)
-vlHeight          | number           | `null`     | Height of virtual list dropdown (if not specified, computed automatically)
-vlItemSize        | number           | `null`     | Height of one row (if not specified, computed automatically)
-searchField       | string\|array    | `null`     | Specify item property that will be used to search by (if not specified all props except `value` prop will be used)
-sortField         | string           | `null`     | Specify sort property. If not specified, `labelField` will be used
-disableSifter     | bool             | `false`    | Disable Sifter filtering & sorting. Can be useful in combination with `fetch`, when further filtering or sorting may be undesired
-disableHighlight  | bool             | `false`    | Disable highlighting of input value in results. Can be useful with a `renderer` function that includes additional text or does its own highlighting
-class             | string           | `svelecte-control` | default css class
-style             | string           | `null`     | inline style
-hasAnchor         | bool             | `null`     | `internal`: when passing also existing select (for CE)
-i18n              | object           | `null`     | I18n object overriding default settings
-dndzone           | function         | empty      | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [example REPL](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)
-validatorAction   | array            | `null`     | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`. See the [example REPL](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1). For this to work, `name` property MUST be defined
-
-
-### Custom items
-
-If `renderer` property is not enough for you or you prefer Component syntax to HTML strings, you can use your own Components. Keep in mind that default `Item` component handles highlighting when searching, but the rest of features
-like styling should be inherited if you use proper css classes (the same as `Item` component)..
-
-To make it easier to use your own Components, there are available actions, highlighting function and close button icon for you to use.
-
-The simplest example can be found in this [REPL](https://svelte.dev/repl/627c83c2666f452185baa8947f5588bb?version=3.44.1).
-
----
-
-### Emitted events:
+## Emitted events:
 
 Event        | arguments                   | description
 -------------|-----------------------------|----------------------------------------------------------------------------
 fetch        | options                     | newly fetched remote options
+fetchError   | error                     | dispatche on fetch error of any kind
 change       | selection                   | selected objects. If `anchor` property is defined, `change` event is called also on it
 createoption | option                      | newly created option object
-blur         | -                           | blur event
+createFail | object | thrown if `createHandler` fails
+focus        | `<input>`                        | focus event
+blur         | `<input>`                           | blur event
 invalidValue | invalidValue                | triggered when passed `value` is out of provided `options` items. Internal (and bound, if any) `value` is set to `null` or `[]` if multiple
 enterKey     | underlying `keyDown` event  | triggered when natively it would cause form submit (dropdown is closed). This gives you ability to prevent it by calling `event.detail.preventDefault()`
 
-### Public API:
+## Public API:
 
-Name          | type     | arguments | description
---------------|----------|-----------|-------------
-focus         | function | -         | focus input
-getSelection  | function | bool      | return selection, if `true` is passed, only values are returns, whole objects otherwise
-setSelection  | function | array     | set selection programmatically
-config        | property | -         | **context property**: global common config for all instances, you can override most properties here and also some additional, mainly i18n
-addFormatter  | function | -         | **context function**: with signature `(name, formatFn)` you can add additional item renderers (formatters)
+Name          | type       | arguments | description
+--------------|------------|-----------|-------------
+focus         | `function` | -         | focus input
+refetchWith   | `function` | new value |
 <!-- clearByParent | bool | internal for CE  -->
 
-### I18n
+There are global config and `addRenderer` function available. Refer to [Global config](https://svelecte.vercel.app/global-config) and [Rendering](https://svelecte.vercel.app/rendering) page respectively.
 
-This is default value of `i18n` property:
-```js
-// config.i18n defaults:
-{
-  i18n: {
-    empty: 'No options',
-    nomatch: 'No matching options',
-    max: num => `Maximum items ${num} selected`,
-    fetchBefore: 'Type to start searching',
-    fetchQuery: (minQuery, inputLength) => `Type ${minQuery > 1 && minQuery > inputLength
-      ? `at least ${minQuery - inputLength} characters `
-      : '' }to start searching`,
-    fetchEmpty: 'No data related to your search',
-    collapsedSelection: count => `${count} selected`,
-    createRowLabel: value => `Create '${value}'`
-  },
-  collapseSelectionFn: function(selectionCount, selection) {
-    return settings.i18n.collapsedSelection(selectionCount);
-  }
-}
-```
+## I18n, a11y, CSS variables
 
-You can override whole object or only items you are interested in. You can override it globally or on component level:
+Visit [documentation](https://svelecte.vercel.app/global-config) for more details.
 
-```js
-// global override
-import Svelecte, { config } from 'svelecte';
+## Thanks to
 
-config.i18n = {
-    empty: '🚫',
-    nomatch: '✋',
-    max: num => '🙄',
-    fetchBefore: '💻',
-    fetchQuery: (minQuery, inputLength) => '🧮',
-    fetchEmpty: '🚮',
-    collapsedSelection: () => '🗃',
-    createRowLabel: value => `📝 ${value}`
-}
-
-// local override (component-level)
-const myI18n = {
-    empty: `Empty list, can't you see?`
-}
-
-<Svelecte i18n={myI18n}></Svelecte>
-```
-
-## Customizable Slots
-
-There are different slots within the component that allow to insert custom code and icons.
-
-### Control.svelte (bubbled up to the Svelecte component)
-- ```icon``` This allows to insert custom code like e.g. an icon at the start/left of the Control.svelte
-- ```control-end``` This allows to insert custom code at the end/right of the Control.svelte. It is positioned AFTER the indicator icons.
-
-## 🙏 Thanks to
-
-- [selectize.js](https://github.com/selectize/selectize.js) - inspiration
+- [selectize.js](https://github.com/selectize/selectize.js) - main inspiration
 - [sifter](https://github.com/brianreavis/sifter.js) - search engine
-- [svelte-select](https://github.com/rob-balfre/svelte-select) - inspiration & how-to, including some code borrowing 😊
-- [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list) virtual list capability
+- [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list) virtual list functionality
+- and [svelte](https://svelte.dev) of course 😊
+
+And if you want to thank me, you can through my [sponsor](https://github.com/sponsors/mskocik) page.
 
 ## License
 

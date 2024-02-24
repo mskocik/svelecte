@@ -53,8 +53,6 @@ You can define renderers globally or per-component basis. To differenciate wheth
 
 Note: When using custom renderers with `inputValue` being used, it's up to you correctly escape HTML tags
 
-
-
 ```svelte
 <script>
   import Svelecte, { addRenderer } from 'svelecte';

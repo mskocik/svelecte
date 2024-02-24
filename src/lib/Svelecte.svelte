@@ -871,7 +871,9 @@
           is_dropdown_opened = true;
           return;
         }
-        !supressIndexMove && setDropdownIndex(dropdown_index + 1, { asc: true });
+        // not to skip first item when `highlightFirstItem=false`
+        const dix = dropdown_index === null ? -1 : dropdown_index;
+        !supressIndexMove && setDropdownIndex(dix + 1, { asc: true });
         tick().then(() => scrollIntoView({ scrollContainer: ref_container_scroll, container: ref_container, virtualList, center: false}, dropdown_index));
         break;
       case 'Escape':
@@ -906,7 +908,7 @@
           event.key !== Tab && dispatch('enterKey', event); // ref #125
           return;
         }
-        (event.key !== Tab || (event.key === Tab && selectOnTab !== TAB_SELECT_NAVIGATE)) && event.preventDefault(); // prevent form submit
+        (event.key !== Tab || (event.key === Tab && selectOnTab !== 'select-navigate')) && event.preventDefault(); // prevent form submit
         break;
       case ' ':
         if (!fetch && !is_dropdown_opened) {
@@ -1858,6 +1860,7 @@
 
     &:not(:focus-within) {
       position: absolute;
+      pointer-events: none;
     }
 
     &:after {
