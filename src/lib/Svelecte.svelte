@@ -209,10 +209,13 @@
    * @param {string|number|array} value
    */
   export function refetchWith(value) {
-    fetch && fetch_runner({
+    if (!fetch) return;
+    fetch_runner({
       init: true,
-      initValue: value
+      initValue: value,
+      storedValue: fetchResetOnBlur
     });
+    fetchResetOnBlur = false; // force this to preven 'clearSelection' clear fetched options
   }
 
   const dispatch = createEventDispatcher();
@@ -804,7 +807,6 @@
       prev_options = optionResolver(options, selectedKeys);
       return;
     }
-
     options_flat = fetch && !fetch_initOnly && fetchResetOnBlur
       ? []
       :options_flat;
@@ -1153,9 +1155,11 @@
     }
   }
   /**
-   * @typedef {object} FetchOptions
-   * @property {boolean} [init=false]
-   * @property {any} [initValue]
+   * @typedef {{
+   *  init?: boolean,
+   *  initValue?: any,
+   *  storedValue?: boolean
+   * }} FetchOptions
    *
    * @param {FetchOptions} opts
    */
@@ -1176,10 +1180,6 @@
 
     // update fetchInitValue when fetch is changed, but we are in 'init' mode, ref #113
     if (fetch_initOnly && prev_value && (!multiple || prev_value?.length > 0)) fetch_initValue = prev_value;
-
-    // reset found items
-    if (fetchResetOnBlur) prev_options = [];
-    // if (fetchResetOnBlur) prev_options = [];
 
     const initial = fetch_initValue || opts.initValue;
     if (fetch_initOnly) listMessage = i18n_actual.fetchInit;
@@ -1209,6 +1209,7 @@
               if (initial) {
                 fetch_initValue = null; // always reset
                 watch_value_change(initial, { skipEqualityCheck: true });
+                if ('storedValue' in opts) fetchResetOnBlur = opts.storedValue; // related to re-fetch
               }
             })
           })
