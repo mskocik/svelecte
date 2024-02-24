@@ -11,7 +11,7 @@
 		"custom-element",
 		"multiselect"
 	],
-	"homepage": "https://mskocik.github.io/svelecte/",
+	"homepage": "https://svelecte.vercel.app/",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/mskocik/svelecte"
