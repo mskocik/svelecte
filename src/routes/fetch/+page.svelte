@@ -84,6 +84,11 @@ Results to:
 <Svelecte fetch="/api/colors?query=[query]" bind:value={refetchValue} bind:this={refetcher} />
 <button class="btn" on:click={onClick}>Change selected value to red</button>
 
+### ⚠️ Caution with objects
+
+When using _objects_ as `value` (with `valueAsObject` property set), you *always* need to set `strictMode` to `false`.
+Otherwise initial value won't be set. Also using `refetchWith` method has no meaning, because you can set object value
+directly, no need for fetch request.
 
 ## Other useful fetch-related properties are:
 
@@ -93,7 +98,8 @@ Results to:
 - Settings `skipSort:  true` on `searchProps` to avoid re-ordering search results. More about search settings at [Searching](/searching) page.
 
 
-## ⚠️ Notice
+## User-provided fetch function
 
 In v4.0 whole fetch-related functionality has been reworked and it's **no longer** possible to provide your own
 fetch function. Properties `fetch` and `fetchProps` should be enough for every use case.
+

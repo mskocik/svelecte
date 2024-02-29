@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/svelte';
 import Svelecte from '$lib/Svelecte.svelte';
 import { sleep } from './_helpers';
 import userEvent from '@testing-library/user-event';
+import { dataset } from '../src/routes/data';
 
 // FUTURE: mock fetch
 
@@ -111,7 +112,6 @@ describe('fetch:query', () => {
     expect(screen.queryByText('Blue')).toBeInTheDocument();
   });
 
-
   it('properly set initial value for multiple', async () => {
     render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors?query=[query]',
@@ -145,6 +145,48 @@ describe('fetch:query', () => {
 
     expect(screen.queryByText('Red')).toBeInTheDocument();
   });
-});
 
-// TODO: test with `valueAsObject`
+  it('[valueAsObject] default value passed, value NOT set ', async () => {
+
+    const colors = dataset.colors();
+    const selection = colors.shift();  // aqua
+
+    const { component } = render(Svelecte, {
+      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetchDebounceTime: 0,
+      valueAsObject: true,
+      value: selection
+    });
+
+    let event_triggered = false;
+    component.$on('invalidValue', e => {
+      event_triggered = true;
+    });
+
+    await sleep(100);
+
+    expect(event_triggered).toBeTruthy();
+  });
+
+  it('[valueAsObject]  default value passed, value IS set [strictMode=false]', async () => {
+    const colors = dataset.colors();
+    const selection = colors.shift();  // aqua
+
+    const { component } = render(Svelecte, {
+      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetchDebounceTime: 0,
+      valueAsObject: true,
+      strictMode: false,
+      value: selection
+    });
+    let event_triggered = false;
+    component.$on('invalidValue', e => {
+      event_triggered = true;
+    });
+
+    await sleep(10);
+
+    expect(screen.queryByText('Aqua')).toBeInTheDocument();
+    expect(event_triggered).toBeFalsy();
+  });
+});
