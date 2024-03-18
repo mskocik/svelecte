@@ -1348,6 +1348,12 @@
       selectedKeys.forEach(k => {
         ref_select_element.insertAdjacentHTML('beforeend', `<option value=${k} selected>${k}</option>`);
       });
+    } else if (selectedOptions.length) {
+      setTimeout(() => {
+        Array.from(ref_select_element.children).forEach((/** @type {HTMLOptionElement} */ opt) => {
+          opt.selected = true;
+        });
+      }, 200);
     };
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) flipDurationMs = 0;
   });
