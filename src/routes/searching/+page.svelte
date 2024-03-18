@@ -21,6 +21,7 @@
   let skipSort;
   let nesting;
   let disabled;
+  let startOnly;
 
   $: placeholder = fields === 'internal.id'
     ? 'Search by internal (nested id)'
@@ -31,7 +32,7 @@
 
   $: searchProps = {
     fields: fields,
-    sort, skipSort, nesting, disabled
+    sort, skipSort, nesting, disabled, startOnly
   }
 
 </script>
@@ -82,6 +83,13 @@ has been extended for more granular search settings in v4.0.
       <input type="checkbox" name="skipSort" id="skipSort" bind:checked={skipSort}>
       Skip sorting results
     </label>
+
+
+    <label for="startOnly">
+      <input type="checkbox" name="startOnly" id="startOnly" bind:checked={startOnly}>
+      Search by first letters
+    </label>
+
     <br>
     <label for="disable">
       <input type="checkbox" name="disable" id="disable" bind:checked={disabled}>
@@ -104,6 +112,7 @@ optional and boolean values are false by default.
   * @property {'or'} [conjunction]
   * @property {boolean} [nesting]
   * @property {boolean} [disabled]
+  * @property {boolean} [startOnly]
   *
   *
   * @typedef {object} SortDef

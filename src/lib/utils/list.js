@@ -22,6 +22,7 @@ import Sifter from './sifter.js';
  * @property {'or'} [conjunction]
  * @property {boolean} [disabled]
  * @property {boolean} [skipSort]
+ * @property {boolean} [startOnly]
  */
 
 /**
@@ -187,7 +188,8 @@ export function filterList(options, inputValue, excludeSelected, config, searchP
     fields: searchProps.fields || config.optionProps,
     sort: searchProps.sort || createSifterSortField(config.labelField),
     conjunction: searchProps.conjunction || conjunction,
-    nesting: searchProps.nesting || false
+    nesting: searchProps.nesting || false,
+    startOnly: searchProps.startOnly || false
   });
 
   const mapped = config.optionsWithGroups

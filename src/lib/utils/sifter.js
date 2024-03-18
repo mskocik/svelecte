@@ -15,6 +15,12 @@
  */
 
 /**
+ * NOTE: Extend tokenize params with 'startOnly'
+ *
+ * @author Martin Skocik <mskocik@gmail.com>
+ */
+
+/**
  * Textually searches arrays and hashes of objects
  * by property (or multiple properties). Designed
  * specifically for autocomplete.
@@ -33,9 +39,11 @@ var Sifter = function(items, settings) {
  * regexps to be used to match results.
  *
  * @param {string} query
+ * @param {boolean?} respect_word_boundary
+ * @param {boolean?} start_only
  * @returns {array}
  */
-Sifter.prototype.tokenize = function(query, respect_word_boundaries) {
+Sifter.prototype.tokenize = function(query, respect_word_boundary, start_only) {
     query = trim(String(query || '').toLowerCase());
     if (!query || !query.length) return [];
 
@@ -52,7 +60,10 @@ Sifter.prototype.tokenize = function(query, respect_word_boundaries) {
                 }
             }
         }
-        if (respect_word_boundaries) regex = "\\b"+regex
+        if (respect_word_boundary) {
+          regex = "\\b"+regex;
+        } else if (start_only) regex = "\\b^"+regex;
+
         tokens.push({
             string : words[i],
             regex  : new RegExp(regex, 'i')
@@ -308,7 +319,7 @@ Sifter.prototype.prepareSearch = function(query, options) {
     return {
         options : options,
         query   : String(query || '').toLowerCase(),
-        tokens  : this.tokenize(query, options.respect_word_boundaries),
+        tokens  : this.tokenize(query, options.respect_word_boundary, options.startOnly),
         total   : 0,
         items   : []
     };
