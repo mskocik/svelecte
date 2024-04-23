@@ -19,6 +19,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build && npm run package",
+		"standalone": "rollup --config rollup.config.standalone.js",
 		"preview": "vite preview",
 		"package": "svelte-kit sync && svelte-package && publint",
 		"prepublishOnly": "npm run package",
@@ -44,6 +45,8 @@
 		"svelte": "^3.43.0 || ^4.0.0"
 	},
 	"devDependencies": {
+		"@rollup/plugin-node-resolve": "^15.2.3",
+		"@rollup/plugin-terser": "^0.4.4",
 		"@shikijs/transformers": "^1.1.6",
 		"@sveltejs/adapter-auto": "^3.1.1",
 		"@sveltejs/adapter-vercel": "^5.1.0",
@@ -60,6 +63,8 @@
 		"publint": "^0.2.7",
 		"rehype-autolink-headings": "^7.1.0",
 		"rehype-slug": "^6.0.0",
+		"rollup-plugin-css-only": "^4.5.2",
+		"rollup-plugin-svelte": "^7.2.0",
 		"shiki": "^1.1.6",
 		"svelte": "^4.2.11",
 		"svelte-check": "^3.6.4",
