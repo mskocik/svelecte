@@ -74,6 +74,6 @@
 		"zod": "^3.22.4"
 	},
 	"dependencies": {
-		"svelte-tiny-virtual-list": "^2.0.5"
+		"svelte-tiny-virtual-list": "^2.1.0"
 	}
 }
