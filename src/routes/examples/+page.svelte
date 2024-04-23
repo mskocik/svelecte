@@ -3,6 +3,7 @@
   import { dataset } from '../data';
   import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode } from 'svelte-dnd-action';
   import Svelecte from '$lib/Svelecte.svelte';
+	import RenderItem from './RenderItem.svelte';
 
   /** ************************************ drag-n-drop */
 
@@ -19,6 +20,11 @@
   });
 
   const options = JSON.stringify(dataset.colors());
+  const render_options = [
+    {id: '1', text: 'option X'},
+    {id: '2', text: 'option Y'},
+    {id: '3', text: 'option Z'}
+	];
 
   /** ************************************ multiselect */
 
@@ -88,6 +94,46 @@ Example how multiselect can be implemented.
   keepSelectionInList={true}
   searchProps={{skipSort: true}}
 ></Svelecte>
+```
+
+## Custom `option` slot component
+
+Simple example of using `<slot>` instead of [render function](/rendering#render-functions) for dropdown item rendering.
+
+<Svelecte options={render_options} closeAfterSelect={false} value={'1'}>
+	<svelte:fragment slot="option" let:item>
+		<RenderItem {item} />
+	</svelte:fragment>
+</Svelecte>
+
+```svelte
+<script>
+	import Svelecte from 'svelecte'
+	import Item from './Item.svelte';
+
+	let options = [
+    {id: '1', text: 'option X'},
+    {id: '2', text: 'option Y'},
+    {id: '3', text: 'option Z'}
+	];
+</script>
+
+<Svelecte {options} closeAfterSelect={false} value={'1'}>
+	<svelte:fragment slot="option" let:item>
+		<Item {item} />
+	</svelte:fragment>
+</Svelecte>
+```
+
+```svelte
+// Item.svelte
+<script>
+	export let item
+</script>
+
+<div>
+	{item.$selected ? '👌' : '👉'} {item.text} {item.$selected ? '✅' : '☑️'}
+</div>
 ```
 
 ## Dependent selects

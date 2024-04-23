@@ -27,8 +27,8 @@ possibilities as many (some) users requested. Hopefully you will have enough too
 
 In general rendering customization can be split into 2 groups:
 
-- with render functions
-- with `<slot>`
+- with [render functions](#render-functions)
+- with [slots](#slots)
 
 ## Render functions
 
