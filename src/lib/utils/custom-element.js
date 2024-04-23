@@ -96,6 +96,7 @@ class SvelecteElement extends HTMLElement {
     this.anchorSelect = null;
     this._fetchOpts = null;
     this._selfSetValue = false;
+    this._resetHandler = null;
 
     /** ************************************ public API */
     const baseProps = {
@@ -143,7 +144,9 @@ class SvelecteElement extends HTMLElement {
       },
       'form': {
         get() {
-          return this.closest('form');
+          return this.anchorSelect
+            ? this.anchorSelect.form
+            : this.closest('form');
         }
       },
       'emitChange': {
@@ -361,9 +364,11 @@ class SvelecteElement extends HTMLElement {
       // Custom-element related
       if (this.anchorSelect) {
         const value = this.svelecte.getSelection(true);
+        // @ts-ignore
+        const isMultiple = this.multiple;
         this.anchorSelect.innerHTML = (Array.isArray(value) ? (value.length ? value : [null]) : [value]).reduce((res, item) => {
           res+= item === '' || item === null
-            ? '<option value="" selected="">Empty</option>'
+            ? (isMultiple ? '' : '<option value="" selected="">Empty</option>')
             : `<option value="${item}" selected>${item}</option>`;
           return res;
         }, '');
@@ -378,12 +383,30 @@ class SvelecteElement extends HTMLElement {
     this.svelecte.$on('createoption', e => {
       this.dispatchEvent(e);
     });
+
+    const form = anchorSelect
+      ? anchorSelect.form
+      : this.closest('form');
+    if (form) {
+      this._resetHandler = this.resetHandler.bind(this);
+      form.addEventListener('reset', this._resetHandler);
+    }
+
     return true;
   }
 
   disconnectedCallback() {
     this.svelecte && this.svelecte.$destroy();
     this.parent && this.parent.removeEventListener('change', this.parentCallback);
+    const form = this.anchorSelect
+      ? this.anchorSelect.form
+      : this.closest('form');
+    if (form) form.removeEventListener('reset', this._resetHandler);
+  }
+
+  resetHandler() {
+    // @ts-ignore
+    this.svelecte.setSelection(null, true);
   }
 }
 
