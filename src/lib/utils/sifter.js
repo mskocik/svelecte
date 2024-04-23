@@ -319,7 +319,7 @@ Sifter.prototype.prepareSearch = function(query, options) {
     return {
         options : options,
         query   : String(query || '').toLowerCase(),
-        tokens  : this.tokenize(query, options.respect_word_boundary, options.startOnly),
+        tokens  : this.tokenize(query, options.wordsOnly, options.startOnly),
         total   : 0,
         items   : []
     };

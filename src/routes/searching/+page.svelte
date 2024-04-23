@@ -22,6 +22,7 @@
   let nesting;
   let disabled;
   let startOnly;
+  let wordsOnly;
 
   $: placeholder = fields === 'internal.id'
     ? 'Search by internal (nested id)'
@@ -32,7 +33,7 @@
 
   $: searchProps = {
     fields: fields,
-    sort, skipSort, nesting, disabled, startOnly
+    sort, skipSort, nesting, disabled, startOnly, wordsOnly
   }
 
 </script>
@@ -60,7 +61,7 @@ has been extended for more granular search settings in v4.0.
   </Svelecte>
 
   <hr>
-  <div>
+  <div class="block-labels">
     Now searching in properties: <code>{searchProps.fields}</code>.
     <br>
     Try switching to <code>or</code> search by typing <code>|</code> between other words. For example <code>b c</code> vs <code>b | c</code>
@@ -76,7 +77,7 @@ has been extended for more granular search settings in v4.0.
 
     <label for="nesting">
       <input type="checkbox" name="nesting" id="nesting" bind:checked={nesting}>
-      Nesting
+      Nesting (select <code>ID</code> from search field select)
     </label>
 
     <label for="skipSort">
@@ -84,13 +85,16 @@ has been extended for more granular search settings in v4.0.
       Skip sorting results
     </label>
 
-
     <label for="startOnly">
       <input type="checkbox" name="startOnly" id="startOnly" bind:checked={startOnly}>
       Search by first letters
     </label>
 
-    <br>
+    <label for="wordsOnly">
+      <input type="checkbox" name="wordsOnly" id="wordsOnly" bind:checked={wordsOnly}>
+      Respect word boundaries
+    </label>
+
     <label for="disable">
       <input type="checkbox" name="disable" id="disable" bind:checked={disabled}>
       Disable filtering
@@ -113,6 +117,7 @@ optional and boolean values are false by default.
   * @property {boolean} [nesting]
   * @property {boolean} [disabled]
   * @property {boolean} [startOnly]
+  * @property {boolean} [wordsOnly]
   *
   *
   * @typedef {object} SortDef
@@ -132,6 +137,18 @@ optional and boolean values are false by default.
   label {
     display: inline-block;
     margin: 8px 1rem 8px 0;
+  }
+  .block-labels {
+    & select {
+      border: 1px solid #ccc;
+      padding: 4px;
+      border-radius: 6px;
+    }
+    & label {
+      display: block;
+      margin-bottom: 0;
+      margin-left: 16px;
+    }
   }
   select {
     appearance: auto;
