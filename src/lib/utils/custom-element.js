@@ -6,15 +6,15 @@ const OPTION_LIST = [
   'value-field', 'label-field', 'disabled-field', 'placeholder',
   // UI, UX
   'searchable', 'clearable', 'renderer', 'disable-highlight', 'select-on-tab', 'reset-on-blur', 'reset-on-select',
+  'keep-selection-in-list', 'close-after-select', 'search-props',
   // multiple
   'multiple', 'max', 'collapse-selection',
   // creating
-  'creatable', 'creatable-prefix', 'allow-editing', 'keepCreated', 'delimiter',
+  'creatable', 'creatable-prefix', 'allow-editing', 'keep-created', 'delimiter',
   // remote
-  'fetch', 'fetch-reset-on-blur', 'min-query',
+  'fetch', 'fetch-reset-on-blur', 'min-query', 'fetch-debounce-time',
   // perf & virtual list
-  'lazy-dropdown', 'virtual-list', 'vl-height', 'vl-item-size',
-
+  'virtual-list', 'vl-height', 'vl-item-size',
 ];
 /**
  * You can specify 'create-row-label' on component level. Placeholder {value} will be replaced with current value
@@ -58,9 +58,11 @@ function formatValue(name, value) {
     case 'allow-editing':
     case 'keep-created':
     case 'fetch-reset-on-blur':
-    case 'lazy-dropdown':
     case 'virtual-list':
       return value !== null && value !== 'false';
+    case 'search-props':
+      return JSON.parse(value);
+    case 'fetch-debounce-time':
     case 'max':
       return isNaN(parseInt(value)) ? 0 : parseInt(value);
     case 'min-query':
@@ -179,16 +181,6 @@ class SvelecteElement extends HTMLElement {
           this.setAttribute('delimiter', value);
         }
       },
-      'lazyDropdown': {
-        get() {
-          return this.hasAttribute('lazy-dropdown')
-            ? true
-            : _config.lazyDropdown;
-        },
-        set() {
-          console.warn('⚠ this setter has no effect after component has been created')
-        }
-      },
       'placeholder': {
         get() {
           return this.getAttribute('placeholder') || _config.placeholder;
@@ -244,11 +236,40 @@ class SvelecteElement extends HTMLElement {
             this.removeAttribute('renderer');
           }
         }
+      },
+      'collapseSelection': {
+        get() {
+          const attr = this.getAttribute('collapse-selection');
+          let out;
+          switch (attr) {
+            case 'true':
+            case '': return true;
+            case 'auto': return 'auto';
+            case 'false': return false;
+          }
+        },
+        set(value) {
+          this.setAttribute('collapse-selection', value || false);
+        }
       }
     };
-    const boolProps = ['searchable','clearable','disable-highlight', 'required', 'select-on-tab','reset-on-blur','reset-on-select',
-      'multiple','collapse-selection','creatable','allow-editing','keep-created','fetch-reset-on-blur',
-      'virtual-list','disable-sifter','label-as-value', 'disabled'
+    const boolProps = [
+      'searchable',
+      'clearable',
+      'disable-highlight',
+      'required',
+      'select-on-tab',
+      'reset-on-blur',
+      'reset-on-select',
+      'multiple',
+      'creatable',
+      'allow-editing',
+      'keep-created',
+      'fetch-reset-on-blur',
+      'virtual-list',
+      'disable-sifter',
+      'label-as-value',
+      'disabled'
     ].reduce((res, propName) => {
       const formatted = formatProp(propName);
       res[formatted] = {
@@ -297,6 +318,9 @@ class SvelecteElement extends HTMLElement {
         volatileEmitChange = false;
         return;
       }
+      if (name === 'disabled' && this.anchorSelect) {
+        this.anchorSelect.disabled = ['disabled','true',''].includes(newValue);
+      }
       this.svelecte.$set({ [formatProp(name)]: formatValue(name, newValue) });
     }
   }
@@ -330,21 +354,47 @@ class SvelecteElement extends HTMLElement {
       const parentValue = this.parent.value || this.parent.getAttribute('value'); // for 'fetch'ed parent, value is always null
       props.parentValue = parentValue;
       this.parentCallback = e => {
-        this.svelecte.$set({ parentValue: e.target.value });
+        const newValue = e.target.value || null;
+        this.svelecte.$set({ parentValue: newValue });
+        this.anchorSelect.disabled = newValue === null;
+        if (!newValue && this.anchorSelect) {
+          // @ts-ignore
+          this.anchorSelect.innerHTML = !this.multiple
+            ? `<option value="" selected="">Empty</option>`
+            : '';
+        }
       };
       this.parent.addEventListener('change', this.parentCallback);
+      if (!parentValue) props.disabled = true;
     }
     const anchorSelect = (/** @type {HTMLSelectElement} */(/** @type {unknown} */ this.previousElementSibling));
     if (anchorSelect && anchorSelect.tagName==='SELECT') {
+      if (anchorSelect.required && !props.required) {
+        props.required = true;
+        this.setAttribute('required', '');
+      }
+      if (anchorSelect.multiple && !props.multiple) {
+        props.multiple = true;
+        this.setAttribute('multiple', '');
+      }
+      if (anchorSelect.disabled && !props.disabled) {
+        props.disabled = true;
+        this.setAttribute('disabled', '');
+      }
       props['anchor_element'] = anchorSelect.id;
+
       anchorSelect.style.cssText = 'opacity: 0; position: absolute; z-index: -2; top: 0; height: 38px';
       anchorSelect.tabIndex = -1; // just to be sure
       this.anchorSelect = anchorSelect;
-      this.anchorSelect.multiple = props.multiple || anchorSelect.name.includes('[]');
-      const initialValue = Array.isArray(props.value) ? props.value : [props.value || null].filter(e => e);
-      anchorSelect.options.length !== initialValue.length && initialValue.forEach(val => {
-        this.anchorSelect.innerHTML += `<option value="${val || ''}" selected>${val || 'No value'}</option>`;
-      });
+      if (props.multiple && !anchorSelect.multiple) anchorSelect.multiple = true;
+      // extract options from HTML
+      if (!props.options && anchorSelect.childElementCount) {
+        props.options = Array.from(anchorSelect.children).map((/** @type {HTMLOptionElement} */ opt) => ({
+          [props.valueField || 'value']: opt.value,
+          [props.labelField || 'text']: opt.text,
+        }));
+      }
+
       setTimeout(() => {
         this.firstElementChild.appendChild(anchorSelect);
       });

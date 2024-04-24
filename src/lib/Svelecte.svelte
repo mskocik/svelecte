@@ -282,7 +282,7 @@
   let is_fetch_dependent = false;
   // refs
   let /** @type {HTMLInputElement}  */  ref_input;
-  let /** @type {HTMLElement}       */  ref_select_element;
+  let /** @type {HTMLSelectElement} */  ref_select_element;
   let /** @type {HTMLDivElement}    */  ref_container;
   let /** @type {HTMLDivElement}    */  ref_container_scroll;
   let /** svelte-tiny-virtual-list  */  ref_virtuallist;
@@ -1341,10 +1341,16 @@
     isIOS = iOS();
     meta_key = isIOS ? '⌘' : 'Ctrl';
     if (anchor_element) {
+      // @ts-ignore
       ref_select_element = document.getElementById(anchor_element);
       ref_select_element.className = 'sv-hidden-element';
       ref_select_element.innerHTML = '';
       ref_select_element.tabIndex = -1;
+      // this setup is required, because definition can be on el-svelecte only (not on underlying <select>)
+      ref_select_element.disabled = disabled;
+      ref_select_element.required = required;
+      ref_select_element.multiple = multiple;
+      !multiple && ref_select_element.insertAdjacentHTML('beforeend', '<option value="" selected>Empty</option>');
       selectedKeys.forEach(k => {
         ref_select_element.insertAdjacentHTML('beforeend', `<option value=${k} selected>${k}</option>`);
       });
