@@ -351,7 +351,7 @@
 
   // aria related
   $: aria_selection = i18n_actual.aria_selected(selectedOptions.map(o => o[currentLabelField]));
-  $: aria_context = options_filtered.length && dropdown_index
+  $: aria_context = options_filtered.length && dropdown_index > 0
     ? (
       is_dropdown_opened
         ? i18n_actual.aria_listActive(options_filtered[dropdown_index], currentLabelField, options_filtered.length)
