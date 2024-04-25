@@ -131,7 +131,9 @@ optional and boolean values are false by default.
 - `skipSort` sorting can be turned off.
 - `conjuction` defaults to `and`, defines how multiple words are searched. `or` can be turned on directly when entering text by typing `|` character.
 - `nesting` allow for search in nested properties, as mentions in `fields` description
-- `disabled` when `true` no option is filtered out, just searched phrase is highlighted (which can be disabled by `disabledHighlighting`)
+- `disabled` when `true` no option is filtered out, just searched phrase is highlighted (which can be disabled by `disabledHighlighting` property)
+- `startOnly` search only from beginning of the string
+- `wordsOnly` respects word boundaries
 
 <style>
   label {
