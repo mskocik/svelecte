@@ -74,7 +74,6 @@
 
 <script>
   import { onMount, tick } from 'svelte';
-  import { writable } from 'svelte/store';
   import { flip } from 'svelte/animate';
   import TinyVirtualList from 'svelte-tiny-virtual-list';
   import { positionDropdown, scrollIntoView, virtualListDimensionsResolver } from './utils/dropdown.js';
@@ -1123,20 +1122,6 @@
   }
 
   /**
-   * Holder for AbortController implemented as store because of reactivity delays
-   *
-   * @type {import('svelte/store').Writable<{control:AbortController}>}
-   */
-  let fetch_store = writable({control: null});
-  /**
-   * @param {AbortController?} control
-   */
-  const fetch_reset = (control = null) => fetch_store.update(val => {
-    val.control?.abort();
-    return { control };
-  })
-
-  /**
    * User only for QUERY mode
    *
    * @param {string} inputValue
@@ -1144,7 +1129,7 @@
   function trigger_fetch(inputValue) {
     if (fetch_initOnly || maxReached) return;
     if (debouncedFetch) {
-      fetch_reset();
+      fetch_controller?.abort();
       isFetchingData = true;
       if (input_value.length < minQuery) {
         isFetchingData = false;
@@ -1167,7 +1152,7 @@
    * @param {FetchOptions} opts
    */
   function fetch_runner(opts = {}) {
-    fetch_reset();
+    fetch_controller?.abort();
     if ((opts.init !== true && !input_value.length) || (is_fetch_dependent && !parentValue)) {
       isFetchingData = false;
       if (fetchResetOnBlur) {
@@ -1188,8 +1173,8 @@
     if (fetch_initOnly) listMessage = i18n_actual.fetchInit;
 
     const built = defaults.requestFactory(input_value, { parentValue, url: fetch, initial }, fetchProps);
+    fetch_controller?.abort();
     fetch_controller = built.controller;
-    fetch_reset(built.controller);
     window.fetch(built.request)
       .then(resp => resp.json())
       // success
