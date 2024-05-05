@@ -1,3 +1,5 @@
+<svelte:options runes={false} />
+
 <script context="module">
   import defaults from './settings.js';
 
@@ -191,6 +193,8 @@
   export let valueAsObject = defaults.valueAsObject;
   /** @type {string|number|null|undefined} */
   export let parentValue = undefined;
+  export let onFocus = () => {};
+  export let onInvalidValue = () => {};
 
   export function focus() {
     ref_input.focus();
@@ -484,7 +488,7 @@
         console.warn('[Svelecte]: provided "value" property is invalid', passedVal);
         value = multiple ? [] : null;
         readSelection = value;
-        dispatch('invalidValue', passedVal);
+        onInvalidValue(passedVal);
         return;
       }
       readSelection = Array.isArray(passedVal) ? _selection : _selection.shift();
@@ -812,7 +816,8 @@
       :options_flat;
   }
 
-  function onCreate(_event) {
+  function on_create(event) {
+    event.preventDefault();
     if (alreadyCreated.includes(input_value)) return;
 
     onSelect(null, input_value);
@@ -937,7 +942,7 @@
    * Prevent focus change
    * @param {MouseEvent} event
    */
-  function onMouseDown(event) {
+  function on_mouse_down(event) {
     event.preventDefault();
   }
 
@@ -946,7 +951,7 @@
    *
    * @param {MouseEvent & { currentTarget: EventTarget & HTMLDivElement} & { target: HTMLElement }} event
    */
-  function onClick(event) {
+  function on_click(event) {
     if (disabled) return;
     /** @type {HTMLElement & import('./utils/actions.js').ExtButton} */
     const target = event.target.closest('[data-action]');
@@ -990,7 +995,7 @@
   /**
    * @param {KeyboardEvent} e
    */
-   function onKeyDown(e) {
+   function on_key_down(e) {
     if (android() && !enter_hint && e.key === 'Enter') return true;
 
     disable_key_event_bubble = ['Enter', 'Escape'].includes(e.key) && is_dropdown_opened;
@@ -1000,7 +1005,7 @@
   /**
    * @param {KeyboardEvent} e
    */
-  function onKeyUp(e) {
+  function on_key_up(e) {
     if (disable_key_event_bubble) {
       e.stopImmediatePropagation();
       e.preventDefault();
@@ -1011,13 +1016,13 @@
   /**
    * Required for mobile single select to work properly
    */
-  function onInput() {
+  function on_input() {
     if (selectedOptions.length === 1 && !multiple) {
       // input_value = '';
     }
   }
 
-  function onFocus() {
+  function on_focus() {
     is_focused = true;
     is_dropdown_opened = focus_by_mouse;
     if (!is_tainted) is_tainted = true;
@@ -1027,7 +1032,7 @@
     dispatch('focus', ref_input);
   }
 
-  function onBlur() {
+  function on_blur() {
     is_focused = false;
     is_dropdown_opened = false;
     focus_by_mouse = false;
@@ -1045,7 +1050,7 @@
   /**
    * Enable create items by pasting
    */
-   function onPaste(event) {
+   function on_paste(event) {
     if (creatable) {
       event.preventDefault();
       const rx = new RegExp('([^' + delimiter + '\\n]+)', 'g');
@@ -1062,7 +1067,7 @@
     // do nothing otherwise
   }
 
-  function onDndEvent(e) {
+  function on_dnd_event(e) {
     is_dragging = e.type === 'consider';
     selectedOptions = e.detail.items;
     if (!is_dragging) {
@@ -1356,7 +1361,7 @@
       });
     } else if (selectedOptions.length) {
       setTimeout(() => {
-        Array.from(ref_select_element.children).forEach((/** @type {HTMLOptionElement} */ opt) => {
+        Array.from(ref_select_element?.children || []).forEach((/** @type {HTMLOptionElement} */ opt) => {
           opt.selected = true;
         });
       }, 200);
@@ -1394,14 +1399,14 @@
   {/if}
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="sv-control" on:mousedown={onMouseDown} on:click={onClick}
+  <div class="sv-control" onmousedown={on_mouse_down} onclick={on_click}
   >
     <slot name="icon"></slot>
     <!-- #region selection & input -->
     <div class="sv-control--selection" class:is-single={multiple === false} class:has-items={selectedOptions.length > 0} class:has-input={input_value.length}
       use:dndzone={{items: selectedOptions, flipDurationMs, type: inputId, dragDisabled: doCollapse }}
-      on:consider={onDndEvent}
-      on:finalize={onDndEvent}
+      onconsider={on_dnd_event}
+      onfinalize={on_dnd_event}
     >
       {#if selectedOptions.length }
       {#if multiple && doCollapse}
@@ -1410,7 +1415,7 @@
         <slot name="selection" {selectedOptions} {bindItem}>
           {#each selectedOptions as opt (opt[currentValueField])}
           <div class="sv-item--container" animate:flip={{duration: flipDurationMs }}
-            on:mousedown|preventDefault
+            onmousedown={e => e.preventDefault()}
           >
             <div class="sv-item--wrap" class:is-multi={multiple}>
               <div class="sv-item--content">{@html itemRenderer(opt, true)}</div>
@@ -1444,12 +1449,12 @@
           autocapitalize="none" autocomplete="off" autocorrect="off" spellcheck="false" aria-autocomplete="list" tabindex="0"
           bind:this={ref_input}
           bind:value={input_value}
-          on:focus={onFocus}
-          on:keydown={onKeyDown}
-          on:keyup={onKeyUp}
-          on:input={onInput}
-          on:blur={onBlur}
-          on:paste={onPaste}
+          onfocus={on_focus}
+          onkeydown={on_key_down}
+          onkeyup={on_key_up}
+          oninput={on_input}
+          onblur={on_blur}
+          onpaste={on_paste}
           >
       </span>
       <!-- #endregion -->
@@ -1488,8 +1493,8 @@
   <!-- svelte-ignore a11y-no-static-element-interactions -->
   <!-- svelte-ignore a11y-click-events-have-key-events -->
   <div class="sv_dropdown" class:is-open={dropdown_show}
-    on:mousedown={onMouseDown}
-    on:click={onClick}
+    onmousedown={on_mouse_down}
+    onclick={on_click}
   >
   {#if is_mounted && render_dropdown}
       <slot name="list-header" />
@@ -1554,7 +1559,7 @@
     </div> <!-- scroll container end -->
     {#if creatable && input_value && !maxReached}
       <div class="is-dropdown-row">
-        <button type="button" class="creatable-row" on:click|preventDefault={onCreate} on:mousedown|preventDefault
+        <button type="button" class="creatable-row" onclick={on_create} onmousedown={e => e.preventDefault()}
           class:active={(options_filtered.length ? options_filtered.length : 0) === dropdown_index}
           class:is-disabled={createFilter(input_value)}
         >

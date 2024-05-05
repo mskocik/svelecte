@@ -6,6 +6,7 @@
 
   let options = dataset.colors();
   let selection = ['red', 'green','blue'];
+  $: selectionMirror = selection;
 
   function slotRenderer(item) {
     return `<div class="slot-definition" style="display: block;">option</div>`
@@ -85,9 +86,9 @@ Svelecte provide multiple slots as you can see below. On the `left` you can see 
 on the `right` you can see slot placeholders.
 
 <div class="cols-2">
-  <Svelecte {options} bind:value={selection} multiple collapseSelection="blur" clearable creatable keepSelectionInList/>
+  <Svelecte {options} bind:value={selection} multiple collapseSelection="blur" clearable creatable keepSelectionInList max={5}/>
 
-  <Svelecte {options} renderer={slotRenderer} bind:value={selection} multiple collapseSelection="blur" clearable creatable keepSelectionInList>
+  <Svelecte {options} renderer={slotRenderer} bind:value={selectionMirror} multiple collapseSelection="blur" clearable creatable keepSelectionInList>
     <div class="slot-definition" slot="icon">
       Icon
     </div>

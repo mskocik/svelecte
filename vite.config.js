@@ -21,6 +21,9 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['tests/**/*.{test,spec}.{js,ts}'],
+    alias: {
+      "@testing-library/svelte": "@testing-library/svelte/svelte5",
+    },
     // extend jsdom matchers
     setupFiles: ['./tests/_setup.js']
   }

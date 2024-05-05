@@ -42,7 +42,7 @@ describe('fetch: onMount', () => {
 
 describe('fetch:init', () => {
   it('properly set initial value while in liFtst (v3 compatible) step I', async () => {
-    const { component } = render(Svelecte, {
+    const { component, rerender } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors',
       fetchDebounceTime: 0,
       value: 'blue'
@@ -52,7 +52,7 @@ describe('fetch:init', () => {
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
 
-    component.$$set({ fetch: 'http://localhost:5173/api/colors-countries' });
+    rerender({ fetch: 'http://localhost:5173/api/colors-countries' });
 
     await sleep(1000);
 
@@ -61,7 +61,7 @@ describe('fetch:init', () => {
   });
 
   it('properly set initial value while in list (v3 compatible) step II', async () => {
-    const { component } = render(Svelecte, {
+    const { component, rerender } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors',
       fetchDebounceTime: 0,
       fetchMode: 'init',
@@ -72,12 +72,12 @@ describe('fetch:init', () => {
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
 
-    component.$$set({ fetch: 'http://localhost:5173/api/countries-colors?sleep=400' });
+    rerender({ fetch: 'http://localhost:5173/api/countries-colors?sleep=400' });
     await sleep(1000);
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
 
-    component.$$set({ fetch: 'http://localhost:5173/api/countries?sleep=400' });
+    rerender({ fetch: 'http://localhost:5173/api/countries?sleep=400' });
     await sleep(1000);
 
     expect(screen.queryByText('Blue')).not.toBeInTheDocument();
@@ -151,16 +151,13 @@ describe('fetch:query', () => {
     const colors = dataset.colors();
     const selection = colors.shift();  // aqua
 
+    let event_triggered = false;
     const { component } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors?query=[query]',
       fetchDebounceTime: 0,
       valueAsObject: true,
-      value: selection
-    });
-
-    let event_triggered = false;
-    component.$on('invalidValue', e => {
-      event_triggered = true;
+      value: selection,
+      onInvalidValue: () => event_triggered = true
     });
 
     await sleep(100);
@@ -177,12 +174,10 @@ describe('fetch:query', () => {
       fetchDebounceTime: 0,
       valueAsObject: true,
       strictMode: false,
-      value: selection
+      value: selection,
+      onInvalidValue: () => event_triggered = true
     });
     let event_triggered = false;
-    component.$on('invalidValue', e => {
-      event_triggered = true;
-    });
 
     await sleep(10);
 

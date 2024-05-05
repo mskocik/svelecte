@@ -9,7 +9,7 @@ describe('keepSelectionInList:auto', () => {
       options: ['One', 'Two', 'Three', 'Four', 'Five'],
       value: 'Two',
     });
-    rr.component.$$set({ value: 'Two'});
+    rr.rerender({ value: 'Two'});
 
     const input = rr.container.querySelector('input');
 
@@ -29,7 +29,7 @@ describe('keepSelectionInList:auto', () => {
       value: 'Two',
       keepSelectionInList: 'auto'
     });
-    rr.component.$$set({ value: 'Two'});
+    rr.rerender({ value: 'Two'});
 
     const input = rr.container.querySelector('input');
 
@@ -94,7 +94,7 @@ describe('keepSelectionInList:true', () => {
       options: ['One', 'Two', 'Three', 'Four', 'Five'],
       value: 'Two'
     });
-    rr.component.$$set({ value: 'Two'});
+    rr.rerender({ value: 'Two'});
 
     const input = rr.container.querySelector('input');
 

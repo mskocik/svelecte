@@ -18,12 +18,12 @@ describe('parentValue', () => {
   });
 
   it('remove parentValue', async () => {
-    const { container, component } = render(Svelecte, {
+    const { container, rerender } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors',
       parentValue: null
     });
 
-    component.$$set({
+    rerender({
       parentValue: undefined
     });
 
@@ -36,7 +36,7 @@ describe('parentValue', () => {
   });
 
   it('no fetch when dependent and disabled', async () => {
-    const { container, component } = render(Svelecte, {
+    const { component, rerender } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors?sleep=100',
       parentValue: null
     });
@@ -49,7 +49,7 @@ describe('parentValue', () => {
 
     expect(fetchTriggered).toBeFalsy();
 
-    component.$$set({
+    rerender({
       parentValue: undefined
     });
 
@@ -60,7 +60,7 @@ describe('parentValue', () => {
 
 
   it('properly replace [parent] placeholder on fetch', async () => {
-    const { component } = render(Svelecte, {
+    const { component, rerender } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/[parent]',
       parentValue: null
     });
@@ -73,7 +73,7 @@ describe('parentValue', () => {
 
     expect(responseSize).toBe(0);
 
-    component.$$set({
+    rerender({
       parentValue: 'colors'
     });
 
