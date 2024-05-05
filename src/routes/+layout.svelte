@@ -38,12 +38,12 @@
     '/rendering': 'Rendering',
     '/searching': 'Search & filtering',
     '/fetch': 'Remote Datasource',
-    '/events': 'Events',
+    // '/events': 'Events',
     '/theme': 'Theme',
     '/global-config': 'Config, i18n',
     '/validation': 'Form Validation',
     '/examples': 'Examples',
-    '/migration-from-v3': 'Migration from v3'
+    '/migration-guide': 'Migration guide'
   }
 </script>
 

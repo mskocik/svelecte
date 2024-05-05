@@ -10,13 +10,11 @@ describe('fetch: onMount', () => {
   it('resolve \'init\' fetchMode automatically', async () => {
     const { component } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors',
-      fetchDebounceTime: 0
+      fetchDebounceTime: 0,
+      onFetch: () => fetchTriggered = true
     });
 
     let fetchTriggered = false;
-    component.$on('fetch', () => {
-      fetchTriggered = true;
-    });
 
     await sleep(300);
 
@@ -26,13 +24,11 @@ describe('fetch: onMount', () => {
   it('no initial request on query mode', async () => {
     const { component } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors?query=[query]',
-      fetchDebounceTime: 0
+      fetchDebounceTime: 0,
+      onFetch: () => fetchTriggered = true
     });
 
     let fetchTriggered = false;
-    component.$on('fetch', () => {
-      fetchTriggered = true;
-    });
 
     await sleep(500);
 

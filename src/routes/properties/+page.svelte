@@ -1,5 +1,7 @@
 # Properties
 
+Scroll down for [event callback props](#event-callback-props).
+
 Property            | Type              | Default     | Description
 --------------------|-------------------|-------------|------------
 name                | `string`          | `'svelecte'`| Create internal `<select>` element. Without `name` defined, no `<select>` is created
@@ -54,3 +56,17 @@ i18n                | `object`          | `null`      | I18n object overriding d
 dndzone             | `function`        | noop        | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [example REPL](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)
 validatorAction     | `array`           | `null`      | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`. See the [example REPL](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1). For this to work, `name` property MUST be defined
 anchor_element      | `bool`            | `null`      | `internal`: when passing also existing select (for custom element)
+
+## Event callback props
+
+Property        | arguments                   | description
+-------------|-----------------------------|----------------------------------------------------------------------------
+onChange       | selection                   | selected objects. If `anchor` property is defined, `change` event is called also on it
+onFocus        | `<input>`                        | focus event
+onBlur         | `<input>`                           | blur event
+onCreateOption | option                      | newly created option object
+onCreateFail | object | thrown if `createHandler` fails
+onEnterKey     | underlying `keyDown` event  | triggered when natively it would cause form submit (dropdown is closed). This gives you ability to prevent it by calling `event.detail.preventDefault()`
+onFetch        | options                     | newly fetched remote options
+onFetchError   | error                     | dispatche on fetch error of any kind
+onInvalidValue | invalidValue                | triggered when passed `value` is out of provided `options` items. Internal (and bound, if any) `value` is set to `null` or `[]` if multiple

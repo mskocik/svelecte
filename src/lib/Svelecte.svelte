@@ -73,7 +73,7 @@
 </script>
 
 <script>
-  import { createEventDispatcher, onMount, tick } from 'svelte';
+  import { onMount, tick } from 'svelte';
   import { writable } from 'svelte/store';
   import { flip } from 'svelte/animate';
   import TinyVirtualList from 'svelte-tiny-virtual-list';
@@ -193,8 +193,16 @@
   export let valueAsObject = defaults.valueAsObject;
   /** @type {string|number|null|undefined} */
   export let parentValue = undefined;
-  export let onFocus = () => {};
-  export let onInvalidValue = () => {};
+  // event callbacks
+  export let onChange = readSelection => {};
+  export let onFocus = htmlInput => {};
+  export let onBlur = htmlInput => {};
+  export let onCreateOption = newObj => {};
+  export let onCreateFail = fail => {};
+  export let onEnterKey = event => {};
+  export let onFetch = data => {};
+  export let onFetchError = err => {};
+  export let onInvalidValue = val => {};
 
   export function focus() {
     ref_input.focus();
@@ -222,7 +230,6 @@
     fetchResetOnBlur = false; // force this to preven 'clearSelection' clear fetched options
   }
 
-  const dispatch = createEventDispatcher();
   const DOM_ID = `sv-${name}-select`;
 
   /** ************************************ preparation */
@@ -631,7 +638,7 @@
    */
    function emitChangeEvent() {
     tick().then(() => {
-      dispatch('change', readSelection);
+      onChange(readSelection);
       if (ref_select_element) {
         ref_select_element.dispatchEvent(new Event('input'));   // required for svelte-use-form
         ref_select_element.dispatchEvent(new Event('change'));  // typically you expect change event to be fired
@@ -639,12 +646,6 @@
     });
   }
 
-  /**
-   * Dispatch createoption event when user creates a new entry (with 'creatable' feature)
-   */
-  function emitCreateEvent(createdOpt) {
-      dispatch('createoption', createdOpt)
-  }
   // #endregion
 
   // #region [interactivity]
@@ -676,13 +677,13 @@
           !fetch && alreadyCreated.push(opt);
           newObj.$created = true;  // internal setter
           if (keepCreated) prev_options = [...prev_options, newObj];
-          emitCreateEvent(newObj);
+          onCreateOption(newObj);
           selectOption(newObj);
           onSelectTeardown();
           emitChangeEvent();
         })
         .catch(e => {
-          dispatch('createFail', {
+          onCreateFail({
             input: opt,
             error: e
           });
@@ -896,7 +897,7 @@
       case Tab:
       case 'Enter':
         if (!is_dropdown_opened) {
-          event.key !== Tab && dispatch('enterKey', event); // ref #125
+          event.key !== Tab && onEnterKey(event); // ref #125
           return;
         }
         let activeDropdownItem = !ctrlKey ? options_filtered[dropdown_index] : null;
@@ -912,7 +913,7 @@
         }
         if (!activeDropdownItem && selectedOptions.length) {
           is_dropdown_opened = false;
-          event.key !== Tab && dispatch('enterKey', event); // ref #125
+          event.key !== Tab && onEnterKey(event); // ref #125
           return;
         }
         (event.key !== Tab || (event.key === Tab && selectOnTab !== 'select-navigate')) && event.preventDefault(); // prevent form submit
@@ -1029,7 +1030,7 @@
     collapseSelection === 'blur' && !is_dragging && setTimeout(() => {
       doCollapse = false;
     }, 100);
-    dispatch('focus', ref_input);
+    onFocus(ref_input);
   }
 
   function on_blur() {
@@ -1044,7 +1045,7 @@
     collapseSelection === 'blur' && !is_dragging && setTimeout(() => {
       doCollapse = true;
     }, 100);
-    dispatch('blur', ref_input);
+    onBlur(ref_input);
   }
 
   /**
@@ -1197,7 +1198,7 @@
       // success
       .then((/** @type {object} */ json) => {
         // sveltekit returns error property
-        if (!Array.isArray(json) && json?.error) dispatch('fetchError', json.error);
+        if (!Array.isArray(json) && json?.error) onFetchError(json.error);
         return Promise.resolve(fetchCallback
           ? fetchCallback(json)
           : (json.data || json.items || json.options || json)
@@ -1208,7 +1209,7 @@
               data = [];
             }
             prev_options = data;
-            dispatch('fetch', data);
+            onFetch(data);
 
             tick().then(() => {
               if (initial) {
@@ -1223,7 +1224,7 @@
       .catch(e => {
         if (e instanceof DOMException && e.name === 'AbortError') return true;
         prev_options = [];
-        dispatch('fetchError', e);
+        onFetchError(e);
         console.warn('[Svelecte] Fetch Error:', e);
       })
       // teardown

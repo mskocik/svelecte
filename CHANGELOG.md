@@ -1,3 +1,16 @@
+## v5.0
+
+- [breaking] Dropped dispatching custom events through `createEventDispatcher`. Callback methods are expected instead. Previous event names has now added prefix `on` and are properly capitalized. This is a list of event to callback mapping:
+    - `change` changed to `onChange`
+    - `focus` changed to `onFocus`
+    - `blur` changed to `onBlur`
+    - `createoption` changed to `onCreateOption`
+    - `createFail` changed to `onCreateFail`
+    - `enterKey` changed to `onEnterKey`
+    - `fetch` changed to `onFetch`
+    - `fetchError` changed to `onFetchError`
+    - `invalidValue` changed to `onInvalidValue`
+
 ## v4.0:
 
 - [breaking] changed signature of `registerSvelecte`

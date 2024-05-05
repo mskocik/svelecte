@@ -1,3 +1,32 @@
+# Migration from v4
+
+Version 5 requires svelte v5.
+
+If you are use v3 of Svelecte, [migrate to v4 first](#migration-from-v3) and when you migrate to svelte v5, update also svelecte to v5.
+
+## Events
+
+Due to depreaction of `createEventDispatcher` all events has been replaced by event callback properties.
+
+```svelte
+<Svelecte on:fetch={fetchEventHandler} /> // [!code --]
+<Svelecte onFetch={fetchEventHandler} /> // [!code ++]
+```
+This is the event to prop mapping list:
+
+- `change` changed to `onChange`
+- `focus` changed to `onFocus`
+- `blur` changed to `onBlur`
+- `createoption` changed to `onCreateOption`
+- `createFail` changed to `onCreateFail`
+- `enterKey` changed to `onEnterKey`
+- `fetch` changed to `onFetch`
+- `fetchError` changed to `onFetchError`
+- `invalidValue` changed to `onInvalidValue`
+
+---
+---
+
 # Migration from v3
 
 The v4.0 release of Svelecte is almost complete rewrite. This gave me opportunity to start fresh and write things more correct/elegant way, which will much easier to reason about and work with. So breaking changes were inevitable to pursue this goal of simplicity and maintainability breaking changes are relatively huge - ranging from HTML markup and CSS props to dropped/merged properties and changes what can be defined in specific properties.

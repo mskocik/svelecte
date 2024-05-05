@@ -38,12 +38,10 @@ describe('parentValue', () => {
   it('no fetch when dependent and disabled', async () => {
     const { component, rerender } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors?sleep=100',
-      parentValue: null
+      parentValue: null,
+      onFetch: () => fetchTriggered = true
     });
     let fetchTriggered = false;
-    component.$on('fetch', () => {
-      fetchTriggered = true;
-    });
 
     await sleep(150);
 
@@ -62,12 +60,10 @@ describe('parentValue', () => {
   it('properly replace [parent] placeholder on fetch', async () => {
     const { component, rerender } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/[parent]',
-      parentValue: null
+      parentValue: null,
+      onFetch: (data) => responseSize = data.length
     });
     let responseSize = 0;
-    component.$on('fetch', e => {
-      responseSize = e.detail.length;
-    });
 
     await sleep(150);
 
