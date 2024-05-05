@@ -54,7 +54,6 @@ searchProps         | `object`          | `null`      | Customize `sifter.js` se
 class               | `string`          | `svelecte-control` | default css class
 i18n                | `object`          | `null`      | I18n object overriding default settings
 dndzone             | `function`        | noop        | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [example REPL](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)
-validatorAction     | `array`           | `null`      | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`. See the [example REPL](https://svelte.dev/repl/de3cd8e47feb4d078b6bace8d4cf7b90?version=3.44.1). For this to work, `name` property MUST be defined
 anchor_element      | `bool`            | `null`      | `internal`: when passing also existing select (for custom element)
 
 ## Event callback props

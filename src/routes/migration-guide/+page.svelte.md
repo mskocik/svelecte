@@ -24,6 +24,14 @@ This is the event to prop mapping list:
 - `fetchError` changed to `onFetchError`
 - `invalidValue` changed to `onInvalidValue`
 
+## Validation through `svelte-use-form`
+
+Support for `svelte-use-form` has been dropped without replacement. Svelecte works nicely out of the box with `sveltekit-superforms` as shown in [validation](validation) page.
+
+```svelte
+<Svelecte validatorAction={...}/> // [!code --]
+```
+
 ---
 ---
 

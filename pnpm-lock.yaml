@@ -82,9 +82,6 @@ devDependencies:
   svelte-dnd-action:
     specifier: ^0.9.43
     version: 0.9.43(svelte@5.0.0-next.123)
-  svelte-use-form:
-    specifier: ^2.10.0
-    version: 2.10.0(svelte@5.0.0-next.123)
   sveltekit-superforms:
     specifier: ^2.13.0
     version: 2.13.0(@sveltejs/kit@2.5.7)(@types/json-schema@7.0.15)(esbuild-runner@2.2.2)(esbuild@0.20.2)(svelte@5.0.0-next.123)
@@ -3933,14 +3930,6 @@ packages:
   /svelte-tiny-virtual-list@2.1.0:
     resolution: {integrity: sha512-+zREgm9JM65eQGlrFHUWFjekfsaX0H/Vd0aJgVvZZ6zbTua2ofxXt/c8pCEvji/deF/UKdQ1lNw5gix+tq01ZA==}
     dev: false
-
-  /svelte-use-form@2.10.0(svelte@5.0.0-next.123):
-    resolution: {integrity: sha512-RSYkfRCmJF+2dm4UzhCdORjwmAM+Vueg+Blqcui1It8wsicLnfpUgtXbHWw9NxhXB4cHz88EDK63cxqmamhEyA==}
-    peerDependencies:
-      svelte: '>=3.46.0 < 5'
-    dependencies:
-      svelte: 5.0.0-next.123
-    dev: true
 
   /svelte2tsx@0.7.8(svelte@5.0.0-next.123)(typescript@5.4.5):
     resolution: {integrity: sha512-ABK3RDFcy59AqAiU1N5Kxu1RnKrb1GDMrQjLgNgJfE8Q+coCKpjCAPtUVKQM2HnmuqeNWcT3NqfXbE+ZmN5Pow==}

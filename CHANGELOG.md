@@ -10,6 +10,7 @@
     - `fetch` changed to `onFetch`
     - `fetchError` changed to `onFetchError`
     - `invalidValue` changed to `onInvalidValue`
+- [breaking] Dropped support for `svelte-use-form` validation library.
 
 ## v4.0:
 

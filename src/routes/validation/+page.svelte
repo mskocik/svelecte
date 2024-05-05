@@ -1,7 +1,6 @@
 <script>
   import { page } from '$app/stores';
   import SuperForm from './SuperForm.svelte';
-  import UseForm from './UseForm.svelte';
 
   export let data;
 </script>
@@ -34,42 +33,3 @@ You can use superforms out of the box.
 ```
 
 <SuperForm {data} status={$page.status}/>
-
-<hr>
-
-# Integration with `svelte-use-form`
-
-```svelte
-<script>
-	import { useForm, validators, Hint, required } from 'svelte-use-form';
-
-  const form = useForm();
-
-	function noBlack(val) {
-		if (val === 'black') return { noBlack: true }
-	}
-</script>
-
-<form use:form>
-  <Svelecte name="color"
-    required
-    validatorAction={[validators, required, noBlack]}
-  />
-
-	<div class="hint-space">
-		<Hint for="color" on="required" showWhenUntouched >
-			<i>Color is required!</i>
-		</Hint>
-		<Hint for="color" on="noBlack">
-			<span class="err">Please select something else than <i>black</i></span>
-		</Hint>
-		{#if $form.valid}
-			<span style="color: green">You may now pass!</span>
-		{/if}
-	</div>
-
-	<button type="submit" class="press-btn">Send form</button>
-</form>
-```
-
-<UseForm />

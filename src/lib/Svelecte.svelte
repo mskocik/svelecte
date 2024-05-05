@@ -128,8 +128,6 @@
   export let closeAfterSelect = defaults.closeAfterSelect;
   /** @type {function} */
   export let dndzone = () => ({ noop: true, destroy: () => {}});
-  /** @type {array} wrapper array for passing 'svelte-use-form validator action and its params '*/
-  export let validatorAction = [];
   /** @type {boolean} */
   export let strictMode = true;
   // multiple
@@ -640,7 +638,6 @@
     tick().then(() => {
       onChange(readSelection);
       if (ref_select_element) {
-        ref_select_element.dispatchEvent(new Event('input'));   // required for svelte-use-form
         ref_select_element.dispatchEvent(new Event('change'));  // typically you expect change event to be fired
       }
     });
@@ -1337,9 +1334,6 @@
 
   //#endregion
 
-  const svelte_use_form_validator = validatorAction.length
-    ? validatorAction.shift()
-    : () => {}; // noop
 
   onMount(() => {
     is_mounted = true;
@@ -1391,7 +1385,6 @@
   {#if name && !anchor_element}
   <select {name} {required} {multiple} {disabled} size="1" class="sv-hidden-element" id={DOM_ID} tabindex="-1" aria-hidden="true"
     bind:this={ref_select_element}
-    use:svelte_use_form_validator={validatorAction}
   >
     {#each selectedOptions as opt (opt[currentValueField])}
     <option value={opt[currentValueField]} selected></option>
