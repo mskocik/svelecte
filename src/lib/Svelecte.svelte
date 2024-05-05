@@ -1391,10 +1391,9 @@
     {/each}
   </select>
   {/if}
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
-  <div class="sv-control" onmousedown={on_mouse_down} onclick={on_click}
-  >
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
+  <div class="sv-control" onmousedown={on_mouse_down} onclick={on_click}>
     <slot name="icon"></slot>
     <!-- #region selection & input -->
     <div class="sv-control--selection" class:is-single={multiple === false} class:has-items={selectedOptions.length > 0} class:has-input={input_value.length}
@@ -1484,8 +1483,8 @@
   </div>
 
   <!-- #region DROPDOWN -->
-  <!-- svelte-ignore a11y-no-static-element-interactions -->
-  <!-- svelte-ignore a11y-click-events-have-key-events -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div class="sv_dropdown" class:is-open={dropdown_show}
     onmousedown={on_mouse_down}
     onclick={on_click}
@@ -1661,10 +1660,9 @@
     display: flex;
     min-width: 0;
     padding: var(--sv-item-wrap-padding, 3px 3px 3px 6px);
-    &.is-multi {
-      background-color: var(--sv-item-selected-bg, #efefef);
-    }
-
+  }
+  :global(.sv-item--wrap.is-multi) {
+    background-color: var(--sv-item-selected-bg, #efefef);
   }
   :global(.sv-item--content) {
     overflow: hidden;
@@ -1684,20 +1682,19 @@
     margin: 0;
     cursor: pointer;
     background-color: var(--sv-item-btn-bg, var(--sv-item-selected-bg, #efefef));
-
-    & > svg {
-      fill: var(--sv-item-btn-color, var(--sv-icon-color, #bbb));
-    }
-    &:hover {
-      background-color: var(--sv-item-btn-bg-hover, #ddd);
-      & > svg {
-        fill: var(--sv-item-btn-color-hover, #777);
-      }
-    }
   }
 
 
   /** #region ************************************ buttons */
+  :global(.sv-item--btn > svg) {
+    fill: var(--sv-item-btn-color, var(--sv-icon-color, #bbb));
+  }
+  :global(.sv-item--btn:hover) {
+    background-color: var(--sv-item-btn-bg-hover, #ddd);
+  }
+  :global(.sv-item--btn:hover > svg) {
+    fill: var(--sv-item-btn-color-hover, #777);
+  }
 
   .sv-buttons {
     display: flex;
