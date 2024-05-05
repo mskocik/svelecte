@@ -55,6 +55,13 @@ Result:
 npm install svelecte
 ```
 
+If you _need_ svelte 5 related version, use `next version`
+
+```bash
+npm install svelecte@next
+```
+
+
 <style>
   .m-auto {
     margin: 2rem auto;

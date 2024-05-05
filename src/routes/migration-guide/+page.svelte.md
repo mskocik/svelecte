@@ -1,6 +1,6 @@
 # Migration from v4
 
-Version 5 requires svelte v5.
+Version 5 requires svelte v5. Currently in development, can contains bugs.
 
 If you are use v3 of Svelecte, [migrate to v4 first](#migration-from-v3) and when you migrate to svelte v5, update also svelecte to v5.
 

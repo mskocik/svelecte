@@ -200,7 +200,7 @@ Where:
 ````
 
 Originally added to address issue [#151](https://github.com/mskocik/svelecte/issues/151), but can be used for anything.
-If you want to display selected options here as in mentioned issue, check [Migration guide](/migration-from-v3).
+If you want to display selected options here as in mentioned issue, check [Migration guide](/migration-guide#migration-from-v3).
 
 ### &bull; option
 
