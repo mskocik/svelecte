@@ -1847,21 +1847,21 @@
 
   /** #region input */
   .sv-input--sizer {
-    position: relative;
+    position: absolute;
+    pointer-events: none;
     display: inline-grid;
     vertical-align: top;
     align-items: center;
-
-    &:not(:focus-within) {
-      position: absolute;
-      pointer-events: none;
-    }
 
     &:after {
       content: attr(data-value) ' ';
       visibility: hidden;
       white-space: pre-wrap;
     }
+  }
+  .is-focused .sv-input--sizer {
+    position: relative;
+    pointer-events: all;
   }
   .has-items .keep-value:not(:focus) {
     color: transparent;
@@ -1884,7 +1884,6 @@
   }
   .has-items .sv-input--text {
     padding-left: 0;
-    margin-left: -2px;
   }
 
   .sv-input--text {
