@@ -3,7 +3,6 @@
   import { dataset } from '../data';
   import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode } from 'svelte-dnd-action';
   import Svelecte from '$lib/Svelecte.svelte';
-	import RenderItem from './RenderItem.svelte';
 
   /** ************************************ drag-n-drop */
 
@@ -96,15 +95,20 @@ Example how multiselect can be implemented.
 ></Svelecte>
 ```
 
-## Custom `option` slot component
+## Custom `option` snippet
 
-Simple example of using `<slot>` instead of [render function](/rendering#render-functions) for dropdown item rendering.
+Simple example of using snippet instead of [render function](/rendering#render-functions) for dropdown item rendering.
+Default snippet implementation correctly handles highlighted search. Custom snippet has no ability to do that.
 
-<Svelecte options={render_options} closeAfterSelect={false} value={'1'}>
-	<svelte:fragment slot="option" let:item>
-		<RenderItem {item} />
-	</svelte:fragment>
-</Svelecte>
+If you need to keep highlighting feature use [render function](/rendering#render-functions) for custom option rendering.
+
+{#snippet option(item)}
+<div>
+	{item.$selected ? '👌' : '👉'} {item.text} {item.$selected ? '✅' : '☑️'}
+</div>
+{/snippet}
+
+<Svelecte options={render_options} closeAfterSelect={false} value={'1'} {option} />
 
 ```svelte
 <script>
@@ -118,22 +122,13 @@ Simple example of using `<slot>` instead of [render function](/rendering#render-
 	];
 </script>
 
-<Svelecte {options} closeAfterSelect={false} value={'1'}>
-	<svelte:fragment slot="option" let:item>
-		<Item {item} />
-	</svelte:fragment>
-</Svelecte>
-```
-
-```svelte
-// Item.svelte
-<script>
-	export let item
-</script>
-
+{#snippet option(item)}
 <div>
 	{item.$selected ? '👌' : '👉'} {item.text} {item.$selected ? '✅' : '☑️'}
 </div>
+{/snippet}
+
+<Svelecte {options} closeAfterSelect={false} value={'1'} {option} />
 ```
 
 ## Dependent selects

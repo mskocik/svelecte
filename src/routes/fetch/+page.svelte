@@ -26,7 +26,7 @@ import Svelecte from "$lib/Svelecte.svelte";
 Fetching capabilities are defined by `fetch` property - URL of desired endpoint. Svelecte automatically
 resolves "fetch mode" by `[query]` placeholder in `fetch` property.
 
-When this placeholder `[qyery]` is presents, svelecte operates in _"query"_ mode. Otherwise  switches to _"init"_ mode,
+When this placeholder `[query]` is present, svelecte operates in _"query"_ mode. Otherwise  switches to _"init"_ mode,
 where remote endpoint is requested, when component is mounted.
 
 ```svelte

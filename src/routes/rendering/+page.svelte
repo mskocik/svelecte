@@ -5,11 +5,11 @@
   import { dataset } from '../data';
 
   let options = dataset.colors();
-  let selection = ['red', 'green','blue'];
-  $: selectionMirror = selection;
+  let selectionValue = ['red', 'green'];
+  $: selectionMirror = selectionValue;
 
-  function slotRenderer(item) {
-    return `<div class="slot-definition" style="display: block;">option</div>`
+  function snippetRenderer(item) {
+    return `<div class="snippet-definition" style="display: block;">option</div>`
   }
 
   function colorRenderer(item, _isSelection, _inputValue) {
@@ -29,13 +29,13 @@ possibilities as many (some) users requested. Hopefully you will have enough too
 In general rendering customization can be split into 2 groups:
 
 - with [render functions](#render-functions)
-- with [slots](#slots)
+- with [snippets](#snippets)
 
 ## Render functions
 
 Render functions (aka renderers) are simple functions which return `string`, which is then rendered through `{@html}` tag. This is very
-easily customizable and more importantly available also outside svelte. Another advantage is, that highlighting is handled
-automatically. Of course highlighting can be disabled if needed.
+easily customizable and more importantly available outside svelte, which is needed when using svelecte as custom element.
+Another advantage is, that highlighting is handled automatically. Of course highlighting can be disabled if needed.
 
 Render function have following signature:
 
@@ -80,92 +80,106 @@ Using renderer globally:
 Using renderer locally:
 <Svelecte renderer={colorRenderer} options={dataset.colors()} class="inline-flex"/>
 
-## Slots
+## Snippets
 
-Svelecte provide multiple slots as you can see below. On the `left` you can see default slot implementation,
-on the `right` you can see slot placeholders.
+Svelecte provide multiple Snippets as you can see below. On the `left` you can see default snippet implementation,
+on the `right` you can see snippet placeholders.
+
+{#snippet prepend()}
+  <div class="snippet-definition">prepend</div>
+{/snippet}
+{#snippet collapsedSelection()}
+  <div class="snippet-definition">Collapsed selection</div>
+{/snippet}
+{#snippet selection()}
+  <div class="snippet-definition">selection</div>
+{/snippet}
+{#snippet clearIcon()}
+  <div class="snippet-definition">clearIcon</div>
+{/snippet}
+{#snippet toggleIcon()}
+  <div class="snippet-definition">toggleIcon</div>
+{/snippet}
+{#snippet append()}
+  <div class="snippet-definition">append</div>
+{/snippet}
+{#snippet listHeader()}
+  <div class="snippet-definition">List Header</div>
+{/snippet}
+{#snippet option()}
+  <div class="snippet-definition">option</div>
+{/snippet}
+{#snippet createRow()}
+  <div class="snippet-definition">Create row</div>
+{/snippet}
 
 <div class="cols-2">
-  <Svelecte {options} bind:value={selection} multiple collapseSelection="blur" clearable creatable keepSelectionInList max={5}/>
+  <div style="width: 40%">
+    <Svelecte {options} bind:value={selectionValue} multiple collapseSelection="blur" clearable creatable keepSelectionInList max={5}/>
+  </div>
 
-  <Svelecte {options} renderer={slotRenderer} bind:value={selectionMirror} multiple collapseSelection="blur" clearable creatable keepSelectionInList>
-    <div class="slot-definition" slot="icon">
-      Icon
-    </div>
-    <div class="slot-definition" slot="collapsedSelection">
-      Collapsed selection
-    </div>
-    <div class="slot-definition" slot="selection">
-      Selection
-    </div>
-    <div class="slot-definition" slot="clear-icon">
-      Clear
-    </div>
-    <div class="slot-definition" slot="dropdown-toggle">
-      Toggle
-    </div>
-    <div class="slot-definition" slot="list-header">
-      List header
-    </div>
-    <div class="slot-definition" slot="create-row">
-      Create row
-    </div>
-  </Svelecte>
+  <Svelecte {options} bind:value={selectionMirror} multiple collapseSelection="blur" clearable creatable keepSelectionInList
+    renderer={snippetRenderer}
+    {prepend} {collapsedSelection} {selection} {clearIcon} {toggleIcon} {listHeader} {option} {createRow} {append}
+  ></Svelecte>
 </div>
 
-Slot summary:
+Snippets summary:
 
 ```svelte
-<slot name="icon" />
-<slot name="collapsedSelection" let:selectedOptions let:i18n />
-<slot name="selection" let:selectedOptions let:bindItem />
-<slot name="clear-icon" let:selectedOptions let:inputValue />
-<slot name="dropdown-toggle" let:isOpen />
-<slot name="list-header" />
-<slot name="option" let:item />
-<slot name="create-row" let:isCreating let:inputValue let:i18n  />
+{#snippet prepend()}
+{#snippet selection(selectedOptions, bindItemAction)}
+{#snippet collapsedSelection(selectedOptions, i18n)}
+{#snippet clearIcon(selectedOptions, inputValue)}
+{#snippet toggleIcon(dropdownShow)}
+{#snippet append()}
+{#snippet listHeader()}
+{#snippet option(opt)}
+{#snippet createRow(isCreating, inputValue, i18n)}
 ```
 
 <hr>
 
-Slots in more details:
+Snippets in more details:
 
 ### &bull; selection
 
 ```svelte
-<slot name="selection" let:selectedOptions let:bindItem/>
+{#snippet collapsedSelection(selectedOptions, i18n)}
+<!-- your snippet content -->
+{/snippet}
 
 <!-- example implementation -->
-<slot name="selection" let:selectedOptions let:bindItem>
+{#snippet selection(selectedOptions, bindItemAction)}
   {#each selectedOptions as opt (opt.id)}
     <div>
       {item.text}
       <button data-action="deselect" use:bindItem={opt}>&times;</button>
     </div>
   {/each}
-</slot>
+{/snippet}
 ```
 
 Where:
 
 - `selectedOptions` is array of selected options as objects
-- `bindItem` is _action_ which can be used to bind selected option option to the element with attribute `data-action="deselect"`. This attribute indicates, that when given option should be removed from selection.
+- `bindItemAction` is _action_ which can be used to bind selected option option to the element with attribute `data-action="deselect"`. This attribute indicates, that when given option should be removed from selection.
 
 ### &bull; collapsedSelection
 
 `collapsedSelection` is paired with `collapseSelection` prop:
 
-- `collapseSelection`=`false`: only `selection` slot is visible `(default)`
-- `collapseSelection`=`'blur'`: `selection` slot is show only when component is focused
-- `collapseSelection`=`'always'`: `selection` slot is never show
+- `collapseSelection`=`false`: only `selection` snippet is visible `(default)`
+- `collapseSelection`=`'blur'`: `selection` snippet is show only when component is focused
+- `collapseSelection`=`'always'`: `selection` snippet is never show
 
 ```svelte
-<slot name="collapsedSelection" let:selectedOptions let:i18n/>
+{#snippet collapsedSelection(selectedOptions, i18n)}{/snippet}
 
 <!-- default implementation -->
-<slot name="collapsedSelection" let:selectedOptions let:i18n>
+{#snippet collapsedSelection(i18n)}
   {i18n.collapsedSelection(selectedOptions.length)}
-</slot>
+{/snippet}
 ```
 
 Where:
@@ -173,30 +187,38 @@ Where:
 - `selectedOptions` is array of selected options as objects
 - `i18n` default or customized `i18n` object
 
-### &bull; clear-icon
+### &bull; clearIcon
 
-`clear-icon` slot is coupled with `clearable` prop.
+Snippet is coupled with `clearable` prop. You can override _only_ the content of clear button.
 
 ```svelte
-<slot name="clear-icon" let:selectedOptions let:inputValue />
+{#snippet snippet_clearIcon(selectedOptions, inputValue)}
 ```
 
 Where:
 
 - `selectedOptions` is array of selected options as objects
-- `inputValue` search query
+- `inputValue` search query, if state of clear icon is related to user action
 
-### &bull; drodpdown-toggle
+### &bull; toggleIcon
+
+Dropdown toggle icon
 
 ```svelte
-<slot name="dropdown-toggle" let:isOpen />
+{#snippet toggleIcon(dropdownShow)}
 ```
 
-### &bull; list-header
+Where:
+
+- `dropdownShow` is bool, whether dropdown is being shown or not
+
+### &bull; listHeader
+
+Optional dropdown header content
 
 ```svelte
-<!-- empty slot with no props -->
-<slot name="list-header" />
+<!-- empty snippet with no props -->
+{#snippet listHeader()}
 ````
 
 Originally added to address issue [#151](https://github.com/mskocik/svelecte/issues/151), but can be used for anything.
@@ -205,19 +227,19 @@ If you want to display selected options here as in mentioned issue, check [Migra
 ### &bull; option
 
 ```svelte
-<slot name="option" let:item />
+{#snippet option(opt)}
 ```
 
 Where:
 
 - `item` is current option in dropdown. To duplicate highlighting functionality you need to use function `highlightSearch` exported from the library.
 
-### &bull; create-row
+### &bull; createRow
 
-`create-row` slot with `creatable` prop (and you enter to enter some input).
+This snippet is available only when `creatable` prop is `true` (and you enter to enter some input).
 
 ```svelte
-<slot name="create-row" let:isCreating let:inputValue let:i18n />
+{#snippet snippet_createRow(isCreating, inputValue, i18n)}
 ```
 
 Where:
@@ -237,7 +259,7 @@ Where:
   .cols-2 > :global(.svelecte.svelecte-control) {
     width: 50%;
   }
-  :global(.slot-definition) {
+  :global(.snippet-definition) {
     border: 2px dashed red;
   }
   :global(.svelecte.inline-flex .sv-item--content) {

@@ -200,6 +200,16 @@
   export let onFetch = data => {};
   export let onFetchError = err => {};
   export let onInvalidValue = val => {};
+  // snippets
+  export let prepend;
+  export let collapsedSelection = snippet_collapsedSelection;
+  export let selection = snippet_selection;
+  export let clearIcon = snippet_clearIcon;
+  export let toggleIcon = snippet_toggleIcon;
+  export let append;
+  export let listHeader;
+  export let option = snippet_option;
+  export let createRow = snippet_createRow;
 
   export function focus() {
     ref_input.focus();
@@ -1350,6 +1360,54 @@
   });
 </script>
 
+{#snippet snippet_collapsedSelection(selectedOptions, i18n)}
+  <span>{i18n.collapsedSelection(selectedOptions.length)}</span>
+{/snippet}
+
+{#snippet snippet_selection(selectedOptions, bindItemAction)}
+  {#each selectedOptions as opt (opt[currentValueField])}
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div class="sv-item--container" animate:flip={{duration: flipDurationMs }} onmousedown={e => e.preventDefault()}>
+    <div class="sv-item--wrap" class:is-multi={multiple}>
+      <div class="sv-item--content">{@html itemRenderer(opt, true)}</div>
+    </div>
+    {#if multiple}
+    <button class="sv-item--btn" tabindex="-1" type="button"
+      data-action="deselect"
+      use:bindItemAction={opt}
+    >
+      <svg height="16" width="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+        <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path>
+      </svg>
+    </button>
+    {/if}
+  </div>
+  {/each}
+{/snippet}
+
+{#snippet snippet_clearIcon(_selectedOptions, _inputValue)}
+  {#if selectedOptions.length}
+    <svg class="indicator-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path></svg>
+  {/if}
+{/snippet}
+
+{#snippet snippet_toggleIcon(_dropdownShow)}
+<svg class="indicator-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+  <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
+</svg>
+{/snippet}
+
+{#snippet snippet_option(opt)}
+<div class="sv-item--content">
+  {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
+</div>
+{/snippet}
+
+{#snippet snippet_createRow(isCreating, inputValue, i18n)}
+<span class:is-loading={isCreating}>{i18n.createRowLabel(input_value)}</span>
+<span class="shortcut"><kbd>{meta_key}</kbd>+<kbd>Enter</kbd></span>
+{/snippet}
+
 <div class={`svelecte ${className}`}
   class:is-required={required}
   class:is-empty={selectedOptions.length === 0}
@@ -1379,39 +1437,17 @@
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <!-- svelte-ignore a11y_click_events_have_key_events -->
   <div class="sv-control" onmousedown={on_mouse_down} onclick={on_click}>
-    <slot name="icon"></slot>
+    {#if prepend}{@render prepend()}{/if}
     <!-- #region selection & input -->
     <div class="sv-control--selection" class:is-single={multiple === false} class:has-items={selectedOptions.length > 0} class:has-input={input_value.length}
       use:dndzone={{items: selectedOptions, flipDurationMs, type: inputId, dragDisabled: doCollapse }}
       onconsider={on_dnd_event}
       onfinalize={on_dnd_event}
     >
-      {#if selectedOptions.length }
-      {#if multiple && doCollapse}
-        <slot name="collapsedSelection" {selectedOptions} i18n={i18n_actual}>{i18n_actual.collapsedSelection(selectedOptions.length)}</slot>
+      {#if selectedOptions.length && multiple && doCollapse}
+        {@render collapsedSelection(selectedOptions, i18n_actual)}
       {:else}
-        <slot name="selection" {selectedOptions} {bindItem}>
-          {#each selectedOptions as opt (opt[currentValueField])}
-          <div class="sv-item--container" animate:flip={{duration: flipDurationMs }}
-            onmousedown={e => e.preventDefault()}
-          >
-            <div class="sv-item--wrap" class:is-multi={multiple}>
-              <div class="sv-item--content">{@html itemRenderer(opt, true)}</div>
-            </div>
-            {#if multiple}
-            <button class="sv-item--btn" tabindex="-1" type="button"
-              data-action="deselect"
-              use:bindItem={opt}
-            >
-              <svg height="16" width="16" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-                <path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path>
-              </svg>
-            </button>
-            {/if}
-          </div>
-          {/each}
-        </slot>
-        {/if}
+        {@render selection(selectedOptions, bindItem)}
       {/if}
 
       <!-- #regions INPUT -->
@@ -1445,25 +1481,17 @@
       <button type="button" class="sv-btn-indicator" class:sv-has-selection={selectedOptions.length}
         data-action="deselect"  tabindex="-1"
       >
-        <slot name="clear-icon" {selectedOptions} inputValue={input_value}>
-          {#if selectedOptions.length}
-          <svg class="indicator-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z"></path></svg>
-          {/if}
-        </slot>
+        {@render clearIcon(input_value)}
       </button>
       {/if}
       {#if clearable}<span class="sv-btn-separator"></span>{/if}
       <button type="button" class="sv-btn-indicator" class:sv-dropdown-opened={is_dropdown_opened}
         data-action="toggle" tabindex="-1"
       >
-        <slot name="dropdown-toggle" isOpen={is_dropdown_opened}>
-          <svg class="indicator-icon" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
-            <path d="M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z"></path>
-          </svg>
-        </slot>
+        {@render toggleIcon(is_dropdown_opened)}
       </button>
     </div>
-    <slot name="control-end"></slot>
+    {#if append}{@render append()}{/if}
     <!-- #endregion -->
   </div>
 
@@ -1475,7 +1503,7 @@
     onclick={on_click}
   >
   {#if is_mounted && render_dropdown}
-      <slot name="list-header" />
+      {#if listHeader}{@render listHeader()}{/if}
       <div bind:this={ref_container_scroll} class="sv-dropdown-scroll" class:has-items={options_filtered.length>0} class:is-virtual={virtualList} tabindex="-1">
         <div bind:this={ref_container} class="sv-dropdown-content" class:max-reached={maxReached} >
         {#if options_filtered.length}
@@ -1499,11 +1527,7 @@
                     class:is-selected={opt.$selected}
                     class:is-disabled={opt[disabledField]}
                   >
-                    <slot name="option" item={opt}>
-                      <div class="sv-item--content">
-                        {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
-                      </div>
-                    </slot>
+                    {@render option(opt)}
                   </div>
                 {/if}
               </div>
@@ -1519,11 +1543,7 @@
                   class:is-selected={opt.$selected}
                   class:is-disabled={opt[disabledField]}
                 >
-                  <slot name="option" item={opt}>
-                    <div class="sv-item--content">
-                      {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
-                    </div>
-                  </slot>
+                  {@render option(opt)}
                 </div>
               {/if}
             {/each}
@@ -1541,10 +1561,7 @@
           class:active={(options_filtered.length ? options_filtered.length : 0) === dropdown_index}
           class:is-disabled={createFilter(input_value)}
         >
-          <slot name="create-row" {isCreating} inputValue={input_value} i18n={i18n_actual}>
-            <span class:is-loading={isCreating}>{i18n_actual.createRowLabel(input_value)}</span>
-            <span class="shortcut"><kbd>{meta_key}</kbd>+<kbd>Enter</kbd></span>
-          </slot>
+          {@render createRow(isCreating, input_value, i18n_actual)}
         </button>
       </div>
     {/if}
@@ -1824,11 +1841,12 @@
       cursor: not-allowed;
     }
 
-    & > .is-loading {
-      position: relative;
-      &:after {
-        left: calc(100% + 4px);
-      }
+  }
+  /* moved selector to global due to https://github.com/sveltejs/svelte/issues/10143 -> https://github.com/sveltejs/svelte/pull/10208 */
+  .creatable-row :global(> .is-loading) {
+    position: relative;
+    &:after {
+      left: calc(100% + 4px);
     }
   }
 
@@ -1866,7 +1884,8 @@
   .has-items .keep-value:not(:focus) {
     color: transparent;
   }
-  .is-focused .is-single.has-items.has-input > .sv-item--container {
+  /* moved selector to global due to https://github.com/sveltejs/svelte/issues/10143 -> https://github.com/sveltejs/svelte/pull/10208 */
+  .is-focused :global(.is-single.has-items.has-input > .sv-item--container) {
     opacity: 0.2;
   }
   .sv-input--sizer:after,

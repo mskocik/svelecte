@@ -4,9 +4,33 @@ Version 5 requires svelte v5. Currently in development, can contains bugs.
 
 If you are use v3 of Svelecte, [migrate to v4 first](#migration-from-v3) and when you migrate to svelte v5, update also svelecte to v5.
 
+## Slots
+
+Slots were removed in favour of snippets. Slot to snippet mappings:
+
+```svelte
+{#snippet prepend}          // [!code ++]
+  <div>🔍</div>             // [!code ++]
+{/snippet}                  // [!code ++]
+
+<Svelecte {prepend} >       // [!code ++]
+  <div slot="icon">🔍</div> // [!code --]
+</Svelecte>
+```
+
+- `icon` changed to `prepend`
+- `selection` left unchanged
+- `collapsedSelection` left unchanged
+- `clear-icon` changed to `clearIcon`
+- `dropdown-toggle` changed to `toggleIcon`
+- `dropdown-toggle` changed to `append`
+- `list-header` changed to `listHeader`
+- `option` left unchanged
+- `create-row` changed to `createRow`
+
 ## Events
 
-Due to depreaction of `createEventDispatcher` all events has been replaced by event callback properties.
+Due to deprecation of `createEventDispatcher` all events has been replaced by event callback properties.
 
 ```svelte
 <Svelecte on:fetch={fetchEventHandler} /> // [!code --]
