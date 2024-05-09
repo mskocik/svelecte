@@ -510,6 +510,8 @@
     prev_value = passedVal;
   }
 
+  let is_user_action = false;
+
   /**
    * Reflect bound `value` to the outside word
    * @param {array} newSelection
@@ -532,7 +534,9 @@
     } else {
       prev_value = unified_selection;
     }
-    value = prev_value;
+    if (is_user_action) {
+      value = prev_value;
+    }
     readSelection = unified_selection;
     if (max && newSelection.length === max) {
       listMessage = i18n_actual.max(max);
@@ -700,6 +704,8 @@
 
     selectOption(opt);
     onSelectTeardown();
+    is_user_action = true;
+    tick().then(() => is_user_action = false);
     emitChangeEvent();
   }
 
@@ -764,6 +770,8 @@
     } else {  // apply for 'x' when clearable:true || ctrl+backspace || ctrl+delete
       clearSelection();
     }
+    is_user_action = true;
+    tick().then(() => is_user_action = false);
     emitChangeEvent();
   }
 

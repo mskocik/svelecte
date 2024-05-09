@@ -118,7 +118,7 @@ on the `right` you can see snippet placeholders.
     <Svelecte {options} bind:value={selectionValue} multiple collapseSelection="blur" clearable creatable keepSelectionInList max={5}/>
   </div>
 
-  <Svelecte {options} bind:value={selectionMirror} multiple collapseSelection="blur" clearable creatable keepSelectionInList
+  <Svelecte {options} bind:value={selectionValue} multiple collapseSelection="blur" clearable creatable keepSelectionInList
     renderer={snippetRenderer}
     {prepend} {collapsedSelection} {selection} {clearIcon} {toggleIcon} {listHeader} {option} {createRow} {append}
   ></Svelecte>
