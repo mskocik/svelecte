@@ -102,7 +102,7 @@ If you need whole objects, you have 3 options:
   let obj = {id: 14, name: 'Red color'};
 </script>
 
-<Svelecte bind:readSelection on:change={getSelectedObjects} bind:value {options}/>
+<Svelecte bind:readSelection onchange={getSelectedObjects} bind:value {options}/>
 
 <Svelecte bind:value={obj} valueAsObject {options}/>
 ```

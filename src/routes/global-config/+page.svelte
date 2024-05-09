@@ -36,11 +36,11 @@ Part of global config is also global `i18n` object, although it can be set also 
 
 ## Example
 
-<button class="btn" on:click={toggleClearable}>
+<button class="btn" onclick={toggleClearable}>
   {@html enabled ? '<code>clearable</code> enabled!' : 'Enable <code>clearable</code>'}
 </button>
 
-<button class="btn" on:click={toggleDisabled}>
+<button class="btn" onclick={toggleDisabled}>
   {@html searchable ? `Disable <code>searchable</code>` : `Enable <code>searchable</code>` }
 </button>
 
@@ -49,7 +49,7 @@ Toggle buttons and visit another pages. YOu will see the settings are applied gl
 ### Settings
 
 <div class="toggle-wrap">
-  <button class="press-btn" on:click={toggleDef}>Toggle definition / Defaults</button>
+  <button class="press-btn" onclick={toggleDef}>Toggle definition / Defaults</button>
 
 ```ts
 export type Settings = {
@@ -132,7 +132,7 @@ const settings = {
 I18n section contains some ARIA related properties.
 
 <div class="toggle-wrap">
-  <button class="press-btn" on:click={toggleDef}>Toggle definition / Defaults</button>
+  <button class="press-btn" onclick={toggleDef}>Toggle definition / Defaults</button>
 
 ```ts
 export type I18nObject = {
