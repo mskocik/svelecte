@@ -201,13 +201,13 @@
   export let onFetchError = err => {};
   export let onInvalidValue = val => {};
   // snippets
-  export let prepend;
+  export let prepend = undefined;
   export let collapsedSelection = snippet_collapsedSelection;
   export let selection = snippet_selection;
   export let clearIcon = snippet_clearIcon;
   export let toggleIcon = snippet_toggleIcon;
-  export let append;
-  export let listHeader;
+  export let append = undefined;
+  export let listHeader = undefined;
   export let option = snippet_option;
   export let createRow = snippet_createRow;
 
