@@ -155,8 +155,8 @@
   // remote
   /** @type {string?} */
   export let fetch = null;
-  /** @type {object} user-provided optional properties for Request constructor*/
-  export let fetchProps = {};
+  /** @type {object} user-provided optional properties for Request constructor */
+  export let fetchProps = defaults.fetchProps;
   /** @type {'auto'|'init'} */
   export let fetchMode = 'auto';
   /** @type {function} */
