@@ -60,6 +60,7 @@
  * @property {boolean|'select-navigate'} selectOnTab
  * @property {boolean} resetOnBlur
  * @property {boolean} resetOnSelect
+ * @property {object} fetchProps
  * @property {boolean} fetchResetOnBlur
  * @property {number} fetchDebounceTime
  * @property {boolean} multiple
@@ -97,6 +98,7 @@ const /**@type {Settings} */ settings = {
   selectOnTab: false,
   resetOnBlur: true,
   resetOnSelect: true,
+  fetchProps: {},
   fetchResetOnBlur: true,
   fetchDebounceTime: 300,
   // multi

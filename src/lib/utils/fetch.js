@@ -55,12 +55,7 @@ export function requestFactory(query, { url, parentValue, initial }, fetchProps)
     fetchUrl.searchParams.append('init', arr.join(','));
   }
   const controller = new AbortController();
-  const props = Object.assign({}, {
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest'
-    },
-    cache: 'no-store',
-  }, fetchProps, { signal: controller.signal });
+  const props = Object.assign({}, fetchProps, { signal: controller.signal });
   return {
     request: new Request(fetchUrl, props),
     controller: controller
