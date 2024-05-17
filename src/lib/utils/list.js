@@ -91,7 +91,7 @@ export function initSelection(options, initialValue, valueAsObject, groupItemsFi
  */
 export function ensureObjectArray(options, valueField, labelField) {
   return typeof options[0] === 'object'
-    ? options
+    ? JSON.parse(JSON.stringify(options))
     : options.map(arrayValue => ({
       [valueField || 'value']: arrayValue,
       [labelField || 'text']: arrayValue
