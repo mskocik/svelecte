@@ -523,7 +523,7 @@
     if (is_dragging) return;
     const selection_formatted = newSelection
       .map(opt => {
-        const { '$disabled': unused1,  '$isGroupItem': unused2, ...obj } = opt;
+        const { '$disabled': unused1,  '$isGroupItem': unused2, '$selected': unused3, ...obj } = opt;
         return obj;
       });
     const unified_selection = multiple
