@@ -55,7 +55,8 @@ export function createConfig(valueField, labelField, optLabel, optItems) {
  * @returns {array}
  */
 export function initSelection(options, initialValue, valueAsObject, groupItemsField, valueField) {
-  if (valueAsObject) return Array.isArray(initialValue) ? initialValue : [initialValue];
+  if (valueAsObject) return (Array.isArray(initialValue) ? initialValue : [initialValue])
+      .map(opt => Object.fromEntries(Object.entries(opt)));
 
   const initialValue_array = Array.isArray(initialValue)
     ? initialValue

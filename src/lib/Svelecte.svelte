@@ -252,6 +252,7 @@
   /** ************************************ END preparation */
 
   let is_mounted = false;
+  let readSelection_bounded = readSelection ? true : false;
   // state-related
   let prev_value;
   let prev_options = optionResolver
@@ -473,7 +474,7 @@
       const _selection = arrValue.reduce((res, val) => {
         // skip options scan when in valueAsObject non-strict mode
         if (valueAsObject && (!strictMode || (creatable && val.$created))) {
-          res.push(val);
+          res.push(Object.fromEntries(Object.entries(val)));
           return res;
         }
         const opt = options_flat.find(item => item[currentValueField] == val);
@@ -515,7 +516,17 @@
         onInvalidValue(passedVal);
         return;
       }
-      readSelection = Array.isArray(passedVal) ? _selection : _selection.shift();
+      if (readSelection_bounded) {
+        // remove '$selected' property
+        readSelection = multiple
+          ? _selection.map(opt => {
+            delete opt['$selected'];
+            return opt;
+          })
+          : Object.fromEntries(
+              Object.entries(_selection.shift()).filter(opt => opt[0][0] !== '$')
+          );
+      }
     }
     prev_value = passedVal;
   }
@@ -530,7 +541,10 @@
     if (is_dragging) return;
     const selection_formatted = newSelection
       .map(opt => {
-        const { '$disabled': unused1,  '$isGroupItem': unused2, '$selected': unused3, ...obj } = opt;
+        const obj = {};
+        for (let [prop, val] of Object.entries(opt)) {
+          if (prop[0] !== '$') obj[prop] = val;
+        }
         return obj;
       });
     const unified_selection = multiple
@@ -546,8 +560,8 @@
     }
     if (is_user_action) {
       value = prev_value;
+      readSelection = unified_selection;
     }
-    readSelection = unified_selection;
     if (max && newSelection.length === max) {
       listMessage = i18n_actual.max(max);
     }
