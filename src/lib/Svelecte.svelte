@@ -500,9 +500,13 @@
         : _selection.length > 0
       );
 
+      // this is run only when invalid 'value' is provided, like out of option array
       if (!success) {
-        // this is run only when invalid 'value' is provided, like out of option array
-        console.warn('[Svelecte]: provided "value" property is invalid', passedVal);
+        if (valueAsObject && strictMode) {
+          console.warn(`[Svelecte]: in 'valueAsObject' mode make sure 'strictMode' is set to false`, passedVal);
+        } else {
+          console.warn('[Svelecte]: provided "value" property is invalid', passedVal);
+        }
         value = multiple ? [] : null;
         readSelection = value;
         onInvalidValue(passedVal);
