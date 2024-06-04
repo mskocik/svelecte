@@ -15,3 +15,4 @@ vite.config.ts.timestamp-*
 /.npmrc
 *.todo
 playwright*
+/src/routes/test/*

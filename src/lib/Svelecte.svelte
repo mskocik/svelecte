@@ -346,7 +346,10 @@
    */
   $: itemRenderer = typeof renderer === 'function'
     ? renderer
-    : (stringFormatters[renderer] || stringFormatters.default.bind({ label: currentLabelField}));
+    : (renderer !== 'default' && stringFormatters[renderer]
+      ? stringFormatters[renderer]
+      : stringFormatters.default.bind({ label: currentLabelField})
+    );
 
   /** ************************************ dropdown-specific */
 
