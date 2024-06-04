@@ -47,6 +47,9 @@
   }
 </script>
 
+<div class="notice">
+  Looking for svelte 5 ready version? Just visit <a href="https://svelecte-v5.vercel.app/">Svelecte v5 documentation</a> for migration guide and v5-specific details.
+</div>
 <div class="app-wrap">
   <div class="page-container">
     <div class="page-wrap">
@@ -98,6 +101,16 @@
 </div>
 
 <style>
+  .notice {
+    background-color: #ffbc02;
+    color: #333;
+    padding: 10px;
+    text-align: center;
+    & a {
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
   .docs-brand {
     padding: 32px 0 ;
     color: var(--vp-c-brand-1);
