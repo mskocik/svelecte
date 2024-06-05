@@ -82,7 +82,7 @@
   import { bindItem } from './utils/actions.js';
 
   /** @type {string} */
-  export let name = 'svelecte';
+  export let name = '';
   /** @type {string} */
   export let inputId = '';
   /** @type {boolean} */
@@ -240,14 +240,16 @@
     fetchResetOnBlur = false; // force this to preven 'clearSelection' clear fetched options
   }
 
-  const DOM_ID = `sv-${name}-select`;
+  const DOM_ID = name ? `sv-${name}-select-${`${Math.random()}`.substring(2, 6)}` : null;
+
+  if (required && !name) console.warn(`[Svelecte]: 'required' prop has no effect when 'name' prop is NOT set`)
 
   /** ************************************ preparation */
   /* possibility to provide initial (selected) values in `fetch` mode **/
   if (fetch && value && valueAsObject && (!options || (options && options.length === 0))) {
     options = Array.isArray(value) ? value : [value];
   }
-  if (!inputId) inputId = `${DOM_ID}-input`;
+  if (!inputId) inputId = DOM_ID ? DOM_ID.replace('-select-', '-input-') : `svelecte-input-${`${Math.random()}`.substring(2, 12)}` ;
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
   /** ************************************ END preparation */
 
@@ -465,7 +467,7 @@
     clearSelection();
     if (passedVal) {
       if ((multiple && !Array.isArray(passedVal)) || (!multiple && Array.isArray(passedVal))) {
-        console.warn(`Passed 'value' property should ${ multiple ? 'be' : 'NOT be'} an array`);
+        console.warn(`[Svelecte]: Passed 'value' property should ${ multiple ? 'be' : 'NOT be'} an array`);
       }
       // wait for fetch to be resolved
       if (fetch_initValue) return;

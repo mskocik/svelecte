@@ -9,7 +9,9 @@ describe('parentValue', () => {
   it('start as disabled when defined', async () => {
     const { container } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors',
-      parentValue: null
+      parentValue: null,
+      // <select> element is not rendered until `name` is provided
+      name: 'my-input'
     });
 
     expect(container.querySelector('select[disabled]')).toBeInTheDocument();
