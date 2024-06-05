@@ -56,7 +56,7 @@ Note: When using custom renderers with `inputValue` being used, it's up to you c
 
 ```svelte
 <script>
-  import Svelecte, { addRenderer } from 'svelecte';
+  import Svelecte, { addRenderer } from 'svelecte@next';
 
   function colorRenderer(item, _isSelection, _inputValue) {
     return _isSelection

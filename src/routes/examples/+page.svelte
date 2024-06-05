@@ -112,8 +112,7 @@ If you need to keep highlighting feature use [render function](/rendering#render
 
 ```svelte
 <script>
-	import Svelecte from 'svelecte'
-	import Item from './Item.svelte';
+	import Svelecte from 'svelecte@next';
 
 	let options = [
     {id: '1', text: 'option X'},
@@ -161,7 +160,7 @@ Reorder selection by dragging: {value}
 
 ```svelte
 <script>
-  import Svelecte from 'svelecte';
+  import Svelecte from 'svelecte@next';
   import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode } from 'svelte-dnd-action';
 
   /** my example has no 'id' property */

@@ -32,13 +32,19 @@ Svelecte is fully featured and customizable select/multiselect/autocomplete.
 </div>
 </div>
 
+## Install
+
+```bash
+npm install svelecte@next
+```
+
 ## Getting started
 
 Minimal example:
 
 ```svelte
 <script>
-  import Svelecte from 'svelecte';
+  import Svelecte from 'svelecte@next';
 
   let value;
 </script>
@@ -47,20 +53,6 @@ Minimal example:
 ```
 Result:
 <Svelecte options={['One', 'Two', 'Three']} />
-
-
-## Install
-
-```bash
-npm install svelecte
-```
-
-If you _need_ svelte 5 related version, use `next version`
-
-```bash
-npm install svelecte@next
-```
-
 
 <style>
   .m-auto {

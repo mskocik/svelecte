@@ -70,7 +70,7 @@ Previously globally available function `addFormatter` has been renamed to `addRe
 
 ```svelte
 import { addFormatter } from 'svelecte'; // [!code --]
-import { addRenderer } from 'svelecte';  // [!code ++]
+import { addRenderer } from 'svelecte@next';  // [!code ++]
 ```
 
 Exported property `TAB_SELECT_NAVIGATE` has been removed due to added types. Now `selectOnTab` offers correct values to set.
@@ -78,7 +78,7 @@ Exported property `TAB_SELECT_NAVIGATE` has been removed due to added types. Now
 ```svelte
 <script>
   import Svelecte, { TAB_SELECT_NAVIGATE } from 'svelecte'; // [!code --]
-  import Svelecte from 'svelecte'; // [!code ++]
+  import Svelecte from 'svelecte@next'; // [!code ++]
 </script>
 
 <Svelecte selectOnTab={TAB_SELECT_NAVIGATE} /> // [!code --]
