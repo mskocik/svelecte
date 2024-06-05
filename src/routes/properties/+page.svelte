@@ -28,7 +28,7 @@ selectOnTab         | `bool`,`string`   | `null`      | Based on value provided,
 resetOnBlur         | `bool`            | `true`      | Control if input value should be cleared on blur
 resetOnSelect       | `bool`            | `true`      | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple`
 closeAfterSelect    | `bool`            | `'auto'`    | closes dropdown after selection. Setting this to `true` is useful for **multiple** select only. For single select dropdown is always closed no matter the value this property has
-strictMode          | `bool`            | `true`      | When `true`, passed value is checked whether exists on provided `options` array. If not, `invalidValue` event is dispatched
+strictMode          | `bool`            | `true`      | When `true`, passed value is checked whether exists on provided `options` array. If not, `invalidValue` event is dispatched. This is useful with `fetch` defined and you want to specify default value
 multiple            | `bool`            | `false`     | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
 max                 | `number`          | `0`         | Maximum allowed items selected, applicable only for multiselect
 collapseSelection   | `string`          | `null`      | Whether selection should be collapsed and when, check [Rendering](/rendering) for more info.

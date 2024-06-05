@@ -477,7 +477,10 @@
           res.push(Object.fromEntries(Object.entries(val)));
           return res;
         }
-        const opt = options_flat.find(item => item[currentValueField] == val);
+        const opt = options_flat.find(item => valueAsObject
+          ? item[currentValueField] == val[currentValueField]
+          : item[currentValueField] == val
+        );
         if (opt) {
           res.push(opt);
         } else {
