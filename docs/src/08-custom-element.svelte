@@ -56,7 +56,7 @@
       <option value="colors">Colors</option>
       <option value="countries">Countries</option>
       <option value="countryGroups">Groups</option>
-      <option value="tags">Tags (cretable)</option>
+      <option value="tags">Tags (creatable)</option>
     </select>
     <select bind:value={optionRenderer}>
       <option value="">Default renderer</option>
