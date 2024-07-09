@@ -1404,7 +1404,7 @@
   {#each selectedOptions as opt (opt[currentValueField])}
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <div class="sv-item--container" animate:flip={{duration: flipDurationMs }} onmousedown={e => e.preventDefault()}>
-    <div class="sv-item--wrap" class:is-multi={multiple}>
+    <div class="sv-item--wrap in-selection" class:is-multi={multiple}>
       <div class="sv-item--content">{@html itemRenderer(opt, true)}</div>
     </div>
     {#if multiple}
@@ -1586,7 +1586,7 @@
           {/if}
         {:else if options_filtered.length === 0 && (!creatable || !input_value) || maxReached}
           <div class="is-dropdown-row">
-            <div class="sv-item--wrap"><div class="sv-item--content">{listMessage}</div></div>
+            <div class="sv-item--wrap in-dropdown"><div class="sv-item--content">{listMessage}</div></div>
           </div>
         {/if}
       </div>
@@ -1613,13 +1613,16 @@
   /* stylable props */
   /*
   :root {
-    --sv-min-height: 30px;
+    --sv-min-height: 34px;
     --sv-bg: #fff;
     --sv-disabled-bg: #eee;
     --sv-border: 1px solid #ccc;
     --sv-border-radius: 4px;
+    --sv-selection-gap: 4px;
     --sv-general-padding: 4px;
     --sv-control-bg: var(--sv-bg);
+    --sv-selection-wrap-padding: 0px 3px 0px 4px;
+    --sv-selection-multi-wrap-padding: 0px 3px 0px 6px;
     --sv-item-wrap-padding: 3px 3px 3px 6px;
     --sv-item-selected-bg: #efefef;
     --sv-item-btn-color: #000;
@@ -1674,7 +1677,7 @@
     border: var(--sv-border, 1px solid #ccc);
     border-radius: var(--sv-border-radius, 4px);
     background-color: var(--sv-control-bg, var(--sv-bg, #fff));
-    min-height: var(--sv-min-height, 30px);
+    min-height: var(--sv-min-height, 34px);
   }
 
   .sv-control--selection {
@@ -1683,8 +1686,8 @@
     align-items: center;
     flex: 1;
     min-width: 0;
-    gap: 4px;
-    padding: var(--sv-general-padding, 4px);
+    gap: var(--sv-selection-gap, 4px);
+    padding: var(--sv-selection-gap, var(--sv-general-padding, 4px));
     min-height: 24px;
     &.is-single {
       flex-wrap: nowrap;
@@ -1697,11 +1700,18 @@
   :global(.sv-item--wrap) {
     display: flex;
     min-width: 0;
-    padding: var(--sv-item-wrap-padding, 3px 3px 3px 6px);
+  }
+  :global(.sv-item--wrap.in-selection) {
+    padding: var(--sv-selection-wrap-padding, 0px 3px 0px 4px);
   }
   :global(.sv-item--wrap.is-multi) {
+    padding: var(--sv-selection-multi-wrap-padding, 0px 3px 0px 6px);
     background-color: var(--sv-item-selected-bg, #efefef);
   }
+  :global(.sv-item--wrap.in-dropdown) {
+    padding: var(--sv-item-wrap-padding, 3px 3px 3px 6px);
+  }
+
   :global(.sv-item--content) {
     overflow: hidden;
     white-space: nowrap;

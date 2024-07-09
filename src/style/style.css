@@ -175,6 +175,9 @@
   }
   .svelecte {
     --sv-min-height: 40px;
+    /** because height is raised, this needed to be tweaked accordingly */
+    --sv-selection-wrap-padding: 3px 3px 3px 4px;
+    --sv-selection-multi-wrap-padding: 3px 3px 3px 6px;
   }
 
   .dark .svelecte {
@@ -186,6 +189,8 @@
     --sv-general-padding: 4px;
     --sv-control-bg: var(--sv-bg);
     --sv-item-wrap-padding: 3px 3px 3px 6px;
+    --sv-selection-wrap-padding: 3px 3px 3px 4px;
+    --sv-selection-multi-wrap-padding: 3px 3px 3px 6px;
     --sv-item-selected-bg: #626262;
     --sv-item-btn-color: #ccc;
     --sv-item-btn-color-hover: #ccc;
