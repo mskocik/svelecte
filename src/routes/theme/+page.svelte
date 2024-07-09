@@ -22,7 +22,10 @@
 
 # Theme
 
-Component is (hopefully) fully themable. This is the only page on the website where you can toggle light/dark mode.
+Component is (hopefully) fully themable.
+
+When changing `--sv-min-height`, you may also need to tweak one or multiple of these properties:
+`--sv-selection-wrap-padding`, `--sv-selection-multi-wrap-padding`, `--sv-item-wrap-padding`.
 
 ---
 
@@ -82,6 +85,8 @@ Component is (hopefully) fully themable. This is the only page on the website wh
   --sv-general-padding: 4px;
   --sv-control-bg: var(--sv-bg);
   --sv-item-wrap-padding: 3px 3px 3px 6px;
+  --sv-selection-wrap-padding: 3px 3px 3px 4px;
+  --sv-selection-multi-wrap-padding: 3px 3px 3px 6px;
   --sv-item-selected-bg: #626262;
   --sv-item-btn-color: #ccc;
   --sv-item-btn-color-hover: #ccc;
