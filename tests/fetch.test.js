@@ -22,7 +22,6 @@ describe('fetch: onMount', () => {
 
     expect(fetchTriggered).toBeTruthy();
   });
-
   it('no initial request on query mode', async () => {
     const { component } = render(Svelecte, {
       fetch: 'http://localhost:5173/api/colors?query=[query]',
@@ -151,20 +150,23 @@ describe('fetch:query', () => {
     const colors = dataset.colors();
     const selection = colors.shift();  // aqua
 
-    const { component } = render(Svelecte, {
+    const { component } = render(Svelecte, {});
+
+    let event_triggered = false;
+    component.$on('invalidValue', e => {
+      event_triggered = true;
+    });
+    // init later, because event listener is attached later, not on constructor
+    component.$$set({
       fetch: 'http://localhost:5173/api/colors?query=[query]',
       fetchDebounceTime: 0,
       valueAsObject: true,
       value: selection
     });
 
-    let event_triggered = false;
-    component.$on('invalidValue', e => {
-      event_triggered = true;
-    });
+    await sleep(10);
 
-    await sleep(100);
-
+    expect(screen.queryByText('Aqua')).not.toBeInTheDocument();
     expect(event_triggered).toBeTruthy();
   });
 

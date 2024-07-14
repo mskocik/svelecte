@@ -1359,7 +1359,7 @@
       });
     } else if (selectedOptions.length) {
       setTimeout(() => {
-        Array.from(ref_select_element.children).forEach((/** @type {HTMLOptionElement} */ opt) => {
+        ref_select_element && Array.from(ref_select_element.children).forEach((/** @type {HTMLOptionElement} */ opt) => {
           opt.selected = true;
         });
       }, 200);
