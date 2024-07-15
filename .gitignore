@@ -10,7 +10,7 @@ node_modules
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
-/_dist
+src/routes/test
 /_package.json
 /.npmrc
 *.todo
