@@ -815,7 +815,7 @@
     if (opt.$created) {
       alreadyCreated.splice(alreadyCreated.findIndex(o => o === opt[currentValueField]), 1);
       alreadyCreated = alreadyCreated;
-      if (keepCreated) {
+      if (!keepCreated) {
         const idx = prev_options.findIndex(o => o[currentValueField] === opt[currentValueField]);
         idx !== -1 && prev_options.splice(idx, 1);
         prev_options = prev_options;
