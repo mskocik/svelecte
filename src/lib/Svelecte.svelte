@@ -704,12 +704,13 @@
       if (alreadyCreated.includes(opt) || selectedKeys.has(opt)) return;
 
       isCreating = true;
-      Promise.resolve(createHandler.call(null, {
-        inputValue: opt,
-        valueField: currentValueField,
-        labelField: currentLabelField,
-        prefix: creatablePrefix
-      }))
+      Promise.resolve()
+        .then(() => createHandler({
+          inputValue: opt,
+          valueField: currentValueField,
+          labelField: currentLabelField,
+          prefix: creatablePrefix
+        }))
         .then(newObj => {
           isCreating = false;
           !fetch && alreadyCreated.push(opt);
@@ -721,6 +722,7 @@
           emitChangeEvent();
         })
         .catch(e => {
+          isCreating = false;
           onCreateFail({
             input: opt,
             error: e
