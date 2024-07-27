@@ -58,7 +58,7 @@ function myFetch(query) {                                     // [!code --]
 
 ### `collapseSelection`
 
-Previously just `boolean`, now type of collapsing must be specified. Basically it merges together properties `collapseSelection` and `alwaysCollapsed`.
+Previously a `boolean`, now the type of collapsing must be specified (`null`, `'blur'` or `'always'`). Basically it merges together properties `collapseSelection` and `alwaysCollapsed`.
 
 ```svelte
 <Svelecte collapseSelection /> // [!code --]
@@ -122,7 +122,7 @@ This property has been dropped in favor to named slot `option` with exposed `ite
 
 ### `alwaysCollapsed`
 
-This property has been merged into property `collapseSelection` which now accepts `'blur'` or `'always'` value. With this
+This property has been merged into property `collapseSelection` which now accepts `null`, `'blur'` or `'always'` value. With this
 change new slot `list-header` has been added to allow customize selection rendering directly in the dropdown,
 although implementing it is optional.
 But if you were using it in v3, you need to implement it to keep it the same.
