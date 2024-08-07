@@ -119,7 +119,7 @@ function myFetch(query) {                                     // [!code --]
 
 ### `collapseSelection`
 
-Previously just `boolean`, now type of collapsing must be specified. Basically it merges together properties `collapseSelection` and `alwaysCollapsed`.
+Previously a `boolean`, now the type of collapsing must be specified (`null`, `'blur'` or `'always'`). Basically it merges together properties `collapseSelection` and `alwaysCollapsed`.
 
 ```svelte
 <Svelecte collapseSelection /> // [!code --]

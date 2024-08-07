@@ -169,7 +169,7 @@ Where:
 
 `collapsedSelection` is paired with `collapseSelection` prop:
 
-- `collapseSelection`=`false`: only `selection` snippet is visible `(default)`
+- `collapseSelection`=`null`: only `selection` snippet is visible `(default)`
 - `collapseSelection`=`'blur'`: `selection` snippet is show only when component is focused
 - `collapseSelection`=`'always'`: `selection` snippet is never show
 
