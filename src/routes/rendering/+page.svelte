@@ -154,7 +154,7 @@ Where:
 
 `collapsedSelection` is paired with `collapseSelection` prop:
 
-- `collapseSelection`=`false`: only `selection` slot is visible `(default)`
+- `collapseSelection`=`null`: only `selection` slot is visible `(default)`
 - `collapseSelection`=`'blur'`: `selection` slot is show only when component is focused
 - `collapseSelection`=`'always'`: `selection` slot is never show
 
