@@ -657,7 +657,7 @@
       return;
     }
 
-    listMessage = options_filtered.length !== options_flat.length
+    listMessage = options_filtered.length !== options_flat.length && selectedOptions.length !== options_flat.length
       ? (creatable
         ? i18n_actual.emptyCreatable
         : i18n_actual.nomatch

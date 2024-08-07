@@ -27,6 +27,25 @@ describe('listMessage', () => {
 
     expect(screen.queryByText(i18n.empty)).toBeInTheDocument();
   });
+  // all items selected
+  it('empty (all selected)', async () => {
+    const { container } = render(Svelecte, {
+      options: dataset.colors().slice(0, 2),
+      multiple: true,
+      lazyDropdown: false
+    })
+
+    const user = userEvent.setup();
+    await user.click(screen.queryByPlaceholderText('Select'));
+    await user.keyboard('{Enter}');
+    await sleep(100);
+    await user.keyboard('{Enter}');
+    await sleep(100);
+    await user.keyboard('{Enter}');
+    await sleep(100);
+
+    expect(container.querySelector('.sv_dropdown .sv-item--content').textContent).toBe(i18n.empty);
+  });
   // nomatch
   it('nomatch', async () => {
     const { container } = render(Svelecte, {
