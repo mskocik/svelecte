@@ -438,7 +438,7 @@
   function watch_value_change(passedVal, opts) {
     if (prev_value === passedVal && !opts?.skipEqualityCheck) return;
     clearSelection();
-    if (passedVal) {
+    if (passedVal !== null) {
       if ((multiple && !Array.isArray(passedVal)) || (!multiple && Array.isArray(passedVal))) {
         console.warn(`Passed 'value' property should ${ multiple ? 'be' : 'NOT be'} an array`);
       }
