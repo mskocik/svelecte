@@ -566,6 +566,7 @@
       value = prev_value;
       readSelection = unified_selection;
     }
+    is_user_action = false;
     if (max && newSelection.length === max) {
       listMessage = i18n_actual.max(max);
     }
@@ -735,7 +736,6 @@
     selectOption(opt);
     onSelectTeardown();
     is_user_action = true;
-    tick().then(() => is_user_action = false);
     emitChangeEvent();
   }
 
@@ -801,7 +801,6 @@
       clearSelection();
     }
     is_user_action = true;
-    tick().then(() => is_user_action = false);
     emitChangeEvent();
   }
 
@@ -1114,6 +1113,7 @@
 
   function on_dnd_event(e) {
     is_dragging = e.type === 'consider';
+    is_user_action = !is_dragging;
     selectedOptions = e.detail.items;
     if (!is_dragging) {
       emitChangeEvent();
