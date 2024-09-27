@@ -1521,6 +1521,7 @@
                     class:is-selected={opt.$selected}
                     class:is-disabled={opt[disabledField]}
                   >
+                    <slot name="option-icon" item={opt}/>
                     <slot name="option" item={opt}>
                       <div class="sv-item--content">
                         {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }

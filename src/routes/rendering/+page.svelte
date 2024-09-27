@@ -211,6 +211,17 @@ Where:
 
 - `item` is current option in dropdown. To duplicate highlighting functionality you need to use function `highlightSearch` exported from the library.
 
+### &bull; option-icon
+
+```svelte
+<slot name="option-icon" let:item/>
+```
+
+Added to include icons for options depending on whether the item is selected and depending on the item.
+Where:
+
+- `item` is current option in dropdown.
+
 ### &bull; create-row
 
 `create-row` slot with `creatable` prop (and you enter to enter some input).
