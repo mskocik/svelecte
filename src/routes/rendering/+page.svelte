@@ -204,12 +204,14 @@ If you want to display selected options here as in mentioned issue, check [Migra
 ### &bull; option
 
 ```svelte
-<slot name="option" let:item />
+<slot name="option" let:item let:inputValue let:itemRenderer let:selected/>
 ```
 
 Where:
 
 - `item` is current option in dropdown. To duplicate highlighting functionality you need to use function `highlightSearch` exported from the library.
+- `inputValue` and `itemRenderer` are given to be able to build the original search highlighting.
+- `selected` option states whether this item is selected.
 
 ### &bull; create-row
 

@@ -1521,7 +1521,7 @@
                     class:is-selected={opt.$selected}
                     class:is-disabled={opt[disabledField]}
                   >
-                    <slot name="option" item={opt}>
+                    <slot name="option" item={opt} inputValue={input_value} {itemRenderer} selected={opt.$selected}>
                       <div class="sv-item--content">
                         {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
                       </div>
