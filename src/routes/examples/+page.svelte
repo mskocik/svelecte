@@ -4,6 +4,7 @@
   import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode } from 'svelte-dnd-action';
   import Svelecte from '$lib/Svelecte.svelte';
 	import RenderItem from './RenderItem.svelte';
+  import { highlightSearch } from '$lib';
 
   /** ************************************ drag-n-drop */
 
@@ -134,6 +135,34 @@ Simple example of using `<slot>` instead of [render function](/rendering#render-
 <div>
 	{item.$selected ? '👌' : '👉'} {item.text} {item.$selected ? '✅' : '☑️'}
 </div>
+```
+
+
+<h3 class="mb-3">💡 Replicate "search highlighting" with custom option</h3>
+<br>
+<Svelecte options={render_options} closeAfterSelect={false} value={'1'}>
+	<div slot="option" let:item let:inputValue>
+		<b>Item: </b> {@html highlightSearch(item, false, inputValue, opt => opt.text)}
+	</div>
+</Svelecte>
+
+```svelte
+<script>
+  import Svelecte from 'svelecte'
+	import { highlightSearch } from 'svelecte';
+
+	let options = [
+    {id: '1', text: 'option X'},
+    {id: '2', text: 'option Y'},
+    {id: '3', text: 'option Z'}
+	];
+</script>
+
+<Svelecte options={render_options} closeAfterSelect={false} value={'1'}>
+	<div slot="option" let:item let:inputValue>
+		<b>Item:</b> {@html highlightSearch(item, false, inputValue, opt => opt.text)}
+	</div>
+</Svelecte>
 ```
 
 ## Dependent selects
