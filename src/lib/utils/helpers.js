@@ -116,9 +116,9 @@ export function onCreate_helper(enteredValue) {
  */
 export function escapeHtml(html) {
   return `${html}`
+    .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/&/g, '&amp;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 };
