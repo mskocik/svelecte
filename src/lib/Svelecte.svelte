@@ -1435,9 +1435,9 @@
 </svg>
 {/snippet}
 
-{#snippet snippet_option(opt)}
+{#snippet snippet_option(opt, inputValue)}
 <div class="sv-item--content">
-  {@html highlightSearch(opt, false, input_value, itemRenderer, disableHighlight) }
+  {@html highlightSearch(opt, false, inputValue, itemRenderer, disableHighlight) }
 </div>
 {/snippet}
 
@@ -1565,7 +1565,7 @@
                     class:is-selected={opt.$selected}
                     class:is-disabled={opt[disabledField]}
                   >
-                    {@render option(opt)}
+                    {@render option(opt, input_value)}
                   </div>
                 {/if}
               </div>
@@ -1581,7 +1581,7 @@
                   class:is-selected={opt.$selected}
                   class:is-disabled={opt[disabledField]}
                 >
-                  {@render option(opt)}
+                  {@render option(opt, input_value)}
                 </div>
               {/if}
             {/each}

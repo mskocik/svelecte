@@ -38,8 +38,11 @@ export function highlightSearch(item, renderInSelection, inputValue, itemRendere
 /**
  * highlight function code from selectize itself. We pass raw html through @html svelte tag
  * base from https://github.com/selectize/selectize.js/blob/master/src/contrib/highlight.js & edited
+ *
+ * @param {Node & Element & Text} node
+ * @param {string} regex
  */
-const highlight = function(node, regex) {
+function highlight(node, regex) {
   let skip = 0;
   // Wrap matching part of text node with highlighting <span>, e.g.
   // Soccer  ->  <span class="highlight">Soc</span>cer for pattern 'soc'
@@ -62,6 +65,7 @@ const highlight = function(node, regex) {
   // is childless, <script>, <style>, or already highlighted: <span class="hightlight">
   else if (node.nodeType === 1 && node.childNodes && !/(script|style)/i.test(node.tagName) && ( node.className !== 'highlight' || node.tagName !== 'SPAN' )) {
     for (var i = 0; i < node.childNodes.length; ++i) {
+      // @ts-ignore
       i += highlight(node.childNodes[i], regex);
     }
   }

@@ -134,7 +134,7 @@ Snippets summary:
 {#snippet toggleIcon(dropdownShow)}
 {#snippet append()}
 {#snippet listHeader()}
-{#snippet option(opt)}
+{#snippet option(opt, inputValue)}
 {#snippet createRow(isCreating, inputValue, i18n)}
 ```
 
@@ -227,12 +227,13 @@ If you want to display selected options here as in mentioned issue, check [Migra
 ### &bull; option
 
 ```svelte
-{#snippet option(opt)}
+{#snippet option(opt, inputValue)}
 ```
 
 Where:
 
 - `item` is current option in dropdown. To duplicate highlighting functionality you need to use function `highlightSearch` exported from the library.
+- `inputValue` entered value
 
 ### &bull; createRow
 
