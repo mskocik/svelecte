@@ -47,6 +47,7 @@ fetchResetOnBlur    | `bool`            | `true`      | reset previous search re
 fetchDebounceTime   | `number`          | `300`       | how many miliseconds is request debounced before fetch is executed
 minQuery            | `number`          | `1`         | Minimal amount of characters required to perform remote request. Usable with `fetch` property
 lazyDropdown        | `bool`            | `true`      | render dropdown after first focus, not by default
+positionResolver    | `function`        | `noop`      | (optional) action for custom dropdown positioning.
 virtualList         | `bool`            | `false`     | Whether use virtual list for dropdown items (useful for large datasets)
 vlHeight            | `number`          | `null`      | Height of virtual list dropdown (if not specified, computed automatically)
 vlItemSize          | `number`          | `null`      | Height of one row (if not specified, computed automatically)

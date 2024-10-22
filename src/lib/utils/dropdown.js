@@ -58,7 +58,7 @@ export function positionDropdown(isOpened, scrollContainer, renderDropdown) {
   if (outVp.bottom && !outVp.top) {
     scrollContainer.parentElement.style.bottom = (scrollContainer.parentElement.parentElement.clientHeight + 1) + 'px';
     // FUTURE: debounce ....
-  } else if (!isOpened || outVp.top) {
+  } else if (!isOpened || outVp.top || scrollContainer.parentElement.style.bottom !== '') {
     scrollContainer.parentElement.style.bottom = '';
   }
 }
