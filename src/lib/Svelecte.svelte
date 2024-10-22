@@ -704,7 +704,10 @@
     opt = opt || event.detail;
     if (disabled || opt[disabledField] || opt.$isGroupHeader) return;
     if (!opt || (multiple && maxReached)) return false;
-    if (selectedKeys.has(opt[currentValueField])) return onDeselect(null, opt);
+    if (selectedKeys.has(opt[currentValueField])) {
+      if (!multiple && required) return;  // we do not allow deselection when required to better mimick native select #256
+      return onDeselect(null, opt);
+    }
 
     // creatable branch
     if (typeof opt === 'string') {
@@ -979,7 +982,7 @@
         if (collapseSelection === 'always') return;
         backspacePressed = true;
       case 'Delete':
-        if (input_value === '' && selectedOptions.length) {
+        if (input_value === '' && selectedOptions.length && !(!multiple && required /** do not allow deselect on single & required #256 */)) {
           ctrlKey ? onDeselect({ /** no detail prop */}) : onDeselect(null, selectedOptions[selectedOptions.length - 1], backspacePressed);
           event.preventDefault();
         }
