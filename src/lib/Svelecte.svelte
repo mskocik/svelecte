@@ -51,6 +51,8 @@
      */
     default: function(item) { return escapeHtml(item[this.label]); }
   };
+
+  const _noop = _node => ({ destroy: () => {}});
   /**
    * Provide ability to add additional renderers in raw html string format
    *
@@ -191,6 +193,11 @@
   export let valueAsObject = defaults.valueAsObject;
   /** @type {string|number|null|undefined} */
   export let parentValue = undefined;
+  /**
+   * @param {HTMLElement} node - dropdown root element
+   * @return {?object}
+   */
+  export let positionResolver = _noop;
 
   export function focus() {
     ref_input.focus();
@@ -560,7 +567,7 @@
         vl_itemSize = dimensions.size;
         vl_height = dimensions.height;
       })
-      .then(() => positionDropdown(is_dropdown_opened, ref_container_scroll, render_dropdown));
+      .then(() => positionResolver === _noop && positionDropdown(is_dropdown_opened, ref_container_scroll, render_dropdown));
   }
 
   function watch_is_dropdown_opened(val) {
@@ -573,7 +580,7 @@
         virtuallist_automode && watch_options_virtualList();
       })
       .then(() => {
-        positionDropdown(val, ref_container_scroll, true);
+        positionResolver === _noop && positionDropdown(val, ref_container_scroll, true);
         if (val) {
           // ensure proper dropdown index
           // do not respect highlightFirstItem here
@@ -586,7 +593,7 @@
         }
         tick().then(() => dropdown_show = val);
       });
-    if (!dropdown_scroller) dropdown_scroller = () => positionDropdown(val, ref_container_scroll, true);
+    if (!dropdown_scroller) dropdown_scroller = () => positionResolver === _noop && positionDropdown(val, ref_container_scroll, true);
     // bind/unbind scroll listener
     document[val ? 'addEventListener' : 'removeEventListener']('scroll', dropdown_scroller, { passive: true });
   }
@@ -1495,6 +1502,7 @@
   <div class="sv_dropdown" class:is-open={dropdown_show}
     on:mousedown={onMouseDown}
     on:click={onClick}
+    use:positionResolver
   >
   {#if is_mounted && render_dropdown}
       <slot name="list-header" />
