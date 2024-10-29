@@ -115,6 +115,93 @@ describe('creatable', () => {
   });
 
 
+  it('createFilter - no new item [keyboard]', async () => {
+    const defaultOptions = [
+      {value: 1, label: 'test'},
+      {value: 2, label: 'best'}
+    ];
+    let errorCatched = false;
+
+    const { container, component } = render(Svelecte, {
+      name: 'select',
+      creatable: true,
+      keepCreated: true,
+      options: defaultOptions,
+      /**
+       * This function prevents to trigger `createHandler` by keyboard
+       * @param {string} inputValue
+       * @returns {boolean}
+       */
+      createFilter: function(inputValue) {
+        return defaultOptions.some(option => option.label === inputValue);
+      },
+      createHandler: function({ inputValue }) {
+        throw new Error('this should not get triggered');
+      }
+    });
+
+    component.$on('createFail', () => {
+      errorCatched = true;
+    })
+
+    const user = userEvent.setup();
+    const input = container.querySelector('input');
+
+    await user.click(input);
+    await user.keyboard('test');
+    // await sleep(100);
+
+    await user.keyboard('{Control>}{Enter}');
+
+    await sleep(100);
+
+    expect(errorCatched).toBeFalsy();
+  });
+
+  it('createFilter - no new item [mouse]', async () => {
+    const defaultOptions = [
+      {value: 1, label: 'test'}
+    ];
+    let errorCatched = false;
+
+    const { container, component } = render(Svelecte, {
+      name: 'select',
+      creatable: true,
+      keepCreated: true,
+      options: defaultOptions,
+      /**
+       * This function prevents to trigger `createHandler` by keyboard
+       * @param {string} inputValue
+       * @returns {boolean}
+       */
+      createFilter: function(inputValue) {
+        return defaultOptions.some(option => option.label === inputValue);
+      },
+      createHandler: function() {
+        throw new Error('this should not get triggered');
+      }
+    });
+
+    component.$on('createFail', () => {
+      errorCatched = true;
+    })
+
+    const user = userEvent.setup();
+    const input = container.querySelector('input');
+
+    await user.click(input);
+    await user.keyboard('test');
+
+    await sleep(50);
+
+    const btn = container.querySelector('button.creatable-row');
+    await user.click(btn);
+
+    await sleep(100);
+
+    expect(errorCatched).toBeFalsy();
+  });
+
   it('createHandler error', async () => {
     let errorCatched = false;
     const { container, component } = render(Svelecte, {
