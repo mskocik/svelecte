@@ -21,6 +21,8 @@
    */
 
   /**
+   * Return `true` in case inputValue is NOT valid and new option creation is not desired
+   *
    * @callback CreateFilterFunction
    * @param {string} inputValue
    * @returns {boolean}
@@ -956,10 +958,11 @@
         }
         let activeDropdownItem = !ctrlKey ? options_filtered[dropdown_index] : null;
         if (creatable && input_value) {
+          const preventCreation = createFilter(onCreate_helper(input_value));
           activeDropdownItem = !activeDropdownItem || ctrlKey
             ? onCreate_helper(input_value)
             : activeDropdownItem
-          ctrlKey = false;
+          ctrlKey = preventCreation;  // previously ctrlKey was set to `false` which resulted in item being not respecting createFilter result
         }
         !ctrlKey && activeDropdownItem && onSelect(null, activeDropdownItem);
         if (options_filtered.length <= dropdown_index) {
@@ -1610,6 +1613,7 @@
         <button type="button" class="creatable-row" onclick={on_create} onmousedown={e => e.preventDefault()}
           class:active={(options_filtered.length ? options_filtered.length : 0) === dropdown_index}
           class:is-disabled={createFilter(input_value)}
+          disabled={createFilter(input_value)}
         >
           {@render createRow(isCreating, input_value, i18n_actual)}
         </button>

@@ -38,7 +38,7 @@ creatablePrefix     | `string`          | `*`         | Prefix marking new item
 allowEditing        | `bool`            | `false`     | When pressing `Backspace` switch to edit mode instead of removing newly created item. **NOTE** intended to be used with `creatable` property
 keepCreated         | `bool`            | `true`      | Switch whether to add newly created option to option list or not
 delimiter           | `string`          | `,`         | split inserted text when pasting to create multiple items
-createFilter        | `function`        | `null`      | Function, that transform input string to custom value. It can serve as a filter, if value is valid or not. If you want to dismiss entered value, function should return `''` (empty string). By default all input string is trimmed and all multiple spaces are removed.
+createFilter        | `function`        | `null`      | Function receiving `inputValue` returning `bool` checks if input string is valid or not. If you want to dismiss entered value (ie. prevent item creation), function should return `true`, `false` otherwise.
 createHandler       | `function`        | `null`      | Custom (may be) async function transforming input string to option object. Default returns object with `valueField` and `labelField` properties, where `labelField`'s value is input string prefixed with `creatablePrefix` property.
 fetch               | `string`          | `null`      | Sets fetch URL. Visit [Remote datasource] form more details
 fetchProps          | `object`          | `null`      | Set options for new fetch [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request)
