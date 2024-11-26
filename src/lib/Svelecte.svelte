@@ -77,6 +77,8 @@
 </script>
 
 <script>
+  import { run } from 'svelte/legacy';
+
   import { onMount, tick } from 'svelte';
   import { flip } from 'svelte/animate';
   import TinyVirtualList from 'svelte-tiny-virtual-list';
@@ -85,144 +87,144 @@
   import { iOS, android, highlightSearch } from './utils/helpers.js';
   import { bindItem } from './utils/actions.js';
 
-  /** @type {string} */
-  export let name = '';
-  /** @type {string} */
-  export let inputId = '';
-  /** @type {boolean} */
-  export let required = false;
-  /** @type {boolean} */
-  export let disabled = false;
-  /** @type {string} */
-  export let anchor_element = null;
-  /** @type {array} */
-  export let options = [];
-  /** @type {OptionResolverFunction} */
-  export let optionResolver = null;
-  /** @type {string} */
-  export let valueField = defaults.valueField;
-  /** @type {string} */
-  export let labelField = defaults.labelField;
-  /** @type {string} */
-  export let groupLabelField = defaults.groupLabelField;
-  /** @type {string} */
-  export let groupItemsField = defaults.groupItemsField;
-  /** @type {string} */
-  export let disabledField = defaults.disabledField;
-  /** @type {string} */
-  export let placeholder = defaults.placeholder;// UI, UX
-  /** @type {boolean} */
-  export let searchable = defaults.searchable;
-  /** @type {boolean} */
-  export let clearable = defaults.clearable;
-  /** @type {string|RenderFunction}*/
-  export let renderer = null;
-  /** @type {boolean} */
-  export let disableHighlight = false;
-  /** @type {boolean} */
-  export let highlightFirstItem = defaults.highlightFirstItem;
-  /** @type {boolean|'select-navigate'} */
-  export let selectOnTab = defaults.selectOnTab;
-  /** @type {boolean} */
-  export let resetOnBlur = defaults.resetOnBlur;
-  /** @type {boolean} */
-  export let resetOnSelect = defaults.resetOnSelect;
-  /** @type {string|boolean} */
-  export let closeAfterSelect = defaults.closeAfterSelect;
-  /** @type {function} */
-  export let dndzone = () => ({ noop: true, destroy: () => {}});
-  /** @type {boolean} */
-  export let strictMode = true;
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   // multiple
-  /** @type {boolean} */
-  export let multiple = defaults.multiple;
-  /** @type {number} */
-  export let max = defaults.max;
-  /** @type {'blur'|'always'|null} */
-  export let collapseSelection = defaults.collapseSelection;
-  /** @type {boolean|'auto'} */
-  export let keepSelectionInList = defaults.keepSelectionInList;
+  
+  
+  
+  
   // creating
-  /** @type {boolean} */
-  export let creatable = defaults.creatable;
-  /** @type {string} */
-  export let creatablePrefix = defaults.creatablePrefix;
-  /** @type {boolean} */
-  export let allowEditing = defaults.allowEditing;
-  /** @type {boolean} */
-  export let keepCreated = defaults.keepCreated;
-  export let delimiter = defaults.delimiter;
-  /** @type {CreateFilterFunction} */
-  export let createFilter = null;
-  /** @type {CreateHandlerFunction} */
-  export let createHandler = null;
+  
+  
+  
+  
+  
+  
   // remote
-  /** @type {string?} */
-  export let fetch = null;
-  /** @type {object} user-provided optional properties for Request constructor */
-  export let fetchProps = defaults.fetchProps;
-  /** @type {'auto'|'init'} */
-  export let fetchMode = 'auto';
-  /** @type {function} */
-  export let fetchCallback = defaults.fetchCallback;
-  /** @type {boolean} */
-  export let fetchResetOnBlur = true;
-  /** @type {number} */
-  export let fetchDebounceTime = defaults.fetchDebounceTime;
-  /** @type {number} */
-  export let minQuery = defaults.minQuery;
+  
+  
+  
+  
+  
+  
+  
   // performance
-  /** @type {boolean} */
-  export let lazyDropdown = defaults.lazyDropdown;
+  
   // virtual list
-  export let virtualList = defaults.virtualList;
-  export let vlHeight = defaults.vlHeight;
-  export let vlItemSize = defaults.vlItemSize;
   // sifter related
-  /** @type {import('./utils/list.js').SearchProps|null} */
-  export let searchProps = null;
+  
   // styling
-  let className = 'svelecte-control';
-  export { className as class};
+  
   // i18n override
-  export let i18n = null;
   // API: public
-  export let readSelection = null;
-  /** @type {array|string|number|object|null} */
-  export let value = null;
-  /** @type {boolean} */
-  export let valueAsObject = defaults.valueAsObject;
-  /** @type {string|number|null|undefined} */
-  export let parentValue = undefined;
+  
+  
+  
   // event callbacks
-  export let onChange = readSelection => {};
-  export let onFocus = htmlInput => {};
-  export let onBlur = htmlInput => {};
-  export let onCreateOption = newObj => {};
-  export let onCreateFail = fail => {};
-  export let onEnterKey = event => {};
-  export let onFetch = data => {};
-  export let onFetchError = err => {};
-  export let onInvalidValue = val => {};
   // snippets
-  /** @type {Function|undefined} */
-  export let prepend = undefined;
-  export let collapsedSelection = snippet_collapsedSelection;
-  export let selection = snippet_selection;
-  export let clearIcon = snippet_clearIcon;
-  export let toggleIcon = snippet_toggleIcon;
-  /** @type {Function|undefined} */
-  export let append = undefined;
-  /** @type {Function|undefined} */
-  export let listHeader = undefined;
-  export let option = snippet_option;
-  export let createRow = snippet_createRow;
+  
+  
+  
   // position resolver
-  /**
-   * @param {HTMLElement} node - dropdown root element
-   * @return {?object}
-   */
-  export let positionResolver = _noop;
+  
+  /** @type {{name?: string, inputId?: string, required?: boolean, disabled?: boolean, anchor_element?: string, options?: array, optionResolver?: OptionResolverFunction, valueField?: string, labelField?: string, groupLabelField?: string, groupItemsField?: string, disabledField?: string, placeholder?: string, searchable?: boolean, clearable?: boolean, renderer?: string|RenderFunction, disableHighlight?: boolean, highlightFirstItem?: boolean, selectOnTab?: boolean|'select-navigate', resetOnBlur?: boolean, resetOnSelect?: boolean, closeAfterSelect?: string|boolean, dndzone?: function, strictMode?: boolean, multiple?: boolean, max?: number, collapseSelection?: 'blur'|'always'|null, keepSelectionInList?: boolean|'auto', creatable?: boolean, creatablePrefix?: string, allowEditing?: boolean, keepCreated?: boolean, delimiter?: any, createFilter?: CreateFilterFunction, createHandler?: CreateHandlerFunction, fetch?: string?, fetchProps?: object, fetchMode?: 'auto'|'init', fetchCallback?: function, fetchResetOnBlur?: boolean, fetchDebounceTime?: number, minQuery?: number, lazyDropdown?: boolean, virtualList?: any, vlHeight?: any, vlItemSize?: any, searchProps?: import('./utils/list.js').SearchProps|null, class?: string, i18n?: any, readSelection?: any, value?: array|string|number|object|null, valueAsObject?: boolean, parentValue?: string|number|null|undefined, onChange?: any, onFocus?: any, onBlur?: any, onCreateOption?: any, onCreateFail?: any, onEnterKey?: any, onFetch?: any, onFetchError?: any, onInvalidValue?: any, prepend?: Function|undefined, collapsedSelection?: any, selection?: any, clearIcon?: any, toggleIcon?: any, append?: Function|undefined, listHeader?: Function|undefined, option?: any, createRow?: any, positionResolver?: any}} */
+  let {
+    name = '',
+    inputId = $bindable(''),
+    required = false,
+    disabled = $bindable(false),
+    anchor_element = null,
+    options = $bindable([]),
+    optionResolver = null,
+    valueField = defaults.valueField,
+    labelField = defaults.labelField,
+    groupLabelField = defaults.groupLabelField,
+    groupItemsField = defaults.groupItemsField,
+    disabledField = defaults.disabledField,
+    placeholder = defaults.placeholder,
+    searchable = defaults.searchable,
+    clearable = defaults.clearable,
+    renderer = null,
+    disableHighlight = false,
+    highlightFirstItem = defaults.highlightFirstItem,
+    selectOnTab = defaults.selectOnTab,
+    resetOnBlur = defaults.resetOnBlur,
+    resetOnSelect = defaults.resetOnSelect,
+    closeAfterSelect = defaults.closeAfterSelect,
+    dndzone = () => ({ noop: true, destroy: () => {}}),
+    strictMode = true,
+    multiple = $bindable(defaults.multiple),
+    max = defaults.max,
+    collapseSelection = defaults.collapseSelection,
+    keepSelectionInList = defaults.keepSelectionInList,
+    creatable = defaults.creatable,
+    creatablePrefix = defaults.creatablePrefix,
+    allowEditing = defaults.allowEditing,
+    keepCreated = defaults.keepCreated,
+    delimiter = defaults.delimiter,
+    createFilter = $bindable(null),
+    createHandler = $bindable(null),
+    fetch = null,
+    fetchProps = defaults.fetchProps,
+    fetchMode = 'auto',
+    fetchCallback = defaults.fetchCallback,
+    fetchResetOnBlur = $bindable(true),
+    fetchDebounceTime = defaults.fetchDebounceTime,
+    minQuery = defaults.minQuery,
+    lazyDropdown = defaults.lazyDropdown,
+    virtualList = defaults.virtualList,
+    vlHeight = defaults.vlHeight,
+    vlItemSize = defaults.vlItemSize,
+    searchProps = null,
+    class: className = 'svelecte-control',
+    i18n = null,
+    readSelection = $bindable(null),
+    value = $bindable(null),
+    valueAsObject = defaults.valueAsObject,
+    parentValue = undefined,
+    onChange = readSelection => {},
+    onFocus = htmlInput => {},
+    onBlur = htmlInput => {},
+    onCreateOption = newObj => {},
+    onCreateFail = fail => {},
+    onEnterKey = event => {},
+    onFetch = data => {},
+    onFetchError = err => {},
+    onInvalidValue = val => {},
+    prepend = undefined,
+    collapsedSelection = snippet_collapsedSelection,
+    selection = snippet_selection,
+    clearIcon = snippet_clearIcon,
+    toggleIcon = snippet_toggleIcon,
+    append = undefined,
+    listHeader = undefined,
+    option = snippet_option,
+    createRow = snippet_createRow,
+    positionResolver = _noop
+  } = $props();
 
   export function focus() {
     ref_input.focus();
@@ -263,141 +265,88 @@
   multiple = name && !multiple ? name.endsWith('[]') : multiple;
   /** ************************************ END preparation */
 
-  let is_mounted = false;
+  let is_mounted = $state(false);
   let readSelection_bounded = readSelection ? true : false;
   // state-related
   let prev_value;
-  let prev_options = optionResolver
+  let prev_options = $state(optionResolver
     ? optionResolver(options, new Set())
-    : ensureObjectArray(options, valueField, labelField);
+    : ensureObjectArray(options, valueField, labelField));
   let prev_parent_value = undefined;
-  let currentValueField = valueField || fieldInit('value', prev_options, groupItemsField);
-  let currentLabelField = labelField || fieldInit('label', prev_options, groupItemsField);
-  let selectedOptions = value !== null ? initSelection(prev_options, value, valueAsObject, groupItemsField, currentValueField) : [];
+  let currentValueField = $state(valueField || fieldInit('value', prev_options, groupItemsField));
+  let currentLabelField = $state(labelField || fieldInit('label', prev_options, groupItemsField));
+  let selectedOptions = $state(value !== null ? initSelection(prev_options, value, valueAsObject, groupItemsField, currentValueField) : []);
   /** @type {Set<string|number>} */
   const selectedKeys = selectedOptions.reduce((/** @type {Set} */ set,/** @type {object} */ opt) => {
     set.add(opt[currentValueField]);
     return set;
   }, new Set());
-  let alreadyCreated = selectedOptions.filter(opt => opt.$created);
+  let alreadyCreated = $state(selectedOptions.filter(opt => opt.$created));
   // logic-related
-  let is_focused = false;
+  let is_focused = $state(false);
   let focus_by_mouse = false;
-  let is_tainted = false; // true after first focus
-  let is_dropdown_opened = false;
-  let dropdown_show = false;
-  let dropdown_index = highlightFirstItem ? 0 : null;
+  let is_tainted = $state(false); // true after first focus
+  let is_dropdown_opened = $state(false);
+  let dropdown_show = $state(false);
+  let dropdown_index = $state(highlightFirstItem ? 0 : null);
   // dropdown-related
-  let render_dropdown = !lazyDropdown;
+  let render_dropdown = $state(!lazyDropdown);
   let dropdown_scroller = null;
   let virtuallist_automode = virtualList && vlHeight === null && vlItemSize === null;
-  let vl_height = vlHeight;
-  let vl_itemSize = vlItemSize;
-  let meta_key;
+  let vl_height = $state(vlHeight);
+  let vl_itemSize = $state(vlItemSize);
+  let meta_key = $state();
   let hasEmptyList = false;
   // input-related
   /** @type {string} */
-  let input_value = '';
+  let input_value = $state('');
   let disable_key_event_bubble = false;
   // utils
   /** @type {import('./settings.js').I18nObject} */
-  let i18n_actual;
+  let i18n_actual = $state();
   let fetch_initOnly = fetchMode === 'init' || (fetch && fetch.includes('[query]') === false);
   let fetch_initValue = fetch_initOnly
     ? value
     : (fetch && options.length === 0 ? value : null);
   let isIOS = null;
   let isAndroid = null;
-  let doCollapse = collapseSelection !== null;
-  let isFetchingData = false;
-  let isCreating = false;
-  let flipDurationMs = 100;
+  let doCollapse = $state(collapseSelection !== null);
+  let isFetchingData = $state(false);
+  let isCreating = $state(false);
+  let flipDurationMs = $state(100);
   let is_dragging = false;
   let is_fetch_dependent = false;
   // refs
-  let /** @type {HTMLInputElement}  */  ref_input;
-  let /** @type {HTMLSelectElement} */  ref_select_element;
-  let /** @type {HTMLDivElement}    */  ref_container;
-  let /** @type {HTMLDivElement}    */  ref_container_scroll;
-  let /** svelte-tiny-virtual-list  */  ref_virtuallist;
+  let /** @type {HTMLInputElement}  */  ref_input = $state();
+  let /** @type {HTMLSelectElement} */  ref_select_element = $state();
+  let /** @type {HTMLDivElement}    */  ref_container = $state();
+  let /** @type {HTMLDivElement}    */  ref_container_scroll = $state();
+  let /** svelte-tiny-virtual-list  */  ref_virtuallist = $state();
 
-  const itemConfig = createConfig(currentValueField, currentLabelField, groupLabelField, groupItemsField);
+  const itemConfig = $state(createConfig(currentValueField, currentLabelField, groupLabelField, groupItemsField));
   watch_i18n(i18n, true); // ensure it is available immediately
 
-  // #region [reactivity]
-  $: watch_item_props(valueField, labelField);
-  $: maxReached = max !== 0 && selectedOptions.length == max;     // == is intentional, if string is provided
-  $: watch_options(options);
-  $: options_flat = flatList(prev_options, itemConfig);
-  $: watch_value_change(value);
-  $: options_filtered = maxReached
-    ? []
-    : filterList(
-      options_flat,
-      input_value,
-      resolveExcludedValue(input_value),
-      itemConfig,
-      searchProps || {}
-    );
+  // #region [reactivity]     // == is intentional, if string is provided
   // only initial setter
-  $: highlightFirstItem && setDropdownIndex(0, { asc: true });
-  $: options_filtered.length <= dropdown_index && setDropdownIndex(0, { asc: !creatable, desc: creatable });
 
-  $: if (!createFilter) createFilter = inputVal => alreadyCreated.includes(inputVal);
-  $: if (!createHandler) createHandler = ({ inputValue, labelField, valueField, prefix }) => ({
-    [valueField]: inputValue,
-    [labelField]: `${prefix}${inputValue}`
-  });
 
   // watch functions
-  $: watch_i18n(i18n);
-  $: watch_parentValue(parentValue);
-  $: watch_selectedOptions(selectedOptions);
 
   /**
    * @type {RenderFunction}
    */
-  $: itemRenderer = typeof renderer === 'function'
-    ? renderer
-    : (renderer !== 'default' && stringFormatters[renderer]
-      ? stringFormatters[renderer]
-      : stringFormatters.default.bind({ label: currentLabelField})
-    );
 
   /** ************************************ dropdown-specific */
 
-  $: vl_listHeight = Math.min(vl_height, Array.isArray(vl_itemSize)
-    ? vl_itemSize.reduce((res, num) => {
-      res+= num;
-      return res;
-    }, 0)
-    : options_filtered.length * vl_itemSize
-  );
-  $: virtuallist_automode && watch_options_virtualList(options_filtered);
 
-  $: watch_is_dropdown_opened(is_dropdown_opened);
 
   /** ************************************ input-specific */
 
   /** @type {'text'|'none'}*/
-  $: input_mode = searchable ? 'text' : 'none';
   /** @type {string} */
-  $: placeholder_active = selectedOptions.length ? '' : placeholder;
   /** @type {'enter'} */
-  $: enter_hint = selectedOptions.length > 0 && multiple === false ? null : 'enter';
 
   // aria related
-  $: aria_selection = i18n_actual.aria_selected(selectedOptions.map(o => o[currentLabelField]));
-  $: aria_context = options_filtered.length && dropdown_index > 0
-    ? (
-      is_dropdown_opened
-        ? i18n_actual.aria_listActive(options_filtered[dropdown_index], currentLabelField, options_filtered.length)
-        : i18n_actual.aria_inputFocused()
-    )
-    : (input_value.length
-      ? i18n_actual.nomatch
-      : i18n_actual.empty
-    );
 
 
   // #endregion
@@ -1147,10 +1096,8 @@
   /** @type {function|null} */
   let debouncedFetch;
 
-  $: trigger_fetch(input_value);
-  $: is_mounted && watch_fetch_init(fetch, parentValue);
 
-  let listMessage = fetch
+  let listMessage = $state(fetch
     ? (fetch_initOnly
       ? i18n_actual.fetchInit
       : (minQuery > 1
@@ -1161,8 +1108,7 @@
     : (creatable
       ? i18n_actual.emptyCreatable
       : i18n_actual.empty
-    );
-  $: watch_listMessage(maxReached, options_filtered);
+    ));
 
   /**
    *
@@ -1409,6 +1355,104 @@
       }, 200);
     };
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) flipDurationMs = 0;
+  });
+  run(() => {
+    watch_item_props(valueField, labelField);
+  });
+  let maxReached;
+  run(() => {
+    maxReached = max !== 0 && selectedOptions.length == max;
+  });
+  run(() => {
+    watch_options(options);
+  });
+  let options_flat;
+  run(() => {
+    options_flat = flatList(prev_options, itemConfig);
+  });
+  run(() => {
+    watch_value_change(value);
+  });
+  let options_filtered;
+  run(() => {
+    options_filtered = maxReached
+      ? []
+      : filterList(
+        options_flat,
+        input_value,
+        resolveExcludedValue(input_value),
+        itemConfig,
+        searchProps || {}
+      );
+  });
+  run(() => {
+    highlightFirstItem && setDropdownIndex(0, { asc: true });
+  });
+  run(() => {
+    options_filtered.length <= dropdown_index && setDropdownIndex(0, { asc: !creatable, desc: creatable });
+  });
+  run(() => {
+    if (!createFilter) createFilter = inputVal => alreadyCreated.includes(inputVal);
+  });
+  run(() => {
+    if (!createHandler) createHandler = ({ inputValue, labelField, valueField, prefix }) => ({
+      [valueField]: inputValue,
+      [labelField]: `${prefix}${inputValue}`
+    });
+  });
+  run(() => {
+    watch_i18n(i18n);
+  });
+  run(() => {
+    watch_parentValue(parentValue);
+  });
+  run(() => {
+    watch_selectedOptions(selectedOptions);
+  });
+  let itemRenderer;
+  run(() => {
+    itemRenderer = typeof renderer === 'function'
+      ? renderer
+      : (renderer !== 'default' && stringFormatters[renderer]
+        ? stringFormatters[renderer]
+        : stringFormatters.default.bind({ label: currentLabelField})
+      );
+  });
+  let vl_listHeight = $derived(Math.min(vl_height, Array.isArray(vl_itemSize)
+    ? vl_itemSize.reduce((res, num) => {
+      res+= num;
+      return res;
+    }, 0)
+    : options_filtered.length * vl_itemSize
+  ));
+  run(() => {
+    virtuallist_automode && watch_options_virtualList(options_filtered);
+  });
+  run(() => {
+    watch_is_dropdown_opened(is_dropdown_opened);
+  });
+  let input_mode = $derived(searchable ? 'text' : 'none');
+  let placeholder_active = $derived(selectedOptions.length ? '' : placeholder);
+  let enter_hint = $derived(selectedOptions.length > 0 && multiple === false ? null : 'enter');
+  let aria_selection = $derived(i18n_actual.aria_selected(selectedOptions.map(o => o[currentLabelField])));
+  let aria_context = $derived(options_filtered.length && dropdown_index > 0
+    ? (
+      is_dropdown_opened
+        ? i18n_actual.aria_listActive(options_filtered[dropdown_index], currentLabelField, options_filtered.length)
+        : i18n_actual.aria_inputFocused()
+    )
+    : (input_value.length
+      ? i18n_actual.nomatch
+      : i18n_actual.empty
+    ));
+  run(() => {
+    trigger_fetch(input_value);
+  });
+  run(() => {
+    is_mounted && watch_fetch_init(fetch, parentValue);
+  });
+  run(() => {
+    watch_listMessage(maxReached, options_filtered);
   });
 </script>
 

@@ -3,8 +3,8 @@
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
   import Svelecte from '$lib/Svelecte.svelte';
 
-  export let data;
-  export let status;
+  /** @type {{data: any, status: any}} */
+  let { data, status } = $props();
 
   const pageForm = superForm(data.form, {
     clearOnSubmit: 'none'

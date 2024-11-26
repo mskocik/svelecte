@@ -8,6 +8,8 @@
 
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
+  /** @type {{children?: import('svelte').Snippet}} */
+  let { children } = $props();
 
   let mode = '';
   let is_mounted = false;
@@ -31,7 +33,7 @@
     mode = 'light';
   });
 
-  const navigation = {
+  const navigation = $state({
     '/': 'Home',
     '/properties': 'Properties',
     '/options': 'Options',
@@ -44,7 +46,7 @@
     '/validation': 'Form Validation',
     '/examples': 'Examples',
     '/migration-guide': 'Migration guide'
-  }
+  })
 </script>
 
 <div class="app-wrap">
@@ -87,7 +89,7 @@
       </div>
       <div class="w-100">
         <div class="main-container vp-doc">
-          <slot />
+          {@render children?.()}
         </div>
       </div>
     </div>

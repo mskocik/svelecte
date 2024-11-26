@@ -50,9 +50,9 @@
 		"@shikijs/transformers": "^1.10.3",
 		"@sveltejs/adapter-auto": "^3.2.2",
 		"@sveltejs/adapter-vercel": "^5.4.1",
-		"@sveltejs/kit": "^2.5.18",
-		"@sveltejs/package": "^2.3.2",
-		"@sveltejs/vite-plugin-svelte": "^3.1.1",
+		"@sveltejs/kit": "^2.5.27",
+		"@sveltejs/package": "^2.3.7",
+		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"@testing-library/jest-dom": "^6.4.6",
 		"@testing-library/svelte": "^5.2.0",
 		"@testing-library/user-event": "^14.5.2",
@@ -66,18 +66,19 @@
 		"rollup-plugin-css-only": "^4.5.2",
 		"rollup-plugin-svelte": "^7.2.2",
 		"shiki": "^1.10.3",
-		"svelte": "5.0.0-next.184",
-		"svelte-check": "^3.8.4",
+		"svelte": "^5.0.0",
+		"svelte-check": "^4.0.0",
 		"svelte-dnd-action": "^0.9.49",
 		"sveltekit-superforms": "^2.15.2",
 		"tslib": "^2.6.3",
 		"typescript": "^5.5.3",
-		"vite": "^5.3.3",
+		"vite": "^5.4.4",
 		"vite-plugin-node-polyfills": "^0.21.0",
 		"vitest": "^1.6.0",
 		"zod": "^3.23.8"
 	},
 	"dependencies": {
 		"svelte-tiny-virtual-list": "^2.1.2"
-	}
+	},
+	"packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387"
 }
