@@ -1957,7 +1957,7 @@
                 {:else}
                   <div
                     data-pos={i}
-                    class="sv-item--wrap in-dropdown"
+                    class="sv-item--wrap in-dropdown {itemClass}"
                     class:sv-dd-item-active={dropdown_index === i}
                     class:is-selected={opt.$selected}
                     class:is-disabled={opt[disabledField]}
@@ -1969,7 +1969,7 @@
             {/if}
           {:else if (options_filtered.length === 0 && (!creatable || !input_value)) || maxReached}
             <div class="is-dropdown-row">
-              <div class="sv-item--wrap in-dropdown">
+              <div class="sv-item--wrap in-dropdown {itemClass}">
                 <div class="sv-item--content">{listMessage}</div>
               </div>
             </div>
