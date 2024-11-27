@@ -2,10 +2,10 @@
 import Svelecte from "$lib/Svelecte.svelte";
 import { dataset } from './../data.js';
 
-  let parentValue = null;
+  let parentValue = $state(null);
   let value;
 
-  let refetchValue = 'blue';
+  let refetchValue = $state('blue');
   let refetcher;
 
   function onClick() {
@@ -18,7 +18,7 @@ import { dataset } from './../data.js';
     { id: 'countryGroups', text: 'Country Groups' },
   ];
 
-  $: childPlaceholder = parentValue? 'Now you can start searching' : 'Pick parent first';
+  let childPlaceholder = $derived.by(()=>(parentValue? 'Now you can start searching' : 'Pick parent first'));
 </script>
 
 # Remote fetching

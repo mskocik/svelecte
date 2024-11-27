@@ -3,8 +3,9 @@
   import Svelecte from "$lib/Svelecte.svelte";
   import { dataset } from '../data.js';
 
-  let creatable = false;
-  let fetch = null;
+  let creatable = $state(false);
+  let fetch = $state(null);
+  let simpleOptions = $state(['First Item', 'Second Item', 'Third Item']);
   const opts = {
     start() {
       creatable = false;
@@ -26,7 +27,7 @@
     country: dataset.countries
   }
 
-  let resolverValue = [];
+  let resolverValue = $state([]);
 
   const optionResolver = (optGroups, /** @type {Set}*/ selection) => {
     let step = Array.from(selection.keys()).shift() || 'start';
@@ -49,14 +50,16 @@ Simple arrays, object array and option groups are all supported and can be passe
 ### Simple array
 
 ```javascript
-const simpleOptions = ['First Item', 'Second Item', 'Third Item'];
+let simpleOptions = $state(['First Item', 'Second Item', 'Third Item']);
+/// above line will transform to below after it passing to a Svelecte
 [
   { value: 'First Item', text: 'First Item' },
   { value: 'Second Item', text: 'Second Item' },
-  { value: 'Third Item', text: 'Third Item' }
-]
+  { value: 'Third Item', text: 'Third Item' },
+];
 ```
-<Svelecte options={['First Item', 'Second Item', 'Third Item']} placeholder="Simple array as options"/>
+
+<Svelecte options={simpleOptions} placeholder="Simple array as options"/>
 
 Array is automatically converted to object array. Svelecte uses `valueField` and `labelField` property all basic
 functionality and when these properties are not specified, it tries some default values (like `id` or `value` for `valueField`)
@@ -70,14 +73,14 @@ Option group design is inspired by its HTML counterpart. Basically group is an `
 - `groupItemsField` - name of property containing array of options, defaults to `'options'`
 
 ```javascript
-const optionGroups = [
+const optionGroups = $state([
   {
     label: 'Option Header',
     options: [
       // group items (must be object array)
-    ]
-  }
-]
+    ],
+  },
+]);
 ```
 
 <Svelecte options={dataset.countryGroups()} placeholder="Select with option groups"/>
@@ -98,8 +101,8 @@ If you need whole objects, you have 3 options:
 
 ```svelte
 <script>
-  let value = [14];
-  let obj = {id: 14, name: 'Red color'};
+  let value = $state([14]);
+  let obj = $state({id: 14, name: 'Red color'});
 </script>
 
 <Svelecte bind:readSelection onchange={getSelectedObjects} bind:value {options}/>
@@ -118,7 +121,7 @@ You can pass it a simple function with following signature, that will return cur
 function(options: any, selectedKeys: Set): array
 ```
 
- behind this is that you can provide multiple `options` instances for multiple steps. Check the example.
+behind this is that you can provide multiple `options` instances for multiple steps. Check the example.
 
 ### 🧩 Example
 
@@ -130,8 +133,8 @@ Source:
 
 ```svelte
 <script>
-let fetch = null;
-let creatable = false;
+let fetch = $state(null);
+let creatable = $state(false);
 const opts = {
   start() {
     creatable = false;  // change to other svelecte prop
@@ -153,7 +156,7 @@ const opts = {
   country() { return [/** data ... */] }
 }
 
-let value = [];
+let value = $state([]);
 
 const optionResolver = (optGroups, /** @type {Set}*/ selection) => {
   let step = Array.from(selection.keys()).shift() || 'start';

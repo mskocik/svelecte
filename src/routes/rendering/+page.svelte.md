@@ -5,8 +5,8 @@
   import { dataset } from '../data';
 
   let options = dataset.colors();
-  let selectionValue = ['red', 'green'];
-  $: selectionMirror = selectionValue;
+  let selectionValue = $state(['red', 'green']);
+  let selectionMirror =$derived(selectionValue);
 
   function snippetRenderer(item) {
     return `<div class="snippet-definition" style="display: block;">option</div>`
@@ -75,10 +75,10 @@ Note: When using custom renderers with `inputValue` being used, it's up to you c
 Result:
 
 Using renderer globally:
-<Svelecte renderer="color" options={dataset.colors()} class="inline-flex"/>
+<Svelecte renderer="color" options={dataset.colors()} class="inline-flex" />
 
 Using renderer locally:
-<Svelecte renderer={colorRenderer} options={dataset.colors()} class="inline-flex"/>
+<Svelecte renderer={colorRenderer} options={dataset.colors()} class="inline-flex" />
 
 ## Snippets
 
@@ -86,6 +86,7 @@ Svelecte provide multiple Snippets as you can see below. On the `left` you can s
 on the `right` you can see snippet placeholders.
 
 {#snippet prepend()}
+
   <div class="snippet-definition">prepend</div>
 {/snippet}
 {#snippet collapsedSelection()}
@@ -118,10 +119,11 @@ on the `right` you can see snippet placeholders.
     <Svelecte {options} bind:value={selectionValue} multiple collapseSelection="blur" clearable creatable keepSelectionInList max={5}/>
   </div>
 
-  <Svelecte {options} bind:value={selectionValue} multiple collapseSelection="blur" clearable creatable keepSelectionInList
-    renderer={snippetRenderer}
-    {prepend} {collapsedSelection} {selection} {clearIcon} {toggleIcon} {listHeader} {option} {createRow} {append}
-  ></Svelecte>
+<Svelecte {options} bind:value={selectionValue} multiple collapseSelection="blur" clearable creatable keepSelectionInList
+renderer={snippetRenderer}
+{prepend} {collapsedSelection} {selection} {clearIcon} {toggleIcon} {listHeader} {option} {createRow} {append}
+/>
+
 </div>
 
 Snippets summary:
@@ -219,7 +221,7 @@ Optional dropdown header content
 ```svelte
 <!-- empty snippet with no props -->
 {#snippet listHeader()}
-````
+```
 
 Originally added to address issue [#151](https://github.com/mskocik/svelecte/issues/151), but can be used for anything.
 If you want to display selected options here as in mentioned issue, check [Migration guide](/migration-guide#migration-from-v3).

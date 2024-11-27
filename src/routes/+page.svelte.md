@@ -51,6 +51,7 @@ Minimal example:
 
 <Svelecte options={['One', 'Two', 'Three']} bind:value />
 ```
+
 Result:
 <Svelecte options={['One', 'Two', 'Three']} />
 

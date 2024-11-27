@@ -6,10 +6,10 @@
   let options = dataset.colors();
   options[4].$disabled = true;
   options[4].text += ' (disabled)';
-  let selection = 'red';
+  let selection = $state('red');
 
-  let mode = '';
-  let is_mounted = false;
+  let mode = $state('');
+  let is_mounted = $state(false);
 
   onMount(() => {
     // @ts-ignore
@@ -46,7 +46,7 @@ When changing `--sv-min-height`, you may also need to tweak one or multiple of t
   --sv-item-wrap-padding: 3px 3px 3px 6px;
   --sv-item-selected-bg: #efefef;
   --sv-item-btn-color: #000;
-  --sv-item-btn-color-hover: #777;  /* same as icon-color-hover in default theme */
+  --sv-item-btn-color-hover: #777; /* same as icon-color-hover in default theme */
   --sv-item-btn-bg: #efefef;
   --sv-item-btn-bg-hover: #ddd;
   --sv-icon-color: #bbb;
@@ -58,18 +58,19 @@ When changing `--sv-min-height`, you may also need to tweak one or multiple of t
   --sv-placeholder-color: #ccccd6;
   --sv-dropdown-bg: var(--sv-bg);
   --sv-dropdown-offset: 1px;
-  --sv-dropdown-border: 1px solid rgba(0,0,0,0.15);
+  --sv-dropdown-border: 1px solid rgba(0, 0, 0, 0.15);
   --sv-dropdown-width: auto;
   --sv-dropdown-shadow: 0 6px 12px #0000002d;
   --sv-dropdown-height: 320px;
-  --sv-dropdown-active-bg: #F2F5F8;
-  --sv-dropdown-selected-bg: #ECF3F9;
+  --sv-dropdown-active-bg: #f2f5f8;
+  --sv-dropdown-selected-bg: #ecf3f9;
   --sv-create-kbd-border: 1px solid #efefef;
   --sv-create-kbd-bg: #fff;
   --sv-create-disabled-bg: #fcbaba;
   --sv-loader-border: 2px solid #ccc;
 }
 ```
+
 </div>
 
 <div class="monokai">
@@ -113,8 +114,8 @@ When changing `--sv-min-height`, you may also need to tweak one or multiple of t
   --sv-loader-border: 2px solid #626262;
 }
 ```
-</div>
 
+</div>
 
 <style>
   :global(.dark .catpuccin-latte) {

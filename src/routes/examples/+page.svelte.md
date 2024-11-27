@@ -8,7 +8,7 @@
 
   overrideItemIdKeyNameBeforeInitialisingDndZones('value');
 
-  let value = ['red', 'blue', 'purple'];
+  let value = $state(['red', 'blue', 'purple']);
 
   /** ************************************ custom element */
 
@@ -19,11 +19,11 @@
   });
 
   const options = JSON.stringify(dataset.colors());
-  const render_options = [
+  const render_options = $state([
     {id: '1', text: 'option X'},
     {id: '2', text: 'option Y'},
     {id: '3', text: 'option Z'}
-	];
+	]);
 
   /** ************************************ multiselect */
 
@@ -45,16 +45,16 @@
 
   /** ************************************ dependent selects */
 
-  let parentValue = null;
-  let childValue;
+  let parentValue = $state(null);
+  let childValue = $state();
 
-  let parentOptions = [
+  let parentOptions = $state([
     { id: 'colors', text: 'Colors'},
     { id: 'countries', text: 'Countries' },
     { id: 'countryGroups', text: 'Country Groups' },
-  ];
+  ]);
 
-  $: childPlaceholder = parentValue? 'Now you can start searching' : 'Pick parent first';
+ let childPlaceholder = $derived.by(()=> (parentValue? 'Now you can start searching' : 'Pick parent first'));
 
 </script>
 
@@ -67,14 +67,14 @@ This page gives you some examples what can be done and how.
 Example how multiselect can be implemented.
 
 <Svelecte options={dataset.colors()} value={['blue','fuchsia','purple']} labelField="text"
-  renderer={svgRenderer}
-  clearable
-  multiple
-  highlightFirstItem={false}
-  keepSelectionInList={true}
-  searchProps={{skipSort: true}}
-  collapseSelection="always"
-></Svelecte>
+renderer={svgRenderer}
+clearable
+multiple
+highlightFirstItem={false}
+keepSelectionInList={true}
+searchProps={{skipSort: true}}
+collapseSelection="always"
+/>
 
 ```svelte
 <script>
@@ -92,7 +92,7 @@ Example how multiselect can be implemented.
   clearable
   keepSelectionInList={true}
   searchProps={{skipSort: true}}
-></Svelecte>
+/>
 ```
 
 ## Custom `option` snippet
@@ -103,6 +103,7 @@ Default snippet implementation correctly handles highlighted search. Custom snip
 If you need to keep highlighting feature use [render function](/rendering#render-functions) for custom option rendering.
 
 {#snippet option(item)}
+
 <div>
 	{item.$selected ? '👌' : '👉'} {item.text} {item.$selected ? '✅' : '☑️'}
 </div>
@@ -114,11 +115,11 @@ If you need to keep highlighting feature use [render function](/rendering#render
 <script>
 	import Svelecte from 'svelecte@next';
 
-	let options = [
+	let options = $state([
     {id: '1', text: 'option X'},
     {id: '2', text: 'option Y'},
     {id: '3', text: 'option Z'}
-	];
+	]);
 </script>
 
 {#snippet option(item)}
@@ -150,7 +151,6 @@ you're done. If you require `parentValue` in your `fetch` URL, just use `[parent
 <Svelecte {parentValue} bind:value fetch="/api/[parent]?search=[query]" />
 ```
 
-
 ## Drag & Drop
 
 You can add support for drag & drop reordering by adding [svelte-dnd-action](https://github.com/isaacHagoel/svelte-dnd-action/) library
@@ -171,7 +171,6 @@ Reorder selection by dragging: {value}
 
 <Svelecte {options} bind:value={value} multiple {dndzone} placeholder="Re-order selected items by dragging" />
 ```
-
 
 ## Custom element
 
@@ -200,11 +199,12 @@ Svelecte component can inherit `required`, `multiple` and `disabled` properties 
 property is not set, it can extract option list from `<option>` elements.
 
 ```html
-  <select id="my_select" name="form_select" required>
-    <option>...</option>
-  </select>
-  <el-svelecte placeholder="Pick an item"/>
+<select id="my_select" name="form_select" required>
+  <option>...</option>
+</select>
+<el-svelecte placeholder="Pick an item" />
 ```
+
 <style>
   :global(.inlined) {
     display: inline-flex;
