@@ -1,4 +1,4 @@
-import { getHighlighter } from 'shiki';
+import { getSingletonHighlighter } from 'shiki';
 import { transformerNotationDiff } from '@shikijs/transformers';
 import { escapeSvelte } from 'mdsvex';
 
@@ -23,8 +23,8 @@ function escapeHtml(code) {
  * @returns {Promise<string>} - highlighted html
  */
 async function highlighter(code, lang, meta) {
-  const highlighter = await getHighlighter({
-    langs: ['svelte', 'css', 'javascript', 'bash'],
+  const highlighter = await getSingletonHighlighter({
+    langs: ['svelte', 'css', 'javascript', 'bash', 'html'],
     themes: ['catppuccin-latte', 'monokai']
   });
   const darkHtml = escapeHtml(escapeSvelte(highlighter.codeToHtml(code, {

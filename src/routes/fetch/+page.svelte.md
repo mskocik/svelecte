@@ -1,6 +1,6 @@
 <script>
 import Svelecte from "$lib/Svelecte.svelte";
-  import { dataset } from './../data.js';
+import { dataset } from './../data.js';
 
   let parentValue = null;
   let value;
@@ -26,7 +26,7 @@ import Svelecte from "$lib/Svelecte.svelte";
 Fetching capabilities are defined by `fetch` property - URL of desired endpoint. Svelecte automatically
 resolves "fetch mode" by `[query]` placeholder in `fetch` property.
 
-When this placeholder `[query]` is present, svelecte operates in _"query"_ mode. Otherwise  switches to _"init"_ mode,
+When this placeholder `[query]` is present, svelecte operates in _"query"_ mode. Otherwise switches to _"init"_ mode,
 where remote endpoint is requested, when component is mounted.
 
 ```svelte
@@ -86,7 +86,7 @@ Results to:
 
 ### ⚠️ Caution with objects
 
-When using _objects_ as `value` (with `valueAsObject` property set), you *always* need to set `strictMode` to `false`.
+When using _objects_ as `value` (with `valueAsObject` property set), you _always_ need to set `strictMode` to `false`.
 Otherwise initial value won't be set. Also using `refetchWith` method has no meaning, because you can set object value
 directly, no need for fetch request.
 
@@ -97,9 +97,7 @@ directly, no need for fetch request.
 - `minQuery: number` Force minimal length of input text to trigger remote request.
 - Settings `skipSort:  true` on `searchProps` to avoid re-ordering search results. More about search settings at [Searching](/searching) page.
 
-
 ## User-provided fetch function
 
 In v4.0 whole fetch-related functionality has been reworked and it's **no longer** possible to provide your own
 fetch function. Properties `fetch` and `fetchProps` should be enough for every use case.
-

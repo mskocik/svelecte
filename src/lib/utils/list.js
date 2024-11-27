@@ -56,7 +56,7 @@ export function createConfig(valueField, labelField, optLabel, optItems) {
  */
 export function initSelection(options, initialValue, valueAsObject, groupItemsField, valueField) {
   if (valueAsObject) return (Array.isArray(initialValue) ? initialValue : [initialValue])
-      .map(opt => Object.fromEntries(Object.entries(opt)));
+    .map(opt => Object.fromEntries(Object.entries(opt)));
 
   const initialValue_array = Array.isArray(initialValue)
     ? initialValue
@@ -163,8 +163,8 @@ export function filterList(options, inputValue, excludeSelected, config, searchP
         if (opt.$isGroupHeader &&
           (
             (self[idx + 1] && self[idx + 1].$isGroupHeader)
-          || self.length <= 1
-          || self.length - 1 === idx
+            || self.length <= 1
+            || self.length - 1 === idx
           )
         ) return false;
         return true;
@@ -197,25 +197,25 @@ export function filterList(options, inputValue, excludeSelected, config, searchP
 
   const mapped = config.optionsWithGroups
     ? result.items.reduce((res, item) => {
-        const opt = options[item.id];
-        if (excludeSelected && opt.isSelected) return res;
-        const lastPos = res.push(opt);
-        if (opt.$isGroupItem) {
-          const prevItems = options.slice(0, item.id);
-          let prev = null;
-          do {
-            prev = prevItems.pop();
-            prev && prev.$isGroupHeader && !res.includes(prev) && res.splice(lastPos - 1, 0, prev);
-          } while (prev && !prev.$isGroupHeader);
-        }
-        return res;
-      }, [])
+      const opt = options[item.id];
+      if (excludeSelected && opt.isSelected) return res;
+      const lastPos = res.push(opt);
+      if (opt.$isGroupItem) {
+        const prevItems = options.slice(0, item.id);
+        let prev = null;
+        do {
+          prev = prevItems.pop();
+          prev && prev.$isGroupHeader && !res.includes(prev) && res.splice(lastPos - 1, 0, prev);
+        } while (prev && !prev.$isGroupHeader);
+      }
+      return res;
+    }, [])
     : result.items.map(item => options[item.id])
   return mapped;
 }
 
 function createSifterSortField(prop) {
-  return [{ field: prop, direction: 'asc'}];
+  return [{ field: prop, direction: 'asc' }];
 }
 
 /**
@@ -227,7 +227,7 @@ function createSifterSortField(prop) {
  */
 export function fieldInit(type, options, groupItemsField) {
   const isValue = type === 'value';
-  let val = isValue  ? 'value' : 'text';              // selectize style defaults
+  let val = isValue ? 'value' : 'text';              // selectize style defaults
   if (options && options.length) {
     const firstItem = options[0][groupItemsField] ? options[0][groupItemsField][0] : options[0];
     if (!firstItem || typeof firstItem === 'string') return val;

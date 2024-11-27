@@ -1,24 +1,25 @@
 <script>
-  import { arrayProxy, superForm } from 'sveltekit-superforms/client';
-  import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
-  import Svelecte from '$lib/Svelecte.svelte';
+  import { arrayProxy, superForm } from "sveltekit-superforms/client";
+  import SuperDebug from "sveltekit-superforms/client/SuperDebug.svelte";
+  import Svelecte from "$lib/Svelecte.svelte";
 
   /** @type {{data: any, status: any}} */
   let { data, status } = $props();
 
   const pageForm = superForm(data.form, {
-    clearOnSubmit: 'none'
-  })
+    clearOnSubmit: "none",
+  });
   const { form, message, enhance } = pageForm;
 
   const options = data.options;
 
   // @ts-ignore
-  const { values, errors } = arrayProxy(pageForm, 'tags', { taint: true });
+  const { values, errors } = arrayProxy(pageForm, "tags", { taint: true });
 </script>
 
 {#if $message}
-  <div class="status"
+  <div
+    class="status"
     class:error={status.status >= 400}
     class:success={status.status == 200}
   >
@@ -29,21 +30,29 @@
 <form method="POST" use:enhance>
   <fieldset>
     <legend>Superform</legend>
-  <label for="sv-tags-select-input">
-    Pick a color
-  </label>
-  <Svelecte {options} name="tags" bind:value={$values} clearable required multiple/>
-  <br>
-  <div>
-    <button type="submit" class="press-btn">Submit</button>
-    {#if $errors}<span class="invalid">{$errors}</span>{/if}
-  </div>
-</fieldset>
+    <label for="sv-tags-select-input"> Pick a color </label>
+    <Svelecte
+      {options}
+      name="tags"
+      bind:value={$values}
+      clearable
+      required
+      multiple
+    />
+    <br />
+    <div>
+      <button type="submit" class="press-btn">Submit</button>
+      {#if $errors}<span class="invalid">{$errors}</span>{/if}
+    </div>
+  </fieldset>
 </form>
 <SuperDebug data={$form} />
-<br>
-<p><a target="_blank" href="https://superforms.rocks/api">Superforms API Reference</a></p>
-
+<br />
+<p>
+  <a target="_blank" href="https://superforms.rocks/api"
+    >Superforms API Reference</a
+  >
+</p>
 
 <style>
   .status {
@@ -59,7 +68,8 @@
     background-color: seagreen;
   }
 
-  fieldset, legend {
+  fieldset,
+  legend {
     padding: 12px;
   }
   legend {

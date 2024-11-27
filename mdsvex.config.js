@@ -6,18 +6,18 @@ import slugPlugin from 'rehype-slug';
 // const __dirname = resolve();
 
 const config = defineMDSveXConfig({
-  extensions: ['.svelte.md', '.svelte'],
+  extensions: ['.svelte.md'],
   highlight: {
     highlighter,
   },
   rehypePlugins: [
     slugPlugin,
-		[
-			autolinkHeadings,
-			{
-				behavior: 'wrap',
-			},
-		],
+    [
+      autolinkHeadings,
+      {
+        behavior: 'wrap',
+      },
+    ],
   ]
   // layout: join(__dirname, './src/lib/components/MarkdownLayout.svelte'),
 });
