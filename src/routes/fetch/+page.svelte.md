@@ -1,6 +1,6 @@
 <script>
-import Svelecte from "$lib/Svelecte.svelte";
-  import { dataset } from './../data.js';
+  import Svelecte from "$lib/Svelecte.svelte";
+  import { dataset } from '../data.js';
 
   let parentValue = null;
   let value;

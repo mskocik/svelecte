@@ -9,6 +9,9 @@
   import { onMount } from 'svelte';
   import { page } from '$app/stores';
 
+  /** @type {{children?: import('svelte').Snippet}} */
+  let { children } = $props();
+
   let mode = '';
   let is_mounted = false;
 
@@ -87,7 +90,7 @@
       </div>
       <div class="w-100">
         <div class="main-container vp-doc">
-          <slot />
+          {@render children()}
         </div>
       </div>
     </div>

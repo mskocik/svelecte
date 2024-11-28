@@ -2,7 +2,7 @@
   import Svelecte, { addRenderer } from '$lib/Svelecte.svelte';
   import { bindItem } from '$lib/utils/actions';
   import highlighter from '../../utils/codeHighlighter';
-  import { dataset } from '../data';
+  import { dataset } from '../data.js';
 
   let options = dataset.colors();
   let selectionValue = ['red', 'green'];

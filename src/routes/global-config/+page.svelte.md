@@ -29,7 +29,7 @@ function toggleDef(e) {
 
 # Global Config
 
-Svelecte provides global config with many of settings. Basically it is an export from `<script context="module"></script>`
+Svelecte provides global config with many of settings. Basically it is an export from `<script module></script>`
 so when you call it before you create any `<Svelecte />` instance, you can change some defaults for your whole app.
 
 Part of global config is also global `i18n` object, although it can be set also on component level.

@@ -2,7 +2,7 @@ import { superValidate, message } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 import { schema } from './schema';
-import { dataset } from '../data';
+import { dataset } from '../../routes/data';
 
 export const prerender = false;
 
