@@ -8,7 +8,7 @@
 
   overrideItemIdKeyNameBeforeInitialisingDndZones('value');
 
-  let value = ['red', 'blue', 'purple'];
+  let value = $state(['red', 'blue', 'purple']);
 
   /** ************************************ custom element */
 
@@ -45,8 +45,12 @@
 
   /** ************************************ dependent selects */
 
-  let parentValue = null;
+  let parentValue = $state(null);
   let childValue;
+
+  function updateParent(value) {
+    parentValue = value;
+  }
 
   let parentOptions = [
     { id: 'colors', text: 'Colors'},
@@ -54,7 +58,7 @@
     { id: 'countryGroups', text: 'Country Groups' },
   ];
 
-  $: childPlaceholder = parentValue? 'Now you can start searching' : 'Pick parent first';
+  let childPlaceholder = $derived(parentValue ? 'Now you can start searching' : 'Pick parent first');
 
 </script>
 
@@ -136,7 +140,7 @@ This functionality is not strictly related to remote fetch, but it's typical how
 you're done. If you require `parentValue` in your `fetch` URL, just use `[parent]` placeholder.
 
 <label for="parent">Choose category first</label>
-<Svelecte options={parentOptions} bind:value={parentValue} inputId="parent" clearable/>
+<Svelecte options={parentOptions} bind:value={parentValue} inputId="parent" clearable onChange={updateParent} />
 <label for="child">Search for it</label>
 <Svelecte {parentValue} bind:value={childValue} fetch="/api/[parent]?query=[query]" inputId="child" placeholder={childPlaceholder}/>
 

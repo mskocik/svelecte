@@ -9,12 +9,13 @@ const options = [...Array(101).keys()]
 
 describe('dropdown_index: single select', () => {
   it('opend dropdown with first item focused', async () => {
-    render(Svelecte, {
+    const { container } = render(Svelecte, {
       options,
     });
 
     const user = userEvent.setup();
-    await user.click(screen.queryByPlaceholderText('Select'));
+    await user.click(container.querySelector('input'));
+    await sleep(200);
 
     const dropdownItem = screen
       .queryByText('Item 1')  // content
@@ -23,13 +24,13 @@ describe('dropdown_index: single select', () => {
   });
 
   it('open dropdown wihout item focused', async () => {
-    render(Svelecte, {
+    const { container } = render(Svelecte, {
       options,
       highlightFirstItem: false
     });
 
     const user = userEvent.setup();
-    await user.click(screen.queryByPlaceholderText('Select'));
+    await user.click(container.querySelector('input'));
 
     const dropdownItem = screen
       .queryByText('Item 1')  // content
@@ -39,7 +40,7 @@ describe('dropdown_index: single select', () => {
 
   it('open dropdown with selected item focused', async () => {
     const selected = 'Item 77';
-    const { container } = render(Svelecte, {
+    render(Svelecte, {
       options,
       value: selected
     });
@@ -60,7 +61,7 @@ describe('dropdown_index: single select', () => {
     });
 
     const user = userEvent.setup();
-    await user.click(screen.queryByPlaceholderText('Select'));
+    await user.click(container.querySelector('input'));
 
     await user.keyboard('{ArrowUp}');
 
@@ -77,7 +78,7 @@ describe('dropdown_index: single select', () => {
     });
 
     const user = userEvent.setup();
-    await user.click(screen.queryByPlaceholderText('Select'));
+    await user.click(container.querySelector('input'));
 
     await user.keyboard('{End}');
 
@@ -89,13 +90,13 @@ describe('dropdown_index: single select', () => {
 
 
   // this cannot be tested
-  false && it('move by PageDown and scroll by 1 container height', async () => {
+  it.skip('move by PageDown and scroll by 1 container height', async () => {
     const { container } = render(Svelecte, {
       options,
     });
 
     const user = userEvent.setup();
-    await user.click(screen.queryByPlaceholderText('Select'));
+    await user.click(container.querySelector('input'));
 
     const focusedOption = screen.queryByText('Item 1').parentElement;
     const optionHeight = focusedOption.getBoundingClientRect().height;

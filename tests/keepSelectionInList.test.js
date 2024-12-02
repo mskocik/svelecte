@@ -9,7 +9,6 @@ describe('keepSelectionInList:auto', () => {
       options: ['One', 'Two', 'Three', 'Four', 'Five'],
       value: 'Two',
     });
-    rr.rerender({ value: 'Two'});
 
     const input = rr.container.querySelector('input');
 

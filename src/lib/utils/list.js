@@ -44,37 +44,26 @@ export function createConfig(valueField, labelField, optLabel, optItems) {
   }
 }
 
-
 /**
- *
  * @param {array} options
- * @param {array|string|number} initialValue
+ * @param {array|null|object} initialValue
  * @param {boolean} valueAsObject
- * @param {string} groupItemsField
  * @param {string} valueField
- * @returns {array}
  */
-export function initSelection(options, initialValue, valueAsObject, groupItemsField, valueField) {
-  if (valueAsObject) return (Array.isArray(initialValue) ? initialValue : [initialValue])
-      .map(opt => Object.fromEntries(Object.entries(opt)));
-
-  const initialValue_array = Array.isArray(initialValue)
+export function initSelection(options, initialValue, valueAsObject, valueField) {
+  let initialValue_array = Array.isArray(initialValue)
     ? initialValue
     : [initialValue];
+
+  if (valueAsObject) {
+    initialValue_array = initialValue_array.map(opt => opt[valueField]);
+  }
+
   /** @type {object[]} */
-  const initialSelection = options.reduce((res, val, i) => {
-    const opt_group = val[groupItemsField] && Array.isArray(val)
-      ? val[groupItemsField]
-      : null;
-    if (opt_group) {  // handle groups
-      const selected = opt_group.reduce((res, group_item) => {
-        if (initialValue_array.includes(group_item[valueField])) res.push(group_item);
-        return res;
-      }, []);
-      if (selected.length) {
-        res.push(...selected);
-        return res;
-      }
+  const initialSelection = options.reduce((res, opt) => {
+    if (initialValue_array.includes(opt[valueField])) {
+      opt.$selected = true;
+      res.push(opt);
     }
     return res;
   }, []);

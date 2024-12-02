@@ -1,65 +1,66 @@
 import { render, screen } from '@testing-library/svelte';
 import userEvent from '@testing-library/user-event'
 import Svelecte from '$lib/Svelecte.svelte';
-
-function sleep(ms) {
-  return new Promise(resolve => {
-    setTimeout(resolve, ms);
-  });
-}
+import { sleep } from './_helpers';
 
 describe('.is-single', () => {
   it('single select', () => {
-    const rr = render(Svelecte);
+    const { container } = render(Svelecte);
 
-    expect(rr.container.querySelector('.is-single')).toBeInTheDocument();
+    expect(container.querySelector('.is-single')).toBeInTheDocument();
   });
 
   it('multi select', () => {
-    const rr = render(Svelecte, {
+    const { container } = render(Svelecte, {
       multiple: true
     });
 
-    expect(rr.container.querySelector('.is-single')).toBeNull();
+    expect(container.querySelector('.is-single')).toBeNull();
   });
 });
 
 
 describe('.is-valid', () => {
-  it('required', () => {
-    const rr = render(Svelecte, {
+  it('required', async () => {
+    const { container, rerender } = render(Svelecte, {
       required: true
+    });
+
+    expect(container.querySelector('.is-required')).toBeInTheDocument();
+    expect(container.querySelector('.is-valid')).toBeNull();
+
+    await rerender({ multiple: true });
+    expect(container.querySelector('.is-required')).toBeInTheDocument();
+    expect(container.querySelector('.is-valid')).toBeNull();
+  });
+
+
+  it('optional', async () => {
+    const { container, rerender } = render(Svelecte);
+
+    expect(container.querySelector('.is-required')).toBeNull();
+    expect(container.querySelector('.is-valid')).toBeInTheDocument();
+
+    await rerender({ multiple: true });
+    expect(container.querySelector('.is-required')).toBeNull();
+    expect(container.querySelector('.is-valid')).toBeInTheDocument();
+  });
+
+
+  it('toggle required', async () => {
+    const rr = render(Svelecte, {
+      name: 'component',
+      required: true,
     });
 
     expect(rr.container.querySelector('.is-required')).toBeInTheDocument();
     expect(rr.container.querySelector('.is-valid')).toBeNull();
+    expect(rr.container.querySelector('.is-invalid')).toBeInTheDocument();
 
-    rr.rerender({ multiple: true });
-    expect(rr.container.querySelector('.is-required')).toBeInTheDocument();
-    expect(rr.container.querySelector('.is-valid')).toBeNull();
-  });
-
-  it('optional', () => {
-    const rr = render(Svelecte);
-
-    expect(rr.container.querySelector('.is-required')).toBeNull();
-    expect(rr.container.querySelector('.is-valid')).toBeInTheDocument();
-
-    rr.rerender({ multiple: true });
+    await rr.rerender({ required: false });
     expect(rr.container.querySelector('.is-required')).toBeNull();
     expect(rr.container.querySelector('.is-valid')).toBeInTheDocument();
   });
-
-  // it('toggle required', () => {
-  //   const rr = render(Svelecte);
-
-  //   expect(rr.container.querySelector('.is-required')).toBeNull();
-  //   expect(rr.container.querySelector('.is-valid')).toBeInTheDocument();
-
-  //   rr.rerender({ required: true });
-  //   expect(rr.container.querySelector('.is-required')).toBeInTheDocument();
-  //   expect(rr.container.querySelector('.is-valid')).toBeNull();
-  // });
 });
 
 describe('.is-focused', () => {
@@ -67,16 +68,16 @@ describe('.is-focused', () => {
 
     const user = userEvent.setup();
 
-    const rr = render(Svelecte, {
+    const { container } = render(Svelecte, {
       name: 'test',
       inputId: 'input'
     });
 
-    expect(rr.container.querySelector('.is-focused')).toBeNull();
+    expect(container.querySelector('.is-focused')).toBeNull();
 
-    await user.click(screen.getByPlaceholderText('Select'));
+    await user.click(container.querySelector('input'));
 
-    expect(rr.container.querySelector('.is-focused')).toBeInTheDocument();
+    expect(container.querySelector('.is-focused')).toBeInTheDocument();
   });
 });
 
@@ -85,41 +86,39 @@ describe('.is-open', () => {
 
     const user = userEvent.setup();
 
-    const rr = render(Svelecte, {
+    const { container } = render(Svelecte, {
       name: 'test',
       inputId: 'input'
     });
 
-    expect(rr.container.querySelector('.is-focused')).toBeNull();
-    expect(rr.container.querySelector('.is-open')).toBeNull();
+    expect(container.querySelector('.is-focused')).toBeNull();
+    expect(container.querySelector('.is-open')).toBeNull();
 
-    await user.click(rr.container.querySelector('button[data-action="toggle"]'));
+    await user.click(container.querySelector('button[data-action="toggle"]'));
 
-    expect(rr.container.querySelector('.is-focused')).toBeNull();
-    expect(rr.container.querySelector('.is-open')).toBeInTheDocument();
+    expect(container.querySelector('.is-focused')).toBeNull();
+    expect(container.querySelector('.is-open')).toBeInTheDocument();
   });
 });
 
 describe('.is-disabled', () => {
   it('disabled', async () => {
-    const rr = render(Svelecte, {
+    const { container, rerender } = render(Svelecte, {
       disabled: false
     });
 
     /** @type {HTMLInputElement} */
-    const input = screen.getByPlaceholderText('Select');
+    const input = container.querySelector('input');
 
     input.focus();
     expect(input).toHaveFocus();
-    expect(rr.container.querySelector('.is-disabled')).toBeNull();
+    expect(container.querySelector('.is-disabled')).toBeNull();
     input.blur();
 
-    rr.rerender({ disabled: true });
-
-    await sleep(0); // required to wait for the test
+    await rerender({ disabled: true });
 
     expect(input).not.toHaveFocus();
-    expect(rr.container.querySelector('.is-disabled')).toBeInTheDocument();
+    expect(container.querySelector('.is-disabled')).toBeInTheDocument();
   });
 
 });

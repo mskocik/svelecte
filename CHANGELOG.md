@@ -10,8 +10,12 @@
     - `fetch` changed to `onFetch`
     - `fetchError` changed to `onFetchError`
     - `invalidValue` changed to `onInvalidValue`
-- [breaking] Dropped support for `svelte-use-form` validation library.
+- [breaking] Dropped support for `svelte-use-form` validation library (remove triggering `input` event on `<select>` element)
 - [breaking] Replaced slots with snippets
+- add `i18n.aria_removeItemLabel` function to avoid svelte compiler warning
+- add `emitValues` property to emit values instead of objects
+- [breaking] do not automatically set `multiple` property if `name` included "[]" meaning multiple items when submitting form. It's inversed now, if name doesn't contain `[]` suffix it is added automatically
+- [breaking] when using `optionResolver`, value cannot be changed from parent component. All these updates from parent are ignored.
 
 ## v4.0:
 

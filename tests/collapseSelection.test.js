@@ -78,7 +78,7 @@ describe('collapseSelection:blur', () => {
     const user = userEvent.setup();
     await user.click(input);
 
-    await sleep(200); // there is timeout in the code itself set to 100ms, need to take that into account
+    await sleep(300); // there is timeout in the code itself set to 100ms, need to take that into account
 
     expect(screen.queryByText('1 selected')).not.toBeInTheDocument();
     expect(screen.queryByText('Two')).toBeInTheDocument();
