@@ -85,7 +85,6 @@
  * @property {boolean} lazyDropdown
  * @property {boolean} virtualList
  * @property {number|null} vlItemSize
- * @property {number|null} vlHeight
  * @property {I18nObject} i18n
  * @property {import("./utils/fetch").RequestFactoryFn} requestFactory
  */
@@ -128,7 +127,6 @@ const /**@type {Settings} */ settings = {
   // virtual list
   virtualList: false,
   vlItemSize: null,
-  vlHeight: null,
   // i18n
   i18n: {
     aria_label: '',

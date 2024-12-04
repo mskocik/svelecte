@@ -82,11 +82,11 @@
 <script>
   import { onMount, tick } from 'svelte';
   import { flip } from 'svelte/animate';
-  import TinyVirtualList from 'svelte-tiny-virtual-list';
-  import { positionDropdown, scrollIntoView, virtualListDimensionsResolver } from './utils/dropdown.js';
+  import { pixelGetter, positionDropdown, scrollIntoView } from './utils/dropdown.js';
   import { createConfig, ensureObjectArray, filterList, flatList, fieldInit, initSelection } from './utils/list.js';
   import { highlightSearch, android } from './utils/helpers.js';
   import { bindItem } from './utils/actions.js';
+  import VirtualList from './VirtualList.svelte';
 
   /**
    * @typedef {{
@@ -133,7 +133,6 @@
    *  minQuery: number,
    *  lazyDropdown: boolean,
    *  virtualList: boolean,
-   *  vlHeight: number,
    *  vlItemSize: number,
    *  searchProps: import('./utils/list.js').SearchProps|null,
    *  className: string,
@@ -210,7 +209,6 @@
     minQuery = defaults.minQuery,
     lazyDropdown = defaults.lazyDropdown,
     virtualList = defaults.virtualList,
-    vlHeight = defaults.vlHeight,
     vlItemSize = defaults.vlItemSize,
     searchProps = null,
     className = 'svelecte-control',
@@ -322,9 +320,6 @@
   // dropdown-related
   let render_dropdown = $state(!lazyDropdown);
   let dropdown_scroller = null;
-  let virtuallist_automode = $state(virtualList && vlHeight === null && vlItemSize === null);
-  let vl_height = $state(vlHeight);
-  let vl_itemSize = $state(vlItemSize);
   let meta_key = $state();
   let hasEmptyList = false;
   // input-related
@@ -355,7 +350,7 @@
   let /** @type {HTMLInputElement}  */  ref_input;
   let /** @type {HTMLSelectElement} */  ref_select_element;
   let /** @type {HTMLDivElement}    */  ref_container;
-  let /** @type {HTMLDivElement}    */  ref_container_scroll;
+  let /** @type {HTMLDivElement}    */  ref_container_scroll = $state(null);
   let /** svelte-tiny-virtual-list  */  ref_virtuallist;
 
   // #region [reactivity]
@@ -411,21 +406,6 @@
     )
   );
 
-  /** ************************************ dropdown-specific */
-
-  let vl_listHeight = $derived(
-    Math.min(vl_height, Array.isArray(vl_itemSize)
-      ? vl_itemSize.reduce((res, num) => {
-        res+= num;
-        return res;
-      }, 0)
-      : options_filtered.length * vl_itemSize
-    )
-  );
-  $effect(() => {
-    virtuallist_automode && watch_options_virtualList(options_filtered)
-  });
-
   /** ************************************ input-specific */
 
   /** @type {'text'|'none'}*/
@@ -459,7 +439,7 @@
       ;
     }
     return options_filtered.length
-      ? (is_dropdown_opened && dropdown_index !== -1
+      ? (is_dropdown_opened && dropdown_index !== -1 && !isNaN(dropdown_index)
         ? i18n_actual.aria_listActive(options_filtered[idx], currentLabelField, options_filtered.filter(o => !o.$isGroupHeader).length)
         : i18n_actual.aria_inputFocused()
       )
@@ -671,32 +651,19 @@
     is_fetch_dependent = parentValue !== undefined;
   });
 
-  /**
-   * @param {array[]} [_watchTrigger]
-   */
-  function watch_options_virtualList(_watchTrigger) {
-    if (!is_mounted || !render_dropdown) return;
-    // required when changing item list 'on-the-fly' for VL
-    // if (hasEmptyList) dropdown_index = null;
-    tick()
-      .then(() => {
-        if (!ref_virtuallist) return;
-        const dimensions = virtualListDimensionsResolver(ref_virtuallist, ref_container_scroll, options_filtered);
-        vl_itemSize = dimensions.size;
-        vl_height = dimensions.height;
-      })
-      .then(() => positionResolver === _noop && positionDropdown(is_dropdown_opened, ref_container_scroll, render_dropdown));
-  }
-
   function updateDropdownState(val) {
     if (val && !focus_by_mouse) focus_by_mouse = true;
-
+    const alreadyRendered = render_dropdown;
     if (!render_dropdown && val) render_dropdown = true;
 
     is_dropdown_opened = val;
     tick()
       .then(() => {
-        virtuallist_automode && watch_options_virtualList();
+        /**
+         * conditional tick() required to properly delay calling positionDropdown when lazy & virtual list
+         * initializing for the first time, because of its internal use of tick()
+         */
+        if (!alreadyRendered && virtualList) return tick();
       })
       .then(() => {
         positionResolver === _noop && positionDropdown(val, ref_container_scroll, true);
@@ -1457,13 +1424,15 @@
   }
 
   /**
-   * @returns {number[]}
+   * @returns {[listHeight: number, itemSize?: number]}
    */
   function get_dropdown_dimensions() {
     if (virtualList) {
       return [
-        ref_container_scroll.offsetHeight,
-        vl_itemSize
+        pixelGetter(ref_container_scroll, 'maxHeight')
+          - pixelGetter(ref_container_scroll, 'paddingTop')
+          - pixelGetter(ref_container_scroll, 'paddingBottom'),
+        ref_virtuallist?.resolveItemSize()
       ];
     }
     return [
@@ -1648,32 +1617,30 @@
       {#if listHeader}{@render listHeader()}{/if}
       <div bind:this={ref_container_scroll} class="sv-dropdown-scroll" class:has-items={options_filtered.length>0} class:is-virtual={virtualList} tabindex="-1">
         <div bind:this={ref_container} class="sv-dropdown-content" class:max-reached={maxReached} >
-        {#if options_filtered.length}
-          {#if virtualList}
-            <TinyVirtualList bind:this={ref_virtuallist}
-              width="100%"
-              height={vl_listHeight}
-              itemCount={options_filtered.length}
-              itemSize={vl_itemSize}
-              scrollToAlignment="auto"
+          {#if virtualList && ref_container_scroll}
+            <VirtualList
+              bind:this={ref_virtuallist}
+              maxHeight={get_dropdown_dimensions().shift()}
+              itemHeight={vlItemSize}
+              itemCount={options_filtered.length || 0}
               scrollToIndex={dropdown_index}
             >
-              <div slot="item" let:index let:style {style}>
-                {@const opt = options_filtered[index]}
+              {#snippet children(index)}
+                {@const opt = options_filtered[index] || {}}
                 {#if opt.$isGroupHeader}
                   <div class="sv-optgroup-header"><b>{opt.label}</b></div>
                 {:else}
                   <div data-pos={index}
                     class="sv-item--wrap in-dropdown"
                     class:sv-dd-item-active={dropdown_index === index}
-                    class:is-selected={opt.$selected}
+                    class:is-selected={opt.$selected || selectedKeys.has(opt[currentValueField])}
                     class:is-disabled={opt[disabledField]}
                   >
                     {@render option(opt, input_value)}
                   </div>
                 {/if}
-              </div>
-            </TinyVirtualList>
+              {/snippet}
+            </VirtualList>
           {:else}
             {#each options_filtered as opt, i}
               {#if opt.$isGroupHeader}
@@ -1690,7 +1657,7 @@
               {/if}
             {/each}
           {/if}
-        {:else if options_filtered.length === 0 && (!creatable || !input_value) || maxReached}
+        {#if options_filtered.length === 0 && (!creatable || !input_value) || maxReached}
           <div class="is-dropdown-row">
             <div class="sv-item--wrap in-dropdown"><div class="sv-item--content">{listMessage}</div></div>
           </div>

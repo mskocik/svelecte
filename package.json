@@ -76,8 +76,5 @@
 		"vite-plugin-node-polyfills": "^0.21.0",
 		"vitest": "^2.1.7",
 		"zod": "^3.23.8"
-	},
-	"dependencies": {
-		"svelte-tiny-virtual-list": "^2.1.2"
 	}
 }

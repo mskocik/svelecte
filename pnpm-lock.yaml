@@ -11,9 +11,6 @@ importers:
       svelte:
         specifier: ^5.2.7
         version: 5.3.1
-      svelte-tiny-virtual-list:
-        specifier: ^2.1.2
-        version: 2.1.2
     devDependencies:
       '@rollup/plugin-node-resolve':
         specifier: ^15.3.0
@@ -2219,9 +2216,6 @@ packages:
     resolution: {integrity: sha512-f841HB5PCcvp21jsMkxSXCXcsJcGmIPMguN6iI1gXqP9Owcb47+ZUIE5ETUzNJntE9h7dm1wFj2Bm51hRtQ7Lw==}
     peerDependencies:
       svelte: '>=3.23.0 || ^5.0.0-next.0'
-
-  svelte-tiny-virtual-list@2.1.2:
-    resolution: {integrity: sha512-jeP/WMvgFUR4mYXHGPiCexjX5DuzSO+3xzHNhxfcsFyy+uYPtnqI5UGb383swpzQAyXB0OBqYfzpYihD/5gxnA==}
 
   svelte2tsx@0.7.28:
     resolution: {integrity: sha512-TJjA+kU8AnkyoprZPgQACMfTX8N0MA5NsIL//h9IuHOxmmaCLluqhcZU+fCkWipi5c/pooHLFOMpqjhq4v7JLQ==}
@@ -4877,8 +4871,6 @@ snapshots:
   svelte-dnd-action@0.9.52(svelte@5.3.1):
     dependencies:
       svelte: 5.3.1
-
-  svelte-tiny-virtual-list@2.1.2: {}
 
   svelte2tsx@0.7.28(svelte@5.3.1)(typescript@5.7.2):
     dependencies:
