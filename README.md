@@ -72,6 +72,7 @@ selectOnTab         | `bool`,`string`   | `null`      | Based on value provided,
 resetOnBlur         | `bool`            | `true`      | Control if input value should be cleared on blur
 resetOnSelect       | `bool`            | `true`      | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple`
 closeAfterSelect    | `bool`            | `'auto'`    | closes dropdown after selection. Setting this to `true` is useful for **multiple** select only. For single select dropdown is always closed no matter the value this property has
+deselectMode        | `'native'\|'toggle'\|'none'` | `'toggle'` | **single-select only**. Defines behavior how currently selected item can be de-selected. `native` disabled ability to clear selection by "selecting item again", but it's still possible to remove selection by icon, or by button, if `clearable` is set. `none` prevents any selection removal, only change, after first selection is made. `toggle` provides no restrictions and is consistent with multiselect behavior
 strictMode          | `bool`            | `true`      | When `true`, passed value is checked whether exists on provided `options` array. If not, `invalidValue` event is dispatched
 multiple            | `bool`            | `false`     | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
 max                 | `number`          | `0`         | Maximum allowed items selected, applicable only for multiselect
