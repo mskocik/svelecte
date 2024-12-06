@@ -12,7 +12,6 @@
    * or in dropdown (false)
    *
    * @callback RenderFunction
-   * @this {{ label: string }}
    * @param {object} item
    * @param {boolean} [selectionSection]
    * @param {string} [inputValue]
@@ -48,9 +47,9 @@
    * @returns {object[]}
    */
 
-  /**
-   * @type {Record<string, RenderFunction> & {default: RenderFunction, html: RenderFunction}}
-   */
+  // /**
+  //  * @typedef {Record<string, RenderFunction> & {default: RenderFunction, html: RenderFunction}}
+  //  */
   const stringFormatters = {
     /**
      * @type {RenderFunction}
@@ -405,10 +404,10 @@
    */
    let itemRenderer = $derived.by(() => typeof renderer === 'function'
     ? renderer
-    : (['default', 'html'].includes(renderer) === false && stringFormatters[renderer]
+    : ((stringFormatters[renderer]
       ? stringFormatters[renderer]
-      : stringFormatters[renderer || 'default'].bind({ label: currentLabelField})
-    )
+      : stringFormatters['default']
+    ).bind({ label: currentLabelField}))
   );
 
   /** ************************************ input-specific */

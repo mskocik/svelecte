@@ -18,6 +18,7 @@
 - [breaking] when using `optionResolver`, value cannot be changed from parent component. All these updates from parent are ignored.
 - [breaking] remove `svelte-tiny-virtual-list` dependency, provide own implementation
 - [breaking] remove `vlHeight` property, related to removal of virtual list dependency, use `--max-height` css property instead
+- add `html` renderer since default one escapes following HTML entities: `<`, `>`, `&`, `'` and `"`
 
 ## v4.0:
 
