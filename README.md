@@ -1,7 +1,10 @@
 # Svelecte [![NPM version](http://img.shields.io/npm/v/svelecte.svg?style=flat)](https://www.npmjs.org/package/svelecte)
 
-
 ![svelecte](https://svelecte.vercel.app/svelecte.png)
+
+> [!NOTE]
+> For Svelte 4 use version 4. Version 5 is svelte 5 only ⚡
+
 
 Flexible autocomplete/select component written in Svelte. Initially inspired by Selectize.js. Also usable as custom element. Usable in forms, behaves very similar to standard `<select>` element.
 
