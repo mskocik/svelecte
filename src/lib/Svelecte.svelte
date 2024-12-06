@@ -340,7 +340,7 @@
         ? $state.snapshot(value)
         : null
       )
-      : value
+      : JSON.parse(JSON.stringify(value))
     )
     : null;
   let isIOS = null;
@@ -375,6 +375,7 @@
     selectedOptions.length;
     options_flat.length;
 
+    if (!input_value && fetch && !fetch_initOnly && fetchResetOnBlur) return [];
     if (options_filtered_override) return options_filtered_override;  // related to fetch
 
     return maxReached
@@ -537,15 +538,18 @@
    */
   function watch_value_change(passedVal, opts) {
     if (equals(prev_value, passedVal) && !opts?.skipEqualityCheck) return;
-    if (optionResolver) return;
+    // NOTE: I am commenting all `optionResolver` if-s
+    // if (optionResolver) return;
 
-    const ifArrayThenNonEmpty = (Array.isArray(passedVal) && passedVal.length) || true; // return true for allowing '' or 0
-    if (passedVal !== null && ifArrayThenNonEmpty) {
+    // NOTE: why did I put this here? 😆 doesn't make sense...
+    // const ifArrayThenNonEmpty = (Array.isArray(passedVal) && passedVal.length) || true; // return true for allowing '' or 0
+    // if (passedVal !== null && ifArrayThenNonEmpty) {
+    if (passedVal !== null && true) {
       if ((multiple && !Array.isArray(passedVal)) || (!multiple && Array.isArray(passedVal))) {
         console.warn(`[Svelecte]: Passed 'value' property should ${ multiple ? 'be' : 'NOT be'} an array`);
       }
       // wait for fetch to be resolved
-      if (fetch_initValue) return;
+      if (fetch_initValue && (Array.isArray(fetch_initValue) ? fetch_initValue.length : true)) return;
 
       const arrValue = Array.isArray(passedVal) ? passedVal : [passedVal];
       const newSelectedKeys = [];
@@ -582,9 +586,9 @@
         return res;
       }, []);
       // de-select those, that cannot be selected anymore
-      if (!optionResolver) {
+      // if (!optionResolver) {
         selectedOptions.forEach(opt => !newSelectedKeys.includes(opt[currentValueField]) && deselectOption(opt));
-      }
+      // }
 
       // let success = arrValue.filter(o => o.$created !== true).length !== _selection.filter(o => o.$created !== false);
       let success = _selection.every(selectOption) && (multiple
@@ -1236,7 +1240,7 @@
       if (input_value.length < minQuery) {
         isFetchingData = false;
       }
-      if (fetchResetOnBlur) options_filtered_override = [];
+      if (!optionResolver && fetchResetOnBlur) options_filtered_override = [];
       dropdown_show = inputValue.length >= minQuery ? false : true;
       listMessage = maxReached
         ? i18n_actual.max(max)
