@@ -99,7 +99,6 @@ minQuery            | `number`          | `1`         | Minimal amount of charac
 lazyDropdown        | `bool`            | `true`      | render dropdown after first focus, not by default
 positionResolver    | `function`        | `noop`      | (optional) Action for custom dropdown positioning.
 virtualList         | `bool`            | `false`     | Whether use virtual list for dropdown items (useful for large datasets)
-vlHeight            | `number`          | `null`      | Height of virtual list dropdown (if not specified, computed automatically)
 vlItemSize          | `number`          | `null`      | Height of one row (if not specified, computed automatically)
 searchProps         | `object`          | `null`      | Customize `sifter.js` settings. See [Searching](https://svelecte.vercel.app/searching) page for more details
 class               | `string`          | `svelecte-control` | default css class

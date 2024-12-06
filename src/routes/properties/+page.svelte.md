@@ -4,7 +4,7 @@ Scroll down for [event callback props](#event-callback-props).
 
 Property            | Type              | Default     | Description
 --------------------|-------------------|-------------|------------
-name                | `string`          | `'svelecte'`| Create internal `<select>` element. Without `name` defined, no `<select>` is created
+name                | `string`          | `'svelecte'`| Create internal `<select>` element. ⚠️ Without `name` defined, no `<select>` element is created and standard form submit won't work as expected
 inputId             | `string`          | `null`      | Allow targeting input using a html ID. Otherwise it is based on `name` property
 required            | `bool`            | `false`     | Make sense only when `name` is defined and you work with it as standard `<select>` element
 disabled            | `bool`            | `false`     | Disable component
@@ -28,6 +28,7 @@ selectOnTab         | `bool`,`string`   | `null`      | Based on value provided,
 resetOnBlur         | `bool`            | `true`      | Control if input value should be cleared on blur
 resetOnSelect       | `bool`            | `true`      | Control if input value should be cleared on item selection. **Note:** applicable only with `multiple`
 closeAfterSelect    | `bool`            | `'auto'`    | closes dropdown after selection. Setting this to `true` is useful for **multiple** select only. For single select dropdown is always closed no matter the value this property has
+deselectMode        | `'native'`\|`'toggle'`\|`'none'`| `'toggle'` | **single-select only**. Defines behavior how currently selected item can be de-selected. `native` disabled ability to clear selection by "selecting item again", but it's still possible to remove selection by icon, or by button, if `clearable` is set. `none` prevents any selection removal, only change, after first selection is made. `toggle` provides no restrictions and is consistent with multiselect behavior
 strictMode          | `bool`            | `true`      | When `true`, passed value is checked whether exists on provided `options` array. If not, `invalidValue` event is dispatched. This is useful with `fetch` defined and you want to specify default value
 multiple            | `bool`            | `false`     | allow multiselection. Will be set automatically to `true`, if `name` property ends with `[]`, like `tags[]`
 max                 | `number`          | `0`         | Maximum allowed items selected, applicable only for multiselect
@@ -49,7 +50,6 @@ minQuery            | `number`          | `1`         | Minimal amount of charac
 lazyDropdown        | `bool`            | `true`      | render dropdown after first focus, not by default
 positionResolver    | `function`        | `noop`      | (optional) action for custom dropdown positioning.
 virtualList         | `bool`            | `false`     | Whether use virtual list for dropdown items (useful for large datasets)
-vlHeight            | `number`          | `null`      | Height of virtual list dropdown (if not specified, computed automatically)
 vlItemSize          | `number`          | `null`      | Height of one row (if not specified, computed automatically)
 searchProps         | `object`          | `null`      | Customize `sifter.js` settings. See [Searching](/searching) page for more details
 class               | `string`          | `svelecte-control` | default css class
@@ -61,12 +61,12 @@ anchor_element      | `bool`            | `null`      | `internal`: when passing
 
 Property        | arguments                   | description
 -------------|-----------------------------|----------------------------------------------------------------------------
-onChange       | selection                   | selected objects. If `anchor` property is defined, `change` event is called also on it
+onChange       | selection                   | selected objects. If `anchor_element` property is defined, `change` event is called also on it
 onFocus        | `<input>`                        | focus event
 onBlur         | `<input>`                           | blur event
 onCreateOption | option                      | newly created option object
 onCreateFail | object | thrown if `createHandler` fails
-onEnterKey     | underlying `keyDown` event  | triggered when natively it would cause form submit (dropdown is closed). This gives you ability to prevent it by calling `event.detail.preventDefault()`
+onEnterKey     | underlying `keyDown` event  | triggered when natively it would cause form submit (dropdown is closed). This gives you ability to prevent it by calling `event.preventDefault()`
 onFetch        | options                     | newly fetched remote options
 onFetchError   | error                     | dispatche on fetch error of any kind
 onInvalidValue | invalidValue                | triggered when passed `value` is out of provided `options` items. Internal (and bound, if any) `value` is set to `null` or `[]` if multiple

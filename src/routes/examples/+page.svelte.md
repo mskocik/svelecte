@@ -4,6 +4,8 @@
   import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode } from 'svelte-dnd-action';
   import Svelecte from '$lib/Svelecte.svelte';
 
+  import { highlightSearch } from '$lib';
+
   /** ************************************ drag-n-drop */
 
   overrideItemIdKeyNameBeforeInitialisingDndZones('value');
@@ -116,7 +118,7 @@ If you need to keep highlighting feature use [render function](/rendering#render
 
 ```svelte
 <script>
-	import Svelecte from 'svelecte@next';
+	import Svelecte from 'svelecte';
 
 	let options = [
     {id: '1', text: 'option X'},
@@ -132,6 +134,43 @@ If you need to keep highlighting feature use [render function](/rendering#render
 {/snippet}
 
 <Svelecte {options} closeAfterSelect={false} value={'1'} {option} />
+```
+
+{#snippet optionWithSearch(item, inputValue)}
+<div>
+	<b>Item:</b> {@html highlightSearch(item, false, inputValue, opt => opt.text)}
+</div>
+{/snippet}
+
+<h3 class="mb-3">💡 Replicate "search highlighting" with custom option</h3>
+<br>
+<Svelecte
+  options={render_options}
+  closeAfterSelect={false}
+  option={optionWithSearch}
+>
+	<div slot="option" let:item let:inputValue>
+		<b>Item: </b> {@html highlightSearch(item, false, inputValue, opt => opt.text)}
+	</div>
+</Svelecte>
+
+```svelte
+<script>
+  import Svelecte from 'svelecte'
+	import { highlightSearch } from 'svelecte';
+
+	let options = [
+    {id: '1', text: 'option X'},
+    {id: '2', text: 'option Y'},
+    {id: '3', text: 'option Z'}
+	];
+</script>
+
+<Svelecte options={render_options} closeAfterSelect={false} value={'1'}>
+	<div slot="option" let:item let:inputValue>
+		<b>Item:</b> {@html highlightSearch(item, false, inputValue, opt => opt.text)}
+	</div>
+</Svelecte>
 ```
 
 ## Dependent selects
@@ -164,7 +203,7 @@ Reorder selection by dragging: {value}
 
 ```svelte
 <script>
-  import Svelecte from 'svelecte@next';
+  import Svelecte from 'svelecte';
   import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones, setDebugMode } from 'svelte-dnd-action';
 
   /** my example has no 'id' property */
@@ -176,39 +215,6 @@ Reorder selection by dragging: {value}
 <Svelecte {options} bind:value={value} multiple {dndzone} placeholder="Re-order selected items by dragging" />
 ```
 
-
-## Custom element
-
-Svelecte can be used outside svelte projects. Almost every commonly used property _should_ be available. Also
-dependend selects are possible with custom elements. I have used it successfully in Vue and PHP projects myself.
-
-Check the source and look for `<el-svelecte />` element.
-
-```svelte
-<script>
-  import { registerAsCustomElement } from 'svelecte/component';
-
-  registerAsCustomElement('el-svelecte');
-</script>
-
-<el-svelecte options="json_stringified_object_array"></el-svelecte>
-```
-
-Most of properties is supported with one change: `parentValue`.
-
-You define `parent` attribute instead. It represents html `id` attribute of parent select.
-This attribute should be defined on child svelecte element.
-
-Native `<select>` element can be used as "anchor element", which will serve as underlying element for Svelecte component.
-Svelecte component can inherit `required`, `multiple` and `disabled` properties from `<select>` element and in case `options`
-property is not set, it can extract option list from `<option>` elements.
-
-```html
-  <select id="my_select" name="form_select" required>
-    <option>...</option>
-  </select>
-  <el-svelecte placeholder="Pick an item"/>
-```
 <style>
   :global(.inlined) {
     display: inline-flex;

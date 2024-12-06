@@ -16,25 +16,24 @@
     );
   }
 
-  let fields = 'name';
-  let sort;
-  let skipSort;
-  let nesting;
-  let disabled;
-  let startOnly;
-  let wordsOnly;
+  let searchProps = $state({
+    fields: 'name',
+    skipSort: false,
+    nesting: false,
+    disabled: false,
+    startOnly: false,
+    wordsOnly: false,
+  });
 
-  $: placeholder = fields === 'internal.id'
+  let placeholder = $derived(searchProps.fields === 'internal.id'
     ? 'Search by internal (nested id)'
-    : (fields === 'hex'
+    : (searchProps.fields === 'hex'
       ? 'Search by hex'
       : 'Search by name'
-    );
+    )
+  );
 
-  $: searchProps = {
-    fields: fields,
-    sort, skipSort, nesting, disabled, startOnly, wordsOnly
-  }
+
 
 </script>
 
@@ -68,7 +67,7 @@ has been extended for more granular search settings in v4.0.
     <hr>
     <label for="fields">
       Select search field:
-      <select name="fields" id="fields" bind:value={fields}>
+      <select name="fields" id="fields" bind:value={searchProps.fields}>
         <option value="name">Name</option>
         <option value="hex">Hex (not visible property)</option>
         <option value="internal.id">ID (nesting required)</option>
@@ -76,27 +75,27 @@ has been extended for more granular search settings in v4.0.
     </label>
 
     <label for="nesting">
-      <input type="checkbox" name="nesting" id="nesting" bind:checked={nesting}>
+      <input type="checkbox" name="nesting" id="nesting" bind:checked={searchProps.nesting}>
       Nesting (select <code>ID</code> from search field select)
     </label>
 
     <label for="skipSort">
-      <input type="checkbox" name="skipSort" id="skipSort" bind:checked={skipSort}>
+      <input type="checkbox" name="skipSort" id="skipSort" bind:checked={searchProps.skipSort}>
       Skip sorting results
     </label>
 
     <label for="startOnly">
-      <input type="checkbox" name="startOnly" id="startOnly" bind:checked={startOnly}>
+      <input type="checkbox" name="startOnly" id="startOnly" bind:checked={searchProps.startOnly}>
       Search by first letters
     </label>
 
     <label for="wordsOnly">
-      <input type="checkbox" name="wordsOnly" id="wordsOnly" bind:checked={wordsOnly}>
+      <input type="checkbox" name="wordsOnly" id="wordsOnly" bind:checked={searchProps.wordsOnly}>
       Respect word boundaries
     </label>
 
     <label for="disable">
-      <input type="checkbox" name="disable" id="disable" bind:checked={disabled}>
+      <input type="checkbox" name="disable" id="disable" bind:checked={searchProps.disabled}>
       Disable filtering
     </label>
   </div>

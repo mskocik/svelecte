@@ -44,18 +44,25 @@ in `init` mode.
 
 ```svelte
 <script>
-  let value="my-value";
-  let multiValue=['one','two','three'];
+  let value = $state("my-value");
+  let multiValue = $state(['one','two','three']);
 </script>
 <!-- URL requested: https://example.com/url?search=init&init=my-value  -->
-<Svelecte fetch="https://example.com/url?search=[query]" bind:value>
-
+<Svelecte bind:value
+  fetch="https://example.com/url?search=[query]"
+/>
 <!-- URL requested: https://example.com/url?init=my-value  -->
-<Svelecte fetch="https://example.com/url" bind:value>
-
+<Svelecte
+  bind:value
+  fetch="https://example.com/url"
+/>
 <!-- Multiselect -->
 <!-- URL requested: https://example.com/url?search=init&init=one,two,three  -->
-<Svelecte multiple fetch="https://example.com/url?search[query]" bind:value={multiValue} />
+<Svelecte
+  bind:value={multiValue}
+  fetch="https://example.com/url?search[query]"
+  multiple
+/>
 ```
 
 ## Manually re-fetching value in "query" mode
@@ -67,7 +74,7 @@ By default changing `value='blue'` to `value='red'` wouldn't change the value. Y
 
 ```svelte
 <script>
-  let value = ['blue'];
+  let value = $state(['blue']);
   let el;
 
   function onClick() {
@@ -75,14 +82,23 @@ By default changing `value='blue'` to `value='red'` wouldn't change the value. Y
   }
 </script>
 
-<Svelecte bind:this={el} fetch="https://example.com/url?search=[query]" bind:value />
-<button on:click={onClick}>Change selected value to red</button>
+<Svelecte
+  bind:this={el}
+  bind:value
+  fetch="https://example.com/url?search=[query]"
+/>
+<button onclick={onClick}>Change selected value to red</button>
 ```
 
 Results to:
 
-<Svelecte fetch="/api/colors?query=[query]" bind:value={refetchValue} bind:this={refetcher} />
-<button class="btn" on:click={onClick}>Change selected value to red</button>
+
+<Svelecte
+  bind:this={refetcher}
+  bind:value={refetchValue}
+  fetch="/api/colors?query=[query]"
+/>
+<button onclick={onClick} style="border: 1px solid var(--vp-c-text-1); padding: 0px 4px; border-radius: 4px; margin-top: 6px">Change selected value to red</button>
 
 ### ⚠️ Caution with objects
 
@@ -100,6 +116,6 @@ directly, no need for fetch request.
 
 ## User-provided fetch function
 
-In v4.0 whole fetch-related functionality has been reworked and it's **no longer** possible to provide your own
+Since v4.0 whole fetch-related functionality has been reworked and it's **no longer** possible to provide your own
 fetch function. Properties `fetch` and `fetchProps` should be enough for every use case.
 

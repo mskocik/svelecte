@@ -83,7 +83,6 @@ export type Settings = {
   lazyDropdown: boolean;
   virtualList: boolean;
   vlItemSize: number | null;
-  vlHeight: number | null;
   i18n: I18nObject;
   requestFactory: import("./utils/fetch").RequestFactoryFn;
 }
@@ -121,8 +120,8 @@ const settings = {
   minQuery: 1,
   lazyDropdown: true,
   virtualList: false,
-  vlItemSize: null,
-  vlHeight: null,
+  vlItemSize: null
+}
 ```
 
 </div>
@@ -148,6 +147,7 @@ export type I18nObject = {
   aria_selected: (opts: string[]) => string;
   aria_listActive: (opt: object, labelField: string, resultCount: number) => string;
   aria_inputFocused: () => string;
+  aria_removeItemLabel: (opt: object, labelField: string) => string;
   aria_label: string;
   aria_describedby: string;
 }
@@ -160,6 +160,7 @@ i18n: {
   aria_selected: (opts) => opts.length ? `Option${opts.length > 1 ? 's' : ''} ${opts.join(', ')} selected.` : '',
   aria_listActive: (opt, labelField, count) => `You are currently focused on option ${opt[labelField]}. ${count} result${count>1?'s': ''} available.`,
   aria_inputFocused: () => 'Select is focused, type to refine list, press down to scroll through the list',
+  aria_removeItemLabel: (opt, labelField) => `Remove item`,
   empty: 'No options',
   nomatch: 'No matching options',
   max: num => `Maximum items ${num} selected`,

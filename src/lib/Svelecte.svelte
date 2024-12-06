@@ -138,7 +138,7 @@
    * @property {boolean} [virtualList]
    * @property {number} [vlItemSize]
    * @property {import('./utils/list.js').SearchProps|null} [searchProps]
-   * @property {string} [className]
+   * @property {string} [class]
    * @property {object} [i18n]
    * @property {array|string|number|object|null} [value]
    * @property {object|object[]|null} [readSelection]
@@ -214,7 +214,7 @@
     virtualList = defaults.virtualList,
     vlItemSize = defaults.vlItemSize,
     searchProps = null,
-    className = 'svelecte-control',
+    class: className = 'svelecte-control',
     i18n = null,
     value = $bindable(),
     readSelection = $bindable(),  // never used, updated from component to the parent
@@ -279,7 +279,6 @@
     options = Array.isArray(value) ? value : [value];
   }
   if (!inputId) inputId = DOM_ID ? DOM_ID.replace('-select-', '-input-') : `svelecte-input-${`${Math.random()}`.substring(2, 12)}`;
-  if (name && multiple && !name.includes('[]')) name+= '[]';
   /** ************************************ END preparation */
 
   let is_mounted = $state(false);
@@ -351,9 +350,12 @@
   let is_fetch_dependent = false;
   // refs
   let /** @type {HTMLInputElement}  */  ref_input;
+  // svelte-ignore non_reactive_update
   let /** @type {HTMLSelectElement} */  ref_select_element;
+  // svelte-ignore non_reactive_update
   let /** @type {HTMLDivElement}    */  ref_container;
   let /** @type {HTMLDivElement}    */  ref_container_scroll = $state(null);
+  // svelte-ignore non_reactive_update
   let /** svelte-tiny-virtual-list  */  ref_virtuallist;
 
   // #region [reactivity]
@@ -820,7 +822,7 @@
       selectedKeys.clear();
       selectedKeys.add(opt[currentValueField]);
       tick().then(() => {
-        dropdown_index = options_flat.indexOf(opt);
+        dropdown_index = options_flat.indexOf($state.snapshot(opt));
       });
     }
 
@@ -1563,7 +1565,7 @@
     >
       {#if selectedOptions.length && multiple && doCollapse}
         {@render collapsedSelection(selectedOptions, i18n_actual)}
-      {:else}
+      {:else if selectedOptions.length}
         {@render selection(selectedOptions, bindItem)}
       {/if}
 

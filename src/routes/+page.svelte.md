@@ -49,10 +49,15 @@ Minimal example:
   let value;
 </script>
 
-<Svelecte options={['One', 'Two', 'Three']} bind:value />
+<Svelecte
+  options={['One', 'Two', 'Three']}
+  bind:value
+/>
 ```
 Result:
-<Svelecte options={['One', 'Two', 'Three']} />
+<Svelecte
+  options={['One', 'Two', 'Three']}
+/>
 
 <style>
   .m-auto {
