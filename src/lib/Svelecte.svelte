@@ -622,17 +622,16 @@
    * @returns {array|object|string|number|null}
    */
   function compute_selection(asObjects) {
-    const asValues = asObjects === false;
+    const asValues = asObjects !== true;
     // if (is_dragging) return;
     const selection_formatted = selectedOptions
       .map(opt => {
+        if (asValues) return opt[currentValueField];
         const obj = {};
         for (let [prop, val] of Object.entries(opt)) {
           if (prop[0] !== '$') obj[prop] = val;
         }
-        return asValues
-          ? obj[currentValueField]
-          : obj;
+        return obj;
       });
 
     return multiple
@@ -727,8 +726,8 @@
    * Dispatch change event on add options/remove selected items
    */
    function emitChangeEvent() {
-    const objectSelection = compute_selection(valueAsObject);
-    const valueSelection = compute_selection(false) ;
+    const objectSelection = compute_selection(true);
+    const valueSelection = compute_selection(false);
     prev_value = valueAsObject ? objectSelection : valueSelection;
     value = prev_value;
     readSelection = objectSelection;
