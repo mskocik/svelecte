@@ -3,12 +3,6 @@
 
 ![svelecte](https://svelecte.vercel.app/svelecte.png)
 
-> [!NOTE]
-> Svelte 5 compatible version available. More complete code update in progress.
-> ```bash
-> npm i svelecte@next
-> ```
-
 Flexible autocomplete/select component written in Svelte. Initially inspired by Selectize.js. Also usable as custom element. Usable in forms, behaves very similar to standard `<select>` element.
 
 See the latest changes on the [Releases](https://github.com/mskocik/svelecte/releases) page.
@@ -159,7 +153,7 @@ Visit [documentation](https://svelecte.vercel.app/global-config) for more detail
 
 - [selectize.js](https://github.com/selectize/selectize.js) - main inspiration
 - [sifter](https://github.com/brianreavis/sifter.js) - search engine
-- [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list) virtual list functionality
+- [svelte-tiny-virtual-list](https://github.com/Skayo/svelte-tiny-virtual-list) virtual list functionality for v3, v4
 - and [svelte](https://svelte.dev) of course 😊
 
 And if you want to thank me, you can through my [sponsor](https://github.com/sponsors/mskocik) page.
