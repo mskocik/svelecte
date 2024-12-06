@@ -12,6 +12,7 @@
    * or in dropdown (false)
    *
    * @callback RenderFunction
+   * @this {{ label: string }}
    * @param {object} item
    * @param {boolean} [selectionSection]
    * @param {string} [inputValue]
@@ -47,6 +48,9 @@
    * @returns {object[]}
    */
 
+  /**
+   * @type {Record<string, RenderFunction> & {default: RenderFunction, html: RenderFunction}}
+   */
   const stringFormatters = {
     /**
      * @type {RenderFunction}
@@ -89,80 +93,80 @@
   import VirtualList from './VirtualList.svelte';
 
   /**
-   * @typedef {{
-   *  name: string,
-   *  inputId: string,
-   *  required: boolean,
-   *  disabled: boolean,
-   *  options: Array<Object>,
-   *  optionResolver: OptionResolverFunction,
-   *  valueField: string,
-   *  labelField: string,
-   *  groupLabelField: string,
-   *  groupItemsField: string,
-   *  disabledField: string,
-   *  placeholder: string,
-   *  searchable: boolean,
-   *  clearable: boolean,
-   *  renderer: string|RenderFunction,
-   *  disableHighlight: boolean,
-   *  highlightFirstItem: boolean,
-   *  selectOnTab: boolean|'select-navigate',
-   *  resetOnBlur: boolean,
-   *  resetOnSelect: boolean,
-   *  closeAfterSelect: string|boolean,
-   *  dndzone: function,
-   *  strictMode: boolean,
-   *  multiple: boolean,
-   *  max: number,
-   *  collapseSelection: 'blur'|'always'|null,
-   *  keepSelectionInList: boolean|'auto',
-   *  creatable: boolean,
-   *  creatablePrefix: string,
-   *  allowEditing: boolean,
-   *  keepCreated: boolean,
-   *  delimiter: string,
-   *  createFilter: CreateFilterFunction,
-   *  createHandler: CreateHandlerFunction,
-   *  fetch: ?string,
-   *  fetchProps: object,
-   *  fetchMode: 'auto'|'init',
-   *  fetchCallback: function,
-   *  fetchResetOnBlur: boolean,
-   *  fetchDebounceTime: number,
-   *  minQuery: number,
-   *  lazyDropdown: boolean,
-   *  virtualList: boolean,
-   *  vlItemSize: number,
-   *  searchProps: import('./utils/list.js').SearchProps|null,
-   *  className: string,
-   *  i18n: object,
-   *  value: array|string|number|object|null,
-   *  readSelection: object|object[]|null,
-   *  valueAsObject: boolean,
-   *  parentValue:string|number|null|undefined,
-   *  emitValues: boolean,
-   *  onChange: function,
-   *  onFocus: function,
-   *  onBlur: function,
-   *  onCreateOption: function,
-   *  onCreateFail: function,
-   *  onEnterKey: function,
-   *  onFetch: function,
-   *  onFetchError: function,
-   *  onInvalidValue: function,
-   *  prepend?: import('svelte').Snippet|undefined,
-   *  collapsedSelection?: import('svelte').Snippet<[selectedOptions: object[], i18n: import('./settings.js').I18nObject]>,
-   *  selection?: import('svelte').Snippet<[selectedOptions: object[], bindItem: function]>,
-   *  clearIcon: import('svelte').Snippet<[selectedOptions: object[], input_value: string]>,
-   *  toggleIcon: import('svelte').Snippet<[dropdownShow: boolean]>,
-   *  append: import('svelte').Snippet|undefined,
-   *  listHeader: import('svelte').Snippet|undefined,
-   *  option: import('svelte').Snippet<[option: object, inputValue: string]>,
-   *  createRow: import('svelte').Snippet<[isCreating: boolean, inputValue: string, i18n: import('./settings.js').I18nObject]>,
-   *  positionResolver: function,
-   *  anchor_element: ?string
-   * }} SvelecteProps */
+   * @typedef {object} SvelecteProps
+   * @property {string} [name]
+   * @property {string} [inputId]
+   * @property {boolean} [required]
+   * @property {boolean} [disabled]
+   * @property {Array<Object>|object} [options]
+   * @property {OptionResolverFunction} [optionResolver]
+   * @property {string} [valueField]
+   * @property {string} [labelField]
+   * @property {string} [groupLabelField]
+   * @property {string} [groupItemsField]
+   * @property {string} [disabledField]
+   * @property {string} [placeholder]
+   * @property {boolean} [searchable]
+   * @property {boolean} [clearable]
+   * @property {string|RenderFunction} [renderer]
+   * @property {boolean} [disableHighlight]
+   * @property {boolean} [highlightFirstItem]
+   * @property {boolean|'select-navigate'} [selectOnTab]
+   * @property {boolean} [resetOnBlur]
+   * @property {boolean} [resetOnSelect]
+   * @property {string|boolean} [closeAfterSelect]
+   * @property {function} [dndzone]
+   * @property {boolean} [strictMode]
+   * @property {boolean} [multiple]
+   * @property {number} [max]
+   * @property {'blur'|'always'|null} [collapseSelection]
+   * @property {boolean|'auto'} [keepSelectionInList]
+   * @property {boolean} [creatable]
+   * @property {string} [creatablePrefix]
+   * @property {boolean} [allowEditing]
+   * @property {boolean} [keepCreated]
+   * @property {string} [delimiter]
+   * @property {CreateFilterFunction} [createFilter]
+   * @property {CreateHandlerFunction} [createHandler]
+   * @property {?string} [fetch]
+   * @property {object} [fetchProps]
+   * @property {'auto'|'init'} [fetchMode]
+   * @property {function} [fetchCallback]
+   * @property {boolean} [fetchResetOnBlur]
+   * @property {number} [fetchDebounceTime]
+   * @property {number} [minQuery]
+   * @property {boolean} [lazyDropdown]
+   * @property {boolean} [virtualList]
+   * @property {number} [vlItemSize]
+   * @property {import('./utils/list.js').SearchProps|null} [searchProps]
+   * @property {string} [className]
+   * @property {object} [i18n]
+   * @property {array|string|number|object|null} [value]
+   * @property {object|object[]|null} [readSelection]
+   * @property {boolean} [valueAsObject]
+   * @property {string|number|null|undefined} [parentValue]
+   * @property {boolean} [emitValues]
+   * @property {function} [onChange]
+   * @property {function} [onFocus]
+   * @property {function} [onBlur]
+   * @property {function} [onCreateOption]
+   * @property {function} [onCreateFail]
+   * @property {function} [onEnterKey]
+   * @property {function} [onFetch]
+   * @property {function} [onFetchError]
+   * @property {function} [onInvalidValue]
+   * @property {import('svelte').Snippet|undefined} [prepend]
+   * @property {import('svelte').Snippet<[selectedOptions: object[], i18n: import('./settings.js').I18nObject]>} [collapsedSelection]
+   * @property {import('svelte').Snippet<[selectedOptions: object[], bindItem: function]>} [selection]
+   * @property {import('svelte').Snippet<[selectedOptions: object[], input_value: string]>} [clearIcon]
+   * @property {import('svelte').Snippet<[dropdownShow: boolean]>} [toggleIcon]
+   * @property {import('svelte').Snippet|undefined} [append]
+   * @property {import('svelte').Snippet|undefined} [listHeader]
+   * @property {import('svelte').Snippet<[option: object, inputValue: string]>} [option]
+   * @property {import('svelte').Snippet<[isCreating: boolean, inputValue: string, i18n: import('./settings.js').I18nObject]>} [createRow]
+   * @property {function} [positionResolver]
+   * @property {?string} [anchor_element]
+   */
 
   /** @type {SvelecteProps} */
   let {
