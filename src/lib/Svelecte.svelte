@@ -114,6 +114,7 @@
    * @property {boolean} [resetOnBlur]
    * @property {boolean} [resetOnSelect]
    * @property {string|boolean} [closeAfterSelect]
+   * @property {'native'|'toggle'|'none'} [deselectMode]
    * @property {function} [dndzone]
    * @property {boolean} [strictMode]
    * @property {boolean} [multiple]
@@ -190,6 +191,7 @@
     resetOnBlur = defaults.resetOnBlur,
     resetOnSelect = defaults.resetOnSelect,
     closeAfterSelect = defaults.closeAfterSelect,
+    deselectMode = defaults.deselectMode,
     dndzone = _noop,
     strictMode = true,
     multiple = defaults.multiple,
@@ -750,7 +752,7 @@
     if (disabled || opt[disabledField] || opt.$isGroupHeader) return;
     if (!opt || (multiple && maxReached)) return false;
     if (selectedKeys.has(opt[currentValueField])) {
-      if (!multiple && required) return;  // we do not allow deselection when required to better mimick native select #256
+      if (!multiple && deselectMode !== 'toggle') return;
       return onDeselect(opt);
     }
 
@@ -888,7 +890,7 @@
   }
 
   function clearSelection() {
-    if (selectedKeys.size === 0) return;
+    if (selectedKeys.size === 0 || (!multiple && deselectMode==='none')) return;
     selectedKeys.clear();
 
     selectedOptions = selectedOptions.reduce((_, opt) => {
@@ -1015,7 +1017,8 @@
         if (collapseSelection === 'always') return;
         backspacePressed = true;
       case 'Delete':
-        if (input_value === '' && selectedOptions.length && !(!multiple && required /** do not allow deselect on single & required #256 */)) {
+        if (input_value === '' && selectedOptions.length) {
+          if (!multiple && deselectMode === 'none') return;
           ctrlKey ? onDeselect() : onDeselect(selectedOptions[selectedOptions.length - 1], backspacePressed);
           event.preventDefault();
         }

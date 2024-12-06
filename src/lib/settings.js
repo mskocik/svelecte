@@ -72,6 +72,7 @@
  * @property {number} fetchDebounceTime
  * @property {boolean} multiple
  * @property {boolean|string} closeAfterSelect
+ * @property {'native'|'toggle'|'none'} deselectMode
  * @property {number} max
  * @property {'blur'|'always'|null} collapseSelection
  * @property {'auto'|boolean} keepSelectionInList
@@ -110,6 +111,7 @@ const /**@type {Settings} */ settings = {
   // multi
   multiple: false,
   closeAfterSelect: 'auto',
+  deselectMode: 'toggle',
   max: 0,
   collapseSelection: null,
   keepSelectionInList: 'auto',
