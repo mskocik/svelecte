@@ -146,6 +146,7 @@ describe('Interactions', () => {
       options: dataset.colors(),
       multiple: true,
       keepSelectionInList: true,
+      emitValues: true,
       onChange: s => value = s
     });
 
