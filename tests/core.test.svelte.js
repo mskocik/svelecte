@@ -1,10 +1,8 @@
-import { act, render, screen } from '@testing-library/svelte';
+import { render, screen } from '@testing-library/svelte';
 import Svelecte from '$lib/Svelecte.svelte';
-import { sleep } from './_helpers';
 import userEvent from '@testing-library/user-event';
 import { dataset } from '../src/routes/data';
 import { describe } from 'vitest';
-import { flushSync } from 'svelte';
 
 describe('Core', () => {
   it('Mount', () => {
