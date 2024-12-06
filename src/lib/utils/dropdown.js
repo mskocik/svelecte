@@ -3,7 +3,7 @@
  * @param {string} prop
  * @returns {number}
  */
-function pixelGetter(element, prop) {
+export function pixelGetter(element, prop) {
   const styles = window.getComputedStyle(element);
   let { groups: { value, unit } } = styles[prop].match(/(?<value>\d+)(?<unit>[a-zA-Z]+)/);
   let floatValue = parseFloat((/** @type {unknown} */ value));
@@ -63,49 +63,6 @@ export function positionDropdown(isOpened, scrollContainer, renderDropdown) {
   }
 }
 
-/**
- * @typedef {object} ItemDimension
- * @property {number} size
- * @property {number} height
- *
- * @param {import('svelte').SvelteComponent} refVirtualList
- * @param {HTMLDivElement} scrollContainer
- * @param {array} options
- * @returns {ItemDimension}
- */
-export function virtualListDimensionsResolver(refVirtualList, scrollContainer, options) {
-  let vl_itemSize;
-  const vl_height = pixelGetter(scrollContainer, 'maxHeight')
-    - pixelGetter(scrollContainer, 'paddingTop')
-    - pixelGetter(scrollContainer, 'paddingBottom');
-  // get item size (hacky style)
-  scrollContainer.parentElement.style.cssText = 'opacity: 0; display: block';
-  const firstItem = refVirtualList.$$.ctx[1].firstElementChild.firstElementChild;
-
-  if (firstItem) {
-    firstItem.style = '';
-    const firstSize = firstItem.getBoundingClientRect().height;
-    const secondItem = refVirtualList.$$.ctx[1].firstElementChild.firstElementChild.nextElementSibling;
-    let secondSize;
-    if (secondItem) {
-      secondItem.style = '';
-      secondSize = secondItem.getBoundingClientRect().height;
-    }
-    if (secondSize && firstSize !== secondSize) {
-      const groupHeaderSize = options[0].$isGroupHeader ? firstSize : secondSize;
-      const regularItemSize = options[0].$isGroupHeader ? secondSize : firstSize;
-      vl_itemSize = options.map(opt => opt.$isGroupHeader ? groupHeaderSize : regularItemSize);
-    } else {
-      vl_itemSize = firstSize;
-    }
-  }
-  scrollContainer.parentElement.style.cssText = '';
-
-  return {
-    size: vl_itemSize,
-    height: vl_height
-  };
-}
 
 /**
  * @typedef {object} ScrollParams

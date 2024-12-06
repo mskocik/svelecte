@@ -329,5 +329,7 @@ export const dataset = {
       text: 'White',
       hex: '#FFFFFF'
     }
-  ]
+  ],
+
+  color: (/** @type {number} */ i) => dataset.colors()[i]
 };

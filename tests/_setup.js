@@ -1,5 +1,6 @@
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { vi, expect } from 'vitest';
+import { server } from './mocks/node.js';
 
 expect.extend(matchers);
 
@@ -16,6 +17,19 @@ Object.defineProperty(window, 'matchMedia', {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   })),
-})
+});
+const oConsole = window.console;
+window.console = Object.assign({}, oConsole, { log: () => {}, warn: () => {} });
 
 
+beforeAll(() => {
+  server.listen();
+});
+
+afterEach(() => {
+  server.resetHandlers();
+});
+
+afterAll(() => {
+  server.close();
+});

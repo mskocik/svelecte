@@ -4,6 +4,10 @@ Version 5 requires svelte v5. Currently in development, can contains bugs.
 
 If you are use v3 of Svelecte, [migrate to v4 first](#migration-from-v3) and when you migrate to svelte v5, update also svelecte to v5.
 
+## Dependencies
+
+The only direct dependency `svelte-tiny-virtual-list` has been dropped in favor of internal smaller implementation. With this change also property `vlHeight` has been removed. Height of virtual list is defined by dropdown height itself, which is controllable by css property `--sv-dropdown-height`.
+
 ## Slots
 
 Slots were removed in favour of snippets. Slot to snippet mappings:
@@ -50,7 +54,7 @@ This is the event to prop mapping list:
 
 ## Validation through `svelte-use-form`
 
-Support for `svelte-use-form` has been dropped without replacement. Svelecte works nicely out of the box with `sveltekit-superforms` as shown in [validation](validation) page.
+Support for `svelte-use-form` has been dropped without replacement. It was listening to `input` event on `<select>` element. Svelecte works nicely out of the box with `sveltekit-superforms` as shown in [validation](validation) page.
 
 ```svelte
 <Svelecte validatorAction={...}/> // [!code --]
@@ -70,7 +74,7 @@ Previously globally available function `addFormatter` has been renamed to `addRe
 
 ```svelte
 import { addFormatter } from 'svelecte'; // [!code --]
-import { addRenderer } from 'svelecte@next';  // [!code ++]
+import { addRenderer } from 'svelecte';  // [!code ++]
 ```
 
 Exported property `TAB_SELECT_NAVIGATE` has been removed due to added types. Now `selectOnTab` offers correct values to set.
@@ -78,7 +82,7 @@ Exported property `TAB_SELECT_NAVIGATE` has been removed due to added types. Now
 ```svelte
 <script>
   import Svelecte, { TAB_SELECT_NAVIGATE } from 'svelecte'; // [!code --]
-  import Svelecte from 'svelecte@next'; // [!code ++]
+  import Svelecte from 'svelecte'; // [!code ++]
 </script>
 
 <Svelecte selectOnTab={TAB_SELECT_NAVIGATE} /> // [!code --]

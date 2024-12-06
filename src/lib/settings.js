@@ -29,6 +29,12 @@
  * @callback i18n_aria_inputFocus
  * @returns {string}
  *
+ * @callback i18n_aria_removeItemLabel
+ * @param {object} item
+ * @param {string} labelField
+ * @returns {string}
+ *
+ *
  * @typedef {object} I18nObject
  * @property {string} empty
  * @property {string} nomatch
@@ -43,6 +49,7 @@
  * @property {i18n_aria_selection} aria_selected
  * @property {i18n_aria_listActive} aria_listActive
  * @property {i18n_aria_inputFocus} aria_inputFocused
+ * @property {i18n_aria_removeItemLabel} aria_removeItemLabel
  * @property {string} aria_label
  * @property {string} aria_describedby
  *
@@ -65,6 +72,7 @@
  * @property {number} fetchDebounceTime
  * @property {boolean} multiple
  * @property {boolean|string} closeAfterSelect
+ * @property {'native'|'toggle'|'none'} deselectMode
  * @property {number} max
  * @property {'blur'|'always'|null} collapseSelection
  * @property {'auto'|boolean} keepSelectionInList
@@ -78,7 +86,6 @@
  * @property {boolean} lazyDropdown
  * @property {boolean} virtualList
  * @property {number|null} vlItemSize
- * @property {number|null} vlHeight
  * @property {I18nObject} i18n
  * @property {import("./utils/fetch").RequestFactoryFn} requestFactory
  */
@@ -104,6 +111,7 @@ const /**@type {Settings} */ settings = {
   // multi
   multiple: false,
   closeAfterSelect: 'auto',
+  deselectMode: 'toggle',
   max: 0,
   collapseSelection: null,
   keepSelectionInList: 'auto',
@@ -121,7 +129,6 @@ const /**@type {Settings} */ settings = {
   // virtual list
   virtualList: false,
   vlItemSize: null,
-  vlHeight: null,
   // i18n
   i18n: {
     aria_label: '',
@@ -129,6 +136,7 @@ const /**@type {Settings} */ settings = {
     aria_selected: (opts) => opts.length ? `Option${opts.length > 1 ? 's' : ''} ${opts.join(', ')} selected.` : '',
     aria_listActive: (opt, labelField, count) => `You are currently focused on option ${opt[labelField]}. ${count} result${count>1?'s': ''} available.`,
     aria_inputFocused: () => 'Select is focused, type to refine list, press down to scroll through the list',
+    aria_removeItemLabel: (opt, labelField) => `Remove item`,
     empty: 'No options',
     nomatch: 'No matching options',
     max: num => `Maximum items ${num} selected`,

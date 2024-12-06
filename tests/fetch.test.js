@@ -4,14 +4,14 @@ import { sleep } from './_helpers';
 import userEvent from '@testing-library/user-event';
 import { dataset } from '../src/routes/data';
 
-// FUTURE: mock fetch
-
 describe('fetch: onMount', () => {
   it('resolve \'init\' fetchMode automatically', async () => {
     const { component } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors',
+      fetch: 'http://test.svelecte.fetch/api/colors',
       fetchDebounceTime: 0,
-      onFetch: () => fetchTriggered = true
+      onFetch: _unused => {
+        fetchTriggered = true
+      }
     });
 
     let fetchTriggered = false;
@@ -23,9 +23,11 @@ describe('fetch: onMount', () => {
 
   it('no initial request on query mode', async () => {
     const { component } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetch: 'http://test.svelecte.fetch/api/colors?query=[query]',
       fetchDebounceTime: 0,
-      onFetch: () => fetchTriggered = true
+      onFetch: () => {
+        fetchTriggered = true
+      }
     });
 
     let fetchTriggered = false;
@@ -39,7 +41,7 @@ describe('fetch: onMount', () => {
 describe('fetch:init', () => {
   it('properly set initial value while in liFtst (v3 compatible) step I', async () => {
     const { component, rerender } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors',
+      fetch: 'http://test.svelecte.fetch/api/colors',
       fetchDebounceTime: 0,
       value: 'blue'
     });
@@ -48,7 +50,7 @@ describe('fetch:init', () => {
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
 
-    rerender({ fetch: 'http://localhost:5173/api/colors-countries' });
+    rerender({ fetch: 'http://test.svelecte.fetch/api/colors-countries' });
 
     await sleep(1000);
 
@@ -58,7 +60,7 @@ describe('fetch:init', () => {
 
   it('properly set initial value while in list (v3 compatible) step II', async () => {
     const { component, rerender } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors',
+      fetch: 'http://test.svelecte.fetch/api/colors',
       fetchDebounceTime: 0,
       fetchMode: 'init',
       value: 'blue'
@@ -68,12 +70,12 @@ describe('fetch:init', () => {
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
 
-    rerender({ fetch: 'http://localhost:5173/api/countries-colors?sleep=400' });
+    rerender({ fetch: 'http://test.svelecte.fetch/api/countries-colors?sleep=400' });
     await sleep(1000);
 
     expect(screen.queryByText('Blue')).toBeInTheDocument();
 
-    rerender({ fetch: 'http://localhost:5173/api/countries?sleep=400' });
+    rerender({ fetch: 'http://test.svelecte.fetch/api/countries?sleep=400' });
     await sleep(1000);
 
     expect(screen.queryByText('Blue')).not.toBeInTheDocument();
@@ -81,7 +83,7 @@ describe('fetch:init', () => {
 
   it('properly set initial value for multiple', async () => {
     const { component } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors',
+      fetch: 'http://test.svelecte.fetch/api/colors',
       fetchDebounceTime: 0,
       fetchMode: 'init',
       value: ['blue', 'red'],
@@ -98,7 +100,7 @@ describe('fetch:init', () => {
 describe('fetch:query', () => {
   it('fetch default value object', async () => {
     render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetch: 'http://test.svelecte.fetch/api/colors?query=[query]',
       fetchDebounceTime: 0,
       value: 'blue'
     });
@@ -110,7 +112,7 @@ describe('fetch:query', () => {
 
   it('properly set initial value for multiple', async () => {
     render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetch: 'http://test.svelecte.fetch/api/colors?query=[query]',
       fetchDebounceTime: 0,
       fetchMode: 'init',
       value: ['blue', 'red'],
@@ -125,7 +127,7 @@ describe('fetch:query', () => {
 
   it('use refetchWith to fetch newly changed default value', async () => {
     const { component } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetch: 'http://test.svelecte.fetch/api/colors?query=[query]',
       fetchDebounceTime: 0,
       value: 'blue',
       // fetchMode: 'init'  // NOTE: resolved automatically from `fetch`
@@ -149,7 +151,7 @@ describe('fetch:query', () => {
 
     let event_triggered = false;
     const { component } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetch: 'http://test.svelecte.fetch/api/colors?query=[query]',
       fetchDebounceTime: 0,
       valueAsObject: true,
       value: selection,
@@ -166,7 +168,7 @@ describe('fetch:query', () => {
     const selection = colors.shift();  // aqua
 
     const { component } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors?query=[query]',
+      fetch: 'http://test.svelecte.fetch/api/colors?query=[query]',
       fetchDebounceTime: 0,
       valueAsObject: true,
       strictMode: false,

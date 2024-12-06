@@ -3,8 +3,11 @@
   import Svelecte from "$lib/Svelecte.svelte";
   import { dataset } from '../data.js';
 
-  let creatable = false;
-  let fetch = null;
+  // resolver example
+
+  let resolverValue = $state([]);
+  let creatable = $state(false);
+  let fetch = $state(null);
   const opts = {
     start() {
       creatable = false;
@@ -20,24 +23,24 @@
       return [];
     },
     fetch() {
-      fetch = '/api/colors';
+      fetch = '/api/colors?query=[query]';
       return [];
     },
     country: dataset.countries
   }
 
-  let resolverValue = [];
 
   const optionResolver = (optGroups, /** @type {Set}*/ selection) => {
     let step = Array.from(selection.keys()).shift() || 'start';
     if (!Object.keys(optGroups).includes(step)) {
       step = 'start';
+      fetch = null;
       tick().then(() => {
         resolverValue = [];
       });
     }
     return optGroups[step]();
-  }
+  };
 </script>
 
 # Options & value
@@ -130,45 +133,51 @@ Source:
 
 ```svelte
 <script>
-let fetch = null;
-let creatable = false;
-const opts = {
-  start() {
-    creatable = false;  // change to other svelecte prop
-    fetch = null;       // change to other svelecte prop
-    return [
-      {value: 'create', text: 'I want to enter next item myself'},
-      {value: 'fetch', text: 'I want to search for some colors'},
-      {value: 'country', text: 'Show country list'}
-    ]
-  },
-  create() {
-    creatable = true;
-    return [];
-  },
-  fetch() {
-    fetch = '/api/colors';
-    return [];
-  },
-  country() { return [/** data ... */] }
-}
-
-let value = [];
-
-const optionResolver = (optGroups, /** @type {Set}*/ selection) => {
-  let step = Array.from(selection.keys()).shift() || 'start';
-  if (!Object.keys(optGroups).includes(step)) {
-    step = 'start';
-    tick().then(() => {
-      value = [];
-    });
+  let resolverValue = $state([]);
+  let creatable = $state(false);
+  let fetch = $state(null);
+  const opts = {
+    start() {
+      creatable = false;
+      fetch = null;
+      return [
+        {value: 'create', text: 'I want to enter next item myself'},
+        {value: 'fetch', text: 'I want to search for some colors'},
+        {value: 'country', text: 'Show country list'}
+      ]
+    },
+    create() {
+      creatable = true;
+      return [];
+    },
+    fetch() {
+      fetch = '/api/colors?query=[query]';
+      return [];
+    },
+    country: dataset.countries
   }
-  return optGroups[step]();
-}
+
+
+  const optionResolver = (optGroups, /** @type {Set}*/ selection) => {
+    let step = Array.from(selection.keys()).shift() || 'start';
+    if (!Object.keys(optGroups).includes(step)) {
+      step = 'start';
+      fetch = null;
+      tick().then(() => {
+        resolverValue = [];
+      });
+    }
+    return optGroups[step]();
+  };
 </script>
 
-<Svelecte options={opts} {optionResolver} multiple max={2}
-  {fetch} {creatable}
+<Svelecte
   bind:value={resolverValue}
+  options={opts}
+  {optionResolver}
+  multiple
+  max={2}
+  {fetch}
+  {creatable}
 />
 ```

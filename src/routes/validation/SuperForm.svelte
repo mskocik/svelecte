@@ -1,20 +1,18 @@
 <script>
-  import { arrayProxy, superForm } from 'sveltekit-superforms/client';
+  import { superForm } from 'sveltekit-superforms/client';
   import SuperDebug from 'sveltekit-superforms/client/SuperDebug.svelte'
   import Svelecte from '$lib/Svelecte.svelte';
 
-  export let data;
-  export let status;
+  let {
+    data,status
+  } = $props();
 
   const pageForm = superForm(data.form, {
-    clearOnSubmit: 'none'
+    clearOnSubmit: 'none',
+    resetForm: false
   })
-  const { form, message, enhance } = pageForm;
+  const { form, message, enhance, errors } = pageForm;
 
-  const options = data.options;
-
-  // @ts-ignore
-  const { values, errors } = arrayProxy(pageForm, 'tags', { taint: true });
 </script>
 
 {#if $message}
@@ -22,21 +20,43 @@
     class:error={status.status >= 400}
     class:success={status.status == 200}
   >
-    {$message}
+    {@html $message}
   </div>
 {/if}
 
-<form method="POST" use:enhance>
+<form method="POST" use:enhance novalidate>
   <fieldset>
     <legend>Superform</legend>
   <label for="sv-tags-select-input">
-    Pick a color
+    Pick your <b>favorite</b> color
   </label>
-  <Svelecte {options} name="tags" bind:value={$values} clearable required multiple/>
+  <!-- <Svelecte fetch="http://localhost:5173/api/colors?query=[query]" name="favourite" bind:value={$form.favourite} clearable required placeholder="Search for the best color" /> -->
+  <!-- <Svelecte creatable name="favourite" bind:value={$form.favourite} clearable placeholder="Search for the best color" /> -->
+  <Svelecte
+        name="favourite"
+			  fetch="/api/colors/?query=[query]"
+			  minQuery={2}
+			  creatable={true}
+			  keepCreated={true}
+			  creatablePrefix=""
+			  allowEditing={true}
+			  valueField="value"
+			  labelField="value"
+			  placeholder="Pick color from database or enter your own"
+			  strictMode={false}
+			  bind:value={$form.favourite}
+		  />
+  <br>
+  <label for="sv-tags-select-input">
+    Pick some other (multiple) colors. At least 2. <span class="invalid" style="margin-left: 0">*</span>
+  </label>
+  <Svelecte fetch="http://localhost:5173/api/colors?query=[query]"
+    name="tags"
+    bind:value={$form.tags} multiple clearable required placeholder="Search for color" />
   <br>
   <div>
     <button type="submit" class="press-btn">Submit</button>
-    {#if $errors}<span class="invalid">{$errors}</span>{/if}
+    {#if $errors}<span class="invalid">{$errors.tags?._errors}</span>{/if}
   </div>
 </fieldset>
 </form>
@@ -51,7 +71,6 @@
     padding: 4px;
     padding-left: 8px;
     border-radius: 2px;
-    font-weight: 500;
     padding: 32px;
   }
 

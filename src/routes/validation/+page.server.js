@@ -2,7 +2,7 @@ import { superValidate, message } from 'sveltekit-superforms/server';
 import { zod } from 'sveltekit-superforms/adapters';
 import { fail } from '@sveltejs/kit';
 import { schema } from './schema';
-import { dataset } from '../data';
+import { dataset } from '../../routes/data';
 
 export const prerender = false;
 
@@ -20,10 +20,16 @@ export const load = async () => {
 export const actions = {
 	default: async ({ request }) => {
 		const form = await superValidate(request, zod(schema));
-		console.dir(form, { depth: 5 });
 
-		if (!form.valid) return fail(400, { form });
+		if (!form.valid) return fail(400, { form, 'tags[]': 'Submit at least 2 colors' });
 
-		return message(form, `Form posted successfully! You have submitted ${form.data.tags.length} colors.`);
+    const msg = [
+      `<h3 class="status">Form posted successfully!</h3>`,
+      form.data.favourite
+        ? `Your favourite color is <span style="color: ${form.data.favourite}">${form.data.favourite}</span>`
+        : 'You submitted no favourite color 🤔',
+      `You have also submitted colors: ${form.data.tags.join(', ')}.`
+    ];
+		return message(form, msg.join('<br>'));
 	}
 };

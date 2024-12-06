@@ -16,7 +16,8 @@ export default defineConfig({
     nodePolyfills({
       include: ['path', 'fs'],
     }),
-    vitestBrowserConditionPlugin, sveltekit()],
+    vitestBrowserConditionPlugin, sveltekit()
+  ],
   test: {
     globals: true,
     environment: 'jsdom',

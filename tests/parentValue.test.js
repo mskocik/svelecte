@@ -1,14 +1,14 @@
-import { render, screen } from '@testing-library/svelte';
+import { render } from '@testing-library/svelte';
 import Svelecte from '$lib/Svelecte.svelte';
 import { sleep } from './_helpers';
-import userEvent from '@testing-library/user-event';
+// import userEvent from '@testing-library/user-event';
 
 // FUTURE: mock fetch
 
 describe('parentValue', () => {
   it('start as disabled when defined', async () => {
     const { container } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors',
+      fetch: 'http://test.svelecte.fetch/api/colors',
       parentValue: null,
       // <select> element is not rendered until `name` is provided
       name: 'my-input'
@@ -19,9 +19,10 @@ describe('parentValue', () => {
     expect(container.querySelector('.svelecte.is-disabled')).toBeInTheDocument();
   });
 
+
   it('remove parentValue', async () => {
     const { container, rerender } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors',
+      fetch: 'http://test.svelecte.fetch/api/colors',
       parentValue: null
     });
 
@@ -37,9 +38,10 @@ describe('parentValue', () => {
     expect(container.querySelector('.svelecte.is-disabled')).not.toBeInTheDocument();
   });
 
+
   it('no fetch when dependent and disabled', async () => {
     const { component, rerender } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/colors?sleep=100',
+      fetch: 'http://test.svelecte.fetch/api/colors?sleep=100',
       parentValue: null,
       onFetch: () => fetchTriggered = true
     });
@@ -61,7 +63,7 @@ describe('parentValue', () => {
 
   it('properly replace [parent] placeholder on fetch', async () => {
     const { component, rerender } = render(Svelecte, {
-      fetch: 'http://localhost:5173/api/[parent]',
+      fetch: 'http://test.svelecte.fetch/api/[parent]',
       parentValue: null,
       onFetch: (data) => responseSize = data.length
     });

@@ -1,8 +1,7 @@
 <script>
   import Svelecte, { addRenderer } from '$lib/Svelecte.svelte';
   import { bindItem } from '$lib/utils/actions';
-  import highlighter from '../../utils/codeHighlighter';
-  import { dataset } from '../data';
+  import { dataset } from '../data.js';
 
   let options = dataset.colors();
   let selectionValue = ['red', 'green'];
@@ -56,7 +55,7 @@ Note: When using custom renderers with `inputValue` being used, it's up to you c
 
 ```svelte
 <script>
-  import Svelecte, { addRenderer } from 'svelecte@next';
+  import Svelecte, { addRenderer } from 'svelecte';
 
   function colorRenderer(item, _isSelection, _inputValue) {
     return _isSelection
@@ -89,7 +88,7 @@ on the `right` you can see snippet placeholders.
   <div class="snippet-definition">prepend</div>
 {/snippet}
 {#snippet collapsedSelection()}
-  <div class="snippet-definition">Collapsed selection</div>
+  <div class="snippet-definition">Collapsed&nbsp;selection</div>
 {/snippet}
 {#snippet selection()}
   <div class="snippet-definition">selection</div>
