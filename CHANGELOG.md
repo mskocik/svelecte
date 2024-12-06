@@ -15,7 +15,6 @@
 - add `i18n.aria_removeItemLabel` function to avoid svelte compiler warning
 - add `emitValues` property to emit values instead of objects
 - [breaking] do not automatically set `multiple` property if `name` included "[]" meaning multiple items when submitting form. It's inversed now, if name doesn't contain `[]` suffix it is added automatically
-- [breaking] when using `optionResolver`, value cannot be changed from parent component. All these updates from parent are ignored.
 - [breaking] remove `svelte-tiny-virtual-list` dependency, provide own implementation
 - [breaking] remove `vlHeight` property, related to removal of virtual list dependency, use `--max-height` css property instead
 - add `html` renderer since default one escapes following HTML entities: `<`, `>`, `&`, `'` and `"`

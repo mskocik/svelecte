@@ -6,7 +6,7 @@
   import './../style/doc.css';
   import './../style/style.css';
 
-  import { onMount } from 'svelte';
+  import { onMount, setContext } from 'svelte';
   import { page } from '$app/stores';
 
   /** @type {{children?: import('svelte').Snippet}} */
@@ -14,6 +14,23 @@
 
   let mode = '';
   let is_mounted = false;
+
+  const navigation = {
+    '/': 'Home',
+    '/properties': 'Properties',
+    '/options': 'Options',
+    '/rendering': 'Rendering',
+    '/searching': 'Search & filtering',
+    '/fetch': 'Remote Datasource',
+    // '/events': 'Events',
+    '/theme': 'Theme',
+    '/global-config': 'Config, i18n',
+    '/validation': 'Form Validation',
+    '/examples': 'Examples',
+    '/migration-guide': 'Migration guide'
+  }
+
+  setContext('navigation', navigation);
 
   function toggleTheme() {
     if (!is_mounted) return;
@@ -34,20 +51,6 @@
     mode = 'light';
   });
 
-  const navigation = {
-    '/': 'Home',
-    '/properties': 'Properties',
-    '/options': 'Options',
-    '/rendering': 'Rendering',
-    '/searching': 'Search & filtering',
-    '/fetch': 'Remote Datasource',
-    // '/events': 'Events',
-    '/theme': 'Theme',
-    '/global-config': 'Config, i18n',
-    '/validation': 'Form Validation',
-    '/examples': 'Examples',
-    '/migration-guide': 'Migration guide'
-  }
 </script>
 
 <div class="app-wrap">
