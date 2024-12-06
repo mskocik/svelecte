@@ -54,8 +54,11 @@ vlItemSize          | `number`          | `null`      | Height of one row (if no
 searchProps         | `object`          | `null`      | Customize `sifter.js` settings. See [Searching](/searching) page for more details
 class               | `string`          | `svelecte-control` | default css class
 i18n                | `object`          | `null`      | I18n object overriding default settings
-dndzone             | `function`        | noop        | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [example REPL](https://svelte.dev/repl/da2de4b9ed13465d892b678eba07ed99?version=3.44.0)
+dndzone             | `function`        | noop        | Pass `dndzone` from `svelte-dnd-action`, if you want to support selection reordering. See the [examples](/examples#drag--drop)
 anchor_element      | `bool`            | `null`      | `internal`: when passing also existing select (for custom element)
+controlClass        | `string`          | `null`      | Optional css class for element `.sv-control`
+dropdownClass       | `string`          | `null`      | Optional css class for element `.sv_dropdown`
+optionClass         | `string`          | `null`      | Optional css class for element `.sv-item--wrap.in-dropdown`
 
 ## Event callback props
 

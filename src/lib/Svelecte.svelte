@@ -166,6 +166,9 @@
    * @property {import('svelte').Snippet<[isCreating: boolean, inputValue: string, i18n: import('./settings.js').I18nObject]>} [createRow]
    * @property {function} [positionResolver]
    * @property {?string} [anchor_element]
+   * @property {?string} [controlClass]
+   * @property {?string} [dropdownClass]
+   * @property {?string} [optionClass]
    */
 
   /** @type {SvelecteProps} */
@@ -242,7 +245,10 @@
     option = snippet_option,
     createRow = snippet_createRow,
     positionResolver = _noop,
-    anchor_element = undefined
+    anchor_element = undefined,
+    controlClass = undefined,
+    dropdownClass = undefined,
+    optionClass = undefined
   } = $props();
 
   export function focus() {
@@ -1557,7 +1563,7 @@
   {/if}
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <div class="sv-control" onmousedown={on_mouse_down} onclick={on_click}>
+  <div class="sv-control {controlClass}" onmousedown={on_mouse_down} onclick={on_click}>
     {#if prepend}{@render prepend()}{/if}
     <!-- #region selection & input -->
     <div class="sv-control--selection" class:is-single={multiple === false} class:has-items={selectedOptions.length > 0} class:has-input={input_value.length}
@@ -1619,7 +1625,7 @@
   <!-- #region DROPDOWN -->
   <!-- svelte-ignore a11y_no_static_element_interactions -->
   <!-- svelte-ignore a11y_click_events_have_key_events -->
-  <div class="sv_dropdown" class:is-open={dropdown_show}
+  <div class="sv_dropdown {dropdownClass} " class:is-open={dropdown_show}
     onmousedown={on_mouse_down}
     onclick={on_click}
     use:positionResolver
@@ -1642,7 +1648,7 @@
                   <div class="sv-optgroup-header"><b>{opt.label}</b></div>
                 {:else}
                   <div data-pos={index}
-                    class="sv-item--wrap in-dropdown"
+                    class="sv-item--wrap in-dropdown {optionClass}"
                     class:sv-dd-item-active={dropdown_index === index}
                     class:is-selected={opt.$selected || selectedKeys.has(opt[currentValueField])}
                     class:is-disabled={opt[disabledField]}
@@ -1658,7 +1664,7 @@
                 <div class="sv-optgroup-header"><b>{opt.label}</b></div>
               {:else}
                 <div data-pos={i}
-                  class="sv-item--wrap in-dropdown"
+                  class="sv-item--wrap in-dropdown {optionClass}"
                   class:sv-dd-item-active={dropdown_index === i}
                   class:is-selected={opt.$selected}
                   class:is-disabled={opt[disabledField]}
@@ -1670,7 +1676,7 @@
           {/if}
         {#if options_filtered.length === 0 && (!creatable || !input_value) || maxReached}
           <div class="is-dropdown-row">
-            <div class="sv-item--wrap in-dropdown"><div class="sv-item--content">{listMessage}</div></div>
+            <div class="sv-item--wrap in-dropdown {optionClass}"><div class="sv-item--content">{listMessage}</div></div>
           </div>
         {/if}
       </div>

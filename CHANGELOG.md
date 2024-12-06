@@ -18,6 +18,10 @@
 - [breaking] remove `svelte-tiny-virtual-list` dependency, provide own implementation
 - [breaking] remove `vlHeight` property, related to removal of virtual list dependency, use `--max-height` css property instead
 - add `html` renderer since default one escapes following HTML entities: `<`, `>`, `&`, `'` and `"`
+- add properties for additional CSS styling:
+    - `controlClass` for `.sv-control`
+    - `dropdownClass` for `.sv_dropdown`
+    - `optionClass` for `.sv-item--wrap.in-dropdown` elements
 
 ## v4.0:
 

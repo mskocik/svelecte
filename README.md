@@ -107,6 +107,9 @@ i18n                | `object`          | `null`      | I18n object overriding d
 dndzone             | `function`        | noop        | Pass `dndzone` from `svelte-dnd-action`, see [Examples](https://svelecte.vercel.app/examples) page
 validatorAction     | `array`           | `null`      | Bind validator action for inner `<select>` element. Designed to be used with `svelte-use-form`, see [Validation](https://svelecte.vercel.app/validation) page. For this to work, `name` property MUST be defined
 anchor_element      | `bool`            | `null`      | `internal`: when passing also existing select (for custom element)
+controlClass        | `string`          | `null`      | Optional css class for element `.sv-control`
+dropdownClass       | `string`          | `null`      | Optional css class for element `.sv_dropdown`
+optionClass         | `string`          | `null`      | Optional css class for element `.sv-item--wrap.in-dropdown`
 
 
 ## Available slots
