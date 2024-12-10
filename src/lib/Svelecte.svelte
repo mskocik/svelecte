@@ -476,7 +476,7 @@
   function watch_item_props(valueProp, labelProp) {
     if (!is_mounted) return;
 
-    if (valueProp) {
+    if (valueProp && currentValueField !== valueProp) {
       itemConfig.valueField = currentValueField = valueProp;
       // check note in watch_options()
       selectedKeys.size > 0 && clearSelection();
