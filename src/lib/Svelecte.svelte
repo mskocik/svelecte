@@ -121,7 +121,6 @@
    * @property {number} [max]
    * @property {'blur'|'always'|null} [collapseSelection]
    * @property {boolean|'auto'} [keepSelectionInList]
-   * @property {boolean} [keepSelectionDuringSearch]
    * @property {boolean} [creatable]
    * @property {string} [creatablePrefix]
    * @property {boolean} [allowEditing]
@@ -202,7 +201,6 @@
     max = defaults.max,
     collapseSelection = defaults.collapseSelection,
     keepSelectionInList = defaults.keepSelectionInList,
-    keepSelectionDuringSearch = defaults.keepSelectionDuringSearch,
     creatable = defaults.creatable,
     creatablePrefix = defaults.creatablePrefix,
     allowEditing = defaults.allowEditing,
@@ -1384,7 +1382,7 @@
    */
   function resolveExcludedValue(inputValue) {
     if (!keepSelectionInList) return selectedKeys;
-    if (keepSelectionInList === true) return keepSelectionDuringSearch !== true && inputValue ? selectedKeys : null;
+    if (keepSelectionInList === true) return inputValue ? selectedKeys : null;
     // 'auto' otherwise
     return inputValue
       ? selectedKeys

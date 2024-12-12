@@ -73,7 +73,6 @@ export type Settings = {
   max: number;
   collapseSelection: 'blur' | 'always' | null;
   keepSelectionInList: 'auto' | boolean;
-  keepSelectionDuringSearch:  boolean;
   creatable: boolean;
   creatablePrefix: string;
   keepCreated: boolean;
@@ -112,7 +111,6 @@ const settings = {
   max: 0,
   collapseSelection: null,
   keepSelectionInList: 'auto',
-  keepSelectionDuringSearch: false,
   creatable: false,
   creatablePrefix: '*',
   keepCreated: true,

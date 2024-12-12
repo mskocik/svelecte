@@ -76,7 +76,6 @@
  * @property {number} max
  * @property {'blur'|'always'|null} collapseSelection
  * @property {'auto'|boolean} keepSelectionInList
- * @property {boolean} keepSelectionDuringSearch
  * @property {boolean} creatable
  * @property {string} creatablePrefix
  * @property {boolean} keepCreated
@@ -116,7 +115,6 @@ const /**@type {Settings} */ settings = {
   max: 0,
   collapseSelection: null,
   keepSelectionInList: 'auto',
-  keepSelectionDuringSearch: false,
   // create
   creatable: false,
   creatablePrefix: '*',
