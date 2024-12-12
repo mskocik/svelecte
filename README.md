@@ -81,7 +81,7 @@ multiple                  | `bool`            | `false`     | allow multiselecti
 max                       | `number`          | `0`         | Maximum allowed items selected, applicable only for multiselect
 collapseSelection         | `string`          | `null`      | Whether selection should be collapsed and when, check [Rendering](https://svelecte.vercel.app/rendering) for more info.
 keepSelectionInList       | `bool`            | `'auto'`    | Whether keep selected items in dropdown. `auto` for `multiple` removes selected items from dropdown
-keepSelectionDuringSearch | `bool`            | `'auto'`    | Whether keep selected items in dropdown while searching. Requires `keepSelectionInList={true}`
+keepSelectionDuringSearch | `bool`            | `false`     | Whether keep selected items in dropdown while searching. Requires `keepSelectionInList={true}`
 creatable                 | `bool`            | `false`     | Allow creating new item(s)
 creatablePrefix           | `string`          | `*`         | Prefix marking new item
 allowEditing              | `bool`            | `false`     | When pressing `Backspace` switch to edit mode instead of removing newly created item. **NOTE** intended to be used with `creatable` property
