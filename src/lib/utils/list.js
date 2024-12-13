@@ -18,7 +18,7 @@ import Sifter from './sifter.js';
  * @typedef {object} SearchProps
  * @property {string|string[]} [fields]
  * @property {string|SortDef[]} [sort]
- * @property {boolean} [keepSelectionDuringSearch]
+ * @property {boolean} [keepSelectionInList]
  * @property {boolean} [nesting]
  * @property {'or'} [conjunction]
  * @property {boolean} [skipSort]
@@ -146,7 +146,7 @@ export function getFilterProps(object) {
  * @returns {object[]}
  */
 export function filterList(options, inputValue, excludeSelected, config, searchProps) {
-  if (!searchProps.keepSelectionDuringSearch && excludeSelected) {
+  if (!searchProps.keepSelectionInList && excludeSelected) {
     options = options
       .filter(opt => !excludeSelected.has(opt[config.valueField]))
       .filter((opt, idx, self) => {
