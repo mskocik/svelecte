@@ -58,6 +58,12 @@ Svelecte is fully featured and customizable select/multiselect/autocomplete.
 npm install svelecte
 ```
 
+For svelte 3/4 use `v4`
+
+```bash
+npm install svelecte@4
+```
+
 ## Getting started
 
 Minimal example:

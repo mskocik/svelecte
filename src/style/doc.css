@@ -270,6 +270,7 @@
  .vp-block {
    position: relative;
    margin: 16px -24px;
+   max-width: 100vw;
    background-color: var(--vp-code-block-bg);
    overflow-x: auto;
    transition: background-color 0.5s;

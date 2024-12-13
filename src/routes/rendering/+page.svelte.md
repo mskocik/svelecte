@@ -267,4 +267,13 @@ Where:
     align-items: center;
     gap: 8px;
   }
+  @media screen and (max-width: 640px) {
+    .cols-2 {
+      flex-wrap: wrap;
+    }
+    .cols-2 > :global(.svelecte.svelecte-control) {
+      width: 100%;
+    }
+
+  }
 </style>

@@ -6,67 +6,18 @@
 
   defaults.requestFactory = requestFactory;
 
-  /**
-   * Due to adding `$selected` property to items and ability to render selected items in dropdown
-   * second parameter is not related to option selection status, buth whether it's rendered in selection (true)
-   * or in dropdown (false)
-   *
-   * @callback RenderFunction
-   * @param {object} item
-   * @param {boolean} [selectionSection]
-   * @param {string} [inputValue]
-   * @returns {string}
-   */
-
-  /**
-   * Return `true` in case inputValue is NOT valid and new option creation is not desired
-   *
-   * @callback CreateFilterFunction
-   * @param {string} inputValue
-   * @returns {boolean}
-   */
-
-  /**
-   * Resolver function for creating new items. Async functions are support
-   *
-   * @callback CreateHandlerFunction
-   * @param {{
-   *  inputValue: string,
-   *  valueField: string,
-   *  labelField: string,
-   *  prefix: string
-   * }} props
-   * @returns {Promise<object>|object}
-   */
-
-
-  /**
-   * @callback OptionResolverFunction
-   * @param {any} options
-   * @param {Set} selectedKeys
-   * @returns {object[]}
-   */
-
-  // /**
-  //  * @typedef {Record<string, RenderFunction> & {default: RenderFunction, html: RenderFunction}}
-  //  */
   const stringFormatters = {
-    /**
-     * @type {RenderFunction}
-     */
     default: function(item) { return escapeHtml(item[this.label]); },
-    /**
-     * @type {RenderFunction}
-     */
     html: function(item) { return item[this.label]; }
   };
 
   const _noop = _node => ({ destroy: () => {}});
+
   /**
    * Provide ability to add additional renderers in raw html string format
    *
-   * @param {string|Record<string, RenderFunction>} name
-   * @param {RenderFunction} rendererFn
+   * @param {string|Record<string, (item: object, selectionSection?: boolean, inputValue?: string) => string>} name
+   * @param {(item: object, selectionSection?: boolean, inputValue?: string) => string} rendererFn
    */
   export function addRenderer(name, rendererFn) {
     if (name instanceof Object) {
@@ -92,93 +43,92 @@
   import VirtualList from './VirtualList.svelte';
 
   /**
-   * @typedef {object} SvelecteProps
-   * @property {string} [name]
-   * @property {string} [inputId]
-   * @property {boolean} [required]
-   * @property {boolean} [disabled]
-   * @property {Array<Object>|object} [options]
-   * @property {OptionResolverFunction|null} [optionResolver]
-   * @property {string|null} [valueField]
-   * @property {string|null} [labelField]
-   * @property {string} [groupLabelField]
-   * @property {string} [groupItemsField]
-   * @property {string} [disabledField]
-   * @property {string} [placeholder]
-   * @property {boolean} [searchable]
-   * @property {boolean} [clearable]
-   * @property {string|RenderFunction} [renderer]
-   * @property {boolean} [disableHighlight]
-   * @property {boolean} [highlightFirstItem]
-   * @property {boolean|'select-navigate'} [selectOnTab]
-   * @property {boolean} [resetOnBlur]
-   * @property {boolean} [resetOnSelect]
-   * @property {string|boolean} [closeAfterSelect]
-   * @property {'native'|'toggle'|'none'} [deselectMode]
-   * @property {function} [dndzone]
-   * @property {boolean} [strictMode]
-   * @property {boolean} [multiple]
-   * @property {number} [max]
-   * @property {'blur'|'always'|null} [collapseSelection]
-   * @property {boolean|'auto'} [keepSelectionInList]
-   * @property {boolean} [creatable]
-   * @property {string} [creatablePrefix]
-   * @property {boolean} [allowEditing]
-   * @property {boolean} [keepCreated]
-   * @property {string} [delimiter]
-   * @property {CreateFilterFunction} [createFilter]
-   * @property {CreateHandlerFunction} [createHandler]
-   * @property {?string} [fetch]
-   * @property {object} [fetchProps]
-   * @property {'auto'|'init'} [fetchMode]
-   * @property {function} [fetchCallback]
-   * @property {boolean} [fetchResetOnBlur]
-   * @property {number} [fetchDebounceTime]
-   * @property {number} [minQuery]
-   * @property {boolean} [lazyDropdown]
-   * @property {boolean} [virtualList]
-   * @property {number} [vlItemSize]
-   * @property {import('./utils/list.js').SearchProps|null} [searchProps]
-   * @property {string} [class]
-   * @property {object} [i18n]
-   * @property {array|string|number|object|null} [value]
-   * @property {object|object[]|null} [readSelection]
-   * @property {boolean} [valueAsObject]
-   * @property {string|number|null|undefined} [parentValue]
-   * @property {boolean} [emitValues]
-   * @property {function} [onChange]
-   * @property {function} [onFocus]
-   * @property {function} [onBlur]
-   * @property {function} [onCreateOption]
-   * @property {function} [onCreateFail]
-   * @property {function} [onEnterKey]
-   * @property {function} [onFetch]
-   * @property {function} [onFetchError]
-   * @property {function} [onInvalidValue]
-   * @property {import('svelte').Snippet|undefined} [prepend]
-   * @property {import('svelte').Snippet<[selectedOptions: object[], i18n: import('./settings.js').I18nObject]>} [collapsedSelection]
-   * @property {import('svelte').Snippet<[selectedOptions: object[], bindItem: function]>} [selection]
-   * @property {import('svelte').Snippet<[selectedOptions: object[], input_value: string]>} [clearIcon]
-   * @property {import('svelte').Snippet<[dropdownShow: boolean]>} [toggleIcon]
-   * @property {import('svelte').Snippet|undefined} [append]
-   * @property {import('svelte').Snippet|undefined} [listHeader]
-   * @property {import('svelte').Snippet<[option: object, inputValue: string]>} [option]
-   * @property {import('svelte').Snippet<[isCreating: boolean, inputValue: string, i18n: import('./settings.js').I18nObject]>} [createRow]
-   * @property {function} [positionResolver]
-   * @property {?string} [anchor_element]
-   * @property {?string} [controlClass]
-   * @property {?string} [dropdownClass]
-   * @property {?string} [optionClass]
+   * @type {{
+   *  name?: string;
+   *  inputId?: string;
+   *  required?: boolean;
+   *  disabled?: boolean;
+   *  options?: Array<any> | object;
+   *  optionResolver?: (options: any, selectedKeys: Set) => object[];
+   *  valueField?: string | null;
+   *  labelField?: string | null;
+   *  groupLabelField?: string;
+   *  groupItemsField?: string;
+   *  disabledField?: string;
+   *  placeholder?: string;
+   *  searchable?: boolean;
+   *  clearable?: boolean;
+   *  renderer?: (item: object, selectionSection?: boolean, inputValue?: string) => string | string;
+   *  disableHighlight?: boolean;
+   *  highlightFirstItem?: boolean;
+   *  selectOnTab?: boolean | "select-navigate";
+   *  resetOnBlur?: boolean;
+   *  resetOnSelect?: boolean;
+   *  closeAfterSelect?: string | boolean;
+   *  deselectMode?: "native" | "toggle" | "none";
+   *  dndzone?: Function;
+   *  strictMode?: boolean;
+   *  multiple?: boolean;
+   *  max?: number;
+   *  collapseSelection?: "blur" | "always" | null;
+   *  keepSelectionInList?: boolean | "auto";
+   *  creatable?: boolean;
+   *  creatablePrefix?: string;
+   *  allowEditing?: boolean;
+   *  keepCreated?: boolean;
+   *  delimiter?: string;
+   *  createFilter?: (inputValue: string) => boolean;
+   *  createHandler?: (prop: { inputValue: string, valueField: string, labelField: string, prefix: string }) => (Promise<object> | object);
+   *  fetch?: string | null;
+   *  fetchProps?: object;
+   *  fetchMode?: "auto" | "init";
+   *  fetchCallback?: Function;
+   *  fetchResetOnBlur?: boolean;
+   *  fetchDebounceTime?: number;
+   *  minQuery?: number;
+   *  lazyDropdown?: boolean;
+   *  virtualList?: boolean;
+   *  vlItemSize?: number;
+   *  searchProps?: import("./utils/list.js").SearchProps | null;
+   *  class?: string;
+   *  i18n?: object;
+   *  value?: any[] | string | number | object | null;
+   *  readSelection?: object | object[] | null;
+   *  valueAsObject?: boolean;
+   *  parentValue?: string | number | null | undefined;
+   *  emitValues?: boolean;
+   *  onChange?: Function;
+   *  onFocus?: Function;
+   *  onBlur?: Function;
+   *  onCreateOption?: Function;
+   *  onCreateFail?: Function;
+   *  onEnterKey?: Function;
+   *  onFetch?: Function;
+   *  onFetchError?: Function;
+   *  onInvalidValue?: Function;
+   *  prepend?: import("svelte").Snippet | undefined;
+   *  collapsedSelection?: import("svelte").Snippet<[selectedOptions: object[], i18n: import("./settings.js").I18nObject]>;
+   *  selection?: import("svelte").Snippet<[selectedOptions: object[], bindItem: Function]>;
+   *  clearIcon?: import("svelte").Snippet<[selectedOptions: object[], input_value: string]>;
+   *  toggleIcon?: import("svelte").Snippet<[dropdownShow: boolean]>;
+   *  append?: import("svelte").Snippet | undefined;
+   *  listHeader?: import("svelte").Snippet | undefined;
+   *  option?: import("svelte").Snippet<[option: object, inputValue: string]>;
+   *  createRow?: import("svelte").Snippet<[isCreating: boolean, inputValue: string, i18n: import("./settings.js").I18nObject]>;
+   *  positionResolver?: Function;
+   *  anchor_element?: string | null;
+   *  controlClass?: string | null;
+   *  dropdownClass?: string | null;
+   *  optionClass?: string | null;
+   * }}
    */
-
-  /** @type {SvelecteProps} */
   let {
     name = '',
     inputId = '',
     required = false,
     disabled = false,
     options = [],
-    optionResolver = null,
+    optionResolver,
     valueField = defaults.valueField,
     labelField = defaults.labelField,
     groupLabelField = defaults.groupLabelField,
@@ -411,7 +361,7 @@
   })));
 
   /**
-   * @type {RenderFunction}
+   * @type {function}
    */
    let itemRenderer = $derived.by(() => typeof renderer === 'function'
     ? renderer

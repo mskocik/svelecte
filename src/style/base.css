@@ -1,263 +1,263 @@
 @media (prefers-reduced-motion: reduce) {
-    *,
-    ::before,
-    ::after {
-      animation-delay: -1ms !important;
-      animation-duration: 1ms !important;
-      animation-iteration-count: 1 !important;
-      background-attachment: initial !important;
-      scroll-behavior: auto !important;
-      transition-duration: 0s !important;
-      transition-delay: 0s !important;
-    }
-  }
-
   *,
   ::before,
   ::after {
-    box-sizing: border-box;
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
   }
+}
 
-  html {
-    line-height: 1.4;
-    font-size: 16px;
-    -webkit-text-size-adjust: 100%;
-  }
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
 
-  html.dark {
-    color-scheme: dark;
-  }
+html {
+  line-height: 1.4;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
 
-  body {
-    margin: 0;
-    width: 100%;
-    min-width: 320px;
-    min-height: 100vh;
-    line-height: 24px;
-    font-family: var(--vp-font-family-base);
-    font-size: 16px;
-    font-weight: 400;
-    color: var(--vp-c-text-1);
-    background-color: var(--vp-c-bg);
-    font-synthesis: style;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+html.dark {
+  color-scheme: dark;
+}
 
-  main {
-    display: block;
-  }
+body {
+  margin: 0;
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+  line-height: 24px;
+  font-family: var(--vp-font-family-base);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--vp-c-text-1);
+  background-color: var(--vp-c-bg);
+  font-synthesis: style;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    margin: 0;
-    line-height: 24px;
-    font-size: 16px;
-    font-weight: 400;
-  }
+main {
+  display: block;
+}
 
-  p {
-    margin: 0;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
+}
 
-  strong,
-  b {
-    font-weight: 600;
-  }
+p {
+  margin: 0;
+}
 
-  /**
-   * Avoid 300ms click delay on touch devices that support the `touch-action`
-   * CSS property.
-   *
-   * In particular, unlike most other browsers, IE11+Edge on Windows 10 on
-   * touch devices and IE Mobile 10-11 DON'T remove the click delay when
-   * `<meta name="viewport" content="width=device-width">` is present.
-   * However, they DO support removing the click delay via
-   * `touch-action: manipulation`.
-   *
-   * See:
-   * - http://v4-alpha.getbootstrap.com/content/reboot/#click-delay-optimization-for-touch
-   * - http://caniuse.com/#feat=css-touch-action
-   * - http://patrickhlauke.github.io/touch/tests/results/#suppressing-300ms-delay
-   */
-  a,
-  area,
-  button,
-  [role='button'],
-  input,
-  label,
-  select,
-  summary,
-  textarea {
-    touch-action: manipulation;
-  }
+strong,
+b {
+  font-weight: 600;
+}
 
-  a {
-    color: inherit;
-    text-decoration: inherit;
-  }
+/**
+ * Avoid 300ms click delay on touch devices that support the `touch-action`
+ * CSS property.
+ *
+ * In particular, unlike most other browsers, IE11+Edge on Windows 10 on
+ * touch devices and IE Mobile 10-11 DON'T remove the click delay when
+ * `<meta name="viewport" content="width=device-width">` is present.
+ * However, they DO support removing the click delay via
+ * `touch-action: manipulation`.
+ *
+ * See:
+ * - http://v4-alpha.getbootstrap.com/content/reboot/#click-delay-optimization-for-touch
+ * - http://caniuse.com/#feat=css-touch-action
+ * - http://patrickhlauke.github.io/touch/tests/results/#suppressing-300ms-delay
+ */
+a,
+area,
+button,
+[role='button'],
+input,
+label,
+select,
+summary,
+textarea {
+  touch-action: manipulation;
+}
 
-  ol,
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
 
-  blockquote {
-    margin: 0;
-  }
+ol,
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-  pre,
-  code,
-  kbd,
-  samp {
-    font-family: var(--vp-font-family-mono);
-  }
+blockquote {
+  margin: 0;
+}
 
-  img,
-  svg,
-  video,
-  canvas,
-  audio,
-  iframe,
-  embed,
-  object {
-    display: block;
-  }
+pre,
+code,
+kbd,
+samp {
+  font-family: var(--vp-font-family-mono);
+}
 
-  figure {
-    margin: 0;
-  }
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+}
 
-  img,
-  video {
-    max-width: 100%;
-    height: auto;
-  }
+figure {
+  margin: 0;
+}
 
-  button,
-  input,
-  optgroup,
-  select,
-  textarea {
-    border: 0;
-    padding: 0;
-    line-height: inherit;
-    color: inherit;
-  }
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
 
-  button {
-    padding: 0;
-    font-family: inherit;
-    background-color: transparent;
-    background-image: none;
-  }
+button,
+input,
+optgroup,
+select,
+textarea {
+  border: 0;
+  padding: 0;
+  line-height: inherit;
+  color: inherit;
+}
 
-  button:enabled,
-  [role='button']:enabled {
-    cursor: pointer;
-  }
+button {
+  padding: 0;
+  font-family: inherit;
+  background-color: transparent;
+  background-image: none;
+}
 
-  button:focus,
-  button:focus-visible {
-    outline: 1px dotted;
-    outline: 4px auto -webkit-focus-ring-color;
-  }
+button:enabled,
+[role='button']:enabled {
+  cursor: pointer;
+}
 
-  button:focus:not(:focus-visible) {
-    outline: none !important;
-  }
+button:focus,
+button:focus-visible {
+  outline: 1px dotted;
+  outline: 4px auto -webkit-focus-ring-color;
+}
 
-  input:focus,
-  textarea:focus,
-  select:focus {
-    outline: none;
-  }
+button:focus:not(:focus-visible) {
+  outline: none !important;
+}
 
-  table {
-    border-collapse: collapse;
-  }
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
 
-  input {
-    background-color: transparent;
-  }
+table {
+  border-collapse: collapse;
+}
 
-  input:-ms-input-placeholder,
-  textarea:-ms-input-placeholder {
-    color: var(--vp-c-text-3);
-  }
+input {
+  background-color: transparent;
+}
 
-  input::-ms-input-placeholder,
-  textarea::-ms-input-placeholder {
-    color: var(--vp-c-text-3);
-  }
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+  color: var(--vp-c-text-3);
+}
 
-  input::placeholder,
-  textarea::placeholder {
-    color: var(--vp-c-text-3);
-  }
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+  color: var(--vp-c-text-3);
+}
 
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
+input::placeholder,
+textarea::placeholder {
+  color: var(--vp-c-text-3);
+}
 
-  input[type='number'] {
-    -moz-appearance: textfield;
-  }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-  textarea {
-    resize: vertical;
-  }
+input[type='number'] {
+  -moz-appearance: textfield;
+}
 
-  select {
-    -webkit-appearance: none;
-  }
+textarea {
+  resize: vertical;
+}
 
-  fieldset {
-    margin: 0;
-    padding: 0;
-  }
+select {
+  -webkit-appearance: none;
+}
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  li,
-  p {
-    overflow-wrap: break-word;
-  }
+fieldset {
+  margin: 0;
+  padding: 0;
+}
 
-  vite-error-overlay {
-    z-index: 9999;
-  }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li,
+p {
+  overflow-wrap: break-word;
+}
 
-  mjx-container {
-    display: inline-block;
-    margin: auto 2px -2px;
-  }
+vite-error-overlay {
+  z-index: 9999;
+}
 
-  mjx-container > svg {
-    display: inline-block;
-    margin: auto;
-  }
+mjx-container {
+  display: inline-block;
+  margin: auto 2px -2px;
+}
 
-  .app-wrap {
-    min-height: 100vh;
-    display: flex;
-  }
-  .page-container {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
-  }
+mjx-container > svg {
+  display: inline-block;
+  margin: auto;
+}
+
+.app-wrap {
+  min-height: 100vh;
+  display: flex;
+}
+.page-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+}
