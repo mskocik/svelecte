@@ -8,6 +8,8 @@
 		"allowJs": true,
 		"checkJs": true,
 		"sourceMap": true,
-		"moduleResolution": "bundler"
+		"moduleResolution": "bundler",
+		"strictNullChecks": true,
+		"exactOptionalPropertyTypes": true
 	}
 }

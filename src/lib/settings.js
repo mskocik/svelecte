@@ -81,11 +81,11 @@
  * @property {boolean} keepCreated
  * @property {boolean} allowEditing
  * @property {string} delimiter
- * @property {function} fetchCallback
+ * @property {function|undefined} [fetchCallback]
  * @property {number} minQuery
  * @property {boolean} lazyDropdown
  * @property {boolean} virtualList
- * @property {number|null} vlItemSize
+ * @property {number|undefined} [vlItemSize]
  * @property {I18nObject} i18n
  * @property {import("./utils/fetch").RequestFactoryFn} requestFactory
  */
@@ -122,13 +122,13 @@ const /**@type {Settings} */ settings = {
   allowEditing: false,
   delimiter: ',',
   // remote
-  fetchCallback: null,
+  fetchCallback: undefined,
   minQuery: 1,
   // performance
   lazyDropdown: true,
   // virtual list
   virtualList: false,
-  vlItemSize: null,
+  vlItemSize: undefined,
   // i18n
   i18n: {
     aria_label: '',
@@ -151,7 +151,8 @@ const /**@type {Settings} */ settings = {
     createRowLabel: value => `Add '${value}'`,
     emptyCreatable: 'Add new by typing'
   },
-  requestFactory: null
+  // @ts-ignore
+  requestFactory: undefined
 }
 
 export default settings;

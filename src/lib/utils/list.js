@@ -76,8 +76,8 @@ export function initSelection(options, initialValue, valueAsObject, valueField) 
 /**
  *
  * @param {object[]|string[]} options
- * @param {string} valueField
- * @param {string} labelField
+ * @param {string?} valueField
+ * @param {string?} labelField
  * @returns {object[]}
  */
 export function ensureObjectArray(options, valueField, labelField) {

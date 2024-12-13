@@ -98,9 +98,9 @@
    * @property {boolean} [required]
    * @property {boolean} [disabled]
    * @property {Array<Object>|object} [options]
-   * @property {OptionResolverFunction} [optionResolver]
-   * @property {string} [valueField]
-   * @property {string} [labelField]
+   * @property {OptionResolverFunction|null} [optionResolver]
+   * @property {string|null} [valueField]
+   * @property {string|null} [labelField]
    * @property {string} [groupLabelField]
    * @property {string} [groupItemsField]
    * @property {string} [disabledField]
@@ -187,7 +187,7 @@
     placeholder = defaults.placeholder,
     searchable = defaults.searchable,
     clearable = defaults.clearable,
-    renderer = null,
+    renderer,
     disableHighlight = false,
     highlightFirstItem = defaults.highlightFirstItem,
     selectOnTab = defaults.selectOnTab,
@@ -206,8 +206,8 @@
     allowEditing = defaults.allowEditing,
     keepCreated = defaults.keepCreated,
     delimiter = defaults.delimiter,
-    createFilter = null,
-    createHandler = null,
+    createFilter,
+    createHandler,
     fetch = null,
     fetchProps = defaults.fetchProps,
     fetchMode = 'auto',
@@ -304,8 +304,8 @@
   let prev_options = $state(flatList(init_only_options, itemConfig));
   let options_flat_override = $state(false);
   let options_flat = $derived(options_flat_override ? [] : prev_options);
-
-  init_only_options = null; // cleanup
+  // @ts-ignore
+  init_only_options = undefined; // cleanup
 
 
   /** @reactive @type {object[]} */
@@ -362,6 +362,7 @@
   let /** @type {HTMLSelectElement} */  ref_select_element;
   // svelte-ignore non_reactive_update
   let /** @type {HTMLDivElement}    */  ref_container;
+  // @ts-ignore
   let /** @type {HTMLDivElement}    */  ref_container_scroll = $state(null);
   // svelte-ignore non_reactive_update
   let /** svelte-tiny-virtual-list  */  ref_virtuallist;
@@ -426,7 +427,7 @@
   let input_mode = $derived(searchable ? 'text' : 'none');
   /** @type {string} */
   let placeholder_active = $derived(selectedOptions.length ? '' : placeholder);
-  /** @type {'enter'} */
+  /** @type {'enter'|null} */
   let enter_hint = $derived(selectedOptions.length > 0 && multiple === false ? null : 'enter');
   // aria related
   let aria_selection = $derived(i18n_actual.aria_selected(selectedOptions.map(o => o[currentLabelField])));
@@ -942,6 +943,7 @@
         if (isPageEvent) {
           const [wrap, item] = get_dropdown_dimensions();
           dropdown_index = Math.min(
+            // @ts-ignore
             Math.ceil((item * dropdown_index + wrap) / item), // can be more than max, therefore Math.min
             options_filtered.length
           );
@@ -964,6 +966,7 @@
       case 'PageUp':
         if (isPageEvent) {
           const [wrap, item] = get_dropdown_dimensions();
+          // @ts-ignore
           dropdown_index = Math.floor((item * dropdown_index - wrap) / item);
         }
       case 'ArrowDown':
@@ -1049,16 +1052,15 @@
    */
   function on_click(event) {
     if (disabled) return;
-    /** @type {HTMLElement & import('./utils/actions.js').ExtButton} */
-    const target = event.target.closest('[data-action]');
+
+    const target = /** @type {HTMLElement & import('./utils/actions.js').ExtButton} */ (event.target.closest('[data-action]'));
 
     if (!focus_by_mouse) focus_by_mouse = true;
     // allow escaping click handler
     if (target?.dataset.action === 'default') return;
 
     event.preventDefault();
-    /** @type {HTMLElement} */
-    const dropdown_item = event.target.closest('[data-pos]');
+    const dropdown_item = /** @type {HTMLElement & {dataset: { pos: string }}} */ (event.target.closest('[data-pos]'));
 
     // handle click on selection row (general focus & toggle dropdown event)
     if (!target && !dropdown_item) {
@@ -1185,7 +1187,7 @@
     watch_listMessage(maxReached, options_filtered);
   });
 
-  /** @type {AbortController} */
+  /** @type {AbortController?} */
   let fetch_controller;
 
   /** @type {function|null} */
