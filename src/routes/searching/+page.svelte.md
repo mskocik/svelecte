@@ -23,6 +23,7 @@
     disabled: false,
     startOnly: false,
     wordsOnly: false,
+    keepSelectionInList: false,
   });
 
   let placeholder = $derived(searchProps.fields === 'internal.id'
@@ -74,6 +75,11 @@ has been extended for more granular search settings in v4.0.
       </select>
     </label>
 
+    <label for="keepSelectionInList">
+      <input type="checkbox" name="keepSelectionInList" id="keepSelectionInList" bind:checked={searchProps.keepSelectionInList}>
+      Keep selected options in results
+    </label>
+
     <label for="nesting">
       <input type="checkbox" name="nesting" id="nesting" bind:checked={searchProps.nesting}>
       Nesting (select <code>ID</code> from search field select)
@@ -113,6 +119,7 @@ optional and boolean values are false by default.
   * @property {string|SortDef[]} [sort]
   * @property {boolean} [skipSort]
   * @property {'or'} [conjunction]
+  * @property {boolean} [keepSelectionInList]
   * @property {boolean} [nesting]
   * @property {boolean} [disabled]
   * @property {boolean} [startOnly]
@@ -129,6 +136,7 @@ optional and boolean values are false by default.
 - `sort` define sort properties which search result sorting is based upon.
 - `skipSort` sorting can be turned off.
 - `conjuction` defaults to `and`, defines how multiple words are searched. `or` can be turned on directly when entering text by typing `|` character.
+- `keepSelectionInList` allow matched selected options to stay visible
 - `nesting` allow for search in nested properties, as mentions in `fields` description
 - `disabled` when `true` no option is filtered out, just searched phrase is highlighted (which can be disabled by `disabledHighlighting` property)
 - `startOnly` search only from beginning of the string
