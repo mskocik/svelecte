@@ -118,18 +118,18 @@ If you need to keep highlighting feature use [render function](/rendering#render
 
 ```svelte
 <script>
-	import Svelecte from 'svelecte';
+  import Svelecte from 'svelecte'
 
-	let options = [
+  let options = [
     {id: '1', text: 'option X'},
     {id: '2', text: 'option Y'},
     {id: '3', text: 'option Z'}
-	];
+  ];
 </script>
 
 {#snippet option(item)}
 <div>
-	{item.$selected ? '👌' : '👉'} {item.text} {item.$selected ? '✅' : '☑️'}
+  {item.$selected ? '👌' : '👉'} {item.text} {item.$selected ? '✅' : '☑️'}
 </div>
 {/snippet}
 
@@ -138,7 +138,7 @@ If you need to keep highlighting feature use [render function](/rendering#render
 
 {#snippet optionWithSearch(item, inputValue)}
 <div>
-	<b>Item:</b> {@html highlightSearch(item, false, inputValue, opt => opt.text)}
+  <b>Item:</b> {@html highlightSearch(item, false, inputValue, opt => opt.text)} {item.$selected ? '💥' : ''}
 </div>
 {/snippet}
 
@@ -148,29 +148,27 @@ If you need to keep highlighting feature use [render function](/rendering#render
   options={render_options}
   closeAfterSelect={false}
   option={optionWithSearch}
->
-	<div slot="option" let:item let:inputValue>
-		<b>Item: </b> {@html highlightSearch(item, false, inputValue, opt => opt.text)}
-	</div>
-</Svelecte>
+/>
 
 ```svelte
 <script>
   import Svelecte from 'svelecte'
-	import { highlightSearch } from 'svelecte';
+  import { highlightSearch } from 'svelecte';
 
-	let options = [
+  let options = [
     {id: '1', text: 'option X'},
     {id: '2', text: 'option Y'},
     {id: '3', text: 'option Z'}
-	];
+  ];
 </script>
 
-<Svelecte options={render_options} closeAfterSelect={false} value={'1'}>
-	<div slot="option" let:item let:inputValue>
-		<b>Item:</b> {@html highlightSearch(item, false, inputValue, opt => opt.text)}
-	</div>
-</Svelecte>
+{#snippet optionWithSearch(item, inputValue)}
+<div>
+  <b>Item:</b> {@html highlightSearch(item, false, inputValue, opt => opt.text)} {item.$selected ? '💥' : ''}
+</div>
+{/snippet}
+
+<Svelecte options={render_options} closeAfterSelect={false} value={'1'} />
 ```
 
 ## Dependent selects
