@@ -177,17 +177,21 @@ This functionality is not strictly related to remote fetch, but it's typical how
 you're done. If you require `parentValue` in your `fetch` URL, just use `[parent]` placeholder.
 
 <label for="parent">Choose category first</label>
-<Svelecte options={parentOptions} bind:value={parentValue} inputId="parent" clearable onChange={updateParent} />
+<Svelecte options={parentOptions} bind:value={parentValue} inputId="parent" clearable />
 <label for="child">Search for it</label>
 <Svelecte {parentValue} bind:value={childValue} fetch="/api/[parent]?query=[query]" inputId="child" placeholder={childPlaceholder}/>
 
 ```svelte
 <script>
-  let parentValue;
-  let value;
+  import Svelecte from 'svelecte';
+
+  let parentValue = $state(null);
+  let value = $state();
+
+  // ...
 </script>
 
-<Svelecte {options} bind:parentValue clearable />
+<Svelecte {options} bind:value={parentValue} clearable />
 <Svelecte {parentValue} bind:value fetch="/api/[parent]?search=[query]" />
 ```
 
