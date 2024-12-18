@@ -1,3 +1,4 @@
+import '@testing-library/jest-dom/vitest';
 import * as matchers from '@testing-library/jest-dom/matchers';
 import { vi, expect } from 'vitest';
 import { server } from './mocks/node.js';
@@ -18,8 +19,15 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: vi.fn(),
   })),
 });
-const oConsole = window.console;
-window.console = Object.assign({}, oConsole, { log: () => {}, warn: () => {} });
+
+// mocking Element.getAnimations from svelte/.../transitions.js
+Element.prototype.getAnimations = vi
+  .fn()
+  .mockImplementation(() => []);
+
+
+// const oConsole = window.console;
+// window.console = Object.assign({}, oConsole, { log: () => {}, warn: () => {} });
 
 
 beforeAll(() => {
