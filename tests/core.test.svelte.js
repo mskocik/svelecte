@@ -3,6 +3,7 @@ import Svelecte from '$lib/Svelecte.svelte';
 import userEvent from '@testing-library/user-event';
 import { dataset } from '../src/routes/data';
 import { describe } from 'vitest';
+import { sleep } from './_helpers';
 
 describe('Core', () => {
   it('Mount', () => {
@@ -46,8 +47,6 @@ describe('Core', () => {
       lazyDropdown: false
     });
     const { container } = render(Svelecte, { props });
-
-    console.log(container.firstElementChild.innerHTML);
 
     expect(screen.queryAllByText('Czechia').length).toBeGreaterThan(1);
   });
@@ -211,7 +210,7 @@ describe('Interactions', () => {
     expect(props.value).toEqual([]);
   });
 
-})
+
   it('update value externally [single]', async () => {
     let props = $state({
       value: 'red',
@@ -245,6 +244,29 @@ describe('Interactions', () => {
 
     expect(screen.queryByText('2 selected')).not.toBeInTheDocument();
   });
+
+
+  it('always cast to array', async () => {
+    let props = $state({
+      value: ['red', 'blue'],
+      multiple: true,
+      options: dataset.colors(),
+      collapseSelection: 'always'
+    });
+    const screen = render(Svelecte, { props });
+
+    expect(screen.queryByText('2 selected')).toBeInTheDocument();
+
+    // @ts-ignore
+    props.value = null;
+    await sleep(10);
+
+    expect(screen.queryByText('2 selected')).not.toBeInTheDocument();
+    expect(Array.isArray(props.value)).toBeTruthy();  // change null to empty array
+
+  });
+
+});
 
 
 describe('Interactions [valueAsObject]', () => {

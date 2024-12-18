@@ -570,6 +570,10 @@
       clearSelection();
     }
     prev_value = $state.snapshot(passedVal);
+    if (multiple && !Array.isArray(passedVal)) {
+      prev_value = [];
+      value = prev_value;
+    }
   }
 
   /**
