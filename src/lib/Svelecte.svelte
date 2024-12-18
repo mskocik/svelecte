@@ -501,10 +501,8 @@
     // NOTE: I am commenting all `optionResolver` if-s
     // if (optionResolver) return;
 
-    // NOTE: why did I put this here? 😆 doesn't make sense...
-    // const ifArrayThenNonEmpty = (Array.isArray(passedVal) && passedVal.length) || true; // return true for allowing '' or 0
-    // if (passedVal !== null && ifArrayThenNonEmpty) {
-    if (passedVal !== null && true) {
+    const ifArrayThenNonEmpty = (Array.isArray(passedVal) && passedVal.length) || multiple === false; // return true for allowing '' or 0
+    if (passedVal !== null && ifArrayThenNonEmpty) {
       if ((multiple && !Array.isArray(passedVal)) || (!multiple && Array.isArray(passedVal))) {
         console.warn(`[Svelecte]: Passed 'value' property should ${ multiple ? 'be' : 'NOT be'} an array`);
       }

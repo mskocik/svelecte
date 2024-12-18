@@ -212,6 +212,39 @@ describe('Interactions', () => {
   });
 
 })
+  it('update value externally [single]', async () => {
+    let props = $state({
+      value: 'red',
+      options: dataset.colors()
+    });
+    const screen = render(Svelecte, { props });
+
+    expect(screen.queryByText('Red')).toBeInTheDocument();
+    // @ts-ignore
+    props.value = null;
+    await sleep(10);
+
+    expect(screen.queryByText('Red')).not.toBeInTheDocument();
+
+  });
+
+
+  it('update value externally [multi]', async () => {
+    let props = $state({
+      value: ['red', 'blue'],
+      multiple: true,
+      options: dataset.colors(),
+      collapseSelection: 'always'
+    });
+    const screen = render(Svelecte, { props });
+
+    expect(screen.queryByText('2 selected')).toBeInTheDocument();
+
+    props.value = [];
+    await sleep(10);
+
+    expect(screen.queryByText('2 selected')).not.toBeInTheDocument();
+  });
 
 
 describe('Interactions [valueAsObject]', () => {
