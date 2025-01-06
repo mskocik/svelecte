@@ -444,7 +444,9 @@
   function watch_options(opts) {
     if (options_stopgap === opts) return;
     // make sure, it's an array
-    opts = ensureObjectArray(opts, currentValueField, currentLabelField);
+    opts = flatList(  // although valid data is passed, `flatList` must be run, to update optionProps
+      ensureObjectArray(opts, currentValueField, currentLabelField), itemConfig
+    );
 
     // do these automatic re-adjustments only when props are not specified
     if (!valueField) {
