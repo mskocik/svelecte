@@ -27,7 +27,7 @@
  *
  * @constructor
  * @param {array|object} items
- * @param {object} items
+ * @param {object} [settings]
  */
 var Sifter = function(items, settings) {
     this.items = items;
@@ -112,7 +112,7 @@ Sifter.prototype.iterator = function(object, callback) {
  * If an item is not a match, 0 will be returned by the function.
  *
  * @param {object|string} search
- * @param {object} options (optional)
+ * @param {object} [options]
  * @returns {function}
  */
 Sifter.prototype.getScoreFunction = function(search, options) {
@@ -425,6 +425,7 @@ var getattr = function(obj, name, nesting) {
     if (!obj || !name) return;
     if (!nesting) return obj[name];
     var names = name.split(".");
+    // @ts-ignore
     while(names.length && (obj = obj[names.shift()]));
     return obj;
 };

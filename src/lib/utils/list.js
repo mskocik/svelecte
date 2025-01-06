@@ -142,10 +142,10 @@ export function getFilterProps(object) {
  * @param {?string} inputValue
  * @param {?Set} excludeSelected
  * @param {ComponentConfig} config
- * @param {SearchProps|null} searchProps
+ * @param {SearchProps} searchProps
  * @returns {object[]}
  */
-export function filterList(options, inputValue, excludeSelected, config, searchProps) {
+export function filterList(options, inputValue, excludeSelected, config, searchProps = {}) {
   if (!searchProps.keepSelectionInList && excludeSelected) {
     options = options
       .filter(opt => !excludeSelected.has(opt[config.valueField]))
@@ -219,12 +219,14 @@ export function fieldInit(type, options, groupItemsField) {
   const isValue = type === 'value';
   let val = isValue  ? 'value' : 'text';              // selectize style defaults
   if (options && options.length) {
+    // @ts-ignore
     const firstItem = options[0][groupItemsField] ? options[0][groupItemsField][0] : options[0];
     if (!firstItem || typeof firstItem === 'string') return val;
     const autoAddItem = isValue ? 0 : 1;
     const guessList = isValue
       ? ['id', 'value', 'ID']
       : ['name', 'title', 'label'];
+    // @ts-ignore
     val = Object.keys(firstItem).filter(prop => guessList.includes(prop))
       .concat([Object.keys(firstItem)[autoAddItem]])  // auto add field (used as fallback) if empty list is returned
       .shift();
