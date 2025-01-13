@@ -349,7 +349,11 @@
       )
   });
   $effect(() => {
-    options_filtered.length <= dropdown_index && setDropdownIndex(0, { asc: !creatable, desc: creatable });
+    let list_length = options_filtered.length;
+    if (creatable && input_value) list_length++;  // needed for NOT reseting dropdown_index with create_row displayed
+
+    list_length <= dropdown_index && setDropdownIndex(0, { asc: !creatable, desc: creatable });
+    watch_listMessage(maxReached, options_filtered);
   });
   // only initial setter
   if (highlightFirstItem) setDropdownIndex(0, { asc: true });
@@ -902,7 +906,7 @@
           dropdown_index = Math.min(
             // @ts-ignore
             Math.ceil((item * dropdown_index + wrap) / item), // can be more than max, therefore Math.min
-            options_filtered.length
+            options_filtered.length + (creatable && input_value ? 1 : 0)
           );
         }
       case 'ArrowUp':
@@ -1136,13 +1140,6 @@
   // #endregion
 
   // #region [fetch]
-
-  $effect(() => {
-    if (options_filtered.length <= dropdown_index) {
-      setDropdownIndex(0, { asc: !creatable, desc: creatable });
-    }
-    watch_listMessage(maxReached, options_filtered);
-  });
 
   /** @type {AbortController?} */
   let fetch_controller;
