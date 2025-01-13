@@ -826,8 +826,8 @@
    */
    function deselectOption(opt, backspacePressed) {
     if (opt.$created) {
-      alreadyCreated.splice(alreadyCreated.findIndex(o => o === opt[currentValueField]), 1);
       if (!keepCreated) {
+        alreadyCreated.splice(alreadyCreated.findIndex(o => o === opt[currentValueField]), 1);
         const idx = prev_options.findIndex(o => o[currentValueField] === opt[currentValueField]);
         idx !== -1 && prev_options.splice(idx, 1);
         prev_options = prev_options;
