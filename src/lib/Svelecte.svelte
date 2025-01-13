@@ -1206,7 +1206,9 @@
         isFetchingData = false;
       }
       if (!optionResolver && fetchResetOnBlur) options_filtered_override = [];
-      dropdown_show = inputValue.length >= minQuery ? false : true;
+      dropdown_show = inputValue.length >= minQuery
+        ? creatable
+        : true;
       listMessage = maxReached
         ? i18n_actual.max(max)
         : (minQuery <= 1
