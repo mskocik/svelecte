@@ -734,7 +734,10 @@
           isCreating = false;
           !fetch && alreadyCreated.push(opt);
           newObj.$created = true;  // internal setter
-          if (keepCreated) prev_options = [...prev_options, newObj];
+          if (keepCreated) {
+            prev_options.push(newObj);
+            newObj = prev_options[prev_options.length - 1]; // get proxy-wrapped version to make it reactive in dropdown
+          }
           onCreateOption(newObj);
           selectOption(newObj);
           onSelectTeardown();
