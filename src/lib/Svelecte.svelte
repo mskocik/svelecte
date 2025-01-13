@@ -951,7 +951,7 @@
           return;
         }
         let activeDropdownItem = !ctrlKey ? options_filtered[dropdown_index] : null;
-        if (creatable && input_value) {
+        if (creatable && !activeDropdownItem && input_value) {
           const preventCreation = createFilterFn(onCreate_helper(input_value));
           activeDropdownItem = !activeDropdownItem || ctrlKey
             ? onCreate_helper(input_value)
