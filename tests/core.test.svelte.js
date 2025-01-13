@@ -239,6 +239,24 @@ describe('Interactions', () => {
 
     expect(screen.queryByText('2 selected')).toBeInTheDocument();
 
+    props.value = ['red'];
+    await sleep(10);
+
+    expect(screen.queryByText('1 selected')).toBeInTheDocument();
+  });
+
+
+  it('reset value externally [multi]', async () => {
+    let props = $state({
+      value: ['red', 'blue'],
+      multiple: true,
+      options: dataset.colors(),
+      collapseSelection: 'always'
+    });
+    const screen = render(Svelecte, { props });
+
+    expect(screen.queryByText('2 selected')).toBeInTheDocument();
+
     props.value = [];
     await sleep(10);
 

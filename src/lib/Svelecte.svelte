@@ -290,7 +290,7 @@
   /** @type {import('./settings.js').I18nObject} */
   let i18n_actual = $derived(Object.assign({}, config.i18n, i18n || {}));
   let fetch_initOnly = $derived(fetchMode === 'init' || (fetch && fetch.includes('[query]') === false));
-  let fetch_initValue = (value || (multiple && value && value.length))
+  let fetch_initValue = (fetch && (value || (multiple && value && value.length)))
     ? (valueAsObject
       ? (strictMode === false
         ? $state.snapshot(value)
@@ -479,7 +479,7 @@
 
   function equals(prevValue, passedVal) {
     if (multiple) {
-      if (prevValue && passedVal.length === prevValue.length && prevValue.length > 0) {
+      if (prevValue && passedVal?.length === prevValue.length && prevValue.length > 0) {
         return valueAsObject
           ? prevValue.every((o, i) => o[currentValueField] === passedVal[i][currentValueField])
           : prevValue.every((o, i) => o === passedVal[i]);
