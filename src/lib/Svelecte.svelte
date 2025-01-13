@@ -791,7 +791,10 @@
       selectedKeys.clear();
       selectedKeys.add(opt[currentValueField]);
       tick().then(() => {
-        dropdown_index = options_flat.indexOf($state.snapshot(opt));
+        const idx = options_flat.indexOf(opt);
+        dropdown_index = idx < 0
+          ? 0
+          : idx;
       });
     }
 
