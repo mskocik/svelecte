@@ -34,7 +34,7 @@
   <!-- <Svelecte creatable name="favourite" bind:value={$form.favourite} clearable placeholder="Search for the best color" /> -->
   <Svelecte
         name="favourite"
-			  fetch="/api/colors/?query=[query]"
+			  fetch="/api/colors?query=[query]"
 			  minQuery={2}
 			  creatable={true}
 			  keepCreated={true}
@@ -50,7 +50,7 @@
   <label for="sv-tags-select-input">
     Pick some other (multiple) colors. At least 2. <span class="invalid" style="margin-left: 0">*</span>
   </label>
-  <Svelecte fetch="http://localhost:5173/api/colors?query=[query]"
+  <Svelecte fetch="/api/colors?query=[query]"
     name="tags"
     bind:value={$form.tags} multiple clearable required placeholder="Search for color" />
   <br>
