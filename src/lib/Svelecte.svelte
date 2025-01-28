@@ -569,6 +569,7 @@
         clearSelection();
         prev_value = multiple ? [] : null;
         value = prev_value;
+        readSelection = prev_value;
         onInvalidValue(passedVal);
         return;
       }
@@ -580,6 +581,7 @@
       prev_value = [];
       value = prev_value;
     }
+    readSelection = compute_selection(true);
   }
 
   /**
