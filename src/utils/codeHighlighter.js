@@ -31,14 +31,18 @@ async function highlighter(code, lang, meta) {
     lang,
     theme: 'monokai',
     transformers: [
-      transformerNotationDiff()
+      transformerNotationDiff({
+        matchAlgorithm: 'v3'
+      })
     ]
   })));
   const lightHtml = escapeHtml(escapeSvelte(highlighter.codeToHtml(code, {
     lang,
     theme: 'catppuccin-latte',
     transformers: [
-      transformerNotationDiff()
+      transformerNotationDiff({
+        matchAlgorithm: 'v3'
+      })
     ]
   })));
   // return `{@html \`${darkHtml}${lightHtml}\` }`;
