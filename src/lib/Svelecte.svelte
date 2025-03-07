@@ -1931,7 +1931,7 @@
 
   .sv-input--text {
     outline: none;
-    &:placeholder {
+    &::placeholder {
       color: var(--sv-placeholder-color, #ccccd6);
     }
   }
