@@ -48,7 +48,7 @@
   /** ************************************ dependent selects */
 
   let parentValue = $state(null);
-  let childValue;
+  let childValue = $state(null);
 
   function updateParent(value) {
     parentValue = value;

@@ -97,6 +97,7 @@ Results to:
   bind:this={refetcher}
   bind:value={refetchValue}
   fetch="/api/colors?query=[query]"
+  searchProps={{ skipSort: true }}
 />
 <button onclick={onClick} style="border: 1px solid var(--vp-c-text-1); padding: 0px 4px; border-radius: 4px; margin-top: 6px">Change selected value to red</button>
 

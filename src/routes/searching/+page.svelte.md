@@ -6,7 +6,7 @@
 
   const items = 100;
   let options = [];
-  let selection = null;
+  let selection = $state(null);
 
   for (let i = 1; i <= items; i++) {
     options.push(
