@@ -58,7 +58,7 @@
    *  placeholder?: string;
    *  searchable?: boolean;
    *  clearable?: boolean;
-   *  renderer?: (item: object, selectionSection?: boolean, inputValue?: string) => string | string;
+   *  renderer?: ( (item: object, selectionSection?: boolean, inputValue?: string) => string ) | string;
    *  disableHighlight?: boolean;
    *  highlightFirstItem?: boolean;
    *  selectOnTab?: boolean | "select-navigate";
