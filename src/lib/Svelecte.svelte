@@ -90,7 +90,7 @@
    *  virtualList?: boolean;
    *  vlItemSize?: number;
    *  searchProps?: import("./utils/list.js").SearchProps | null;
-   *  class?: string;
+   *  class?: string | array | object;
    *  i18n?: object;
    *  value?: any[] | string | number | object | null;
    *  readSelection?: object | object[] | null;
@@ -1498,7 +1498,7 @@
 <span class="shortcut"><kbd>{meta_key}</kbd>+<kbd>Enter</kbd></span>
 {/snippet}
 
-<div class={`svelecte ${className}`}
+<div class={[`svelecte`, className]}
   class:is-required={required}
   class:is-empty={selectedOptions.length === 0}
   class:is-invalid={required && selectedOptions.length === 0}
