@@ -120,6 +120,7 @@
    *  controlClass?: string | null;
    *  dropdownClass?: string | null;
    *  optionClass?: string | null;
+   *  onInput?: Function
    * }}
    */
   let {
@@ -198,7 +199,8 @@
     anchor_element = undefined,
     controlClass = undefined,
     dropdownClass = undefined,
-    optionClass = undefined
+    optionClass = undefined,
+    onInput = _inputEvent => {}
   } = $props();
 
   export function focus() {
@@ -1081,6 +1083,7 @@
    * Required for mobile single select to work properly
    */
   function on_input() {
+    onInput?.()
     if (selectedOptions.length === 1 && !multiple) {
       // input_value = '';
     }
