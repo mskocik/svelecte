@@ -120,7 +120,7 @@
    *  controlClass?: string | null;
    *  dropdownClass?: string | null;
    *  optionClass?: string | null;
-   *  onInput?: Function
+   *  typedText?: string | null;
    * }}
    */
   let {
@@ -200,7 +200,7 @@
     controlClass = undefined,
     dropdownClass = undefined,
     optionClass = undefined,
-    onInput = _inputEvent => {}
+    typedText = $bindable('')
   } = $props();
 
   export function focus() {
@@ -1083,7 +1083,6 @@
    * Required for mobile single select to work properly
    */
   function on_input() {
-    onInput?.()
     if (selectedOptions.length === 1 && !multiple) {
       // input_value = '';
     }
@@ -1161,6 +1160,9 @@
   $effect(() => {
     watch_fetch_init(fetch, parentValue)
   });
+  $effect(() => {
+    typedText = input_value
+  })
 
   let listMessage = $state(fetch
     ? (fetch_initOnly
