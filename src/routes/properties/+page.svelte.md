@@ -42,7 +42,7 @@ delimiter                 | `string`          | `,`         | split inserted tex
 createFilter              | `function`        | `null`      | Function receiving `inputValue` returning `bool` checks if input string is valid or not. If you want to dismiss entered value (ie. prevent item creation), function should return `true`, `false` otherwise.
 createHandler             | `function`        | `null`      | Custom (may be) async function transforming input string to option object. Default returns object with `valueField` and `labelField` properties, where `labelField`'s value is input string prefixed with `creatablePrefix` property.
 fetch                     | `string`          | `null`      | Sets fetch URL. Visit [Remote datasource] form more details
-fetchProps                | `object`          | `null`      | Set options for new fetch [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request)
+fetchProps                |`object`,`function`| `null`      | Set options for new fetch [Request](https://developer.mozilla.org/en-US/docs/Web/API/Request). If assigned as a function, the options will be set from the function's output.
 fetchCallback             | `function`        | `null`      | optional fetch callback
 fetchResetOnBlur          | `bool`            | `true`      | reset previous search results on empty input, related to `resetOnBlur`
 fetchDebounceTime         | `number`          | `300`       | how many miliseconds is request debounced before fetch is executed

@@ -80,7 +80,7 @@
    *  createFilter?: (inputValue: string) => boolean;
    *  createHandler?: (prop: { inputValue: string, valueField: string, labelField: string, prefix: string }) => (Promise<object> | object);
    *  fetch?: string | null;
-   *  fetchProps?: object;
+   *  fetchProps?: object | Function;
    *  fetchMode?: "auto" | "init";
    *  fetchCallback?: Function;
    *  fetchResetOnBlur?: boolean;
