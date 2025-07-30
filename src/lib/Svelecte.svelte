@@ -1621,7 +1621,7 @@
                 {/if}
               {/snippet}
             </VirtualList>
-          {:else}
+          {:else if virtualList === false}
             {#each options_filtered as opt, i}
               {#if opt.$isGroupHeader}
                 <div class="sv-optgroup-header"><b>{opt.label}</b></div>
