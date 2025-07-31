@@ -23,7 +23,7 @@ export function debounce(fn, delay) {
  *  parentValue: string|number|null|undefined,
  *  initial: string|number|string[]|null
  *  }} props
- * @param {RequestInit|object|Function} fetchProps
+ * @param {RequestInit|object} fetchProps
  * @returns {{
  *  request: Request
  *  controller: AbortController
@@ -36,9 +36,6 @@ export function debounce(fn, delay) {
  * @type {RequestFactoryFn}
  */
 export function requestFactory(query, { url, parentValue, initial }, fetchProps) {
-  if (typeof fetchProps === 'function') {
-    fetchProps = fetchProps(); // If fetchProps is a function, call it to get the real values
-  }
   if (parentValue) {
     url = url.replace('[parent]', encodeURIComponent(parentValue));
   }

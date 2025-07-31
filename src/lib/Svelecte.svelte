@@ -1271,8 +1271,10 @@
         : i18n_actual.fetchBefore;
       return;
     }
-
-    const built = defaults.requestFactory(input_value, { parentValue, url: fetch, initial: initialFetchValue }, fetchProps);
+    const built = defaults.requestFactory(
+      input_value,
+      { parentValue, url: fetch, initial: initialFetchValue },
+      typeof fetchProps === 'function' ? fetchProps() : fetchProps);
     fetch_controller?.abort();
     fetch_controller = built.controller;
     window.fetch(built.request)
