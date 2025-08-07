@@ -120,6 +120,7 @@
    *  controlClass?: string | null;
    *  dropdownClass?: string | null;
    *  optionClass?: string | null;
+   *  typedText?: string | null;
    * }}
    */
   let {
@@ -198,7 +199,8 @@
     anchor_element = undefined,
     controlClass = undefined,
     dropdownClass = undefined,
-    optionClass = undefined
+    optionClass = undefined,
+    typedText = $bindable('')
   } = $props();
 
   export function focus() {
@@ -1158,6 +1160,9 @@
   $effect(() => {
     watch_fetch_init(fetch, parentValue)
   });
+  $effect(() => {
+    typedText = input_value
+  })
 
   let listMessage = $state(fetch
     ? (fetch_initOnly
