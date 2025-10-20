@@ -83,19 +83,24 @@ export function initSelection(options, initialValue, valueAsObject, groupItemsFi
 }
 
 /**
+ * Shallow clone is created, should be enough for svelecte to prevent editing main object, but not touching nested ones
  *
  * @param {object[]|string[]} options
  * @param {string} valueField
  * @param {string} labelField
+ * @param {boolean} virtualFetchedList
  * @returns {object[]}
  */
-export function ensureObjectArray(options, valueField, labelField) {
-  return typeof options[0] === 'object'
-    ? JSON.parse(JSON.stringify(options))
-    : options.map(arrayValue => ({
-      [valueField || 'value']: arrayValue,
-      [labelField || 'text']: arrayValue
-    }));
+export function ensureObjectArray(options, valueField, labelField, virtualFetchedList) {
+  return virtualFetchedList
+    ? options
+    : (typeof options[0] === 'object'
+      ? options.map((opt) => ({ ...opt }))
+      : options.map(arrayValue => ({
+        [valueField || 'value']: arrayValue,
+        [labelField || 'text']: arrayValue
+      }))
+    );
 }
 
 /**

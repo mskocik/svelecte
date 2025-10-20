@@ -246,7 +246,7 @@
   let prev_value;
   let prev_options = optionResolver
     ? optionResolver(options, new Set())
-    : ensureObjectArray(options, valueField, labelField);
+    : ensureObjectArray(options, valueField, labelField, virtualList && !!fetch);
   let prev_parent_value = undefined;
   let currentValueField = valueField || fieldInit('value', prev_options, groupItemsField);
   let currentLabelField = labelField || fieldInit('label', prev_options, groupItemsField);
@@ -408,7 +408,7 @@
 
     if (prev_options !== opts) {
       // make sure, it's an array
-      opts = ensureObjectArray(opts, currentValueField, currentLabelField);
+      opts = ensureObjectArray(opts, currentValueField, currentLabelField, virtualList && !!fetch);
 
       // do these automatic re-adjustments only when props are not specified
       if (!valueField) {
