@@ -32,9 +32,9 @@ Svelecte is fully featured and customizable select/multiselect/autocomplete.
 - searchable
 - multiselect with limit of max selected items
 - allow simple array or complex objects as items
-- custom item renderering, multiple snippets
-- allow creating new items
-- remote data fetching
+- custom item renderer, multiple snippets
+- allow creating new items (and possibly edit them)
+- remote data fetch
 - themable with CSS variables
 
 </div>
@@ -42,10 +42,10 @@ Svelecte is fully featured and customizable select/multiselect/autocomplete.
 <div>
 
 - virtual list support
--
-- i18n support
+- i18n and basic ARIA support
 - SSR support
-- a11y
+- client-validation support (tested with [sveltekit-superforms](https://github.com/ciscoheat/sveltekit-superforms/))
+- usable as custom element
 - drag & drop support (see [examples](/examples#drag--drop))
 - usable as custom element
 
