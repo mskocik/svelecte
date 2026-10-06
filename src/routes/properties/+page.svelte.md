@@ -46,6 +46,7 @@ fetchProps                |`object`,`function`| `null`      | Set options for ne
 fetchCallback             | `function`        | `null`      | optional fetch callback
 fetchResetOnBlur          | `bool`            | `true`      | reset previous search results on empty input, related to `resetOnBlur`
 fetchDebounceTime         | `number`          | `300`       | how many miliseconds is request debounced before fetch is executed
+customFetch               | `function`        | `undefined` | Custom fetch implementation `(query, { signal, parentValue, initial }) => Promise`. Takes precedence over `fetch`. Visit [Remote datasource](/fetch#user-provided-fetch-function) for more details
 minQuery                  | `number`          | `1`         | Minimal amount of characters required to perform remote request. Usable with `fetch` property
 lazyDropdown              | `bool`            | `true`      | render dropdown after first focus, not by default
 positionResolver          | `function`        | `noop`      | (optional) action for custom dropdown positioning.

@@ -18,6 +18,11 @@
     { id: 'countryGroups', text: 'Country Groups' },
   ];
 
+  function myFetch(query, { signal }) {
+    return window.fetch(`/api/colors?query=${encodeURIComponent(query)}`, { signal })
+      .then(res => res.json());
+  }
+
   $: childPlaceholder = parentValue? 'Now you can start searching' : 'Pick parent first';
 </script>
 
@@ -107,16 +112,55 @@ When using _objects_ as `value` (with `valueAsObject` property set), you *always
 Otherwise initial value won't be set. Also using `refetchWith` method has no meaning, because you can set object value
 directly, no need for fetch request.
 
+
+## User-provided fetch function
+
+When `fetch` URL with `fetchProps` is not enough, you can provide your own fetch implementation through `customFetch` property. When set, it takes precedence over `fetch` property.
+
+The function receives the current input value and a context object, and must return a `Promise` (or value) resolving
+to the response data. Returned data are processed the same way as with `fetch` - through `fetchCallback` if set, or
+by looking up `data`, `items` or `options` property.
+
+```ts
+customFetch(query: string, context: {
+  signal: AbortSignal,                         // aborted when a newer request is triggered or on blur
+  parentValue: string|number|null|undefined,   // value of `parentValue` property
+  initial: string|number|string[]|null|undefined // initial value(s) to fetch, when fetching default value
+}) => Promise<object>
+```
+
+```svelte
+<script>
+  function myFetch(query, { signal, parentValue, initial }) {
+    const url = initial
+      ? `https://example.com/url?init=${[initial].flat().join(',')}`
+      : `https://example.com/url?search=${encodeURIComponent(query)}&parent=${parentValue ?? ''}`;
+    return window.fetch(url, { signal })
+      .then(res => res.json());
+  }
+</script>
+
+<Svelecte customFetch={myFetch} />
+
+<!-- fetch on mount -->
+<Svelecte customFetch={myFetch} fetchMode="init" />
+```
+
+Because there is no URL to look for the `[query]` placeholder, component operates in _"query"_ mode by default. Set
+`fetchMode="init"` to fetch options on mount instead.
+
+Results to:
+
+<Svelecte
+  customFetch={myFetch}
+  searchProps={{ skipSort: true }}
+/>
+
+
 ## Other useful fetch-related properties are:
 
 - `fetchCallback: Function` Response transform function. It contains JSON-ized response. If not specified, one of following properties are tried in given order: `data`, `items`, `options` or response JSON itself as a fallback. Svelecte expects array to be returned.
 - `fetchResetOnBlur: boolean` Setting to `false` will keep fetched results in dropdown.
 - `minQuery: number` Force minimal length of input text to trigger remote request.
 - Settings `skipSort:  true` on `searchProps` to avoid re-ordering search results. More about search settings at [Searching](/searching) page.
-
-
-## User-provided fetch function
-
-Since v4.0 whole fetch-related functionality has been reworked and it's **no longer** possible to provide your own
-fetch function. Properties `fetch` and `fetchProps` should be enough for every use case.
 

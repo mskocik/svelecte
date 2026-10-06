@@ -85,6 +85,7 @@
    *  fetchCallback?: Function;
    *  fetchResetOnBlur?: boolean;
    *  fetchDebounceTime?: number;
+   *  customFetch?: (inputValue: string, context: { signal: AbortSignal, parentValue: string|number|null|undefined, initial: string|number|string[]|null|undefined }) => Promise<object>;
    *  minQuery?: number;
    *  lazyDropdown?: boolean;
    *  virtualList?: boolean;
@@ -164,6 +165,7 @@
     fetchCallback = defaults.fetchCallback,
     fetchResetOnBlur = true,
     fetchDebounceTime = defaults.fetchDebounceTime,
+    customFetch = undefined,
     minQuery = defaults.minQuery,
     lazyDropdown = defaults.lazyDropdown,
     virtualList = defaults.virtualList,
@@ -218,7 +220,7 @@
    * @param {string|number|array} value
    */
   export function refetchWith(value) {
-    if (!fetch) return;
+    if (!is_fetch_mode) return;
     fetch_runner({
       init: true,
       initValue: value,
@@ -230,10 +232,11 @@
   const DOM_ID = name ? `sv-${name}-select-${`${Math.random()}`.substring(2, 6)}` : null;
 
   if (required && !name) console.warn(`[Svelecte]: 'required' prop has no effect when 'name' prop is NOT set`)
+  if (fetch && customFetch) console.warn(`[Svelecte]: both 'fetch' and 'customFetch' props are set, 'customFetch' takes precedence`)
 
   /** ************************************ preparation */
   /* possibility to provide initial (selected) values in `fetch` mode (only !strictMode) **/
-  if (fetch && value && valueAsObject && !strictMode && (!options || (options && options.length === 0))) {
+  if ((fetch || customFetch) && value && valueAsObject && !strictMode && (!options || (options && options.length === 0))) {
     options = Array.isArray(value) ? value : [value];
   }
   if (!inputId) inputId = DOM_ID ? DOM_ID.replace('-select-', '-input-') : `svelecte-input-${`${Math.random()}`.substring(2, 12)}`;
@@ -289,8 +292,9 @@
   // utils
   /** @type {import('./settings.js').I18nObject} */
   let i18n_actual = $derived(Object.assign({}, config.i18n, i18n || {}));
-  let fetch_initOnly = $derived(fetchMode === 'init' || (fetch && fetch.includes('[query]') === false));
-  let fetch_initValue = (fetch && (value || (multiple && value && value.length)))
+  let is_fetch_mode = $derived(!!(fetch || customFetch));
+  let fetch_initOnly = $derived(fetchMode === 'init' || (!customFetch && fetch && fetch.includes('[query]') === false));
+  let fetch_initValue = ((fetch || customFetch) && (value || (multiple && value && value.length)))
     ? (valueAsObject
       ? (strictMode === false
         ? $state.snapshot(value)
@@ -335,7 +339,7 @@
     selectedOptions.length;
     options_flat.length;
 
-    if (!input_value && fetch && !fetch_initOnly && fetchResetOnBlur) return [];
+    if (!input_value && is_fetch_mode && !fetch_initOnly && fetchResetOnBlur) return [];
     if (options_filtered_override) return options_filtered_override;  // related to fetch
 
     return maxReached
@@ -389,7 +393,7 @@
     if (selectedOptions.length && selectedOptions.length === max) return i18n_actual.max(max);
 
     const idx = Math.min(dropdown_index, options_filtered.length-1);  // can happen, because derived run before effects
-    if (fetch) {
+    if (is_fetch_mode) {
       return isFetchingData
         ? i18n_actual.fetchInit
         : (options_filtered.length
@@ -563,7 +567,7 @@
       // this is run only when invalid 'value' is provided, like out of option array
       if (!success) {
         console.warn('[Svelecte]: provided "value" property is invalid', passedVal);
-        if (valueAsObject && strictMode && fetch) {
+        if (valueAsObject && strictMode && is_fetch_mode) {
           console.warn(`[Svelecte]: with 'fetch' and 'valueAsObject' set make sure 'strictMode' is set to false to be to set initial value`);
         }
         clearSelection();
@@ -667,7 +671,7 @@
    */
   function watch_listMessage(maxReached, options_filtered) {
     // fetch-related states are handled manually
-    if (fetch && !fetch_initOnly) return;
+    if (is_fetch_mode && !fetch_initOnly) return;
 
     if (maxReached) {
       listMessage = i18n_actual.max(max);
@@ -738,7 +742,7 @@
         }))
         .then(newObj => {
           isCreating = false;
-          !fetch && alreadyCreated.push(opt);
+          !is_fetch_mode && alreadyCreated.push(opt);
           newObj.$created = true;  // internal setter
           if (keepCreated) {
             prev_options.push(newObj);
@@ -860,7 +864,7 @@
       return;
     }
 
-    if (fetch && !fetch_initOnly && fetchResetOnBlur) options_flat_override = true; // results in `options_flat = []`
+    if (is_fetch_mode && !fetch_initOnly && fetchResetOnBlur) options_flat_override = true; // results in `options_flat = []`
   }
 
   function clearSelection() {
@@ -879,7 +883,7 @@
       return;
     }
 
-    if (fetch && !fetch_initOnly && fetchResetOnBlur) options_flat_override = true; // results in `options_flat = []`
+    if (is_fetch_mode && !fetch_initOnly && fetchResetOnBlur) options_flat_override = true; // results in `options_flat = []`
   }
 
   function on_create(event) {
@@ -984,7 +988,7 @@
         (event.key !== Tab || (event.key === Tab && selectOnTab !== 'select-navigate')) && event.preventDefault(); // prevent form submit
         break;
       case ' ':
-        if (!fetch && !is_dropdown_opened) {
+        if (!is_fetch_mode && !is_dropdown_opened) {
           updateDropdownState(true);
           event.preventDefault();
         }
@@ -1158,10 +1162,10 @@
     trigger_fetch(input_value);
   });
   $effect(() => {
-    watch_fetch_init(fetch, parentValue)
+    watch_fetch_init(fetch || customFetch, parentValue)
   });
 
-  let listMessage = $state(fetch
+  let listMessage = $state((fetch || customFetch)
     ? (fetch_initOnly
       ? i18n_actual.fetchInit
       : (minQuery > 1
@@ -1177,11 +1181,11 @@
 
   /**
    *
-   * @param {string?} fetch
+   * @param {string|Function|null|undefined} fetchSource
    * @param {string|number|null|undefined} _parentValue
    */
-  function watch_fetch_init(fetch, _parentValue) {
-    if (!fetch) {
+  function watch_fetch_init(fetchSource, _parentValue) {
+    if (!fetchSource) {
       debouncedFetch = null;
       return;
     }
@@ -1273,14 +1277,22 @@
         : i18n_actual.fetchBefore;
       return;
     }
-    const built = defaults.requestFactory(
-      input_value,
-      { parentValue, url: fetch, initial: initialFetchValue },
-      typeof fetchProps === 'function' ? fetchProps() : fetchProps);
     fetch_controller?.abort();
-    fetch_controller = built.controller;
-    window.fetch(built.request)
-      .then(resp => resp.json())
+    let fetchPromise;
+    if (customFetch) {
+      fetch_controller = new AbortController();
+      const signal = fetch_controller.signal;
+      fetchPromise = Promise.resolve(customFetch(input_value, { signal, parentValue, initial: initialFetchValue }))
+    } else {
+      const built = defaults.requestFactory(
+        input_value,
+        { parentValue, url: fetch, initial: initialFetchValue },
+        typeof fetchProps === 'function' ? fetchProps() : fetchProps);
+      fetch_controller = built.controller;
+      fetchPromise = window.fetch(built.request).then(resp => resp.json());
+    }
+
+    fetchPromise
       // success
       .then((/** @type {object} */ json) => {
         // sveltekit returns error property
