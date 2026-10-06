@@ -62,6 +62,45 @@
 
   let childPlaceholder = $derived(parentValue ? 'Now you can start searching' : 'Pick parent first');
 
+  /** ************************************ position resolver */
+
+  const overflow_options = [
+    { id: 1, text: 'one' },
+    { id: 2, text: 'two' },
+    { id: 3, text: 'three' },
+    { id: 4, text: 'four' },
+    { id: 5, text: 'five' },
+    { id: 6, text: 'six' },
+    { id: 7, text: 'seven' },
+    { id: 8, text: 'eight' },
+  ];
+
+  function bodyPositionResolver(node) {
+    const svelecteEl = node.parentElement;
+    document.body.appendChild(node);
+
+    function reposition() {
+      const rect = svelecteEl.getBoundingClientRect();
+      Object.assign(node.style, {
+        top: `${rect.bottom + window.scrollY}px`,
+        left: `${rect.left + window.scrollX}px`,
+        minWidth: `${rect.width}px`
+      });
+    }
+    reposition();
+
+    // re-calculate position every time dropdown gets opened
+    const observer = new MutationObserver(() => node.classList.contains('is-open') && reposition());
+    observer.observe(node, { attributes: true, attributeFilter: ['class'] });
+
+    return {
+      destroy() {
+        observer.disconnect();
+        node.remove();
+      }
+    }
+  }
+
 </script>
 
 # Various examples
@@ -217,6 +256,64 @@ Reorder selection by dragging: {value}
 <Svelecte {options} bind:value={value} multiple {dndzone} placeholder="Re-order selected items by dragging" />
 ```
 
+## Custom dropdown positioning
+
+When Svelecte is placed inside container with `overflow: hidden`, dropdown gets clipped. You can fix that by providing
+`positionResolver` property. It's a [svelte action](https://svelte.dev/docs/svelte/use) which receives dropdown element,
+so you can move it to `document.body` and position it manually.
+
+<div class="overflow-example">
+  <div class="in-overflow">
+    Inside overflow (with <code>positionResolver</code>)
+    <Svelecte options={overflow_options} positionResolver={bodyPositionResolver} />
+    Inside overflow (without <code>positionResolver</code>)
+    <Svelecte options={overflow_options} />
+  </div>
+</div>
+
+```svelte
+<script>
+  import Svelecte from 'svelecte';
+
+  function bodyPositionResolver(node) {
+    const svelecteEl = node.parentElement;
+    document.body.appendChild(node);
+
+    function reposition() {
+      const rect = svelecteEl.getBoundingClientRect();
+      Object.assign(node.style, {
+        top: `${rect.bottom + window.scrollY}px`,
+        left: `${rect.left + window.scrollX}px`,
+        minWidth: `${rect.width}px`
+      });
+    }
+    reposition();
+
+    // re-calculate position every time dropdown gets opened
+    const observer = new MutationObserver(() => node.classList.contains('is-open') && reposition());
+    observer.observe(node, { attributes: true, attributeFilter: ['class'] });
+
+    return {
+      destroy() {
+        observer.disconnect();
+        node.remove();
+      }
+    }
+  }
+</script>
+
+<div class="in-overflow">
+  <Svelecte {options} positionResolver={bodyPositionResolver} />
+</div>
+
+<style>
+  .in-overflow {
+    position: relative;
+    overflow: hidden;
+  }
+</style>
+```
+
 <style>
   :global(.inlined) {
     display: inline-flex;
@@ -228,5 +325,20 @@ Reorder selection by dragging: {value}
   }
   :global(.dark .sv-item--content svg) {
     stroke: #eee;
+  }
+  .overflow-example {
+    display: flex;
+    gap: 16px;
+    & > div {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid var(--vp-c-divider);
+      border-radius: 8px;
+    }
+  }
+  .in-overflow {
+    position: relative;
+    overflow: hidden;
+    background-color: var(--vp-c-bg-soft);
   }
 </style>

@@ -180,7 +180,8 @@
     --sv-selection-multi-wrap-padding: 3px 3px 3px 6px;
   }
 
-  .dark .svelecte {
+  .dark .svelecte,
+  .dark .sv_dropdown {
     --sv-min-height: 40px;
     --sv-bg: var(--vp-c-gray-3);
     --sv-disabled-bg: #222;
