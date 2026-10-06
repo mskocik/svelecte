@@ -743,6 +743,8 @@
           if (keepCreated) {
             prev_options.push(newObj);
             newObj = prev_options[prev_options.length - 1]; // get proxy-wrapped version to make it reactive in dropdown
+          } else {
+            alreadyCreated.splice(alreadyCreated.findIndex(o => o === opt[currentValueField]), 1);
           }
           onCreateOption(newObj);
           selectOption(newObj);
