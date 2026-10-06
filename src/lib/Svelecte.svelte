@@ -2,13 +2,13 @@
   import defaults from './settings.js';
 
   import { requestFactory, debounce } from './utils/fetch.js';
-  import { onCreate_helper, escapeHtml } from './utils/helpers.js';
+  import { onCreate_helper, escapeHtml, sanitizeHtml } from './utils/helpers.js';
 
   defaults.requestFactory = requestFactory;
 
   const stringFormatters = {
     default: function(item) { return escapeHtml(item[this.label]); },
-    html: function(item) { return item[this.label]; }
+    html: function(item) { return sanitizeHtml(item[this.label]); }
   };
 
   const _noop = _node => ({ destroy: () => {}});
@@ -22,10 +22,11 @@
   export function addRenderer(name, rendererFn) {
     if (name instanceof Object) {
       for (let prop in name) {
-        stringFormatters[prop] = name[prop];
+        const fn = name[prop];
+        stringFormatters[prop] = function(...args) { return sanitizeHtml(fn.apply(this, args)); };
       }
     } else {
-      stringFormatters[name] = rendererFn
+      stringFormatters[name] = function(...args) { return sanitizeHtml(rendererFn.apply(this, args)); };
     }
   };
 

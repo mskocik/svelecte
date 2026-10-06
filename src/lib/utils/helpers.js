@@ -122,3 +122,16 @@ export function escapeHtml(html) {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 };
+
+/**
+ * Sanitize raw HTML before it is rendered via {@html}, stripping script
+ * tags, inline event handler attributes and javascript: URIs to mitigate XSS.
+ * @param {string} html
+ * @returns {string}
+ */
+export function sanitizeHtml(html) {
+  return `${html}`
+    .replace(/<script[\s\S]*?>[\s\S]*?<\/script\s*>/gi, '')
+    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '')
+    .replace(/(href|src)\s*=\s*("|')?\s*javascript:[^"'>]*/gi, '');
+};
