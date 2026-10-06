@@ -34,7 +34,7 @@
 
 <!-- svelte-ignore state_referenced_locally -->
 <script>
-  import { onMount, tick } from 'svelte';
+  import { onMount, tick, untrack } from 'svelte';
   import { flip } from 'svelte/animate';
   import { pixelGetter, positionDropdown, scrollIntoView } from './utils/dropdown.js';
   import { createConfig, ensureObjectArray, filterList, flatList, fieldInit, initSelection } from './utils/list.js';
@@ -305,6 +305,11 @@
     : null;
   let isIOS = null;
   let doCollapse = $state(collapseSelection !== null);
+  // re-sync when `collapseSelection` changes, focus/blur/dnd handlers toggle it manually otherwise
+  $effect.pre(() => {
+    doCollapse = collapseSelection === 'always'
+      || (collapseSelection === 'blur' && !untrack(() => is_focused));
+  });
   let isFetchingData = $state(false);
   let isCreating = $state(false);
   let flipDurationMs = $state(100);
@@ -994,7 +999,6 @@
         }
         break;
       case 'Backspace':
-        if (collapseSelection === 'always') return;
         backspacePressed = true;
       case 'Delete':
         if (input_value === '' && selectedOptions.length) {
