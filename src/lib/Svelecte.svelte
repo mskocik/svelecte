@@ -756,6 +756,7 @@
             alreadyCreated.splice(alreadyCreated.findIndex(o => o === opt[currentValueField]), 1);
           }
           onCreateOption(newObj);
+          if (disabled) return;
           selectOption(newObj);
           onSelectTeardown();
           emitChangeEvent();
