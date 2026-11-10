@@ -116,6 +116,37 @@ describe('creatable', () => {
   });
 
 
+  it('does not select an asynchronously created option after becoming disabled', async () => {
+    let finishCreation;
+    const createHandler = vi.fn(() => new Promise(resolve => {
+      finishCreation = resolve;
+    }));
+    const onCreateOption = vi.fn();
+    const onChange = vi.fn();
+    const { container, rerender } = render(Svelecte, {
+      name: 'select',
+      creatable: true,
+      createHandler,
+      onCreateOption,
+      onChange,
+    });
+
+    const user = userEvent.setup();
+    await user.click(container.querySelector('input'));
+    await user.keyboard('Orange[enter]');
+    expect(createHandler).toHaveBeenCalledTimes(1);
+
+    await rerender({ disabled: true });
+    onChange.mockClear();
+    finishCreation({ value: 'Orange', label: 'Orange' });
+    await sleep(0);
+
+    expect(onCreateOption).toHaveBeenCalledTimes(1);
+    expect(onChange).not.toHaveBeenCalled();
+    expect(container.querySelector('.sv-control--selection')).not.toHaveTextContent('Orange');
+  });
+
+
   it('createFilter - no new item [keyboard]', async () => {
     let defaultOptions = [
       {value: 1, label: 'test'},
